@@ -1,3 +1,11 @@
+'use client'
+import { useCheckAuth } from "./hooks/useCheckAuth";
+
 export default function Home() {
-  return <></>;
+  const authState = useCheckAuth();
+  return (
+    <div>
+      {authState.user?.username}
+    </div>
+  )
 }

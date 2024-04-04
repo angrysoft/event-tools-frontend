@@ -18,12 +18,16 @@ export default function Login() {
     ev.preventDefault();
     const formElement = ev.target as HTMLFormElement;
     const data = new FormData(formElement);
-    const req = await fetch("/api/v1/user/login", {
+    const req = await fetch("/api/user/signin", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: data,
+      credentials: "include",
     });
+    console.log(req);
     if (req.ok) {
-      router.replace("/");
+      const data = await req.json();
+      console.log(data);
+      // router.replace("/");
     }
   };
 
@@ -57,7 +61,7 @@ export default function Login() {
             component="form"
             spacing={2}
             useFlexGap
-            onSubmit={handleSubmit}
+            onSubmit={(ev) => handleSubmit(ev)}
           >
             <TextField required id="username" label="Login" name="username" />
             <TextField
