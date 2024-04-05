@@ -2,31 +2,37 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export interface User {
+interface UserResponse {
+  status: boolean;
+  error?: string;
+  data?: UserInfo;
+}
+
+interface UserInfo {
   username: string;
-  enabled: boolean;
-  authorities: { [key: string]: string }[];
+  authorities: Authorities[];
+}
+
+interface Authorities {
+  authority: string;
 }
 
 export function useCheckAuth() {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserInfo | null | undefined>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const authState = useMemo(() => ({ isLoading, user }), [isLoading, user]);
 
   const fetchState = useCallback(async () => {
     const res = await fetch("/api/user", {
-      headers: {
-        Accept: "application/json",
-      },
+      cache: "no-store",
       credentials: "include",
     });
     console.log(res);
     if (res.ok) {
-      const data = await res.json();
-      console.log(data);
-      setUser(data);
+      const data: UserResponse = await res.json();
+      setUser(data?.data);
     } else {
       router.replace("/login");
     }
@@ -39,3 +45,5 @@ export function useCheckAuth() {
 
   return authState;
 }
+
+export type { UserResponse, UserInfo, Authorities };

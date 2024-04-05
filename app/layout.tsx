@@ -2,6 +2,7 @@ import { Container, CssBaseline } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
+import { ReactNode } from "react";
 import theme from "./theme";
 
 export const metadata: Metadata = {
@@ -9,11 +10,7 @@ export const metadata: Metadata = {
   description: "Event Tools app",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="pl">
       <head>
@@ -26,11 +23,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container
-              component={"main"}
-            >
-              {children}
-            </Container>
+            <Container component={"main"}>{children}</Container>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

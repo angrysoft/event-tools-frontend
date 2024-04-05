@@ -7,27 +7,34 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { MaterialSymbols } from "../components/atoms/MaterialSymbols";
-import { SyntheticEvent } from "react";
 import { useRouter } from "next/navigation";
+import { SyntheticEvent, useState } from "react";
+import { MaterialSymbols } from "../components/atoms/MaterialSymbols";
 
 export default function Login() {
   const router = useRouter();
+  const [errorMsg, setErrorMsg] = useState<string | undefined>();
 
   const handleSubmit = async (ev: SyntheticEvent<HTMLFormElement>) => {
     ev.preventDefault();
+    setErrorMsg("");
     const formElement = ev.target as HTMLFormElement;
-    const data = new FormData(formElement);
-    const req = await fetch("/api/user/signin", {
-      method: "POST",
-      body: data,
-      credentials: "include",
-    });
-    console.log(req);
-    if (req.ok) {
-      const data = await req.json();
-      console.log(data);
-      // router.replace("/");
+    const formData = new FormData(formElement);
+    let response;
+    try {
+      response = await fetch("/api/user/login", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+      if (response.status === 200) {
+        router.replace("/");
+      } else if (response.status === 401) {
+        setErrorMsg("Nieprawidłowy login lub hasło");
+      }
+    } catch (error) {
+      if (error instanceof Error) setErrorMsg(error?.message);
+      console.error("error: ", error);
     }
   };
 
@@ -63,6 +70,9 @@ export default function Login() {
             useFlexGap
             onSubmit={(ev) => handleSubmit(ev)}
           >
+            <Typography component={"span"} textAlign={"center"} color={"error"}>
+              {errorMsg}
+            </Typography>
             <TextField required id="username" label="Login" name="username" />
             <TextField
               required

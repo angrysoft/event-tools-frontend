@@ -1,11 +1,15 @@
-'use client'
+"use client";
+import { Loader } from "./components/atoms/Loader";
+import { SwitchComponent } from "./components/atoms/SwitchComponent";
 import { useCheckAuth } from "./hooks/useCheckAuth";
 
 export default function Home() {
-  const authState = useCheckAuth();
+  const auth = useCheckAuth();
+  console.log("render home");
+  if (auth.isLoading) return <Loader />
   return (
-    <div>
-      {authState.user?.username}
-    </div>
-  )
+    <SwitchComponent
+      user={auth.user}
+    />
+  );
 }

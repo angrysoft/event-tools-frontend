@@ -16,7 +16,7 @@ import { MaterialSymbols } from "../components/atoms/MaterialSymbols";
 
 const drawerWidth = 240;
 
-export default function Home() {
+export default function worker() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -26,7 +26,7 @@ export default function Home() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            Clipped drawer
+            Worker
           </Typography>
         </Toolbar>
       </AppBar>
