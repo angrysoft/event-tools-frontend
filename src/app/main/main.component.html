@@ -1,28 +1,47 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+        <app-menu-action href="/work-schedule" icon="perm_contact_calendar">Grafik</app-menu-action>
+        <app-menu-action href="/calendar" icon="calendar_month">Kalendarz</app-menu-action>
+        <app-menu-action href="/events" icon="event">Imprezy</app-menu-action>
+        <mat-divider></mat-divider>
+
+        <app-menu-action href="/workers" icon="person">Pracownicy</app-menu-action>
+        <mat-divider></mat-divider>
+      
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      @if (isHandset$ | async) {
+      <mat-toolbar-row class="justify-between">
+        @if (isHandset$ | async) {
         <button
           type="button"
           aria-label="Toggle sidenav"
           mat-icon-button
-          (click)="drawer.toggle()">
+          (click)="drawer.toggle()"
+        >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-      }
-      <span>event-tools</span>
+        }
+        <span>event-tools</span>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onLogout()">Wyloguj</button>
+        </mat-menu>
+      </mat-toolbar-row>
     </mat-toolbar>
-    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

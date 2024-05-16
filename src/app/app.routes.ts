@@ -1,14 +1,34 @@
 import { Routes } from "@angular/router";
 import { authGuard } from "./auth.guard";
-import { LoginComponent } from "./login/login.component";
-import { MainComponent } from "./main/main.component";
 
 export const routes: Routes = [
-  { path: "login", component: LoginComponent, title: "Login" },
+  {
+    path: "login",
+    loadComponent: () =>
+      import("./login/login.component").then((m) => m.LoginComponent),
+    title: "Login",
+  },
   {
     path: "",
-    component: MainComponent,
     canActivate: [authGuard],
+    loadComponent: () =>
+      import("./main/main.component").then((m) => m.MainComponent),
     title: "Event Tool",
+    children: [
+      {
+        path: "workers",
+        title: "Pracownicy",
+        loadComponent: () =>
+          import("./workers-actions/workers/workers.component").then(
+            (m) => m.WorkersComponent,
+          ),
+      },
+    ],
   },
+  {
+    path: "",
+    redirectTo: "login",
+    pathMatch: "full",
+  },
+  //FIXME: add page not found
 ];
