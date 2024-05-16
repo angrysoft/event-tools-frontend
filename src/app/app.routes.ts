@@ -1,14 +1,14 @@
-import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { MainComponent } from './main/main.component';
-import { inject } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { Routes } from "@angular/router";
+import { authGuard } from "./auth.guard";
+import { LoginComponent } from "./login/login.component";
+import { MainComponent } from "./main/main.component";
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: "login", component: LoginComponent, title: "Login" },
   {
-    path: '',
+    path: "",
     component: MainComponent,
-    canActivate: [() => inject(AuthService).isAuthenticated()],
+    canActivate: [authGuard],
+    title: "Event Tool",
   },
 ];

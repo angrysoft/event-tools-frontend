@@ -54,7 +54,7 @@ $event-tools-dark-theme: mat.define-dark-theme((
 @include mat.all-component-themes($event-tools-dark-theme);
 
 @media (prefers-color-scheme: light) {
-    @include mat.all-component-themes($event-tools-light-theme);
+    @include mat.all-component-colors($event-tools-light-theme);
 }
 /* You can add global styles to this file, and also import other style files */
 @tailwind base;
