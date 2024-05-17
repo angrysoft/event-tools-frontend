@@ -5,3 +5,7 @@
 th.mat-mdc-table-sticky {
     top: 4rem !important;
 }
+
+:host ::ng-deep.mat-mdc-paginator-container  {
+   justify-content: flex-start !important;
+}
