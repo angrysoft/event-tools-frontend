@@ -8,7 +8,7 @@ import { User } from "../models/user";
 @Injectable({
   providedIn: "root",
 })
-export class AuthService implements OnInit {
+export class AuthService {
   user: User | undefined;
 
   @Output()
@@ -18,6 +18,7 @@ export class AuthService implements OnInit {
   loginError = new EventEmitter<string>();
 
   constructor(private http: HttpClient, private router: Router) {
+
     this.authenticated.subscribe((auth) => {
       if (auth) {
         this.router.navigateByUrl("/");
@@ -27,16 +28,10 @@ export class AuthService implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getUser();
-  }
-
   isAuthenticated(): boolean {
-    console.log("user", this.user);
     if (this.user) {
       return true;
     }
-    // this.getUser();
     return false;
   }
 

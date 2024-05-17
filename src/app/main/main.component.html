@@ -9,18 +9,23 @@
   >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-        <app-menu-action href="/work-schedule" icon="perm_contact_calendar">Grafik</app-menu-action>
-        <app-menu-action href="/calendar" icon="calendar_month">Kalendarz</app-menu-action>
-        <app-menu-action href="/events" icon="event">Imprezy</app-menu-action>
-        <mat-divider></mat-divider>
+      <app-menu-action href="/work-schedule" icon="perm_contact_calendar"
+        >Grafik</app-menu-action
+      >
+      <app-menu-action href="/calendar" icon="calendar_month"
+        >Kalendarz</app-menu-action
+      >
+      <app-menu-action href="/events" icon="event">Imprezy</app-menu-action>
+      <mat-divider></mat-divider>
 
-        <app-menu-action href="/workers" icon="person">Pracownicy</app-menu-action>
-        <mat-divider></mat-divider>
-      
+      <app-menu-action href="/workers" icon="person"
+        >Pracownicy</app-menu-action
+      >
+      <mat-divider></mat-divider>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
+  <mat-sidenav-content class="relative">
+    <mat-toolbar color="primary" class="sticky">
       <mat-toolbar-row class="justify-between">
         @if (isHandset$ | async) {
         <button
@@ -42,6 +47,6 @@
         </mat-menu>
       </mat-toolbar-row>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

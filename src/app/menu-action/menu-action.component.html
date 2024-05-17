@@ -1,4 +1,11 @@
-<a mat-list-item href="{{ href }}" class="flex p-1 gap-1">
-  <mat-icon>{{ icon }}</mat-icon>
-  <ng-content></ng-content>
-</a>
+<mat-list-item [activated]="rla.isActive" >
+  <a
+    routerLink="{{ href }}"
+    routerLinkActive
+    #rla="routerLinkActive"
+    class="flex p-1 gap-1"
+  >
+    <mat-icon matListItemIcon>{{ icon }}</mat-icon>
+    <ng-content></ng-content>
+  </a>
+</mat-list-item>
