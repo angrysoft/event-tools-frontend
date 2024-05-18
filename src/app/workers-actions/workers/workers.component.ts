@@ -7,6 +7,9 @@ import { WorkersService } from "../../services/workers.service";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { MatInput } from "@angular/material/input";
 
 @Component({
   selector: "app-workers",
@@ -19,6 +22,10 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInput,
+    MatLabel,
   ],
 })
 export class WorkersComponent implements AfterViewInit, OnInit {
@@ -26,16 +33,25 @@ export class WorkersComponent implements AfterViewInit, OnInit {
   @ViewChild(MatTable) table!: MatTable<WorkersItem>;
   dataSource!: WorkersDataSource;
   displayedColumns = ["id", "firstName", "lastName"];
+  workerSearchForm: FormGroup = new FormGroup({
+    workerSearch: new FormControl(""),
+  });
 
   constructor(private workerService: WorkersService) {}
 
   ngOnInit(): void {
     this.dataSource = new WorkersDataSource(this.workerService);
+    console.log(this.dataSource.loading());
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
     this.dataSource.loadData();
+    console.log(this.dataSource.loading());
+  }
+
+  searchQuery() {
+    throw new Error("Method not implemented.");
   }
 }
