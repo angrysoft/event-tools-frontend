@@ -24,10 +24,10 @@
       <mat-divider></mat-divider>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content class="relative">
+  <mat-sidenav-content class="relative h-dvh">
     <mat-toolbar color="primary" class="sticky">
       <mat-toolbar-row class="justify-between">
-        @if (isHandset$ | async) {
+        <!-- @if (isHandset$ | async) { -->
         <button
           type="button"
           aria-label="Toggle sidenav"
@@ -36,8 +36,8 @@
         >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        }
-        <span>event-tools</span>
+        <!-- } -->
+        <span>Event Tools</span>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>person</mat-icon>
@@ -47,8 +47,6 @@
         </mat-menu>
       </mat-toolbar-row>
     </mat-toolbar>
-    <div class="relative">
       <router-outlet></router-outlet>
-    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,23 @@
+<form
+    [formGroup]="searchForm"
+    (ngSubmit)="onSearch()"
+    class="grid grid-cols-[1fr_auto_auto] p-1 gap-1"
+  >
+    <mat-form-field class="" subscriptSizing="dynamic" appearance="outline">
+      <input
+        type="search"
+        matInput
+        placeholder="Szukaj"
+        formControlName="search"
+        minlength="3"
+        [required]="true"
+      />
+      <mat-hint>Minimum 3 znaki</mat-hint>
+    </mat-form-field>
+    <button mat-fab color="primary">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button mat-fab color="primary" type="button" (click)="onReset()" [disabled]="! searchForm.dirty">
+        <mat-icon>backspace</mat-icon>
+      </button>
+  </form>
