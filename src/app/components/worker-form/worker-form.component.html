@@ -1,18 +1,22 @@
 <section class="worker-form-section">
-  <header>
+  <header class="worker-form-header">
+    <button mat-icon-button routerLink="/workers">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <h2>{{ formTitle }}</h2>
   </header>
   <mat-divider></mat-divider>
   <form [formGroup]="workerFrom">
-    <div class="flex ga-1 flex-col sm:flex-row">
+    <div class="field-group">
       <mat-form-field appearance="outline">
-        <!-- <mat-label>Imię</mat-label> -->
+        <mat-label>Imię</mat-label>
         <input
           matInput
           type="text"
           formControlName="firstName"
           placeholder="Imię"
           minlength="3"
+          required
         />
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -23,14 +27,41 @@
           formControlName="lastName"
           placeholder="Nazwisko"
           minlength="3"
+          required
         />
       </mat-form-field>
     </div>
-    <div class="flex gap-1">
-      <button mat-flat-button color="accent" routerLink="/workers">
-        Anuluj
+    <div class="field-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Telefon</mat-label>
+        <input
+          matInput
+          type="phone"
+          formControlName="phone"
+          placeholder="Telefon"
+          minlength="9"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="email"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <div class="flex">
+      <button
+        mat-flat-button
+        color="primary"
+        disabled="! workerFrom.valid | async"
+      >
+        Zapisz
       </button>
-      <button mat-flat-button color="primary">Zapisz</button>
     </div>
   </form>
 </section>

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { RouterLink } from "@angular/router";
 
@@ -13,6 +14,7 @@ import { RouterLink } from "@angular/router";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     ReactiveFormsModule,
     MatDividerModule,
     RouterLink,
