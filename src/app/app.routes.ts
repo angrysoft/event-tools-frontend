@@ -23,6 +23,14 @@ export const routes: Routes = [
             (m) => m.WorkersComponent,
           ),
       },
+      {
+        path: "workers/add",
+        title: "Dodaj Pracownika",
+        loadComponent: () =>
+          import("./workers-actions/add-worker/add-worker.component").then(
+            (m) => m.AddWorkerComponent,
+          ),
+      },
     ],
   },
   {

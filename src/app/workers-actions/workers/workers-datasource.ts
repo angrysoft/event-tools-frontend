@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { WorkersItem } from "../../models/worker-item";
 import { WorkersService } from "../../services/workers.service";
 import { signal } from "@angular/core";
+import { RestResponse } from "../../models/rest-response";
+import { WorkersResponse } from "../../models/workers-response";
 
 export class WorkersDataSource extends DataSource<WorkersItem> {
   private workersSubject = new BehaviorSubject<WorkersItem[]>([]);
@@ -31,22 +33,17 @@ export class WorkersDataSource extends DataSource<WorkersItem> {
     const offset =
       (this.paginator?.pageIndex ?? 0) * (this.paginator?.pageSize ?? 15);
 
-    if (this.query.length > 2) {
-      this.workerService.searchWorker(this.query).subscribe((result) => {
-        // this.count = result?.data?.count;
-        this.count = 20;
-        this.workersSubject.next(result.data.items);
-        this.loading.set(false);
-      });
-    } else {
-      this.workerService
-        .getWorkers(this.paginator?.pageSize, offset)
+    let action: Observable<RestResponse<WorkersResponse>>;
 
-        .subscribe((result) => {
-          this.count = result?.data?.count;
-          this.workersSubject.next(result.data.items);
-          this.loading.set(false);
-        });
+    if (this.query.length > 2) {
+      action = this.workerService.searchWorker(this.query);
+    } else {
+      action = this.workerService.getWorkers(this.paginator?.pageSize, offset);
     }
+    action.subscribe((result) => {
+      this.count = result?.data?.count;
+      this.workersSubject.next(result.data.items);
+      this.loading.set(false);
+    });
   }
 }

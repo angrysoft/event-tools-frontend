@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+$primary-default: mat.get-theme-color($theme, primary, default);
+
+.worker-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: $primary-default;
+}

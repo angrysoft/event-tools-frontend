@@ -7,7 +7,13 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 @Component({
   selector: "app-menu-action",
   standalone: true,
-  imports: [MatIconModule, RouterLink, RouterLinkActive, MatButtonModule, MatListModule],
+  imports: [
+    MatIconModule,
+    RouterLink,
+    RouterLinkActive,
+    MatButtonModule,
+    MatListModule,
+  ],
   templateUrl: "./menu-action.component.html",
   styleUrl: "./menu-action.component.scss",
 })

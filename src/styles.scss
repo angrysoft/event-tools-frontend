@@ -57,9 +57,22 @@ $event-tools-dark-theme: mat.define-dark-theme((
     @include mat.all-component-colors($event-tools-light-theme);
 }
 /* You can add global styles to this file, and also import other style files */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+
+
+$mat-lt-sm: "(max-width: 599px)";
+$mat-lt-md: "(max-width: 959px)";
+$mat-lt-lg: "(max-width: 1279px)";
+$mat-lt-xl: "(max-width: 1919px)";
+$mat-gt-xs: "(min-width: 600px)";
+$mat-gt-sm: "(min-width: 960px)";
+$mat-gt-md: "(min-width: 1280px)";
+$mat-gt-xl: "(min-width: 1920px)";
+$mat-xs: $mat-lt-sm;
+$mat-sm: $mat-gt-xs and $mat-lt-md;
+$mat-md: $mat-gt-sm and $mat-lt-lg;
+$mat-lg: $mat-gt-md and $mat-lt-xl;
+$mat-xl: $mat-gt-xl;
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

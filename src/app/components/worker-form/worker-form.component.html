@@ -1,0 +1,36 @@
+<section class="worker-form-section">
+  <header>
+    <h2>{{ formTitle }}</h2>
+  </header>
+  <mat-divider></mat-divider>
+  <form [formGroup]="workerFrom">
+    <div class="flex ga-1 flex-col sm:flex-row">
+      <mat-form-field appearance="outline">
+        <!-- <mat-label>Imię</mat-label> -->
+        <input
+          matInput
+          type="text"
+          formControlName="firstName"
+          placeholder="Imię"
+          minlength="3"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nazwisko</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="lastName"
+          placeholder="Nazwisko"
+          minlength="3"
+        />
+      </mat-form-field>
+    </div>
+    <div class="flex gap-1">
+      <button mat-flat-button color="accent" routerLink="/workers">
+        Anuluj
+      </button>
+      <button mat-flat-button color="primary">Zapisz</button>
+    </div>
+  </form>
+</section>

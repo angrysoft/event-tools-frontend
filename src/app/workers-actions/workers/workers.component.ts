@@ -9,6 +9,7 @@ import { SearchComponent } from "../../components/search/search.component";
 import { WorkersItem } from "../../models/worker-item";
 import { WorkersService } from "../../services/workers.service";
 import { WorkersDataSource } from "./workers-datasource";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-workers",
@@ -23,6 +24,7 @@ import { WorkersDataSource } from "./workers-datasource";
     MatProgressSpinnerModule,
     MatFormFieldModule,
     SearchComponent,
+    RouterLink,
   ],
 })
 export class WorkersComponent implements AfterViewInit, OnInit {
@@ -44,13 +46,11 @@ export class WorkersComponent implements AfterViewInit, OnInit {
   }
 
   searchQuery(query: any) {
-    console.log("search", query);
     this.dataSource.query = query;
     this.dataSource.loadData();
   }
 
   resetSearch() {
-    console.log("reseting...")
     this.paginator.firstPage();
     this.dataSource.query = "";
     this.dataSource.loadData();
