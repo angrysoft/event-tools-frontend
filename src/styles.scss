@@ -92,3 +92,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .grid {
     display: grid;
 }
+
+.side-content {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        max-height: calc(100% - 4rem);
+        overflow: hidden;
+}

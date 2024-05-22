@@ -4,10 +4,17 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle }}</h2>
+    <button
+      mat-flat-button
+      color="primary"
+      disabled="! workerFrom.valid | async"
+    >
+      Zapisz
+    </button>
   </header>
   <mat-divider></mat-divider>
-  <form [formGroup]="workerFrom">
-    <div class="field-group">
+  <form [formGroup]="workerFrom" class="worker-form">
+    <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Imię</mat-label>
         <input
@@ -30,8 +37,6 @@
           required
         />
       </mat-form-field>
-    </div>
-    <div class="field-group">
       <mat-form-field appearance="outline">
         <mat-label>Telefon</mat-label>
         <input
@@ -54,14 +59,89 @@
         />
       </mat-form-field>
     </div>
-    <div class="flex">
-      <button
-        mat-flat-button
-        color="primary"
-        disabled="! workerFrom.valid | async"
-      >
-        Zapisz
-      </button>
+
+    <mat-divider />
+
+    <div class="worker-form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Ksywa</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="nickname"
+          placeholder="Ksywa"
+          minlength="8"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Kolor</mat-label>
+        <input
+          matInput
+          type="color"
+          formControlName="color"
+          placeholder="Kolor"
+          minlength="8"
+        />
+      </mat-form-field>
     </div>
+
+    <mat-divider />
+
+    <div class="worker-form-group">
+      <mat-slide-toggle formControlName="hasAppAccount"
+        >Konto w aplikacji</mat-slide-toggle
+      >
+    </div>
+
+    @if (workerFrom.controls.hasAppAccount.value) {
+    <div class="worker-form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Login</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="username"
+          placeholder="Login"
+          required
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="worker-form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Hasło</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Hasło"
+          minlength="8"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Powtórz hasło</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password2"
+          placeholder="Hasło"
+          minlength="8"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <div class="worker-form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Rodzaj kąta</mat-label>
+        <mat-select formControlName="authority" name="food">
+          @for (authority of hints.authorities; track authority) {
+          <mat-option [value]="authority">{{ authority }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    }
   </form>
 </section>
