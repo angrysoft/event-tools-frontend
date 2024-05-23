@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
@@ -15,7 +14,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { RouterLink } from "@angular/router";
-import { RestResponse } from "../../models/rest-response";
+import { WorkerHints } from "../../models/worker-hints";
+import { WorkersService } from "../../services/workers.service";
 
 @Component({
   selector: "app-worker-form",
@@ -44,28 +44,32 @@ export class WorkerFormComponent implements OnInit {
     nickname: new FormControl(""),
     color: new FormControl(""),
     hasAppAccount: false,
-    user: new FormGroup({
-      username: new FormControl(""),
-      password: new FormControl(""),
-      password2: new FormControl(""),
-    }),
+    username: new FormControl(""),
+    password: new FormControl(""),
+    password2: new FormControl(""),
+    authority: new FormControl(""),
+    team: new FormControl(""),
+    group: new FormControl(""),
   });
 
   formTitle: string = "Dodaj Pracownika";
 
-  hints = {
+  hints: WorkerHints = {
     teams: [],
     groups: [],
-    authorities : ["Koordynacja", "Technika", "Handel"]
-  }
-  constructor(private formBuilder: FormBuilder, private http:  HttpClient) {}
+    authorities: [],
+  };
 
+  constructor(
+    private formBuilder: FormBuilder,
+    private workerService: WorkersService,
+  ) {}
 
   ngOnInit(): void {
-    this.http.get<RestResponse<WorkerHints>("/api/workers/hints").subscribe(
-      response => 
-    )
+    this.workerService.getWorkersHints().subscribe((response) => {
+      if (response.ok) {
+        this.hints = response.data;
+      }
+    });
   }
-
-
 }

@@ -88,6 +88,27 @@
     <mat-divider />
 
     <div class="worker-form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Ekipa</mat-label>
+        <mat-select formControlName="team" name="team">
+          @for (team of hints.teams; track team) {
+          <mat-option [value]="team.id">{{ team.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Grupa</mat-label>
+        <mat-select formControlName="group" name="group">
+          @for (group of hints.groups; track group) {
+          <mat-option [value]="group.id">{{ group.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-divider />
+
+    <div class="worker-form-group">
       <mat-slide-toggle formControlName="hasAppAccount"
         >Konto w aplikacji</mat-slide-toggle
       >
@@ -135,7 +156,7 @@
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Rodzaj kąta</mat-label>
-        <mat-select formControlName="authority" name="food">
+        <mat-select formControlName="authority" name="team">
           @for (authority of hints.authorities; track authority) {
           <mat-option [value]="authority">{{ authority }}</mat-option>
           }

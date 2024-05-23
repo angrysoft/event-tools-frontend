@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { EventEmitter, Injectable, Output } from "@angular/core";
-import { WorkersResponse } from "../models/workers-response";
-import { RestResponse } from "../models/rest-response";
+import { Injectable } from "@angular/core";
 import { Observable, catchError, throwError } from "rxjs";
+import { RestResponse } from "../models/rest-response";
+import { WorkerHints } from "../models/worker-hints";
+import { WorkersResponse } from "../models/workers-response";
 
 @Injectable({
   providedIn: "root",
@@ -47,5 +48,18 @@ export class WorkersService {
           );
         }),
       );
+  }
+
+  getWorkersHints(): Observable<RestResponse<WorkerHints>> {
+    return this.http.get<RestResponse<WorkerHints>>("/api/workers/hints").pipe(
+      catchError((err) => {
+        if (err.status === 401) {
+          return new Observable<RestResponse<WorkerHints>>();
+        }
+        return throwError(
+          () => new Error("Something bad happened; please try again later."),
+        );
+      }),
+    );
   }
 }
