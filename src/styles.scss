@@ -11,39 +11,39 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$event-tools-light-primary: mat.define-palette(mat.$green-palette, 700, 200, 900);
-$event-tools-light-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+$event-tools-light-primary: mat.m2-define-palette(mat.$m2-green-palette, 700, 200, 900);
+$event-tools-light-accent: mat.m2-define-palette(mat.$m2-blue-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$event-tools-light-warn: mat.define-palette(mat.$red-palette);
+$event-tools-light-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$event-tools-light-theme: mat.define-light-theme((
+$event-tools-light-theme: mat.m2-define-light-theme((
     color: (
         primary: $event-tools-light-primary,
         accent: $event-tools-light-accent,
         warn: $event-tools-light-warn,
   ),
-  typography: mat.define-typography-config(),
+  typography: mat.m2-define-typography-config(),
   density: 0
   ));
 
-$event-tools-dark-primary: mat.define-palette(mat.$green-palette, 700, 200, 900);
-$event-tools-dark-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+$event-tools-dark-primary: mat.m2-define-palette(mat.$m2-green-palette, 700, 200, 900);
+$event-tools-dark-accent: mat.m2-define-palette(mat.$m2-blue-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$event-tools-dark-warn: mat.define-palette(mat.$red-palette);
+$event-tools-dark-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$event-tools-dark-theme: mat.define-dark-theme((
+$event-tools-dark-theme: mat.m2-define-dark-theme((
     color: (
         primary: $event-tools-dark-primary,
         accent: $event-tools-dark-accent,
         warn: $event-tools-dark-warn,
   ),
-  typography: mat.define-typography-config(),
+  typography: mat.m2-define-typography-config(),
   density: 0
   ));
   
