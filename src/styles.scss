@@ -2,8 +2,6 @@
 @use "./m3-theme";
 @include mat.core();
 
-@import "./m3-theme.scss";
-
 
 html {
     @include mat.core-theme(m3-theme.$dark-theme);
@@ -26,7 +24,6 @@ html {
     // @include mat.icon-theme(m3-theme.$dark-theme);
     
     @media (prefers-color-scheme: light) {
-        @include mat.core-theme(m3-theme.$light-theme);
         @include mat.system-level-colors(m3-theme.$light-theme);
         @include mat.system-level-typography(m3-theme.$light-theme);
         @include mat.all-component-themes(m3-theme.$light-theme);
