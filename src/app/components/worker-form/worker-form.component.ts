@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, signal } from "@angular/core";
+import { Component, OnInit, effect, input, signal } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -36,6 +36,7 @@ import { WorkersService } from "../../services/workers.service";
   styleUrl: "./worker-form.component.scss",
 })
 export class WorkerFormComponent implements OnInit {
+  update = input<boolean>(false);
   canSend = signal<boolean>(false);
 
   workerFrom = this.formBuilder.group({
@@ -53,7 +54,7 @@ export class WorkerFormComponent implements OnInit {
     team: new FormControl(""),
     group: new FormControl(""),
   });
-
+  
   formTitle: string = "Dodaj Pracownika";
 
   hints: WorkerHints = {
@@ -87,6 +88,9 @@ export class WorkerFormComponent implements OnInit {
     console.log(this.workerFrom.getRawValue());
 
     if (this.workerFrom.valid) {
+      if (this.update.) {
+        this.workerService.updateWorker(this.workerFrom.getRawValue());
+      }
       console.log("Form is valid");
     }
   }

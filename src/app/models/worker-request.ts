@@ -1,15 +1,15 @@
 export interface WorkerRequest {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  nickname: string;
-  color: string;
-  hasAppAccount: boolean;
-  username: string;
-  password: string;
-  password2: string;
-  authority: string;
-  team: string;
-  group: string;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
+  email: string | null;
+  nickname: string | null;
+  color: string | null;
+  createAccount: boolean | null;
+  username: string | null;
+  password: string | null;
+  password2: string | null;
+  authority: string | null;
+  team: string | null;
+  group: string | null;
 }
