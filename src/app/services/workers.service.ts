@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { WorkerHints } from "../models/worker-hints";
 import { WorkersResponse } from "../models/workers-response";
+import { WorkerRequest } from "../models/worker-request";
 
 @Injectable({
   providedIn: "root",
@@ -55,6 +56,32 @@ export class WorkersService {
       catchError((err) => {
         if (err.status === 401) {
           return new Observable<RestResponse<WorkerHints>>();
+        }
+        return throwError(
+          () => new Error("Something bad happened; please try again later."),
+        );
+      }),
+    );
+  }
+
+  addWorker(worker: WorkerRequest) {
+    return this.http.post<RestResponse<void>>("/api/workers", worker).pipe(
+      catchError((err) => {
+        if (err.status === 401) {
+          return new Observable<RestResponse<void>>();
+        }
+        return throwError(
+          () => new Error("Something bad happened; please try again later."),
+        );
+      }),
+    );
+  }
+
+  updateWorker(worker: WorkerRequest) {
+    return this.http.put<RestResponse<void>>("/api/workers", worker).pipe(
+      catchError((err) => {
+        if (err.status === 401) {
+          return new Observable<RestResponse<void>>();
         }
         return throwError(
           () => new Error("Something bad happened; please try again later."),

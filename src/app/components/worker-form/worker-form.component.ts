@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, effect, signal } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  StatusChangeEvent,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
@@ -36,6 +36,8 @@ import { WorkersService } from "../../services/workers.service";
   styleUrl: "./worker-form.component.scss",
 })
 export class WorkerFormComponent implements OnInit {
+  canSend = signal<boolean>(false);
+
   workerFrom = this.formBuilder.group({
     firstName: new FormControl(""),
     lastName: new FormControl(""),
@@ -43,7 +45,7 @@ export class WorkerFormComponent implements OnInit {
     email: new FormControl(""),
     nickname: new FormControl(""),
     color: new FormControl(""),
-    hasAppAccount: false,
+    createAccount: new FormControl(false),
     username: new FormControl(""),
     password: new FormControl(""),
     password2: new FormControl(""),
@@ -63,7 +65,9 @@ export class WorkerFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private workerService: WorkersService,
-  ) {}
+  ) {
+    effect(() => console.log(`signal ${this.canSend()}`));
+  }
 
   ngOnInit(): void {
     this.workerService.getWorkersHints().subscribe((response) => {
@@ -71,5 +75,19 @@ export class WorkerFormComponent implements OnInit {
         this.hints = response.data;
       }
     });
+    this.workerFrom.events.subscribe((formEvents) => {
+      if (formEvents instanceof StatusChangeEvent) {
+        console.log(formEvents);
+        this.canSend.set(formEvents.status === "VALID");
+      }
+    });
+  }
+
+  handleSubmit() {
+    console.log(this.workerFrom.getRawValue());
+
+    if (this.workerFrom.valid) {
+      console.log("Form is valid");
+    }
   }
 }

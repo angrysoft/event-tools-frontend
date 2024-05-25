@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -31,14 +31,14 @@ export class LoginComponent implements OnInit {
 
   error: string | null | undefined;
 
-  sending: boolean = false;
+  sending= signal<boolean>(false);
 
   constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.auth.loginError.subscribe((err) => {
       this.error = err;
-      this.sending = false;
+      this.sending.set(false);
     });
   }
 
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     const username = this.form.get("username");
     const password = this.form.get("password");
     if (this.form.valid) {
-      this.sending = true;
+      this.sending.set(true);
       this.auth.login(username?.value, password?.value);
     }
   }

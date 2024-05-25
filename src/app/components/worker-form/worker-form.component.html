@@ -6,14 +6,14 @@
     <h2>{{ formTitle }}</h2>
     <button
       mat-flat-button
-      color="primary"
-      disabled="! workerFrom.valid | async"
+      type="submit"
+      form="worker-form"
     >
       Zapisz
     </button>
   </header>
   <mat-divider></mat-divider>
-  <form [formGroup]="workerFrom" class="worker-form">
+  <form [formGroup]="workerFrom" class="worker-form" id="worker-form" (submit)="handleSubmit()">
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Imię</mat-label>
@@ -24,6 +24,7 @@
           placeholder="Imię"
           minlength="3"
           required
+          autocomplete="given-name"
         />
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -35,6 +36,7 @@
           placeholder="Nazwisko"
           minlength="3"
           required
+          autocomplete="family-name"
         />
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -46,6 +48,7 @@
           placeholder="Telefon"
           minlength="9"
           required
+          autocomplete="tel"
         />
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -56,6 +59,7 @@
           formControlName="email"
           placeholder="email"
           required
+          autocomplete="email"
         />
       </mat-form-field>
     </div>
@@ -70,7 +74,6 @@
           type="text"
           formControlName="nickname"
           placeholder="Ksywa"
-          minlength="8"
         />
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -90,7 +93,7 @@
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Ekipa</mat-label>
-        <mat-select formControlName="team" name="team">
+        <mat-select formControlName="team" name="team" required>
           @for (team of hints.teams; track team) {
           <mat-option [value]="team.id">{{ team.name }}</mat-option>
           }
@@ -98,7 +101,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Grupa</mat-label>
-        <mat-select formControlName="group" name="group">
+        <mat-select formControlName="group" name="group" required>
           @for (group of hints.groups; track group) {
           <mat-option [value]="group.id">{{ group.name }}</mat-option>
           }
@@ -109,12 +112,12 @@
     <mat-divider />
 
     <div class="worker-form-group">
-      <mat-slide-toggle formControlName="hasAppAccount"
+      <mat-slide-toggle formControlName="createAccount"
         >Konto w aplikacji</mat-slide-toggle
       >
     </div>
 
-    @if (workerFrom.controls.hasAppAccount.value) {
+    @if (workerFrom.controls.createAccount.value) {
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Login</mat-label>

@@ -3,16 +3,23 @@
     padding: 3rem;
     justify-content: center;
     align-items: center;
-    height: 100dvh;
 }
 
  .login-form {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
     gap: 0.5rem;
 }
 
 .login-header {
     justify-content: center;
+}
+
+.mat-mdc-card-header {
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+}
+
+.mat-mdc-card-content {
+    padding: 0 3rem 3rem 3rem;
 }
