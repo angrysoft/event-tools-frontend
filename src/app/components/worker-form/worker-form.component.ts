@@ -88,7 +88,8 @@ export class WorkerFormComponent implements OnInit {
     console.log(this.workerFrom.getRawValue());
 
     if (this.workerFrom.valid) {
-      if (this.update.) {
+      //FIXME: ....
+      if (this.update()) {
         this.workerService.updateWorker(this.workerFrom.getRawValue());
       }
       console.log("Form is valid");
