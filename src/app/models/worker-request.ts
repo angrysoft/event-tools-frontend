@@ -10,6 +10,6 @@ export interface WorkerRequest {
   password: string | null;
   password2: string | null;
   authority: string | null;
-  team: string | null;
-  group: string | null;
+  teamId: string | null;
+  groupId: string | null;
 }

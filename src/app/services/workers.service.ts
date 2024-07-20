@@ -67,8 +67,13 @@ export class WorkersService {
   addWorker(worker: WorkerRequest) {
     return this.http.post<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
-        if (err.status === 401) {
+        console.log(err.error);
+        if (err.status === 401 ) {
           return new Observable<RestResponse<void>>();
+        } else if (err.status === 400) {
+          return throwError(
+            () => new Error(err.error.error),
+          );
         }
         return throwError(
           () => new Error("Something bad happened; please try again later."),
@@ -80,9 +85,10 @@ export class WorkersService {
   updateWorker(worker: WorkerRequest) {
     return this.http.put<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
-        if (err.status === 401) {
+        if (err.status === 401 || err.status === 400) {
+          console.log()
           return new Observable<RestResponse<void>>();
-        }
+        } 
         return throwError(
           () => new Error("Something bad happened; please try again later."),
         );
