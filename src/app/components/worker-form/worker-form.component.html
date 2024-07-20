@@ -14,6 +14,7 @@
   </header>
   <mat-divider></mat-divider>
   <form [formGroup]="workerFrom" class="worker-form" id="worker-form" (submit)="handleSubmit()">
+    <div>{{ error() }}</div>
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Imię</mat-label>
@@ -83,7 +84,6 @@
           type="color"
           formControlName="color"
           placeholder="Kolor"
-          minlength="8"
         />
       </mat-form-field>
     </div>
@@ -93,7 +93,7 @@
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Ekipa</mat-label>
-        <mat-select formControlName="team" name="team" required>
+        <mat-select formControlName="teamId" name="teamId" required>
           @for (team of hints.teams; track team) {
           <mat-option [value]="team.id">{{ team.name }}</mat-option>
           }
@@ -101,7 +101,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Grupa</mat-label>
-        <mat-select formControlName="group" name="group" required>
+        <mat-select formControlName="groupId" name="groupId" required>
           @for (group of hints.groups; track group) {
           <mat-option [value]="group.id">{{ group.name }}</mat-option>
           }

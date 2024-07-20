@@ -13,7 +13,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
 
@@ -38,6 +38,7 @@ import { WorkersService } from "../../services/workers.service";
 export class WorkerFormComponent implements OnInit {
   update = input<boolean>(false);
   canSend = signal<boolean>(false);
+  error = signal<string>("");
 
   workerFrom = this.formBuilder.group({
     firstName: new FormControl(""),
@@ -51,10 +52,10 @@ export class WorkerFormComponent implements OnInit {
     password: new FormControl(""),
     password2: new FormControl(""),
     authority: new FormControl(""),
-    team: new FormControl(""),
-    group: new FormControl(""),
+    teamId: new FormControl(""),
+    groupId: new FormControl(""),
   });
-  
+
   formTitle: string = "Dodaj Pracownika";
 
   hints: WorkerHints = {
@@ -66,6 +67,7 @@ export class WorkerFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private workerService: WorkersService,
+    private router: Router,
   ) {
     effect(() => console.log(`signal ${this.canSend()}`));
   }
@@ -85,12 +87,33 @@ export class WorkerFormComponent implements OnInit {
   }
 
   handleSubmit() {
+    this.error.set("");
     console.log(this.workerFrom.getRawValue());
 
     if (this.workerFrom.valid) {
       //FIXME: ....
       if (this.update()) {
-        this.workerService.updateWorker(this.workerFrom.getRawValue());
+        console.log("update");
+        this.workerService
+          .updateWorker(this.workerFrom.getRawValue())
+          .subscribe((response) => {
+            console.log(response);
+            // if (response.ok) {
+
+            // }
+          });
+      } else {
+        console.log("add");
+        this.workerService
+          .addWorker(this.workerFrom.getRawValue())
+          .subscribe((response) => {
+            console.log("res: ", response);
+            if (response.ok) {
+              this.router.navigateByUrl("/workers");
+            } else {
+              this.error.set(response.error ?? "Cos Poszło nie tak..");
+            }
+          });
       }
       console.log("Form is valid");
     }
