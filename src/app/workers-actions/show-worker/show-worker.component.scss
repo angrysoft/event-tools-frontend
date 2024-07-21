@@ -18,5 +18,16 @@
 }
 
 .delete-button {
-    background-color: var(--sys-error-container)
+    background-color: var(--sys-error-container);
+    color: var(--sys-on-error-container);
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.data {
+    color: inherit;
+    text-decoration: none;
 }

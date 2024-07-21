@@ -10,4 +10,38 @@
     </div>
   </header>
   <mat-divider></mat-divider>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Dane Personalne</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        <span class="label">Imię:</span>
+        <span>{{ worker.firstName }} </span>
+      </p>
+      <p>
+        <span class="label">Nazwisko:</span>
+        <span>{{ worker.lastName }} </span>
+      </p>
+      <p>
+        <span class="label">Ksywa:</span>
+        <span>{{ worker.nickname ?? "" }} </span>
+      </p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Dane Kontaktowe</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            <span class="label">Telefon:</span>
+            <span><a class="data" href="tel:{{ worker.phone }}">{{ worker.phone }}</a></span>
+          </p>
+          <p>
+            <span class="label">Email:</span>
+            <span><a class="data" target="_blank" href="mailto://{{ worker.email }}">{{ worker.email }}</a></span>
+          </p>
+    </mat-card-content>
+  </mat-card>
 </section>

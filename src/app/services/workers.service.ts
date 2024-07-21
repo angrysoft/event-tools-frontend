@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, catchError, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { WorkerHints } from "../models/worker-hints";
+import { WorkerDetails } from "../models/worker-details";
 import { WorkersResponse } from "../models/workers-response";
 import { WorkerRequest } from "../models/worker-request";
 
@@ -25,6 +26,23 @@ export class WorkersService {
         catchError((err) => {
           if (err.status === 401) {
             return new Observable<RestResponse<WorkersResponse>>();
+          }
+          return throwError(
+            () => new Error("Something bad happened; please try again later."),
+          );
+        }),
+      );
+  }
+
+  getWorker(id: number): Observable<RestResponse<WorkerDetails>> {
+    return this.http
+      .get<RestResponse<WorkerDetails>>(`/api/workers/${id}`, {
+        withCredentials: true,
+      })
+      .pipe(
+        catchError((err) => {
+          if (err.status === 401) {
+            return new Observable<RestResponse<WorkerDetails>>();
           }
           return throwError(
             () => new Error("Something bad happened; please try again later."),
@@ -68,12 +86,10 @@ export class WorkersService {
     return this.http.post<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
         console.log(err.error);
-        if (err.status === 401 ) {
+        if (err.status === 401) {
           return new Observable<RestResponse<void>>();
         } else if (err.status === 400) {
-          return throwError(
-            () => new Error(err.error.error),
-          );
+          return throwError(() => new Error(err.error.error));
         }
         return throwError(
           () => new Error("Something bad happened; please try again later."),
@@ -86,9 +102,9 @@ export class WorkersService {
     return this.http.put<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 400) {
-          console.log()
+          console.log();
           return new Observable<RestResponse<void>>();
-        } 
+        }
         return throwError(
           () => new Error("Something bad happened; please try again later."),
         );
