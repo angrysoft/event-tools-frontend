@@ -13,6 +13,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from "@angular/router";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
@@ -68,6 +69,7 @@ export class WorkerFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private workerService: WorkersService,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) {
     effect(() => console.log(`signal ${this.canSend()}`));
   }
@@ -84,6 +86,10 @@ export class WorkerFormComponent implements OnInit {
         this.canSend.set(formEvents.status === "VALID");
       }
     });
+  }
+
+  onSuccess(msg:string, action: string) {
+    this.snackBar.open(msg, action, { duration: 3000});
   }
 
   handleSubmit() {
@@ -109,7 +115,8 @@ export class WorkerFormComponent implements OnInit {
           .subscribe((response) => {
             console.log("res: ", response);
             if (response.ok) {
-              this.router.navigateByUrl("/workers");
+              this.onSuccess("Dodano uzytkownika", "Powrót")
+              // this.router.navigateByUrl("/workers");
             } else {
               this.error.set(response.error ?? "Cos Poszło nie tak..");
             }
