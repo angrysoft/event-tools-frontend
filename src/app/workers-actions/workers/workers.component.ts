@@ -9,7 +9,7 @@ import { SearchComponent } from "../../components/search/search.component";
 import { WorkersItem } from "../../models/worker-item";
 import { WorkersService } from "../../services/workers.service";
 import { WorkersDataSource } from "./workers-datasource";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-workers",
@@ -33,7 +33,7 @@ export class WorkersComponent implements AfterViewInit, OnInit {
   dataSource!: WorkersDataSource;
   displayedColumns = ["id", "firstName", "lastName"];
 
-  constructor(private workerService: WorkersService) {}
+  constructor(private workerService: WorkersService, private router: Router) {}
 
   ngOnInit(): void {
     this.dataSource = new WorkersDataSource(this.workerService);
@@ -58,5 +58,6 @@ export class WorkersComponent implements AfterViewInit, OnInit {
 
   onDbClick(row: any) {
     console.log("clicked", row);
+    this.router.navigateByUrl(`/workers/${row.id}`);
   }
 }

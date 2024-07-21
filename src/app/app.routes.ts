@@ -32,7 +32,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: "workers/edit/",
+        path: "workers/edit/:id",
         title: "Dodaj Pracownika",
         loadComponent: () =>
           import("./workers-actions/edit-worker/edit-worker.component").then(
@@ -40,7 +40,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: "workers/{id}",
+        path: "workers/:id",
         title: "Dodaj Pracownika",
         loadComponent: () =>
           import("./workers-actions/show-worker/show-worker.component").then(

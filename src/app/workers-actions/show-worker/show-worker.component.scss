@@ -1,0 +1,22 @@
+.worker-details-section {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    
+}
+
+.worker-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.details-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.delete-button {
+    background-color: var(--sys-error-container)
+}
