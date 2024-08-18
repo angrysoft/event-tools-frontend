@@ -4,16 +4,15 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle }}</h2>
-    <button
-      mat-flat-button
-      type="submit"
-      form="worker-form"
-    >
-      Zapisz
-    </button>
+    <button mat-flat-button type="submit" form="worker-form">Zapisz</button>
   </header>
   <mat-divider></mat-divider>
-  <form [formGroup]="workerFrom" class="worker-form" id="worker-form" (submit)="handleSubmit()">
+  <form
+    [formGroup]="workerFrom"
+    class="worker-form"
+    id="worker-form"
+    (submit)="handleSubmit()"
+  >
     <div>{{ error() }}</div>
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
@@ -23,8 +22,6 @@
           type="text"
           formControlName="firstName"
           placeholder="Imię"
-          minlength="3"
-          required
           autocomplete="given-name"
         />
       </mat-form-field>
@@ -35,8 +32,6 @@
           type="text"
           formControlName="lastName"
           placeholder="Nazwisko"
-          minlength="3"
-          required
           autocomplete="family-name"
         />
       </mat-form-field>
@@ -47,9 +42,7 @@
           type="phone"
           formControlName="phone"
           placeholder="Telefon"
-          minlength="9"
-          required
-          autocomplete="tel"
+          autocomplete="phone"
         />
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -59,7 +52,6 @@
           type="email"
           formControlName="email"
           placeholder="email"
-          required
           autocomplete="email"
         />
       </mat-form-field>
@@ -117,7 +109,7 @@
       >
     </div>
 
-    @if (workerFrom.controls.createAccount.value) {
+    @if (workerFrom.controls.account!.disabled) {
     <div class="worker-form-group">
       <mat-form-field appearance="outline">
         <mat-label>Login</mat-label>
@@ -126,7 +118,6 @@
           type="text"
           formControlName="username"
           placeholder="Login"
-          required
         />
       </mat-form-field>
     </div>
@@ -139,8 +130,6 @@
           type="password"
           formControlName="password"
           placeholder="Hasło"
-          minlength="8"
-          required
         />
       </mat-form-field>
 
@@ -151,8 +140,6 @@
           type="password"
           formControlName="password2"
           placeholder="Hasło"
-          minlength="8"
-          required
         />
       </mat-form-field>
     </div>

@@ -82,7 +82,7 @@ export class WorkersService {
     );
   }
 
-  addWorker(worker: WorkerRequest) {
+  addWorker(worker: Partial<WorkerRequest>) {
     return this.http.post<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
         console.log(err.error);
@@ -98,7 +98,7 @@ export class WorkersService {
     );
   }
 
-  updateWorker(worker: WorkerRequest) {
+  updateWorker(worker: Partial<WorkerRequest>) {
     return this.http.put<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 400) {

@@ -2,9 +2,11 @@ import { Component, OnInit, effect, input, signal } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   StatusChangeEvent,
+  Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
@@ -13,10 +15,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
+import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 
 @Component({
   selector: "app-worker-form",
@@ -28,7 +31,6 @@ import { WorkersService } from "../../services/workers.service";
     MatIconModule,
     MatSlideToggleModule,
     MatSelectModule,
-    FormsModule,
     ReactiveFormsModule,
     MatDividerModule,
     RouterLink,
@@ -40,22 +42,8 @@ export class WorkerFormComponent implements OnInit {
   update = input<boolean>(false);
   canSend = signal<boolean>(false);
   error = signal<string>("");
-
-  workerFrom = this.formBuilder.group({
-    firstName: new FormControl(""),
-    lastName: new FormControl(""),
-    phone: new FormControl(""),
-    email: new FormControl(""),
-    nickname: new FormControl(""),
-    color: new FormControl(""),
-    createAccount: new FormControl(false),
-    username: new FormControl(""),
-    password: new FormControl(""),
-    password2: new FormControl(""),
-    authority: new FormControl(""),
-    teamId: new FormControl(""),
-    groupId: new FormControl(""),
-  });
+  workerAccount: FormGroup<WorkerAccount>;
+  workerFrom: FormGroup<WorkerForm>;
 
   formTitle: string = "Dodaj Pracownika";
 
@@ -71,6 +59,48 @@ export class WorkerFormComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
   ) {
+    this.workerAccount = new FormGroup<WorkerAccount>({
+      username: new FormControl("", {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
+      password: new FormControl("", {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(8)],
+      }),
+      password2: new FormControl("", {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(8)],
+      }),
+      authority: new FormControl("", {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(8)],
+      }),
+    });
+
+    this.workerAccount.disable();
+
+    this.workerFrom = new FormGroup<WorkerForm>({
+      firstName: new FormControl("", [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      lastName: new FormControl("", [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      phone: new FormControl("", [
+        Validators.required,
+        Validators.minLength(9),
+      ]),
+      email: new FormControl("", [Validators.required, Validators.email]),
+      nickname: new FormControl("", [Validators.required]),
+      color: new FormControl("", [Validators.required]),
+      teamId: new FormControl("", [Validators.required]),
+      groupId: new FormControl("", [Validators.required]),
+      createAccount: new FormControl(false),
+      account: this.workerAccount,
+    });
     effect(() => console.log(`signal ${this.canSend()}`));
   }
 
@@ -88,20 +118,20 @@ export class WorkerFormComponent implements OnInit {
     });
   }
 
-  onSuccess(msg:string, action: string) {
-    this.snackBar.open(msg, action, { duration: 3000});
+  onSuccess(msg: string, action: string) {
+    this.snackBar.open(msg, action, { duration: 3000 });
   }
 
   handleSubmit() {
     this.error.set("");
-    console.log(this.workerFrom.getRawValue());
+    console.log(this.workerFrom.value);
 
     if (this.workerFrom.valid) {
       //FIXME: ....
       if (this.update()) {
         console.log("update");
         this.workerService
-          .updateWorker(this.workerFrom.getRawValue())
+          .updateWorker(this.workerFrom.value)
           .subscribe((response) => {
             console.log(response);
             // if (response.ok) {
@@ -111,11 +141,11 @@ export class WorkerFormComponent implements OnInit {
       } else {
         console.log("add");
         this.workerService
-          .addWorker(this.workerFrom.getRawValue())
+          .addWorker(this.workerFrom.value)
           .subscribe((response) => {
             console.log("res: ", response);
             if (response.ok) {
-              this.onSuccess("Dodano uzytkownika", "Powrót")
+              this.onSuccess("Dodano uzytkownika", "Powrót");
               // this.router.navigateByUrl("/workers");
             } else {
               this.error.set(response.error ?? "Cos Poszło nie tak..");
