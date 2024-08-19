@@ -1,5 +1,10 @@
-import { Component, EventEmitter, Output } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { Component, output } from "@angular/core";
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -20,29 +25,23 @@ import { MatInput } from "@angular/material/input";
   styleUrl: "./search.component.scss",
 })
 export class SearchComponent {
-  @Output()
-  searchRequest = new EventEmitter<string>();
-
-  @Output()
-  resetSearch = new EventEmitter();
+  searchRequest = output<string>();
+  resetSearch = output();
 
   searchForm: FormGroup = new FormGroup({
-    search: new FormControl(""),
+    search: new FormControl("", {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
   });
 
   onSearch() {
-    const queryField = this.searchForm.get("search");
-    
-    console.log("search ", queryField?.value);
-
-    if (queryField?.value && queryField.valid) {
-      this.searchRequest.emit(queryField.value);
-    }
+    if (this.searchForm.status !== "VALID") return;
+    this.searchRequest.emit(this.searchForm.controls["search"].value);
   }
 
   onReset() {
-    if (!this.searchForm.dirty)
-      return;
+    if (!this.searchForm.dirty) return;
 
     this.resetSearch.emit();
     this.searchForm.reset();

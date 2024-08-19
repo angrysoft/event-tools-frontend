@@ -3,23 +3,22 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   StatusChangeEvent,
   Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
+import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
-import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 
 @Component({
   selector: "app-worker-form",
@@ -29,7 +28,7 @@ import { WorkerAccount, WorkerForm } from "../../models/worker-form";
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatSlideToggleModule,
+    MatCheckboxModule,
     MatSelectModule,
     ReactiveFormsModule,
     MatDividerModule,
@@ -112,10 +111,18 @@ export class WorkerFormComponent implements OnInit {
     });
     this.workerFrom.events.subscribe((formEvents) => {
       if (formEvents instanceof StatusChangeEvent) {
-        console.log(formEvents);
+        // console.log(formEvents);
         this.canSend.set(formEvents.status === "VALID");
       }
     });
+  }
+
+  toggleAccount() {
+    if (this.workerFrom.controls.createAccount.value) {
+      this.workerAccount.enable();
+      this.workerAccount.updateValueAndValidity();
+    }
+    else this.workerAccount.disable();
   }
 
   onSuccess(msg: string, action: string) {
