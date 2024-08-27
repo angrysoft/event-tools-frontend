@@ -80,7 +80,7 @@ export class WorkerFormComponent implements OnInit {
       }),
       authority: new FormControl("", {
         nonNullable: true,
-        validators: [Validators.required, Validators.minLength(8)],
+        validators: [Validators.required],
       }),
     });
 
@@ -102,19 +102,21 @@ export class WorkerFormComponent implements OnInit {
       ]),
       email: new FormControl("", [Validators.required, Validators.email]),
       nickname: new FormControl(""),
-      color: new FormControl("", [Validators.required]),
+      color: new FormControl(null),
       teamId: new FormControl(null, [Validators.required]),
       pesel: new FormControl("", [
         Validators.minLength(12),
         Validators.maxLength(12),
+        Validators.pattern(/\d{12}/),
       ]), // custom pesel validation
       docNumber: new FormControl("", [
         Validators.minLength(9),
         Validators.maxLength(9),
+        Validators.pattern(/^[A-z]{3}\d{6}/)
       ]),
       groupId: new FormControl(null, [Validators.required]),
       createAccount: new FormControl(false),
-      account: this.workerAccount,
+      user: this.workerAccount,
     });
 
     effect(() => {
@@ -122,6 +124,8 @@ export class WorkerFormComponent implements OnInit {
         this.workerService.getWorker(this.workerId()).subscribe((response) => {
           if (response.ok) {
             this.workerFrom.patchValue(response.data);
+            this.workerFrom.controls.createAccount.setValue(response.data.hasAccount);
+            this.toggleAccount();
             this.update = true;
           }
         });
@@ -146,13 +150,11 @@ export class WorkerFormComponent implements OnInit {
     if (this.workerFrom.controls.createAccount.value) {
       this.workerAccount.enable();
       this.workerAccount.updateValueAndValidity();
-      //
-      this.canSend.set(true);
     } else this.workerAccount.disable();
   }
 
-  onSuccess(msg: string, action: string) {
-    this.snackBar.open(msg, action, { duration: 3000 });
+  showMsg(msg: string, action: string) {
+    this.snackBar.open(msg, action, { duration: 5000 });
   }
 
   handleSubmit() {
@@ -170,15 +172,17 @@ export class WorkerFormComponent implements OnInit {
   }
 
   updateWorker() {
-    console.log("update");
-    this.workerService
-      .updateWorker(this.workerFrom.value)
-      .subscribe((response) => {
-        console.log(response);
-        if (response.ok) {
-          this.router.navigateByUrl("/workers/" + this.workerId);
-        }
-      });
+    console.log("update", this.workerFrom.value);
+    // this.workerService
+    //   .updateWorker({ ...this.workerFrom.value, id: this.workerId() })
+    //   .subscribe((response) => {
+    //     console.log(response);
+    //     if (response.ok) {
+    //       this.router.navigateByUrl("/workers/" + this.workerId());
+    //     } else {
+    //       this.showMsg(response.data ?? "Coś poszło nie tak", "Zamknij");
+    //     }
+    //   });
   }
   addWorker() {
     console.log("add");

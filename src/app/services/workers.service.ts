@@ -98,11 +98,13 @@ export class WorkersService {
   }
 
   updateWorker(worker: Partial<Worker>) {
-    return this.http.put<RestResponse<void>>("/api/workers", worker).pipe(
+    return this.http.put<RestResponse<string>>("/api/workers", worker).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 400) {
-          console.log();
-          return new Observable<RestResponse<void>>();
+          return new Observable<RestResponse<string>>((observer) => {
+            observer.next(err.error);
+            observer.complete();
+          });
         }
         return throwError(
           () => new Error("Something bad happened; please try again later."),
