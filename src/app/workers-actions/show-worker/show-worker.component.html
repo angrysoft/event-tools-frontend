@@ -5,8 +5,8 @@
     </button>
     <h2>Dane Pracownika</h2>
     <div class="details-actions">
-      <button mat-flat-button >Edytuj</button>
-      <button mat-flat-button class="delete-button" (click)="removeWorker()">Usuń</button>
+      <button mat-flat-button routerLink="/workers/edit/{{ worker.id}}">Edytuj</button>
+      <button mat-flat-button color="warn" (click)="removeWorker()">Usuń</button>
     </div>
   </header>
   <mat-divider></mat-divider>

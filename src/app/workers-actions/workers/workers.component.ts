@@ -12,10 +12,10 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { SearchComponent } from "../../components/search/search.component";
-import { WorkersItem } from "../../models/worker-item";
 import { WorkersService } from "../../services/workers.service";
 import { WorkersDataSource } from "./workers-datasource";
 import { Router, RouterLink } from "@angular/router";
+import { WorkersItem } from "../../models/workers-response";
 
 @Component({
   selector: "app-workers",

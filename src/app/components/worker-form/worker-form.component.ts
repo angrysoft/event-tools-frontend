@@ -1,6 +1,12 @@
-import { Component, OnInit, effect, input, signal } from "@angular/core";
 import {
-  FormBuilder,
+  Component,
+  OnInit,
+  effect,
+  inject,
+  input,
+  signal,
+} from "@angular/core";
+import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -8,13 +14,13 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatCardModule } from "@angular/material/card";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
 import { WorkerAccount, WorkerForm } from "../../models/worker-form";
@@ -40,13 +46,13 @@ import { WorkersService } from "../../services/workers.service";
   styleUrl: "./worker-form.component.scss",
 })
 export class WorkerFormComponent implements OnInit {
-  update = input<boolean>(false);
+  update: boolean = false;
   canSend = signal<boolean>(false);
   error = signal<string>("");
   workerAccount: FormGroup<WorkerAccount>;
   workerFrom: FormGroup<WorkerForm>;
-
-  formTitle: string = "Dodaj Pracownika";
+  workerId = input<number>(-1);
+  formTitle = input<string>("Dodaj Pracownika");
 
   hints: WorkerHints = {
     teams: [],
@@ -54,12 +60,11 @@ export class WorkerFormComponent implements OnInit {
     authorities: [],
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private workerService: WorkersService,
-    private router: Router,
-    private snackBar: MatSnackBar,
-  ) {
+  readonly workerService: WorkersService = inject(WorkersService);
+  readonly router: Router = inject(Router);
+  readonly snackBar: MatSnackBar = inject(MatSnackBar);
+
+  constructor() {
     this.workerAccount = new FormGroup<WorkerAccount>({
       username: new FormControl("", {
         nonNullable: true,
@@ -98,14 +103,30 @@ export class WorkerFormComponent implements OnInit {
       email: new FormControl("", [Validators.required, Validators.email]),
       nickname: new FormControl(""),
       color: new FormControl("", [Validators.required]),
-      teamId: new FormControl("", [Validators.required]),
-      pesel: new FormControl("", [Validators.minLength(12), Validators.maxLength(12)]), // custom pesel validation
-      docNumber: new FormControl("", [Validators.minLength(9), Validators.maxLength(9)]),
-      groupId: new FormControl("", [Validators.required]),
+      teamId: new FormControl(null, [Validators.required]),
+      pesel: new FormControl("", [
+        Validators.minLength(12),
+        Validators.maxLength(12),
+      ]), // custom pesel validation
+      docNumber: new FormControl("", [
+        Validators.minLength(9),
+        Validators.maxLength(9),
+      ]),
+      groupId: new FormControl(null, [Validators.required]),
       createAccount: new FormControl(false),
       account: this.workerAccount,
     });
-    effect(() => console.log(`signal ${this.canSend()}`));
+
+    effect(() => {
+      if (this.workerId() >= 0) {
+        this.workerService.getWorker(this.workerId()).subscribe((response) => {
+          if (response.ok) {
+            this.workerFrom.patchValue(response.data);
+            this.update = true;
+          }
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -125,6 +146,8 @@ export class WorkerFormComponent implements OnInit {
     if (this.workerFrom.controls.createAccount.value) {
       this.workerAccount.enable();
       this.workerAccount.updateValueAndValidity();
+      //
+      this.canSend.set(true);
     } else this.workerAccount.disable();
   }
 
@@ -137,32 +160,38 @@ export class WorkerFormComponent implements OnInit {
     console.log(this.workerFrom.value);
 
     if (this.workerFrom.valid) {
-      //FIXME: ....
-      if (this.update()) {
-        console.log("update");
-        this.workerService
-          .updateWorker(this.workerFrom.value)
-          .subscribe((response) => {
-            console.log(response);
-            // if (response.ok) {
-
-            // }
-          });
+      if (this.update) {
+        this.updateWorker();
       } else {
-        console.log("add");
-        this.workerService
-          .addWorker(this.workerFrom.value)
-          .subscribe((response) => {
-            console.log("res: ", response);
-            if (response.ok) {
-              this.onSuccess("Dodano uzytkownika", "Powrót");
-              // this.router.navigateByUrl("/workers");
-            } else {
-              this.error.set(response.error ?? "Cos Poszło nie tak..");
-            }
-          });
+        this.addWorker();
       }
       console.log("Form is valid");
     }
+  }
+
+  updateWorker() {
+    console.log("update");
+    this.workerService
+      .updateWorker(this.workerFrom.value)
+      .subscribe((response) => {
+        console.log(response);
+        if (response.ok) {
+          this.router.navigateByUrl("/workers/" + this.workerId);
+        }
+      });
+  }
+  addWorker() {
+    console.log("add");
+    this.workerService
+      .addWorker(this.workerFrom.value)
+      .subscribe((response) => {
+        console.log("res: ", response);
+        if (response.ok) {
+          this.router.navigateByUrl("/workers/" + response.data);
+          // this.onSuccess("Dodano uzytkownika", "Powrót");
+        } else {
+          this.error.set(response.error ?? "Cos Poszło nie tak..");
+        }
+      });
   }
 }

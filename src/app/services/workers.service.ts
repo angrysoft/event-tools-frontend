@@ -1,17 +1,16 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Observable, catchError, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
+import { Worker } from "../models/worker";
 import { WorkerHints } from "../models/worker-hints";
-import { WorkerDetails } from "../models/worker-details";
 import { WorkersResponse } from "../models/workers-response";
-import { WorkerRequest } from "../models/worker-request";
 
 @Injectable({
   providedIn: "root",
 })
 export class WorkersService {
-  constructor(private http: HttpClient) {}
+  readonly http = inject(HttpClient);
 
   getWorkers(
     limit: number = 15,
@@ -34,15 +33,15 @@ export class WorkersService {
       );
   }
 
-  getWorker(id: number): Observable<RestResponse<WorkerDetails>> {
+  getWorker(id: number): Observable<RestResponse<Worker>> {
     return this.http
-      .get<RestResponse<WorkerDetails>>(`/api/workers/${id}`, {
+      .get<RestResponse<Worker>>(`/api/workers/${id}`, {
         withCredentials: true,
       })
       .pipe(
         catchError((err) => {
           if (err.status === 401) {
-            return new Observable<RestResponse<WorkerDetails>>();
+            return new Observable<RestResponse<Worker>>();
           }
           return throwError(
             () => new Error("Something bad happened; please try again later."),
@@ -82,7 +81,7 @@ export class WorkersService {
     );
   }
 
-  addWorker(worker: Partial<WorkerRequest>) {
+  addWorker(worker: Partial<Worker>) {
     return this.http.post<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
         console.log(err.error);
@@ -98,7 +97,7 @@ export class WorkersService {
     );
   }
 
-  updateWorker(worker: Partial<WorkerRequest>) {
+  updateWorker(worker: Partial<Worker>) {
     return this.http.put<RestResponse<void>>("/api/workers", worker).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 400) {
