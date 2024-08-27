@@ -30,7 +30,7 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns" (dblclick)="onDbClick(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onClick(row)"></tr>
     </table>
 
     <mat-paginator

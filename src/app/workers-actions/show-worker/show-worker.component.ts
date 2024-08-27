@@ -1,11 +1,18 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { WorkersService } from "../../services/workers.service";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { WorkerDetails } from "../../models/worker-details";
-import { MatCardModule } from "@angular/material/card";
+import { WorkersService } from "../../services/workers.service";
+import { ConfirmDialogComponent } from "../../components/confirm-dialog/confirm-dialog.component";
+
+export interface DialogData {
+  workerId: number;
+  remove: false;
+}
 
 @Component({
   selector: "app-show-worker",
@@ -16,6 +23,7 @@ import { MatCardModule } from "@angular/material/card";
     MatButtonModule,
     MatCardModule,
     RouterLink,
+    MatDialogModule,
   ],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",
@@ -32,19 +40,39 @@ export class ShowWorkerComponent {
     username: null,
     teamId: null,
     groupId: null,
-    hasAccount: false
+    hasAccount: false,
   };
 
-  constructor(
-    private workerService: WorkersService,
-    private route: ActivatedRoute,
-  ) {}
+  readonly confirm = inject(MatDialog);
+  readonly workerService: WorkersService = inject(WorkersService);
+  readonly router = inject(Router);
+  readonly route = inject(ActivatedRoute);
+
+  // constructor(
+  //   private route: ActivatedRoute,
+  // ) {}
 
   ngOnInit(): void {
     const workerId = Number(this.route.snapshot.paramMap.get("id"));
     this.workerService.getWorker(workerId).subscribe((response) => {
       if (response.ok) {
         this.worker = response.data;
+      }
+    });
+  }
+  removeWorker() {
+    const dialogRef = this.confirm.open(ConfirmDialogComponent, {
+      data: { msg: "Usnąć Pracownika jest to operacja nieodwracalna" },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.workerService.removeWorker(this.worker.id).subscribe( response => {
+          console.log(response);
+          if (response.ok) {
+            this.router.navigateByUrl("/workers");
+          }
+        })
       }
     });
   }

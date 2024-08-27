@@ -14,6 +14,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
+import { MatCardModule } from "@angular/material/card";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
 import { WorkerAccount, WorkerForm } from "../../models/worker-form";
@@ -32,6 +33,7 @@ import { WorkersService } from "../../services/workers.service";
     MatSelectModule,
     ReactiveFormsModule,
     MatDividerModule,
+    MatCardModule,
     RouterLink,
   ],
   templateUrl: "./worker-form.component.html",
@@ -84,6 +86,7 @@ export class WorkerFormComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
       ]),
+      secondName: new FormControl("", [Validators.minLength(3)]),
       lastName: new FormControl("", [
         Validators.required,
         Validators.minLength(3),
@@ -93,9 +96,11 @@ export class WorkerFormComponent implements OnInit {
         Validators.minLength(9),
       ]),
       email: new FormControl("", [Validators.required, Validators.email]),
-      nickname: new FormControl("", [Validators.required]),
+      nickname: new FormControl(""),
       color: new FormControl("", [Validators.required]),
       teamId: new FormControl("", [Validators.required]),
+      pesel: new FormControl("", [Validators.minLength(12), Validators.maxLength(12)]), // custom pesel validation
+      docNumber: new FormControl("", [Validators.minLength(9), Validators.maxLength(9)]),
       groupId: new FormControl("", [Validators.required]),
       createAccount: new FormControl(false),
       account: this.workerAccount,
@@ -111,7 +116,6 @@ export class WorkerFormComponent implements OnInit {
     });
     this.workerFrom.events.subscribe((formEvents) => {
       if (formEvents instanceof StatusChangeEvent) {
-        // console.log(formEvents);
         this.canSend.set(formEvents.status === "VALID");
       }
     });
@@ -121,8 +125,7 @@ export class WorkerFormComponent implements OnInit {
     if (this.workerFrom.controls.createAccount.value) {
       this.workerAccount.enable();
       this.workerAccount.updateValueAndValidity();
-    }
-    else this.workerAccount.disable();
+    } else this.workerAccount.disable();
   }
 
   onSuccess(msg: string, action: string) {

@@ -111,4 +111,19 @@ export class WorkersService {
       }),
     );
   }
+
+  removeWorker(workerId: number) {
+    return this.http
+      .delete<RestResponse<void>>(`/api/workers/${workerId}`)
+      .pipe(
+        catchError((err) => {
+          if (err.status === 401 || err.status === 400) {
+            return new Observable<RestResponse<void>>();
+          }
+          return throwError(
+            () => new Error("Something bad happened; please try again later."),
+          );
+        }),
+      );
+  }
 }

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -27,15 +33,16 @@ import { Router, RouterLink } from "@angular/router";
     RouterLink,
   ],
 })
-export class WorkersComponent implements AfterViewInit, OnInit {
+export class WorkersComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatTable) table!: MatTable<WorkersItem>;
   dataSource!: WorkersDataSource;
   displayedColumns = ["id", "firstName", "lastName"];
 
-  constructor(private workerService: WorkersService, private router: Router) {}
+  readonly router = inject(Router);
+  readonly workerService = inject(WorkersService);
 
-  ngOnInit(): void {
+  constructor() {
     this.dataSource = new WorkersDataSource(this.workerService);
   }
 
@@ -56,8 +63,7 @@ export class WorkersComponent implements AfterViewInit, OnInit {
     this.dataSource.loadData();
   }
 
-  onDbClick(row: any) {
-    console.log("clicked", row);
+  onClick(row: any) {
     this.router.navigateByUrl(`/workers/${row.id}`);
   }
 }

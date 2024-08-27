@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -31,9 +31,8 @@ export class LoginComponent implements OnInit {
 
   error: string | null | undefined;
 
-  sending= signal<boolean>(false);
-
-  constructor(private auth: AuthService, private router: Router) {}
+  sending = signal<boolean>(false);
+  readonly auth = inject(AuthService);
 
   ngOnInit() {
     this.auth.loginError.subscribe((err) => {

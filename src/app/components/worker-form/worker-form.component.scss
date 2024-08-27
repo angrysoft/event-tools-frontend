@@ -6,9 +6,11 @@
     
 }
 
-.worker-from {
+.worker-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     overflow: auto;
-    border: 1px solid red;
 }
 
 .worker-form-header {
@@ -17,6 +19,7 @@
     justify-content: space-between;
     gap: 1rem;
 }
+
 .worker-form-group {
     display: grid;
     gap: 1rem;

@@ -9,6 +9,7 @@ export type WorkerAccount = {
 
 export type WorkerForm = {
   firstName: FormControl<string | null>;
+  secondName: FormControl<string | null>;
   lastName: FormControl<string | null>;
   phone: FormControl<string | null>;
   email: FormControl<string | null>;
@@ -16,6 +17,8 @@ export type WorkerForm = {
   color: FormControl<string | null>;
   teamId: FormControl<string | null>;
   groupId: FormControl<string | null>;
+  pesel: FormControl<string | null>;
+  docNumber: FormControl<string | null>;
   createAccount: FormControl<boolean | null>;
   account?: FormGroup<WorkerAccount>;
 };
