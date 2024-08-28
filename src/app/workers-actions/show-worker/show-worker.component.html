@@ -35,9 +35,8 @@
         <span class="label">Ksywa:</span>
         <span>{{ worker.nickname ?? "" }} </span>
       </p>
-      <p style="background-color: aqua;">
-        <span class="label">Kolor Kierownika:</span>
-        <span>{{ worker.color ?? "wtf" }} </span>
+      <p>
+        <span class="label" [style.color]="worker.color">Kolor Kierownika </span>
       </p>
     </mat-card-content>
   </mat-card>
@@ -49,7 +48,7 @@
       <p>
         <span class="label">Telefon: </span>
         <span
-          ><a class="data" href="tel:{{ worker.phone }}">{{
+          ><a class="url" href="tel:{{ worker.phone }}">{{
             worker.phone
           }}</a></span
         >
@@ -57,7 +56,7 @@
       <p>
         <span class="label">Email:</span>
         <span
-          ><a class="data" target="_blank" href="mailto://{{ worker.email }}">{{
+          ><a class="url" target="_blank" href="mailto://{{ worker.email }}">{{
             worker.email
           }}</a></span
         >

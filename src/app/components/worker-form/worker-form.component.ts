@@ -112,7 +112,7 @@ export class WorkerFormComponent implements OnInit {
       docNumber: new FormControl("", [
         Validators.minLength(9),
         Validators.maxLength(9),
-        Validators.pattern(/^[A-z]{3}\d{6}/)
+        Validators.pattern(/^[A-z]{3}\d{6}/),
       ]),
       groupId: new FormControl(null, [Validators.required]),
       createAccount: new FormControl(false),
@@ -124,7 +124,9 @@ export class WorkerFormComponent implements OnInit {
         this.workerService.getWorker(this.workerId()).subscribe((response) => {
           if (response.ok) {
             this.workerFrom.patchValue(response.data);
-            this.workerFrom.controls.createAccount.setValue(response.data.hasAccount);
+            this.workerFrom.controls.createAccount.setValue(
+              response.data.hasAccount,
+            );
             this.toggleAccount();
             this.update = true;
           }
@@ -172,17 +174,16 @@ export class WorkerFormComponent implements OnInit {
   }
 
   updateWorker() {
-    console.log("update", this.workerFrom.value);
-    // this.workerService
-    //   .updateWorker({ ...this.workerFrom.value, id: this.workerId() })
-    //   .subscribe((response) => {
-    //     console.log(response);
-    //     if (response.ok) {
-    //       this.router.navigateByUrl("/workers/" + this.workerId());
-    //     } else {
-    //       this.showMsg(response.data ?? "Coś poszło nie tak", "Zamknij");
-    //     }
-    //   });
+    this.workerService
+      .updateWorker({ ...this.workerFrom.value, id: this.workerId() })
+      .subscribe((response) => {
+        console.log(response);
+        if (response.ok) {
+          this.router.navigateByUrl("/workers/" + this.workerId());
+        } else {
+          this.showMsg(response.data ?? "Coś poszło nie tak", "Zamknij");
+        }
+      });
   }
   addWorker() {
     console.log("add");

@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ShowWorkerComponent } from "./show-worker.component";
-import { MatIconModule } from "@angular/material/icon";
-import { MatDividerModule } from "@angular/material/divider";
 
 describe("ShowWorkerComponent", () => {
   let component: ShowWorkerComponent;

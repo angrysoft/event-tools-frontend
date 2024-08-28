@@ -15,6 +15,5 @@ export class EditWorkerComponent {
 
   constructor() {
     this.workerId.set(Number(this.route.snapshot.paramMap.get("id")));
-    console.log(this.workerId());
   }
 }

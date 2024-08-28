@@ -33,7 +33,7 @@ export const routes: Routes = [
       },
       {
         path: "workers/edit/:id",
-        title: "Dodaj Pracownika",
+        title: "Zmień Dane Pracownika",
         loadComponent: () =>
           import("./workers-actions/edit-worker/edit-worker.component").then(
             (m) => m.EditWorkerComponent,
@@ -41,7 +41,7 @@ export const routes: Routes = [
       },
       {
         path: "workers/:id",
-        title: "Dodaj Pracownika",
+        title: "Dane Pracownika",
         loadComponent: () =>
           import("./workers-actions/show-worker/show-worker.component").then(
             (m) => m.ShowWorkerComponent,
