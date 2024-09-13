@@ -22,6 +22,17 @@
         >Pracownicy</app-menu-action
       >
       <mat-divider />
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Ustawienia</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-menu-action href="/groups" icon="groups">Grupy</app-menu-action>
+          <app-menu-action href="/groups" icon="groups">Ekipa</app-menu-action>
+          <app-menu-action href="/groups" icon="money">Stawki</app-menu-action>
+          <app-menu-action href="/groups" icon="money">Dodatki</app-menu-action>
+        </mat-expansion-panel>
+      </mat-accordion>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

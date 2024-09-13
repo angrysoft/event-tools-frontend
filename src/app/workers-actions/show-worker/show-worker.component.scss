@@ -14,7 +14,9 @@
 
 .details-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+    padding: 1rem;
 }
 
 .delete-button {
@@ -33,7 +35,14 @@
 }
 
 .color-field {
-//    display: block;
-   width: 1rem;
-   height: 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.worker-data, .doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    margin-top: 1rem
 }

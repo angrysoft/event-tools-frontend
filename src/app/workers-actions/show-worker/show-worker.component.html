@@ -13,70 +13,156 @@
       </button>
     </div>
   </header>
-  <mat-divider></mat-divider>
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Dane Personalne</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        <span class="label">Imię: </span>
-        <span>{{ worker.firstName }} </span>
-        @if (worker.secondName) {
-        <span class="label">Drugie Imię: </span>
-        <span>{{ worker.secondName }} </span>
-        }
-      </p>
-      <p>
-        <span class="label">Nazwisko: </span>
-        <span>{{ worker.lastName }} </span>
-      </p>
-      <p>
-        <span class="label">Ksywa:</span>
-        <span>{{ worker.nickname ?? "" }} </span>
-      </p>
-      <p>
-        <span class="label" [style.color]="worker.color">Kolor Kierownika </span>
-      </p>
-    </mat-card-content>
-  </mat-card>
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Dane Kontaktowe</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        <span class="label">Telefon: </span>
-        <span
-          ><a class="url" href="tel:{{ worker.phone }}">{{
-            worker.phone
-          }}</a></span
-        >
-      </p>
-      <p>
-        <span class="label">Email:</span>
-        <span
-          ><a class="url" target="_blank" href="mailto://{{ worker.email }}">{{
-            worker.email
-          }}</a></span
-        >
-      </p>
-    </mat-card-content>
-  </mat-card>
 
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Dane Dokumentu</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        <span class="label">Pesel: </span>
-        <span>{{ worker.pesel }}</span>
-      </p>
-      <p>
-        <span class="label">Numer i Seria Dowodu: </span>
-        <span>{{ worker.docNumber }}</span>
-      </p>
-    </mat-card-content>
-  </mat-card>
+  <mat-tab-group>
+    <mat-tab label="Dane Personalne">
+      <div class="worker-data">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Dane Personalne</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              <span class="label">Imię: </span>
+              <span>{{ worker.firstName }} </span>
+              @if (worker.secondName) {
+              <span class="label">Drugie Imię: </span>
+              <span>{{ worker.secondName }} </span>
+              }
+            </p>
+            <p>
+              <span class="label">Nazwisko: </span>
+              <span>{{ worker.lastName }} </span>
+            </p>
+            <p>
+              <span class="label">Matka: </span>
+              <span>{{ worker.mother }} </span>
+            </p>
+            <p>
+              <span class="label">Ojciec: </span>
+              <span>{{ worker.father }} </span>
+            </p>
+            <p>
+              <span class="label">Ksywa:</span>
+              <span>{{ worker.nickname ?? "" }} </span>
+            </p>
+            <p>
+              <span class="label" [style.color]="worker.color"
+                >Kolor Kierownika
+              </span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Dane Kontaktowe</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              <span class="label">Telefon: </span>
+              <span
+                ><a class="url" href="tel:{{ worker.phone }}">{{
+                  worker.phone
+                }}</a></span
+              >
+            </p>
+            <p>
+              <span class="label">Telefon Alarmowy: </span>
+              <span
+                ><a class="url" href="tel:{{ worker.phoneIce }}">{{
+                  worker.phoneIce
+                }}</a></span
+              >
+            </p>
+            <p>
+              <span class="label">Email:</span>
+              <span
+                ><a
+                  class="url"
+                  target="_blank"
+                  href="mailto://{{ worker.email }}"
+                  >{{ worker.email }}</a
+                ></span
+              >
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Dane Dokumentu</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              <span class="label">Pesel: </span>
+              <span>{{ worker.pesel }}</span>
+            </p>
+            <p>
+              <span class="label">Numer i Seria Dowodu: </span>
+              <span>{{ worker.docNumber }}</span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <p>
+              <span class="label">Ekipa: </span>
+              <span>{{ worker.teamId }} </span>
+            </p>
+            <p>
+              <span class="label">Grupa: </span>
+              <span>{{ worker.groupId }} </span>
+            </p>
+            <p>
+              <span class="label">Konto w aplikacji: </span>
+              <span> @if (worker.hasAccount) { Tak } @else { Nie } </span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Dokumenty">
+      <div class="doc-list">
+        @for (doc of workerDocs; track doc.id) {
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ doc.name }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (doc.hasExpirationDate) {
+            <p>Wygasa : {{ doc.expire }}</p>
+            } @if (doc.fileName) {
+            <p>
+              Plik :
+              <a
+                mat-button
+                href="/api/worker/doc/file/{{ doc.fileName }}"
+                target="_blank"
+                >{{ doc.fileName }}</a
+              >
+            </p>
+            }
+          </mat-card-content>
+          <mat-card-footer class="example-card-footer">
+            <mat-card-actions>
+              <button mat-button routerLink="/workers/edit/{{ doc.id }}">
+                Edytuj
+              </button>
+              <button mat-button color="#ff000a">Usuń</button>
+            </mat-card-actions>
+          </mat-card-footer>
+        </mat-card>
+        } @empty {
+        <mat-card class="example-card" appearance="outlined">
+          <mat-card-content>
+            <h4>Brak Dokumentów</h4>
+          </mat-card-content>
+        </mat-card>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </section>

@@ -96,18 +96,21 @@ export class WorkerFormComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
       ]),
+      mother: new FormControl("", [Validators.minLength(3)]),
+      father: new FormControl("", [Validators.minLength(3)]),
       phone: new FormControl("", [
         Validators.required,
         Validators.minLength(9),
       ]),
+      phoneIce: new FormControl("", [Validators.minLength(9)]),
       email: new FormControl("", [Validators.required, Validators.email]),
       nickname: new FormControl(""),
       color: new FormControl(null),
       teamId: new FormControl(null, [Validators.required]),
       pesel: new FormControl("", [
-        Validators.minLength(12),
-        Validators.maxLength(12),
-        Validators.pattern(/\d{12}/),
+        Validators.minLength(11),
+        Validators.maxLength(11),
+        Validators.pattern(/\d{11}/),
       ]), // custom pesel validation
       docNumber: new FormControl("", [
         Validators.minLength(9),
@@ -115,7 +118,7 @@ export class WorkerFormComponent implements OnInit {
         Validators.pattern(/^[A-z]{3}\d{6}/),
       ]),
       groupId: new FormControl(null, [Validators.required]),
-      createAccount: new FormControl(false),
+      hasAccount: new FormControl(false),
       user: this.workerAccount,
     });
 
@@ -124,10 +127,10 @@ export class WorkerFormComponent implements OnInit {
         this.workerService.getWorker(this.workerId()).subscribe((response) => {
           if (response.ok) {
             this.workerFrom.patchValue(response.data);
-            this.workerFrom.controls.createAccount.setValue(
-              response.data.hasAccount,
-            );
-            this.toggleAccount();
+            // this.workerFrom.controls.hasAccount.setValue(
+            //   response.data.hasAccount,
+            // );
+            // this.toggleAccount();
             this.update = true;
           }
         });
@@ -149,7 +152,7 @@ export class WorkerFormComponent implements OnInit {
   }
 
   toggleAccount() {
-    if (this.workerFrom.controls.createAccount.value) {
+    if (this.workerFrom.controls.hasAccount.value) {
       this.workerAccount.enable();
       this.workerAccount.updateValueAndValidity();
     } else this.workerAccount.disable();

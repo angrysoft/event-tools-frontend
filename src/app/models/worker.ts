@@ -4,6 +4,9 @@ export interface Worker {
   lastName: string | null;
   secondName: string | null;
   phone: string | null;
+  phoneIce: string | null;
+  mother: string | null;
+  father: string | null;
   email: string | null;
   nickname: string | null;
   color: string | null;

@@ -5,6 +5,7 @@ import { RestResponse } from "../models/rest-response";
 import { Worker } from "../models/worker";
 import { WorkerHints } from "../models/worker-hints";
 import { WorkersResponse } from "../models/workers-response";
+import { WorkerDoc } from "../models/worker-doc";
 
 @Injectable({
   providedIn: "root",
@@ -120,6 +121,51 @@ export class WorkersService {
         catchError((err) => {
           if (err.status === 401 || err.status === 400) {
             return new Observable<RestResponse<void>>();
+          }
+          return throwError(
+            () => new Error("Something bad happened; please try again later."),
+          );
+        }),
+      );
+  }
+
+  getWorkersDocs(workerId: number): Observable<RestResponse<WorkerDoc[]>> {
+    return this.http
+      .get<RestResponse<WorkerDoc[]>>("/api/workers/doc?workerId=" + workerId, {
+        withCredentials: true,
+      })
+      .pipe(
+        catchError((err) => {
+          if (err.status === 401) {
+            return new Observable<RestResponse<WorkerDoc[]>>();
+          }
+          return throwError(
+            () => new Error("Something bad happened; please try again later."),
+          );
+        }),
+      );
+  }
+
+  private get<T>(
+    api: string,
+    params: { [key: string]: any },
+  ): Observable<RestResponse<T>> {
+    let reqParams = undefined;
+    if (params && Object.keys(params).length > 0) {
+      reqParams = new HttpParams();
+      for (const [k, v] of Object.entries(params)) {
+        reqParams.set(k, v);
+      }
+    }
+    return this.http
+      .get<RestResponse<T>>(api, {
+        withCredentials: true,
+        params: reqParams,
+      })
+      .pipe(
+        catchError((err) => {
+          if (err.status === 401) {
+            return new Observable<RestResponse<T>>();
           }
           return throwError(
             () => new Error("Something bad happened; please try again later."),

@@ -1,15 +1,12 @@
 <div class="login-wrapper">
   <mat-card class="login-card" appearance="outlined">
     <mat-card-header class="login-header">
-      <mat-card-title >Login</mat-card-title>
+        <mat-card-title>Login</mat-card-title>
+        <div class="logo"><img src="assets/logo_ves_sq.png" alt="Logo" /></div>
     </mat-card-header>
 
     <mat-card-content>
-      <form
-        [formGroup]="form"
-        (ngSubmit)="submit()"
-        class="login-form"
-      >
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
           <input
@@ -37,11 +34,7 @@
         </p>
         }
 
-        <button
-          type="submit"
-          mat-flat-button
-          disabled="{{ sending() }}"
-        >
+        <button type="submit" mat-flat-button disabled="{{ sending() }}">
           Login
         </button>
       </form>
