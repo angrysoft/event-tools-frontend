@@ -228,8 +228,8 @@
         <mat-form-field appearance="outline">
           <mat-label>Rodzaj kąta</mat-label>
           <mat-select formControlName="authority" name="team">
-            @for (authority of hints.authorities; track authority) {
-            <mat-option [value]="authority">{{ authority }}</mat-option>
+            @for (authority of hints.authorities; track authority.value) {
+            <mat-option [value]="authority.value">{{ authority.name }}</mat-option>
             }
           </mat-select>
         </mat-form-field>

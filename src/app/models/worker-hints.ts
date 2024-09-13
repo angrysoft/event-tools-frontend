@@ -14,8 +14,7 @@ interface Group {
   name: string;
 }
 
-// interface Authority {
-//   authority: string;
-// }
-
-type Authority = string;
+interface Authority {
+  name: string;
+  value: string;
+}
