@@ -4,7 +4,7 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle() }}</h2>
-    <button mat-flat-button type="submit" form="worker-form">Zapisz</button>
+    <button mat-flat-button type="submit" form="worker-form" [disabled]="! canSend()">Zapisz</button>
   </header>
   <mat-divider></mat-divider>
   <form
@@ -164,7 +164,7 @@
               type="text"
               formControlName="pesel"
               placeholder="Pesel"
-              maxlength="12"
+              maxlength="11"
             />
           </mat-form-field>
           <mat-form-field appearance="outline">
@@ -190,51 +190,57 @@
     </div>
 
     @if (workerFrom.controls.user?.status !== "DISABLED") {
-    <div [formGroup]="workerAccount">
-      <div class="worker-form-group">
-        <mat-form-field appearance="outline">
-          <mat-label>Login</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="username"
-            placeholder="Login"
-          />
-        </mat-form-field>
-      </div>
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div [formGroup]="workerAccount">
+          <div class="worker-form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Login</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="username"
+                placeholder="Login"
+              />
+            </mat-form-field>
+          </div>
 
-      <div class="worker-form-group">
-        <mat-form-field appearance="outline">
-          <mat-label>Hasło</mat-label>
-          <input
-            matInput
-            type="password"
-            formControlName="password"
-            placeholder="Hasło"
-          />
-        </mat-form-field>
+          <div class="worker-form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Hasło</mat-label>
+              <input
+                matInput
+                type="password"
+                formControlName="password"
+                placeholder="Hasło"
+              />
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Powtórz hasło</mat-label>
-          <input
-            matInput
-            type="password"
-            formControlName="password2"
-            placeholder="Hasło"
-          />
-        </mat-form-field>
-      </div>
-      <div class="worker-form-group">
-        <mat-form-field appearance="outline">
-          <mat-label>Rodzaj kąta</mat-label>
-          <mat-select formControlName="authority" name="team">
-            @for (authority of hints.authorities; track authority.value) {
-            <mat-option [value]="authority.value">{{ authority.name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
+            <mat-form-field appearance="outline">
+              <mat-label>Powtórz hasło</mat-label>
+              <input
+                matInput
+                type="password"
+                formControlName="password2"
+                placeholder="Hasło"
+              />
+            </mat-form-field>
+          </div>
+          <div class="worker-form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Rodzaj kąta</mat-label>
+              <mat-select formControlName="authority" name="team">
+                @for (authority of hints.authorities; track authority.value) {
+                <mat-option [value]="authority.value">{{
+                  authority.name
+                }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
     }
   </form>
 </section>

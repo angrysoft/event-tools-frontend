@@ -26,6 +26,7 @@ import { Router, RouterLink } from "@angular/router";
 import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
+import { passwordValidator } from "./passwordValidator";
 
 @Component({
   selector: "app-worker-form",
@@ -48,6 +49,7 @@ import { WorkersService } from "../../services/workers.service";
 export class WorkerFormComponent implements OnInit {
   update: boolean = false;
   canSend = signal<boolean>(false);
+  passwordCheck = signal<boolean>(false);
   error = signal<string>("");
   workerAccount: FormGroup<WorkerAccount>;
   workerFrom: FormGroup<WorkerForm>;
@@ -70,14 +72,8 @@ export class WorkerFormComponent implements OnInit {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(3)],
       }),
-      password: new FormControl("", {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(8)],
-      }),
-      password2: new FormControl("", {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(8)],
-      }),
+      password: new FormControl(),
+      password2: new FormControl(),
       authority: new FormControl("", {
         nonNullable: true,
         validators: [Validators.required],
@@ -127,13 +123,20 @@ export class WorkerFormComponent implements OnInit {
         this.workerService.getWorker(this.workerId()).subscribe((response) => {
           if (response.ok) {
             this.workerFrom.patchValue(response.data);
-            // this.workerFrom.controls.hasAccount.setValue(
-            //   response.data.hasAccount,
-            // );
-            // this.toggleAccount();
             this.update = true;
+            if (response.data.hasAccount) this.enableAccount(false);
           }
         });
+      }
+    });
+
+    effect(() => {
+      if (this.passwordCheck()) {
+        this.workerAccount.controls.password.setValidators(Validators.required);
+        this.workerAccount.controls.password2.setValidators(
+          Validators.required,
+        );
+        this.workerAccount.setValidators(passwordValidator);
       }
     });
   }
@@ -145,17 +148,29 @@ export class WorkerFormComponent implements OnInit {
       }
     });
     this.workerFrom.events.subscribe((formEvents) => {
+      console.log(formEvents);
       if (formEvents instanceof StatusChangeEvent) {
-        this.canSend.set(formEvents.status === "VALID");
+        this.canSend.set(
+          formEvents.status === "VALID" && this.workerFrom.dirty,
+        );
       }
     });
   }
 
   toggleAccount() {
-    if (this.workerFrom.controls.hasAccount.value) {
-      this.workerAccount.enable();
-      this.workerAccount.updateValueAndValidity();
-    } else this.workerAccount.disable();
+    if (this.workerFrom.controls.hasAccount.value) this.enableAccount(true);
+    else this.disableAccount();
+  }
+
+  enableAccount(checkPasswords: boolean) {
+    this.workerAccount.enable();
+    this.passwordCheck.set(checkPasswords);
+    this.workerAccount.updateValueAndValidity();
+  }
+
+  disableAccount() {
+    this.workerAccount.disable();
+    this.workerAccount.markAsPristine();
   }
 
   showMsg(msg: string, action: string) {
@@ -188,6 +203,7 @@ export class WorkerFormComponent implements OnInit {
         }
       });
   }
+
   addWorker() {
     console.log("add");
     this.workerService
