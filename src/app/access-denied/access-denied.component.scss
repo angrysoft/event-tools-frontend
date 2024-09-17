@@ -1,0 +1,12 @@
+.access-denied {
+    display: grid;
+    width: 100dvw;
+    height: 100dvh;
+    place-content: center;
+}
+
+.access-denied > p {
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid white;
+}

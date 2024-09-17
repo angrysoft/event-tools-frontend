@@ -17,8 +17,8 @@ import { MenuActionComponent } from '../menu-action/menu-action.component';
 
 @Component({
   selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.scss',
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.scss',
   standalone: true,
   imports: [
     MatExpansionModule,
@@ -33,9 +33,10 @@ import { MenuActionComponent } from '../menu-action/menu-action.component';
     MenuActionComponent,
   ]
 })
-export class MainComponent {
+export class AdminComponent {
   private breakpointObserver = inject(BreakpointObserver);
   private auth = inject(AuthService);
+  private baseActionUrl = "/admin";
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

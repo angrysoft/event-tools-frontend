@@ -64,6 +64,6 @@ export class WorkersComponent implements AfterViewInit {
   }
 
   onClick(row: any) {
-    this.router.navigateByUrl(`/workers/${row.id}`);
+    this.router.navigateByUrl(`/admin/workers/${row.id}`);
   }
 }

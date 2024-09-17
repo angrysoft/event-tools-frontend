@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { authGuard } from "./auth.guard";
+import { authGuard, isAdmin } from "./auth.guard";
 
 export const routes: Routes = [
   {
@@ -9,10 +9,10 @@ export const routes: Routes = [
     title: "Login",
   },
   {
-    path: "",
-    canActivate: [authGuard],
+    path: "admin",
+    canActivate: [isAdmin],
     loadComponent: () =>
-      import("./main/main.component").then((m) => m.MainComponent),
+      import("./admin/admin.component").then((m) => m.AdminComponent),
     title: "Event Tool",
     children: [
       {
@@ -48,6 +48,13 @@ export const routes: Routes = [
           ),
       },
     ],
+  },
+  {
+    path: "accessDenied",
+    title: "Zabroniono",
+    loadComponent: () => import("./access-denied/access-denied.component").then(
+      (m) => m.AccessDeniedComponent,
+    ),
   },
   {
     path: "",

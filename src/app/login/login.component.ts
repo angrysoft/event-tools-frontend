@@ -5,7 +5,6 @@ import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 
 @Component({

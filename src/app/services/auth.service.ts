@@ -18,13 +18,24 @@ export class AuthService {
   loginError = new EventEmitter<string>();
 
   constructor(private http: HttpClient, private router: Router) {
-
     this.authenticated.subscribe((auth) => {
+      let url: string = "/login";
+
       if (auth) {
-        this.router.navigateByUrl("/");
-      } else {
-        this.router.navigateByUrl("/login");
+        switch (this.user?.authority) {
+          case "ROLE_ADMIN":
+          case "ROLE_COORDINATOR":
+            url = "/admin";
+            break;
+          case "ROLE_WORKER":
+            url = "/worker";
+            break;
+          default:
+            url = "/login";
+            break;
+        }
       }
+      this.router.navigateByUrl(url);
     });
   }
 
@@ -32,6 +43,16 @@ export class AuthService {
     if (this.user) {
       return true;
     }
+    return false;
+  }
+
+  isAdmin(): boolean {
+    if (
+      this.user &&
+      (this.user.authority === "ROLE_ADMIN" ||
+        this.user.authority === "ROLE_COORDINATOR")
+    )
+      return true;
     return false;
   }
 
