@@ -55,7 +55,7 @@ export class WorkersService {
   }
 
   updateWorker(worker: Partial<Worker>) {
-    return this.http.put<RestResponse<string>>("/api/workers", worker).pipe(
+    return this.http.put<RestResponse<string>>(this.apiWorkers, worker).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 400) {
           return new Observable<RestResponse<string>>((observer) => {

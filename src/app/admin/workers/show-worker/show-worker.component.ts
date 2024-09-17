@@ -7,10 +7,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ConfirmDialogComponent } from "../../components/confirm-dialog/confirm-dialog.component";
-import { Worker } from "../../models/worker";
-import { WorkerDoc } from "../../models/worker-doc";
-import { WorkersService } from "../../services/workers.service";
+import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { Worker } from "../../../models/worker";
+import { WorkerDoc } from "../../../models/worker-doc";
+import { WorkersService } from "../../../services/workers.service";
 
 export interface DialogData {
   workerId: number;
@@ -96,7 +96,7 @@ export class ShowWorkerComponent {
     });
   }
 
-  getFile(id: number| null) {
+  getFile(id: number | null) {
     console.log("get file " + id);
   }
 

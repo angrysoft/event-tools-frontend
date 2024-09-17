@@ -23,9 +23,9 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
-import { WorkerAccount, WorkerForm } from "../../models/worker-form";
-import { WorkerHints } from "../../models/worker-hints";
-import { WorkersService } from "../../services/workers.service";
+import { WorkerAccount, WorkerForm } from "../../../models/worker-form";
+import { WorkerHints } from "../../../models/worker-hints";
+import { WorkersService } from "../../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
 
 @Component({
@@ -48,11 +48,13 @@ import { passwordValidator } from "./passwordValidator";
 })
 export class WorkerFormComponent implements OnInit {
   update: boolean = false;
+  hasAccount: boolean = false;
+  backTo: string = "/admin/workers";
   canSend = signal<boolean>(false);
   passwordCheck = signal<boolean>(false);
   error = signal<string>("");
   workerAccount: FormGroup<WorkerAccount>;
-  workerFrom: FormGroup<WorkerForm>;
+  workerForm: FormGroup<WorkerForm>;
   workerId = input<number>(-1);
   formTitle = input<string>("Dodaj Pracownika");
 
@@ -67,22 +69,27 @@ export class WorkerFormComponent implements OnInit {
   readonly snackBar: MatSnackBar = inject(MatSnackBar);
 
   constructor() {
-    this.workerAccount = new FormGroup<WorkerAccount>({
-      username: new FormControl("", {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(3)],
-      }),
-      password: new FormControl(),
-      password2: new FormControl(),
-      authority: new FormControl("", {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-    });
+    this.workerAccount = new FormGroup<WorkerAccount>(
+      {
+        username: new FormControl("", {
+          nonNullable: true,
+          validators: [Validators.required, Validators.minLength(3)],
+        }),
+        password: new FormControl(),
+        password2: new FormControl(),
+        authority: new FormControl("", {
+          nonNullable: true,
+          validators: [Validators.required],
+        }),
+      },
+      {
+        validators: [passwordValidator],
+      },
+    );
 
     this.workerAccount.disable();
 
-    this.workerFrom = new FormGroup<WorkerForm>({
+    this.workerForm = new FormGroup<WorkerForm>({
       firstName: new FormControl("", [
         Validators.required,
         Validators.minLength(3),
@@ -122,9 +129,11 @@ export class WorkerFormComponent implements OnInit {
       if (this.workerId() >= 0) {
         this.workerService.getWorker(this.workerId()).subscribe((response) => {
           if (response.ok) {
-            this.workerFrom.patchValue(response.data);
+            this.workerForm.patchValue(response.data);
             this.update = true;
-            if (response.data.hasAccount) this.enableAccount(false);
+            this.hasAccount = response.data.hasAccount ?? false;
+            this.backTo = `/admin/workers/${response.data.id}`;
+            // if (response.data.hasAccount) this.enableAccount(false);
           }
         });
       }
@@ -147,18 +156,17 @@ export class WorkerFormComponent implements OnInit {
         this.hints = response.data;
       }
     });
-    this.workerFrom.events.subscribe((formEvents) => {
-      console.log(formEvents);
+    this.workerForm.events.subscribe((formEvents) => {
       if (formEvents instanceof StatusChangeEvent) {
         this.canSend.set(
-          formEvents.status === "VALID" && this.workerFrom.dirty,
+          formEvents.status === "VALID" && this.workerForm.dirty,
         );
       }
     });
   }
 
   toggleAccount() {
-    if (this.workerFrom.controls.hasAccount.value) this.enableAccount(true);
+    if (this.workerForm.controls.hasAccount.value) this.enableAccount(true);
     else this.disableAccount();
   }
 
@@ -171,6 +179,13 @@ export class WorkerFormComponent implements OnInit {
   disableAccount() {
     this.workerAccount.disable();
     this.workerAccount.markAsPristine();
+    this.workerAccount.updateValueAndValidity();
+  }
+
+  setAccountToDelete() {
+    this.workerForm.controls.hasAccount.setValue(false);
+    this.workerForm.markAsDirty();
+    this.workerForm.updateValueAndValidity();
   }
 
   showMsg(msg: string, action: string) {
@@ -179,25 +194,23 @@ export class WorkerFormComponent implements OnInit {
 
   handleSubmit() {
     this.error.set("");
-    console.log(this.workerFrom.value);
+    console.debug(this.workerForm.value);
 
-    if (this.workerFrom.valid) {
+    if (this.workerForm.valid) {
       if (this.update) {
         this.updateWorker();
       } else {
         this.addWorker();
       }
-      console.log("Form is valid");
     }
   }
 
   updateWorker() {
     this.workerService
-      .updateWorker({ ...this.workerFrom.value, id: this.workerId() })
+      .updateWorker({ ...this.workerForm.value, id: this.workerId() })
       .subscribe((response) => {
-        console.log(response);
         if (response.ok) {
-          this.router.navigateByUrl("/workers/" + this.workerId());
+          this.router.navigateByUrl("/admin/workers/" + this.workerId());
         } else {
           this.showMsg(response.data ?? "Coś poszło nie tak", "Zamknij");
         }
@@ -205,11 +218,9 @@ export class WorkerFormComponent implements OnInit {
   }
 
   addWorker() {
-    console.log("add");
     this.workerService
-      .addWorker(this.workerFrom.value)
+      .addWorker(this.workerForm.value)
       .subscribe((response) => {
-        console.log("res: ", response);
         if (response.ok) {
           this.router.navigateByUrl("/workers/" + response.data);
           // this.onSuccess("Dodano uzytkownika", "Powrót");

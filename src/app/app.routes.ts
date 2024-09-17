@@ -13,13 +13,13 @@ export const routes: Routes = [
     canActivate: [isAdmin],
     loadComponent: () =>
       import("./admin/admin.component").then((m) => m.AdminComponent),
-    title: "Event Tool",
+    title: "Event Tools",
     children: [
       {
         path: "workers",
         title: "Pracownicy",
         loadComponent: () =>
-          import("./workers-actions/workers/workers.component").then(
+          import("./admin/workers/workers/workers.component").then(
             (m) => m.WorkersComponent,
           ),
       },
@@ -27,7 +27,7 @@ export const routes: Routes = [
         path: "workers/add",
         title: "Dodaj Pracownika",
         loadComponent: () =>
-          import("./workers-actions/add-worker/add-worker.component").then(
+          import("./admin/workers/add-worker/add-worker.component").then(
             (m) => m.AddWorkerComponent,
           ),
       },
@@ -35,7 +35,7 @@ export const routes: Routes = [
         path: "workers/edit/:id",
         title: "Zmień Dane Pracownika",
         loadComponent: () =>
-          import("./workers-actions/edit-worker/edit-worker.component").then(
+          import("./admin/workers/edit-worker/edit-worker.component").then(
             (m) => m.EditWorkerComponent,
           ),
       },
@@ -43,18 +43,42 @@ export const routes: Routes = [
         path: "workers/:id",
         title: "Dane Pracownika",
         loadComponent: () =>
-          import("./workers-actions/show-worker/show-worker.component").then(
+          import("./admin/workers/show-worker/show-worker.component").then(
             (m) => m.ShowWorkerComponent,
+          ),
+      },
+      {
+        path: "groups",
+        title: "Grupy",
+        loadComponent: () =>
+          import("./admin/settings/groups/groups.component").then(
+            (m) => m.GroupsComponent,
+          ),
+      },
+      {
+        path: "teams",
+        title: "Ekipa",
+        loadComponent: () =>
+          import("./admin/settings/teams/teams.component").then(
+            (m) => m.TeamsComponent,
           ),
       },
     ],
   },
   {
+    path: "worker",
+    canActivate: [authGuard],
+    title: "Event Tools",
+    loadComponent: () =>
+      import("./worker/worker.component").then((m) => m.WorkerComponent),
+  },
+  {
     path: "accessDenied",
     title: "Zabroniono",
-    loadComponent: () => import("./access-denied/access-denied.component").then(
-      (m) => m.AccessDeniedComponent,
-    ),
+    loadComponent: () =>
+      import("./access-denied/access-denied.component").then(
+        (m) => m.AccessDeniedComponent,
+      ),
   },
   {
     path: "",

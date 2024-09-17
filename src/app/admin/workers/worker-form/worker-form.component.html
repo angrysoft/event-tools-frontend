@@ -1,14 +1,21 @@
 <section class="worker-form-section">
   <header class="worker-form-header">
-    <button mat-icon-button routerLink="/admin/workers">
+    <button mat-icon-button routerLink="{{backTo}}">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle() }}</h2>
-    <button mat-flat-button type="submit" form="worker-form" [disabled]="! canSend()">Zapisz</button>
+    <button
+      mat-flat-button
+      type="submit"
+      form="worker-form"
+      [disabled]="!canSend()"
+    >
+      Zapisz
+    </button>
   </header>
   <mat-divider></mat-divider>
   <form
-    [formGroup]="workerFrom"
+    [formGroup]="workerForm"
     class="worker-form"
     id="worker-form"
     (submit)="handleSubmit()"
@@ -183,13 +190,25 @@
 
     <mat-divider />
 
+    @if (update && hasAccount) {
+    <button
+      mat-fab
+      extended
+      type="button"
+      (click)="setAccountToDelete()"
+      [disabled]="!workerForm.controls.hasAccount.value"
+    >
+      <mat-icon>delete</mat-icon>
+      Usuń konto
+    </button>
+    } @else {
     <div class="worker-form-group">
       <mat-checkbox formControlName="hasAccount" (change)="toggleAccount()"
         >Konto w aplikacji</mat-checkbox
       >
     </div>
 
-    @if (workerFrom.controls.user?.status !== "DISABLED") {
+    } @if (workerForm.controls.user?.status !== "DISABLED") {
     <mat-card appearance="outlined">
       <mat-card-content>
         <div [formGroup]="workerAccount">

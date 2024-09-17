@@ -11,11 +11,12 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { SearchComponent } from "../../components/search/search.component";
-import { WorkersService } from "../../services/workers.service";
+import { SearchComponent } from "../../../components/search/search.component";
+import { WorkersService } from "../../../services/workers.service";
 import { WorkersDataSource } from "./workers-datasource";
 import { Router, RouterLink } from "@angular/router";
-import { WorkersItem } from "../../models/workers-response";
+import { WorkersItem } from "../../../models/workers-response";
+import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 
 @Component({
   selector: "app-workers",
@@ -31,6 +32,7 @@ import { WorkersItem } from "../../models/workers-response";
     MatFormFieldModule,
     SearchComponent,
     RouterLink,
+    AddButtonComponent,
   ],
 })
 export class WorkersComponent implements AfterViewInit {

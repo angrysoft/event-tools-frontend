@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { WorkerFormComponent } from "../../components/worker-form/worker-form.component";
+import { WorkerFormComponent } from "../worker-form/worker-form.component";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
