@@ -1,7 +1,10 @@
-export interface Worker {
+interface WorkerBase {
   id: number | null;
   firstName: string | null;
   lastName: string | null;
+}
+
+interface Worker extends WorkerBase {
   secondName: string | null;
   phone: string | null;
   phoneIce: string | null;
@@ -20,3 +23,11 @@ export interface Worker {
   password2?: string;
   authority?: string;
 }
+
+interface WorkersItem {
+  firstName: string;
+  lastName: string;
+  id: number;
+}
+
+export { Worker, WorkerBase, WorkersItem };

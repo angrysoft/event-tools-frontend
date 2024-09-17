@@ -2,10 +2,10 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable, catchError, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
-import { Worker } from "../models/worker";
+import { Worker, WorkersItem } from "../models/worker";
 import { WorkerHints } from "../models/worker-hints";
-import { WorkersResponse } from "../models/workers-response";
 import { WorkerDoc } from "../models/worker-doc";
+import { DataListResponse } from "../models/ldata-list-response";
 
 @Injectable({
   providedIn: "root",
@@ -17,8 +17,8 @@ export class WorkersService {
   getWorkers(
     limit: number = 15,
     offset: number = 0,
-  ): Observable<RestResponse<WorkersResponse>> {
-    return this.get<WorkersResponse>(this.apiWorkers, {
+  ): Observable<RestResponse<DataListResponse<WorkersItem>>> {
+    return this.get<DataListResponse<WorkersItem>>(this.apiWorkers, {
       limit: limit,
       offset: offset,
     });
@@ -29,7 +29,7 @@ export class WorkersService {
   }
 
   searchWorker(query: string) {
-    return this.get<WorkersResponse>(`${this.apiWorkers}/search`, {
+    return this.get<DataListResponse<WorkersItem>>(`${this.apiWorkers}/search`, {
       query: query,
     });
   }

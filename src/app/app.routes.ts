@@ -48,7 +48,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: "groups",
+        path: "settings/groups",
         title: "Grupy",
         loadComponent: () =>
           import("./admin/settings/groups/groups.component").then(
@@ -56,7 +56,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: "teams",
+        path: "settings/teams",
         title: "Ekipa",
         loadComponent: () =>
           import("./admin/settings/teams/teams.component").then(

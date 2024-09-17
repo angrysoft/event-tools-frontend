@@ -15,8 +15,8 @@ import { SearchComponent } from "../../../components/search/search.component";
 import { WorkersService } from "../../../services/workers.service";
 import { WorkersDataSource } from "./workers-datasource";
 import { Router, RouterLink } from "@angular/router";
-import { WorkersItem } from "../../../models/workers-response";
 import { AddButtonComponent } from "../../../components/add-button/add-button.component";
+import { WorkersItem } from "../../../models/worker";
 
 @Component({
   selector: "app-workers",

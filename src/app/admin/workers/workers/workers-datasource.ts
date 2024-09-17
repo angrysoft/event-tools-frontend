@@ -1,10 +1,11 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
-import { WorkersService } from "../../../services/workers.service";
-import { signal } from "@angular/core";
+import { DataListResponse } from "../../../models/ldata-list-response";
 import { RestResponse } from "../../../models/rest-response";
-import { WorkersItem, WorkersResponse } from "../../../models/workers-response";
+import { WorkersService } from "../../../services/workers.service";
+import { WorkersItem } from "../../../models/worker";
 
 export class WorkersDataSource extends DataSource<WorkersItem> {
   private workersSubject = new BehaviorSubject<WorkersItem[]>([]);
@@ -32,7 +33,7 @@ export class WorkersDataSource extends DataSource<WorkersItem> {
     const offset =
       (this.paginator?.pageIndex ?? 0) * (this.paginator?.pageSize ?? 15);
 
-    let action: Observable<RestResponse<WorkersResponse>>;
+    let action: Observable<RestResponse<DataListResponse<WorkersItem>>>;
 
     if (this.query.length > 2) {
       action = this.workerService.searchWorker(this.query);
