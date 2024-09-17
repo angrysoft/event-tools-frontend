@@ -12,78 +12,34 @@ import { WorkerDoc } from "../models/worker-doc";
 })
 export class WorkersService {
   readonly http = inject(HttpClient);
+  private apiWorkers = "/api/admin/workers";
 
   getWorkers(
     limit: number = 15,
     offset: number = 0,
   ): Observable<RestResponse<WorkersResponse>> {
-    return this.http
-      .get<RestResponse<WorkersResponse>>("/api/workers", {
-        withCredentials: true,
-        params: new HttpParams().set("limit", limit).set("offset", offset),
-      })
-      .pipe(
-        catchError((err) => {
-          if (err.status === 401) {
-            return new Observable<RestResponse<WorkersResponse>>();
-          }
-          return throwError(
-            () => new Error("Something bad happened; please try again later."),
-          );
-        }),
-      );
+    return this.get<WorkersResponse>(this.apiWorkers, {
+      limit: limit,
+      offset: offset,
+    });
   }
 
   getWorker(id: number): Observable<RestResponse<Worker>> {
-    return this.http
-      .get<RestResponse<Worker>>(`/api/workers/${id}`, {
-        withCredentials: true,
-      })
-      .pipe(
-        catchError((err) => {
-          if (err.status === 401) {
-            return new Observable<RestResponse<Worker>>();
-          }
-          return throwError(
-            () => new Error("Something bad happened; please try again later."),
-          );
-        }),
-      );
+    return this.get<Worker>(`${this.apiWorkers}/${id}`);
   }
 
   searchWorker(query: string) {
-    return this.http
-      .get<RestResponse<WorkersResponse>>("/api/workers/search", {
-        withCredentials: true,
-        params: new HttpParams().set("query", query),
-      })
-      .pipe(
-        catchError((err) => {
-          if (err.status === 401) {
-            return new Observable<RestResponse<WorkersResponse>>();
-          }
-          return throwError(
-            () => new Error("Something bad happened; please try again later."),
-          );
-        }),
-      );
+    return this.get<WorkersResponse>(`${this.apiWorkers}/search`, {
+      query: query,
+    });
   }
 
   getWorkersHints(): Observable<RestResponse<WorkerHints>> {
-    return this.http.get<RestResponse<WorkerHints>>("/api/workers/hints").pipe(
-      catchError((err) => {
-        if (err.status === 401) {
-          return new Observable<RestResponse<WorkerHints>>();
-        }
-        return throwError(
-          () => new Error("Something bad happened; please try again later."),
-        );
-      }),
-    );
+    return this.get<WorkerHints>(`${this.apiWorkers}/hints`);
   }
 
   addWorker(worker: Partial<Worker>) {
-    return this.http.post<RestResponse<void>>("/api/workers", worker).pipe(
+    return this.http.post<RestResponse<void>>(this.apiWorkers, worker).pipe(
       catchError((err) => {
         console.log(err.error);
         if (err.status === 401) {
@@ -116,7 +72,7 @@ export class WorkersService {
 
   removeWorker(workerId: number) {
     return this.http
-      .delete<RestResponse<void>>(`/api/workers/${workerId}`)
+      .delete<RestResponse<void>>(`${this.apiWorkers}/${workerId}`)
       .pipe(
         catchError((err) => {
           if (err.status === 401 || err.status === 400) {
@@ -130,32 +86,16 @@ export class WorkersService {
   }
 
   getWorkersDocs(workerId: number): Observable<RestResponse<WorkerDoc[]>> {
-    return this.http
-      .get<RestResponse<WorkerDoc[]>>("/api/workers/doc?workerId=" + workerId, {
-        withCredentials: true,
-      })
-      .pipe(
-        catchError((err) => {
-          if (err.status === 401) {
-            return new Observable<RestResponse<WorkerDoc[]>>();
-          }
-          return throwError(
-            () => new Error("Something bad happened; please try again later."),
-          );
-        }),
-      );
+    return this.get<WorkerDoc[]>(`${this.apiWorkers}/doc?workerId=${workerId}`);
   }
 
   private get<T>(
     api: string,
-    params: { [key: string]: any },
+    params: { [key: string]: string | number | boolean } | null = null,
   ): Observable<RestResponse<T>> {
-    let reqParams = undefined;
+    let reqParams: HttpParams | undefined = undefined;
     if (params && Object.keys(params).length > 0) {
-      reqParams = new HttpParams();
-      for (const [k, v] of Object.entries(params)) {
-        reqParams.set(k, v);
-      }
+      reqParams = new HttpParams({ fromObject: params });
     }
     return this.http
       .get<RestResponse<T>>(api, {
