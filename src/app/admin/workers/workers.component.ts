@@ -1,22 +1,16 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
+import { AfterViewInit, Component, inject, ViewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { SearchComponent } from "../../../components/search/search.component";
-import { WorkersService } from "../../../services/workers.service";
-import { WorkersDataSource } from "./workers-datasource";
 import { Router, RouterLink } from "@angular/router";
-import { AddButtonComponent } from "../../../components/add-button/add-button.component";
-import { WorkersItem } from "../../../models/worker";
+import { AddButtonComponent } from "../../components/add-button/add-button.component";
+import { SearchComponent } from "../../components/search/search.component";
+import { WorkersService } from "../services/workers.service";
+import { WorkersItem } from "../models/worker";
+import { WorkersDataSource } from "./workers-datasource";
 
 @Component({
   selector: "app-workers",

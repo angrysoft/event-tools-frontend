@@ -139,7 +139,7 @@
               Plik :
               <a
                 mat-button
-                href="/api/worker/doc/file/{{ doc.fileName }}"
+                href="/api/admin/worker/doc/file/{{ doc.fileName }}"
                 target="_blank"
                 >{{ doc.fileName }}</a
               >
@@ -148,7 +148,7 @@
           </mat-card-content>
           <mat-card-footer class="example-card-footer">
             <mat-card-actions>
-              <button mat-button routerLink="/workers/edit/{{ doc.id }}">
+              <button mat-button routerLink="/admin/workers/edit/{{ doc.id }}">
                 Edytuj
               </button>
               <button mat-button color="#ff000a">Usuń</button>

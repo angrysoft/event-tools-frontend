@@ -23,9 +23,9 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router, RouterLink } from "@angular/router";
-import { WorkerAccount, WorkerForm } from "../../../models/worker-form";
-import { WorkerHints } from "../../../models/worker-hints";
-import { WorkersService } from "../../../services/workers.service";
+import { WorkerAccount, WorkerForm } from "../../models/worker-form";
+import { WorkerHints } from "../../models/worker-hints";
+import { WorkersService } from "../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
 
 @Component({
@@ -133,7 +133,6 @@ export class WorkerFormComponent implements OnInit {
             this.update = true;
             this.hasAccount = response.data.hasAccount ?? false;
             this.backTo = `/admin/workers/${response.data.id}`;
-            // if (response.data.hasAccount) this.enableAccount(false);
           }
         });
       }
@@ -222,10 +221,9 @@ export class WorkerFormComponent implements OnInit {
       .addWorker(this.workerForm.value)
       .subscribe((response) => {
         if (response.ok) {
-          this.router.navigateByUrl("/workers/" + response.data);
-          // this.onSuccess("Dodano uzytkownika", "Powrót");
+          this.router.navigateByUrl("/admin/workers/" + response.data);
         } else {
-          this.error.set(response.error ?? "Cos Poszło nie tak..");
+          this.error.set(response.error ?? "Cos Poszło nie tak...");
         }
       });
   }

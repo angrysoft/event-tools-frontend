@@ -1,0 +1,19 @@
+<section class="form-section">
+  <header class="form-header">
+    <button mat-icon-button routerLink="{{ backTo() }}">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>{{ formTitle() }}</h2>
+    <button
+      mat-flat-button
+      type="submit"
+      [attr.form]="formIdName()"
+      [disabled]="!canSend()"
+    >
+      Zapisz
+    </button>
+  </header>
+  <mat-divider></mat-divider>
+  <ng-content />
+  
+</section>

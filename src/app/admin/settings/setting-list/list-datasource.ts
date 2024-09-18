@@ -1,6 +1,6 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, filter, Observable } from "rxjs";
 import { CrudService } from "../../../services/crud.service";
 
 export class ListDataSource<T> extends DataSource<T> {
@@ -9,6 +9,7 @@ export class ListDataSource<T> extends DataSource<T> {
   public loading = signal<boolean>(false);
 
   count: number = 0;
+  tabelFilter: string = "";
 
   constructor(private crudService: CrudService<T>) {
     super();

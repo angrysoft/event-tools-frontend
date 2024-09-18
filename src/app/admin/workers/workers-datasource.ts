@@ -2,10 +2,10 @@ import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
-import { DataListResponse } from "../../../models/ldata-list-response";
-import { RestResponse } from "../../../models/rest-response";
-import { WorkersService } from "../../../services/workers.service";
-import { WorkersItem } from "../../../models/worker";
+import { DataListResponse } from "../../models/data-list-response";
+import { RestResponse } from "../../models/rest-response";
+import { WorkersItem } from "../models/worker";
+import { WorkersService } from "../services/workers.service";
 
 export class WorkersDataSource extends DataSource<WorkersItem> {
   private workersSubject = new BehaviorSubject<WorkersItem[]>([]);
