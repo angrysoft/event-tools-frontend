@@ -24,6 +24,7 @@ import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { MatIcon } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-group-form",
@@ -52,6 +53,7 @@ export class GroupFormComponent implements OnInit {
   groupId = input<number>(-1);
   error = signal<string>("");
   formTitle = input<string>("Dodaj Grupę");
+  private _snackBar = inject(MatSnackBar);
 
   constructor() {
     this.service = new CrudService<Group>();
@@ -93,25 +95,14 @@ export class GroupFormComponent implements OnInit {
   updateGroup() {
     this.service.update(this.groupForm.value as Group).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-      else {
-        this.groupForm.controls.name.setErrors({
-          exists: true,
-        });
-      }
-      console.log(this.groupForm.controls.name.getError("exists"));
-      //resp.error ?? "Coś poszło nie tak...");
+      else this.handleError(resp);
     });
   }
 
   addGroup() {
     this.service.create(this.groupForm.value as Group).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-      else {
-        this.groupForm.controls.name.setErrors({
-          exists: true,
-        });
-        this.error.set(resp.error ?? "Coś poszło nie tak...");
-      }
+      else this.handleError(resp);
     });
   }
 
@@ -122,12 +113,23 @@ export class GroupFormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true && this.groupId()) {
-        this.service.delete(this.groupId()).subscribe((response) => {
-          if (response.ok) {
-            this.router.navigateByUrl("/admin/settings/groups");
-          }
+        this.service.delete(this.groupId()).subscribe((resp) => {
+          if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
+          else this.handleError(resp);
         });
       }
     });
+  }
+
+  handleError(err: any) {
+    console.warn(err.error);
+    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
+      verticalPosition: "top",
+    });
+    // this.groupForm.controls.name.setErrors({
+    //   exists: true,
+    // });
+    // this.groupForm.updateValueAndValidity();
+    // this.error.set(err.data ?? "Coś poszło nie tak...");
   }
 }

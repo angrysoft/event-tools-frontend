@@ -23,11 +23,6 @@
             formControlName="name"
             placeholder="Nazwa"
           />
-          @if (teamForm.controls.name.getError("exists")) {
-          <mat-error>
-            {{ error() }}
-          </mat-error>
-          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Sortowanie</mat-label>

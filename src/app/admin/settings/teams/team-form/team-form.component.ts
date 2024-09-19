@@ -1,23 +1,23 @@
 import { Component, effect, inject, input, signal } from "@angular/core";
 import {
-  ReactiveFormsModule,
-  FormGroup,
   FormControl,
-  Validators,
+  FormGroup,
+  ReactiveFormsModule,
   StatusChangeEvent,
+  Validators,
 } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatDialogModule, MatDialog } from "@angular/material/dialog";
-import { MatLabel, MatFormFieldModule } from "@angular/material/form-field";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { Router } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { CrudService } from "../../../../services/crud.service";
 import { Team, TeamForm } from "../../../models/teams";
-import { RestResponse } from "../../../../models/rest-response";
-import { MatIcon } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-team-form",
@@ -46,6 +46,7 @@ export class TeamFormComponent {
   teamId = input<number>(-1);
   error = signal<string>("");
   formTitle = input<string>("Dodaj Grupę");
+  private _snackBar = inject(MatSnackBar);
 
   constructor() {
     this.service = new CrudService<Team>();
@@ -94,7 +95,7 @@ export class TeamFormComponent {
   addTeam() {
     this.service.create(this.teamForm.value as Team).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl("/admin/settings/teams");
-      else this.handleError(resp.error);
+      else this.handleError(resp);
     });
   }
 
@@ -114,10 +115,15 @@ export class TeamFormComponent {
     });
   }
 
-  handleError(msg: string | null) {
-    this.teamForm.controls.name.setErrors({
-      exists: true,
+  handleError(err: any) {
+    console.warn(err.error);
+    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
+      verticalPosition: "top",
     });
-    this.error.set(msg ?? "Coś poszło nie tak...");
+    // this.teamForm.controls.name.setErrors({
+    //   exists: true,
+    // });
+    // console.warn(err.error);
+    // this.error.set(err.data ?? "Coś poszło nie tak...");
   }
 }

@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confi
 import { Worker } from "../../models/worker";
 import { WorkerDoc } from "../../models/worker-doc";
 import { WorkersService } from "../../services/workers.service";
+import { DocsComponent } from "./docs/docs.component";
 
 export interface DialogData {
   workerId: number;
@@ -29,7 +30,8 @@ export interface DialogData {
     MatDialogModule,
     MatTabsModule,
     MatListModule,
-  ],
+    DocsComponent
+],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",
 })
@@ -54,26 +56,18 @@ export class ShowWorkerComponent {
     father: null,
   };
 
-  workerDocs: WorkerDoc[] = [];
-
   readonly confirm = inject(MatDialog);
   readonly workerService: WorkersService = inject(WorkersService);
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
+  workerId: number = Number(this.route.snapshot.paramMap.get("id"));
 
   constructor() {
-    const workerId = Number(this.route.snapshot.paramMap.get("id"));
-    this.workerService.get(workerId).subscribe((response) => {
+    // this.workerId = Number(this.route.snapshot.paramMap.get("id"));
+    this.workerService.get(this.workerId).subscribe((response) => {
       if (response.ok) {
         this.worker = response.data;
       }
-    });
-
-    this.workerService.getWorkersDocs(workerId).subscribe((response) => {
-      if (response.ok) {
-        this.workerDocs = response.data;
-      }
-      console.log(this.workerDocs);
     });
   }
 
@@ -96,11 +90,5 @@ export class ShowWorkerComponent {
     });
   }
 
-  getFile(id: number | null) {
-    console.log("get file " + id);
-  }
-
-  removeFile(id: number | null) {
-    console.log("remove file " + id);
-  }
+  
 }

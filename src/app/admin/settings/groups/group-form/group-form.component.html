@@ -23,11 +23,6 @@
             formControlName="name"
             placeholder="Nazwa"
           />
-          @if (groupForm.controls.name.getError("exists")) {
-          <mat-error>
-            {{ error() }}
-          </mat-error>
-          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Sortowanie</mat-label>
@@ -41,15 +36,11 @@
       </mat-card-content>
     </mat-card>
     @if (update) {
-        <button
-          mat-fab
-          extended
-          type="button"
-          (click)="deleteGroup()"
-        >
-          <mat-icon>delete</mat-icon>
-          Usuń konto
-        </button>
+        {{ error() }}
+    <button mat-fab extended type="button" (click)="deleteGroup()">
+      <mat-icon>delete</mat-icon>
+      Usuń konto
+    </button>
     }
   </form>
 </app-form-base>

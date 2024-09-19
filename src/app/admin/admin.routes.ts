@@ -32,6 +32,22 @@ export const adminRoutes: Routes = [
       ),
   },
   {
+    path: "workers/doc/add",
+    title: "Edytuj Dokument",
+    loadComponent: () =>
+      import("./workers/show-worker/docs/doc-form/doc-form.component").then(
+        (m) => m.DocFormComponent,
+      ),
+  },
+  {
+    path: "workers/doc/:id",
+    title: "Edytuj Dokument",
+    loadComponent: () =>
+      import("./workers/show-worker/docs/doc-form/doc-form.component").then(
+        (m) => m.DocFormComponent,
+      ),
+  },
+  {
     path: "settings/groups",
     title: "Grupy",
     loadComponent: () =>
