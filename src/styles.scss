@@ -18,25 +18,12 @@ html {
     @include mat.all-component-themes(m3-theme.$dark-theme);
     @include mat.system-level-colors(m3-theme.$dark-theme);
     @include mat.system-level-typography(m3-theme.$dark-theme);
-    // @include mat.button-theme(m3-theme.$dark-theme);
-    // @include mat.fab-theme(m3-theme.$dark-theme);
-    // @include mat.input-theme(m3-theme.$dark-theme);
-    // @include mat.table-theme(m3-theme.$dark-theme);
-    // @include mat.card-theme(m3-theme.$dark-theme);
-    // @include mat.form-field-theme(m3-theme.$dark-theme);
-    // @include mat.sidenav-theme(m3-theme.$dark-theme);
-    // @include mat.select-theme(m3-theme.$dark-theme);
-    // @include mat.slide-toggle-theme(m3-theme.$dark-theme);
-    // @include mat.list-theme(m3-theme.$dark-theme);
-    // @include mat.toolbar-theme(m3-theme.$dark-theme);
-    // @include mat.divider-theme(m3-theme.$dark-theme);
-    // @include mat.icon-theme(m3-theme.$dark-theme);
-    // @include mat.icon-theme(m3-theme.$dark-theme);
+
     
     @media (prefers-color-scheme: light) {
         @include mat.system-level-colors(m3-theme.$light-theme);
         @include mat.system-level-typography(m3-theme.$light-theme);
-        @include mat.all-component-themes(m3-theme.$light-theme);
+        @include mat.all-component-colors(m3-theme.$light-theme);
     }
 }
 /* You can add global styles to this file, and also import other style files */
