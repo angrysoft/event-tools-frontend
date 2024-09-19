@@ -1,18 +1,18 @@
 <app-form-base
-  backTo="/admin/settings/groups"
+  backTo="/admin/settings/teams"
   [formTitle]="formTitle()"
-  formIdName="group-form"
+  formIdName="team-form"
   [canSend]="canSend()"
 >
   <form
-    [formGroup]="groupForm"
+    [formGroup]="teamForm"
     class="form"
-    id="group-form"
+    id="team-form"
     (submit)="handleSubmit()"
   >
     <mat-card appearance="outlined">
       <mat-card-header>
-        <mat-card-title>Dane Grupy</mat-card-title>
+        <mat-card-title>Dane Ekipy</mat-card-title>
       </mat-card-header>
       <mat-card-content class="form-group">
         <mat-form-field appearance="outline">
@@ -23,7 +23,7 @@
             formControlName="name"
             placeholder="Nazwa"
           />
-          @if (groupForm.controls.name.getError("exists")) {
+          @if (teamForm.controls.name.getError("exists")) {
           <mat-error>
             {{ error() }}
           </mat-error>

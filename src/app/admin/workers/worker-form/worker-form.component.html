@@ -1,6 +1,6 @@
 <section class="worker-form-section">
   <header class="worker-form-header">
-    <button mat-icon-button routerLink="{{backTo}}">
+    <button mat-icon-button routerLink="{{ backTo }}">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle() }}</h2>
@@ -35,6 +35,11 @@
             placeholder="Imię"
             autocomplete="given-name"
           />
+          @if (workerForm.controls.firstName.getError("exists")) {
+          <mat-error>
+            {{ error() }}
+          </mat-error>
+          }
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Drugie Imię</mat-label>

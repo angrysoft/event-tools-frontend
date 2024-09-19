@@ -127,7 +127,7 @@ export class WorkerFormComponent implements OnInit {
 
     effect(() => {
       if (this.workerId() >= 0) {
-        this.workerService.getWorker(this.workerId()).subscribe((response) => {
+        this.workerService.get(this.workerId()).subscribe((response) => {
           if (response.ok) {
             this.workerForm.patchValue(response.data);
             this.update = true;
@@ -206,7 +206,7 @@ export class WorkerFormComponent implements OnInit {
 
   updateWorker() {
     this.workerService
-      .updateWorker({ ...this.workerForm.value, id: this.workerId() })
+      .update({ ...this.workerForm.value, id: this.workerId() })
       .subscribe((response) => {
         if (response.ok) {
           this.router.navigateByUrl("/admin/workers/" + this.workerId());
@@ -217,14 +217,13 @@ export class WorkerFormComponent implements OnInit {
   }
 
   addWorker() {
-    this.workerService
-      .addWorker(this.workerForm.value)
-      .subscribe((response) => {
-        if (response.ok) {
-          this.router.navigateByUrl("/admin/workers/" + response.data);
-        } else {
-          this.error.set(response.error ?? "Cos Poszło nie tak...");
-        }
-      });
+    this.workerService.create(this.workerForm.value).subscribe((response) => {
+      if (response.ok) {
+        this.router.navigateByUrl("/admin/workers/" + response.data);
+      } else {
+        this.workerForm.controls.firstName.setErrors({ exists: true });
+        this.error.set(response.error ?? "Cos Poszło nie tak...");
+      }
+    });
   }
 }

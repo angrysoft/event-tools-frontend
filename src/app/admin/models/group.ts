@@ -6,10 +6,10 @@ interface Group {
   sort: number;
 }
 
-interface GroupFrom {
+interface GroupForm {
   id: FormControl<number | null>;
   name: FormControl<string | null>;
   sort: FormControl<number | null>;
 }
 
-export { Group, GroupFrom };
+export { Group, GroupForm };

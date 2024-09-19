@@ -9,5 +9,5 @@ import { SettingListComponent } from "../setting-list/setting-list.component";
   styleUrl: './teams.component.scss'
 })
 export class TeamsComponent {
-
+  
 }

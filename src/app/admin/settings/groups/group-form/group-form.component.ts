@@ -15,7 +15,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { CrudService } from "../../../../services/crud.service";
-import { Group, GroupFrom } from "../../../models/group";
+import { Group, GroupForm } from "../../../models/group";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -44,7 +44,7 @@ export class GroupFormComponent implements OnInit {
   update: boolean = false;
   canSend = signal<boolean>(false);
   service: CrudService<Group>;
-  groupForm: FormGroup<GroupFrom>;
+  groupForm: FormGroup<GroupForm>;
   groupId = input<number>(-1);
   error = signal<string>("");
   formTitle = input<string>("Dodaj Grupę");
@@ -53,7 +53,7 @@ export class GroupFormComponent implements OnInit {
     this.service = new CrudService<Group>();
     this.service.setApi("/api/admin/workers/groups");
 
-    this.groupForm = new FormGroup<GroupFrom>({
+    this.groupForm = new FormGroup<GroupForm>({
       id: new FormControl(null),
       name: new FormControl("", [Validators.required]),
       sort: new FormControl(1, [Validators.required]),
@@ -89,15 +89,25 @@ export class GroupFormComponent implements OnInit {
   updateGroup() {
     this.service.update(this.groupForm.value as Group).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-      else this.error.set(resp.error ?? "Coś poszło nie tak...");
+      else {
+        this.groupForm.controls.name.setErrors({
+          exists: true,
+        });
+      }
+      console.log(this.groupForm.controls.name.getError("exists"));
+      //resp.error ?? "Coś poszło nie tak...");
     });
   }
 
   addGroup() {
     this.service.create(this.groupForm.value as Group).subscribe((resp) => {
-      console.log(resp);
       if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-      else this.error.set(resp.error ?? "Coś poszło nie tak...");
+      else {
+        this.groupForm.controls.name.setErrors({
+          exists: true,
+        });
+        this.error.set(resp.error ?? "Coś poszło nie tak...");
+      }
     });
   }
 

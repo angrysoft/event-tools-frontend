@@ -63,7 +63,7 @@ export class ShowWorkerComponent {
 
   constructor() {
     const workerId = Number(this.route.snapshot.paramMap.get("id"));
-    this.workerService.getWorker(workerId).subscribe((response) => {
+    this.workerService.get(workerId).subscribe((response) => {
       if (response.ok) {
         this.worker = response.data;
       }
@@ -85,7 +85,7 @@ export class ShowWorkerComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true && this.worker.id) {
         this.workerService
-          .removeWorker(this.worker.id)
+          .delete(this.worker.id)
           .subscribe((response) => {
             console.log(response);
             if (response.ok) {
