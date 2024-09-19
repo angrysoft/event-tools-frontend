@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
-import { Observable, catchError, throwError } from "rxjs";
+import { EventEmitter, inject, Injectable, Output } from "@angular/core";
+import { Observable, catchError, of, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { DataListResponse } from "../models/data-list-response";
 
@@ -10,6 +10,9 @@ import { DataListResponse } from "../models/data-list-response";
 export class CrudService<T> {
   readonly http = inject(HttpClient);
   private api = "";
+
+  @Output()
+  authenticated = new EventEmitter<boolean>();
 
   constructor() {}
 
@@ -21,44 +24,34 @@ export class CrudService<T> {
     return this._get<RestResponse<DataListResponse<T>>>(this.api);
   }
 
+  getAllLimitAndOffset(
+    limit: number,
+    offset: number,
+  ): Observable<RestResponse<DataListResponse<T>>> {
+    return this._get<RestResponse<DataListResponse<T>>>(this.api, {
+      limit: limit,
+      offset: offset,
+    });
+  }
+
   get(id: number) {
     return this._get<RestResponse<T>>(`${this.api}/${id}`);
   }
 
-  create(item: Partial<T>) {
-    return this.http.post<RestResponse<void>>(this.api, item).pipe(
-      catchError((err) => {
-        console.log(err.error);
-        if (err.status === 401) {
-          return new Observable<RestResponse<void>>();
-        } else if (err.status === 400) {
-          return throwError(() => new Error(err.error.error));
-        }
-        return throwError(
-          () => new Error("Something bad happened; please try again later."),
-        );
-      }),
-    );
+  create(item: Partial<T>): Observable<RestResponse<void | string>> {
+    return this.http
+      .post<RestResponse<void | string>>(this.api, item)
+      .pipe(catchError(this.handleError));
   }
 
-  update(item: Partial<T>) {
-    return this.http.put<RestResponse<void>>(this.api, item).pipe(
-      catchError((err) => {
-        console.log(err.error);
-        if (err.status === 401) {
-          return new Observable<RestResponse<void>>();
-        } else if (err.status === 400) {
-          return throwError(() => new Error(err.error.error));
-        }
-        return throwError(
-          () => new Error("Something bad happened; please try again later."),
-        );
-      }),
-    );
+  update(item: Partial<T>): Observable<RestResponse<void | string>> {
+    return this.http
+      .put<RestResponse<void | string>>(this.api, item)
+      .pipe(catchError(this.handleError));
   }
 
-  delete(itemId: number) {
-    return this.http.delete<RestResponse<void>>(`${this.api}/ ${itemId}`).pipe(
+  delete(itemId: number): Observable<RestResponse<void | string>> {
+    return this.http.delete<RestResponse<void | string>>(`${this.api}/ ${itemId}`).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 400) {
           return new Observable<RestResponse<void>>();
@@ -70,7 +63,7 @@ export class CrudService<T> {
     );
   }
 
-  private _get<GT>(
+  protected _get<GT>(
     api: string,
     params: { [key: string]: string | number | boolean } | null = null,
   ): Observable<GT> {
@@ -93,5 +86,20 @@ export class CrudService<T> {
           );
         }),
       );
+  }
+
+  protected handleError(err: any) {
+    switch (err.status) {
+      case 401:
+        return new Observable<RestResponse<string>>();
+      case 400:
+        return throwError(() => new Error(err.error.error));
+      case 409:
+        return of(err.error);
+      default:
+        return throwError(
+          () => new Error("Something bad happened; please try again later."),
+        );
+    }
   }
 }
