@@ -40,5 +40,11 @@
         </mat-form-field>
       </mat-card-content>
     </mat-card>
+    @if (update) {
+    <button mat-fab extended type="button" (click)="deleteTeam()">
+      <mat-icon>delete</mat-icon>
+      Usuń konto
+    </button>
+    }
   </form>
 </app-form-base>

@@ -22,6 +22,8 @@ import { MatInputModule } from "@angular/material/input";
 import { Router } from "@angular/router";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
+import { MatIcon } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-group-form",
@@ -34,6 +36,8 @@ import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/co
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    MatButtonModule,
+    MatIcon,
   ],
   templateUrl: "./group-form.component.html",
   styleUrl: "./group-form.component.scss",
@@ -113,7 +117,7 @@ export class GroupFormComponent implements OnInit {
 
   deleteGroup() {
     const dialogRef = this.confirm.open(ConfirmDialogComponent, {
-      data: { msg: "Usnąć Grupe jest to operacja nieodwracalna" },
+      data: { msg: "Czy na pewno chcesz usunąć ?" },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

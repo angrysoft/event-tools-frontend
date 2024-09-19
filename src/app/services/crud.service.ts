@@ -51,16 +51,11 @@ export class CrudService<T> {
   }
 
   delete(itemId: number): Observable<RestResponse<void | string>> {
-    return this.http.delete<RestResponse<void | string>>(`${this.api}/ ${itemId}`).pipe(
-      catchError((err) => {
-        if (err.status === 401 || err.status === 400) {
-          return new Observable<RestResponse<void>>();
-        }
-        return throwError(
-          () => new Error("Something bad happened; please try again later."),
-        );
-      }),
-    );
+    return this.http
+      .delete<RestResponse<void | string>>(`${this.api}/${itemId}`)
+      .pipe(
+        catchError(this.handleError),
+      );
   }
 
   protected _get<GT>(

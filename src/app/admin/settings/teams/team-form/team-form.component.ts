@@ -16,6 +16,8 @@ import { FormBaseComponent } from "../../../../components/form-base/form-base.co
 import { CrudService } from "../../../../services/crud.service";
 import { Team, TeamForm } from "../../../models/teams";
 import { RestResponse } from "../../../../models/rest-response";
+import { MatIcon } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-team-form",
@@ -28,6 +30,8 @@ import { RestResponse } from "../../../../models/rest-response";
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    MatButtonModule,
+    MatIcon,
   ],
   templateUrl: "./team-form.component.html",
   styleUrl: "./team-form.component.scss",
@@ -96,7 +100,7 @@ export class TeamFormComponent {
 
   deleteTeam() {
     const dialogRef = this.confirm.open(ConfirmDialogComponent, {
-      data: { msg: "Usnąć Grupe jest to operacja nieodwracalna" },
+      data: { msg: "Czy na pewno chcesz usunąć ?" },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
