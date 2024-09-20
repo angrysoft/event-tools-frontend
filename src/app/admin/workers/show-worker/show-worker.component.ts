@@ -9,9 +9,9 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { Worker } from "../../models/worker";
-import { WorkerDoc } from "../../models/worker-doc";
 import { WorkersService } from "../../services/workers.service";
-import { DocsComponent } from "./docs/docs.component";
+import { DocsComponent } from "../docs/docs.component";
+import { RatesComponent } from "../rates/rates.component";
 
 export interface DialogData {
   workerId: number;
@@ -30,7 +30,8 @@ export interface DialogData {
     MatDialogModule,
     MatTabsModule,
     MatListModule,
-    DocsComponent
+    DocsComponent,
+    RatesComponent
 ],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",

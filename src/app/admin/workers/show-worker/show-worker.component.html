@@ -8,7 +8,7 @@
       <button mat-flat-button routerLink="/admin/workers/edit/{{ worker.id }}">
         Edytuj
       </button>
-      <button mat-flat-button color="warn" (click)="removeWorker()">
+      <button mat-flat-button class="delete-button" (click)="removeWorker()">
         Usuń
       </button>
     </div>
@@ -126,6 +126,10 @@
 
     <mat-tab label="Dokumenty">
       <app-docs [workerId]="workerId" />
+    </mat-tab>
+
+    <mat-tab label="Stawki">
+      <app-rates [workerId]="workerId" />
     </mat-tab>
   </mat-tab-group>
 </section>

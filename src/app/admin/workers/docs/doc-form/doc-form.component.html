@@ -1,0 +1,63 @@
+<app-form-base
+  [backTo]="backTo()"
+  formIdName="doc-form"
+  formTitle="Dokument"
+  [canSend]="canSend()"
+>
+  <form
+    [formGroup]="docForm"
+    class="form"
+    id="doc-form"
+    (submit)="handleSubmit()"
+  >
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Dokument</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwa</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            placeholder="Nazwa"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Data Wygaśnięcia</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="expire" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-content class="form-group-row">
+        <input hidden type="file" name="file" id="file" />
+        @if (isHandset$ | async) { } @else {
+        <mat-card
+          appearance="outlined"
+          [class]="dropZoneClasses()"
+          (drop)="onDrop($event)"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+        >
+          <mat-card-content style="pointer-events: none;">
+            <h3 style="pointer-events: none;">Dodaj plik albo upuść tutaj.</h3>
+          </mat-card-content>
+        </mat-card>
+
+        }
+        <button mat-fab extended type="button">
+          <mat-icon>add</mat-icon>
+          Dodaj plik
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</app-form-base>

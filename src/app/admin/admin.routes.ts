@@ -32,18 +32,18 @@ export const adminRoutes: Routes = [
       ),
   },
   {
-    path: "workers/doc/add",
+    path: "workers/:workerId/doc/add",
     title: "Edytuj Dokument",
     loadComponent: () =>
-      import("./workers/show-worker/docs/doc-form/doc-form.component").then(
+      import("./workers/docs/doc-form/doc-form.component").then(
         (m) => m.DocFormComponent,
       ),
   },
   {
-    path: "workers/doc/:id",
+    path: "workers/:workerId/doc/:id",
     title: "Edytuj Dokument",
     loadComponent: () =>
-      import("./workers/show-worker/docs/doc-form/doc-form.component").then(
+      import("./workers/docs/doc-form/doc-form.component").then(
         (m) => m.DocFormComponent,
       ),
   },

@@ -9,50 +9,54 @@ import { DataListResponse } from "../models/data-list-response";
 })
 export class CrudService<T> {
   readonly http = inject(HttpClient);
-  private api = "";
+  private apiUrl = "";
 
   @Output()
   authenticated = new EventEmitter<boolean>();
 
   constructor() {}
 
-  setApi(apiUrl: string) {
-    this.api = apiUrl;
+  set api(apiUrl: string) {
+    this.apiUrl = apiUrl;
+  }
+
+  get api() {
+    return this.apiUrl;
   }
 
   getAll(): Observable<RestResponse<DataListResponse<T>>> {
-    return this._get<RestResponse<DataListResponse<T>>>(this.api);
+    return this._get<RestResponse<DataListResponse<T>>>(this.apiUrl);
   }
 
   getAllLimitAndOffset(
     limit: number,
     offset: number,
   ): Observable<RestResponse<DataListResponse<T>>> {
-    return this._get<RestResponse<DataListResponse<T>>>(this.api, {
+    return this._get<RestResponse<DataListResponse<T>>>(this.apiUrl, {
       limit: limit,
       offset: offset,
     });
   }
 
   get(id: number) {
-    return this._get<RestResponse<T>>(`${this.api}/${id}`);
+    return this._get<RestResponse<T>>(`${this.apiUrl}/${id}`);
   }
 
   create(item: Partial<T>): Observable<RestResponse<void | string>> {
     return this.http
-      .post<RestResponse<void | string>>(this.api, item)
+      .post<RestResponse<void | string>>(this.apiUrl, item)
       .pipe(catchError(this.handleError));
   }
 
   update(item: Partial<T>): Observable<RestResponse<void | string>> {
     return this.http
-      .put<RestResponse<void | string>>(this.api, item)
+      .put<RestResponse<void | string>>(this.apiUrl, item)
       .pipe(catchError(this.handleError));
   }
 
   delete(itemId: number): Observable<RestResponse<void | string>> {
     return this.http
-      .delete<RestResponse<void | string>>(`${this.api}/${itemId}`)
+      .delete<RestResponse<void | string>>(`${this.apiUrl}/${itemId}`)
       .pipe(
         catchError(this.handleError),
       );

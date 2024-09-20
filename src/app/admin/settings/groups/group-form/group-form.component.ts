@@ -57,7 +57,7 @@ export class GroupFormComponent implements OnInit {
 
   constructor() {
     this.service = new CrudService<Group>();
-    this.service.setApi("/api/admin/workers/groups");
+    this.service.api = "/api/admin/workers/groups";
 
     this.groupForm = new FormGroup<GroupForm>({
       id: new FormControl(null),
@@ -126,10 +126,5 @@ export class GroupFormComponent implements OnInit {
     this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
       verticalPosition: "top",
     });
-    // this.groupForm.controls.name.setErrors({
-    //   exists: true,
-    // });
-    // this.groupForm.updateValueAndValidity();
-    // this.error.set(err.data ?? "Coś poszło nie tak...");
   }
 }

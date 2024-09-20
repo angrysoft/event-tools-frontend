@@ -50,7 +50,7 @@ export class TeamFormComponent {
 
   constructor() {
     this.service = new CrudService<Team>();
-    this.service.setApi("/api/admin/workers/teams");
+    this.service.api = "/api/admin/workers/teams";
 
     this.teamForm = new FormGroup<TeamForm>({
       id: new FormControl(null),

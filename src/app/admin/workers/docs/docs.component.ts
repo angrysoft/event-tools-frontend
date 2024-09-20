@@ -2,12 +2,12 @@ import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
 import { RouterLink } from "@angular/router";
-import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
-import { WorkerDoc } from "../../../models/worker-doc";
-import { WorkersService } from "../../../services/workers.service";
+import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { MatButtonModule } from "@angular/material/button";
-import { AddButtonComponent } from "../../../../components/add-button/add-button.component";
+import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 import { MatIcon } from "@angular/material/icon";
+import { DocsService } from "../../services/docs.service";
+import { WorkerDoc } from "../../models/worker-doc";
 
 @Component({
   selector: "app-docs",
@@ -26,11 +26,11 @@ export class DocsComponent implements OnInit {
   readonly confirm = inject(MatDialog);
   // readonly router = inject(Router);
   workerId = input.required<number>();
-  readonly workerService = inject(WorkersService);
+  readonly docService = inject(DocsService);
   workerDocs = signal<WorkerDoc[]>([]);
 
   ngOnInit(): void {
-    this.workerService.getWorkersDocs(this.workerId()).subscribe((response) => {
+    this.docService.getWorkersDocs(this.workerId()).subscribe((response) => {
       if (response.ok) {
         this.workerDocs.set(response.data);
       }
@@ -44,12 +44,12 @@ export class DocsComponent implements OnInit {
 
   removeFile(docId: number) {
     const dialogRef = this.confirm.open(ConfirmDialogComponent, {
-      data: { msg: "Usnąć Pracownika jest to operacja nieodwracalna" },
+      data: { msg: "Czy na pewno chcesz usunąć ?" },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.workerService.delete(docId).subscribe((response) => {
+        this.docService.delete(docId).subscribe((response) => {
           console.log(response);
           if (response.ok) {
             this.workerDocs.set(

@@ -1,0 +1,11 @@
+.drop-zone {
+    display: grid;
+    padding: 3rem;
+    text-align: center;
+}
+
+.drop-zone-on {
+    cursor: pointer;
+    border: 1px dashed green;
+    color: green;
+}

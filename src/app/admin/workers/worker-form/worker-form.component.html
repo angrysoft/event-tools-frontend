@@ -1,5 +1,5 @@
-<section class="worker-form-section">
-  <header class="worker-form-header">
+<section class="form-section">
+  <header class="form-header">
     <button mat-icon-button routerLink="{{ backTo }}">
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -16,7 +16,7 @@
   <mat-divider></mat-divider>
   <form
     [formGroup]="workerForm"
-    class="worker-form"
+    class="form"
     id="worker-form"
     (submit)="handleSubmit()"
   >
@@ -25,7 +25,7 @@
       <mat-card-header>
         <mat-card-title>Dane Personalne</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="worker-form-group">
+      <mat-card-content class="form-group">
         <mat-form-field appearance="outline">
           <mat-label>Imię</mat-label>
           <input
@@ -85,7 +85,7 @@
       <mat-card-header>
         <mat-card-title>Dane Kontaktowe</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="worker-form-group">
+      <mat-card-content class="form-group">
         <mat-form-field appearance="outline">
           <mat-label>Telefon</mat-label>
           <input
@@ -123,7 +123,7 @@
       <mat-card-header>
         <mat-card-title>Dane Dodatkowe</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="worker-form-group">
+      <mat-card-content class="form-group">
         <mat-form-field appearance="outline">
           <mat-label>Ksywa</mat-label>
           <input
@@ -167,8 +167,8 @@
       <mat-card-header>
         <mat-card-title>Dane Dokumenty</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="worker-form-group">
-        <div class="worker-form-group">
+      <mat-card-content class="form-group">
+        <div class="form-group">
           <mat-form-field appearance="outline">
             <mat-label>Pesel</mat-label>
             <input
@@ -207,7 +207,7 @@
       Usuń konto
     </button>
     } @else {
-    <div class="worker-form-group">
+    <div class="form-group">
       <mat-checkbox formControlName="hasAccount" (change)="toggleAccount()"
         >Konto w aplikacji</mat-checkbox
       >
@@ -217,7 +217,7 @@
     <mat-card appearance="outlined">
       <mat-card-content>
         <div [formGroup]="workerAccount">
-          <div class="worker-form-group">
+          <div class="form-group">
             <mat-form-field appearance="outline">
               <mat-label>Login</mat-label>
               <input
@@ -229,7 +229,7 @@
             </mat-form-field>
           </div>
 
-          <div class="worker-form-group">
+          <div class="form-group">
             <mat-form-field appearance="outline">
               <mat-label>Hasło</mat-label>
               <input
@@ -250,7 +250,7 @@
               />
             </mat-form-field>
           </div>
-          <div class="worker-form-group">
+          <div class="form-group">
             <mat-form-field appearance="outline">
               <mat-label>Rodzaj kąta</mat-label>
               <mat-select formControlName="authority" name="team">

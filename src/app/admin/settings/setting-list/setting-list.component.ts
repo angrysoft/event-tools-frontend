@@ -38,7 +38,7 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.service.setApi(this.api);
+    this.service.api = this.api;
   }
 
   ngAfterViewInit(): void {

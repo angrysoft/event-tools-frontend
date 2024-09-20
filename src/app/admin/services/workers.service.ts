@@ -4,7 +4,6 @@ import { DataListResponse } from "../../models/data-list-response";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
 import { Worker, WorkersItem } from "../models/worker";
-import { WorkerDoc } from "../models/worker-doc";
 import { WorkerHints } from "../models/worker-hints";
 
 @Injectable({
@@ -15,7 +14,7 @@ export class WorkersService extends CrudService<Worker> {
 
   constructor() {
     super();
-    this.setApi(this.apiWorkers);
+    this.api = this.apiWorkers;
   }
 
   getWorkers(
@@ -44,11 +43,5 @@ export class WorkersService extends CrudService<Worker> {
 
   getWorkersHints(): Observable<RestResponse<WorkerHints>> {
     return this._get<RestResponse<WorkerHints>>(`${this.apiWorkers}/hints`);
-  }
-
-  getWorkersDocs(workerId: number): Observable<RestResponse<WorkerDoc[]>> {
-    return this._get<RestResponse<WorkerDoc[]>>(
-      `${this.apiWorkers}/doc?workerId=${workerId}`,
-    );
   }
 }
