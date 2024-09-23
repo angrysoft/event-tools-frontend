@@ -153,7 +153,7 @@ export class DocFormComponent implements OnInit {
   }
 
   updateDoc() {
-    this.docsService.updateDoc(this.docForm.value).subscribe((resp) => {
+    this.docsService.updateDoc(this.docId(), this.docForm.value).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl(this.backTo());
       else this.handleError(resp);
     });

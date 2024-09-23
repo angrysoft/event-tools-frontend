@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { catchError, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
 import { WorkerDoc, WorkerDocData } from "../models/worker-doc";
@@ -19,16 +19,12 @@ export class DocsService extends CrudService<WorkerDoc> {
     });
   }
 
-  updateDoc(doc: Partial<WorkerDoc>) {
-    return this.http
-      .put<RestResponse<void | string>>(this.api, this.prepareDate(doc))
-      .pipe(catchError(this.handleError));
+  updateDoc(docId: number, doc: Partial<WorkerDoc>) {
+    return this.update(docId, this.prepareDate(doc));
   }
 
   createDoc(doc: Partial<WorkerDocData>) {
-    return this.http
-      .post<RestResponse<void | string>>(this.api, this.prepareDate(doc))
-      .pipe(catchError(this.handleError));
+    return this.create(this.prepareDate(doc));
   }
 
   private prepareDate(doc: Partial<WorkerDocData>): FormData {

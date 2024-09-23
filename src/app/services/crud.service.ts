@@ -42,13 +42,13 @@ export class CrudService<T> {
     return this._get<RestResponse<T>>(`${this.apiUrl}/${id}`);
   }
 
-  create(item: Partial<T>): Observable<RestResponse<void | string>> {
+  create(item: Partial<T> | FormData): Observable<RestResponse<void | string>> {
     return this.http
       .post<RestResponse<void | string>>(this.apiUrl, item)
       .pipe(catchError(this.handleError));
   }
 
-  update(itemId:number, item: Partial<T>): Observable<RestResponse<void | string>> {
+  update(itemId:number, item: Partial<T> | FormData): Observable<RestResponse<void | string>> {
     return this.http
       .put<RestResponse<void | string>>(`${this.apiUrl}/${itemId}`, item)
       .pipe(catchError(this.handleError));
