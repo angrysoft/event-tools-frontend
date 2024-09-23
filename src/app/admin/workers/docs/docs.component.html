@@ -16,7 +16,9 @@
         Plik :
         <a
           mat-button
-          href="/api/admin/workers/doc/file/{{ doc.fileName }}"
+          href="/api/admin/workers/doc/file/{{ doc.fileName }}?workerId={{
+            workerId()
+          }}"
           target="_blank"
           >{{ doc.fileName }}</a
         >
@@ -31,7 +33,9 @@
         >
           Edytuj
         </button>
-        <button mat-button class="tertiary-button" (click)="removeFile(doc.id)">Usuń</button>
+        <button mat-button class="tertiary-button" (click)="removeFile(doc.id)">
+          Usuń
+        </button>
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
