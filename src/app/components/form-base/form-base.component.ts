@@ -15,6 +15,7 @@ export class FormBaseComponent {
   backTo = input.required<string>();
   formTitle = input.required<string>();
   formIdName = input.required<string>();
+  queryParams = input<any>({});
 
   canSend = input<boolean>(false);
   error = signal<string>("");

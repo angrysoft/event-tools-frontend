@@ -1,28 +1,31 @@
-import { Component, effect, inject, OnInit, signal } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DocsService } from "../../../services/docs.service";
-import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { MatCardModule } from "@angular/material/card";
-import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { AsyncPipe } from "@angular/common";
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  StatusChangeEvent,
-  Validators,
+  Validators
 } from "@angular/forms";
-import { WorkerDocForm } from "../../../models/worker-doc";
-import { MatInput, MatInputModule } from "@angular/material/input";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { provideNativeDateAdapter } from "@angular/material/core";
-import { MatIcon } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Observable, map, shareReplay } from "rxjs";
-import { AsyncPipe } from "@angular/common";
+import { MatCardModule } from "@angular/material/card";
+import { provideNativeDateAdapter } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
+import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { map, Observable, shareReplay } from "rxjs";
+import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
+import { WorkerDocForm } from "../../../models/worker-doc";
+import { DocsService } from "../../../services/docs.service";
 
 @Component({
   selector: "app-doc-form",
@@ -58,7 +61,7 @@ export class DocFormComponent implements OnInit {
   docForm: FormGroup<WorkerDocForm>;
   dropZoneClasses = signal<string[]>(["drop-zone"]);
   private _snackBar = inject(MatSnackBar);
-  readonly confirm = inject(MatDialog);
+  fileInfo = signal<string>("Dodaj plik albo upuść tutaj.");
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -101,10 +104,9 @@ export class DocFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.docForm.events.subscribe((formEvents) => {
-      if (formEvents instanceof StatusChangeEvent) {
-        this.canSend.set(formEvents.status === "VALID" && this.docForm.dirty);
-      }
+    this.docForm.statusChanges.subscribe((changeEvent) => {
+      console.log(changeEvent);
+      this.canSend.set(changeEvent === "VALID" && this.docForm.dirty);
     });
   }
 
@@ -112,6 +114,7 @@ export class DocFormComponent implements OnInit {
     ev.preventDefault();
     this.docForm.markAsDirty();
     this.docForm.controls.file.setValue(ev.dataTransfer!.files[0]);
+    this.fileInfo.set(ev.dataTransfer!.files[0].name);
     this.dropZoneClasses.set(["drop-zone"]);
   }
 
@@ -123,6 +126,16 @@ export class DocFormComponent implements OnInit {
   onDragLeave(ev: DragEvent) {
     ev.preventDefault();
     this.dropZoneClasses.set(["drop-zone"]);
+  }
+
+  onFileChange(ev: Event) {
+    console.log(ev.target);
+    const file = ev.target as HTMLInputElement;
+    if (file.files && file.files?.length > 0) {
+      this.fileInfo.set(file.files[0].name);
+      this.docForm.markAsDirty();
+      this.docForm.updateValueAndValidity();
+    }
   }
 
   handleSubmit() {
@@ -148,23 +161,8 @@ export class DocFormComponent implements OnInit {
 
   createDoc() {
     this.docsService.createDoc(this.docForm.value).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo());
+      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=1");
       else this.handleError(resp);
-    });
-  }
-
-  deleteDoc() {
-    const dialogRef = this.confirm.open(ConfirmDialogComponent, {
-      data: { msg: "Czy na pewno chcesz usunąć ?" },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true && this.docId()) {
-        this.docsService.delete(this.docId()).subscribe((resp) => {
-          if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-          else this.handleError(resp);
-        });
-      }
     });
   }
 

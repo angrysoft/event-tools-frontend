@@ -1,3 +1,5 @@
+<app-loader [loading]="loading()" />
+
 <section class="worker-details-section">
   <header class="worker-details-header">
     <button mat-icon-button routerLink="/admin/workers">
@@ -14,7 +16,7 @@
     </div>
   </header>
 
-  <mat-tab-group>
+  <mat-tab-group [selectedIndex]="tabIndex">
     <mat-tab label="Dane Personalne">
       <div class="worker-data">
         <mat-card appearance="outlined">

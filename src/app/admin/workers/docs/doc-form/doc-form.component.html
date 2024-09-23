@@ -1,5 +1,6 @@
 <app-form-base
   [backTo]="backTo()"
+  [queryParams]="{ tab: '1' }"
   formIdName="doc-form"
   formTitle="Dokument"
   [canSend]="canSend()"
@@ -38,7 +39,14 @@
     </mat-card>
     <mat-card appearance="outlined">
       <mat-card-content class="form-group-row">
-        <input hidden type="file" name="file" id="file" />
+        <input
+          hidden
+          type="file"
+          name="file"
+          id="file"
+          #file
+          (input)="onFileChange($event)"
+        />
         @if (isHandset$ | async) { } @else {
         <mat-card
           appearance="outlined"
@@ -47,13 +55,13 @@
           (dragover)="onDragOver($event)"
           (dragleave)="onDragLeave($event)"
         >
-          <mat-card-content style="pointer-events: none;">
-            <h3 style="pointer-events: none;">Dodaj plik albo upuść tutaj.</h3>
+          <mat-card-content style="pointer-events: none">
+            <h3 style="pointer-events: none">{{ fileInfo() }}</h3>
           </mat-card-content>
         </mat-card>
 
         }
-        <button mat-fab extended type="button">
+        <button mat-fab extended type="button" (click)="file.click()">
           <mat-icon>add</mat-icon>
           Dodaj plik
         </button>

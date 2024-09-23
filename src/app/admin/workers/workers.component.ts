@@ -11,6 +11,7 @@ import { SearchComponent } from "../../components/search/search.component";
 import { WorkersService } from "../services/workers.service";
 import { WorkersItem } from "../models/worker";
 import { WorkersDataSource } from "./workers-datasource";
+import { LoaderComponent } from "../../components/loader/loader.component";
 
 @Component({
   selector: "app-workers",
@@ -27,7 +28,8 @@ import { WorkersDataSource } from "./workers-datasource";
     SearchComponent,
     RouterLink,
     AddButtonComponent,
-  ],
+    LoaderComponent
+],
 })
 export class WorkersComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

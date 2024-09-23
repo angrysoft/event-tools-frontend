@@ -1,6 +1,6 @@
 <section class="form-section">
   <header class="form-header">
-    <button mat-icon-button routerLink="{{ backTo() }}">
+    <button mat-icon-button routerLink="{{ backTo() }}" [queryParams]="queryParams()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle() }}</h2>

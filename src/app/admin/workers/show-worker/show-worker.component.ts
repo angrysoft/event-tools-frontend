@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { AfterContentInit, AfterViewInit, Component, EventEmitter, inject, OnInit, Output, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
@@ -12,6 +12,7 @@ import { Worker } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
 import { DocsComponent } from "../docs/docs.component";
 import { RatesComponent } from "../rates/rates.component";
+import { LoaderComponent } from "../../../components/loader/loader.component";
 
 export interface DialogData {
   workerId: number;
@@ -31,7 +32,8 @@ export interface DialogData {
     MatTabsModule,
     MatListModule,
     DocsComponent,
-    RatesComponent
+    RatesComponent,
+    LoaderComponent
 ],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",
@@ -62,14 +64,18 @@ export class ShowWorkerComponent {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
   workerId: number = Number(this.route.snapshot.paramMap.get("id"));
+  tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
+  loading = signal<boolean>(true);
 
   constructor() {
-    // this.workerId = Number(this.route.snapshot.paramMap.get("id"));
+    console.log(this.tabIndex);
     this.workerService.get(this.workerId).subscribe((response) => {
       if (response.ok) {
         this.worker = response.data;
       }
+      this.loading.set(false);
     });
+
   }
 
   removeWorker() {

@@ -42,7 +42,12 @@ export class DocsComponent implements OnInit {
     console.log("get file " + id);
   }
 
-  removeFile(docId: number) {
+  removeFile(docId: number | null) {
+    if (!docId) {
+      console.warn("Brakuje doc id");
+      return;
+    }
+
     const dialogRef = this.confirm.open(ConfirmDialogComponent, {
       data: { msg: "Czy na pewno chcesz usunąć ?" },
     });
@@ -50,7 +55,6 @@ export class DocsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.docService.delete(docId).subscribe((response) => {
-          console.log(response);
           if (response.ok) {
             this.workerDocs.set(
               this.workerDocs().filter((doc) => doc.id !== docId),
