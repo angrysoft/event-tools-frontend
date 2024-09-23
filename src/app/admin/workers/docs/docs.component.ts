@@ -34,7 +34,6 @@ export class DocsComponent implements OnInit {
       if (response.ok) {
         this.workerDocs.set(response.data);
       }
-      console.log(this.workerDocs());
     });
   }
 

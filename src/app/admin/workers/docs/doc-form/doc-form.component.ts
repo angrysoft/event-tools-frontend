@@ -1,17 +1,11 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-  signal
-} from "@angular/core";
+import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -105,7 +99,6 @@ export class DocFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.docForm.statusChanges.subscribe((changeEvent) => {
-      console.log(changeEvent);
       this.canSend.set(changeEvent === "VALID" && this.docForm.dirty);
     });
   }
@@ -129,17 +122,17 @@ export class DocFormComponent implements OnInit {
   }
 
   onFileChange(ev: Event) {
-    console.log(ev.target);
     const file = ev.target as HTMLInputElement;
+    console.log(file.files?.item(0));
     if (file.files && file.files?.length > 0) {
-      this.fileInfo.set(file.files[0].name);
+      this.docForm.controls.file.setValue(file.files.item(0));
+      this.fileInfo.set(file.files.item(0)!.name);
       this.docForm.markAsDirty();
       this.docForm.updateValueAndValidity();
     }
   }
 
   handleSubmit() {
-    console.log(this.docForm.value);
     if (!this.docForm.valid) {
       return;
     }
@@ -153,10 +146,12 @@ export class DocFormComponent implements OnInit {
   }
 
   updateDoc() {
-    this.docsService.updateDoc(this.docId(), this.docForm.value).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo());
-      else this.handleError(resp);
-    });
+    this.docsService
+      .updateDoc(this.docId(), this.docForm.value)
+      .subscribe((resp) => {
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
+        else this.handleError(resp);
+      });
   }
 
   createDoc() {
