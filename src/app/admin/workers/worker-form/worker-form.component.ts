@@ -206,7 +206,7 @@ export class WorkerFormComponent implements OnInit {
 
   updateWorker() {
     this.workerService
-      .update({ ...this.workerForm.value, id: this.workerId() })
+      .update(this.workerId(), { ...this.workerForm.value, id: this.workerId() })
       .subscribe((response) => {
         if (response.ok) {
           this.router.navigateByUrl("/admin/workers/" + this.workerId());

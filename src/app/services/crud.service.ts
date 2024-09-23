@@ -48,9 +48,9 @@ export class CrudService<T> {
       .pipe(catchError(this.handleError));
   }
 
-  update(item: Partial<T>): Observable<RestResponse<void | string>> {
+  update(itemId:number, item: Partial<T>): Observable<RestResponse<void | string>> {
     return this.http
-      .put<RestResponse<void | string>>(this.apiUrl, item)
+      .put<RestResponse<void | string>>(`${this.apiUrl}/${itemId}`, item)
       .pipe(catchError(this.handleError));
   }
 

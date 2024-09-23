@@ -93,7 +93,7 @@ export class GroupFormComponent implements OnInit {
   }
 
   updateGroup() {
-    this.service.update(this.groupForm.value as Group).subscribe((resp) => {
+    this.service.update(this.groupId(), this.groupForm.value as Group).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
       else this.handleError(resp);
     });

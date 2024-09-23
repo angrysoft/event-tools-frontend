@@ -86,10 +86,12 @@ export class TeamFormComponent {
   }
 
   updateTeam() {
-    this.service.update(this.teamForm.value as Team).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl("/admin/settings/teams");
-      else this.handleError(resp.error);
-    });
+    this.service
+      .update(this.teamId(), this.teamForm.value as Team)
+      .subscribe((resp) => {
+        if (resp.ok) this.router.navigateByUrl("/admin/settings/teams");
+        else this.handleError(resp.error);
+      });
   }
 
   addTeam() {
