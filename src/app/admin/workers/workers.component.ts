@@ -35,7 +35,7 @@ export class WorkersComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatTable) table!: MatTable<WorkersItem>;
   dataSource!: WorkersDataSource;
-  displayedColumns = ["id", "firstName", "lastName"];
+  displayedColumns = ["id", "firstName", "lastName", "team"];
 
   readonly router = inject(Router);
   readonly workerService = inject(WorkersService);

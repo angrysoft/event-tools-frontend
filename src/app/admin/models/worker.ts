@@ -28,6 +28,8 @@ interface WorkersItem {
   firstName: string;
   lastName: string;
   id: number;
+  group: string;
+  team: string;
 }
 
 export { Worker, WorkerBase, WorkersItem };
