@@ -20,23 +20,33 @@ export class WorkersService extends CrudService<Worker> {
   getWorkers(
     limit: number = 15,
     offset: number = 0,
+    filter: string = "",
   ): Observable<RestResponse<DataListResponse<WorkersItem>>> {
+    console.log(filter);
     return this._get<RestResponse<DataListResponse<WorkersItem>>>(
       this.apiWorkers,
       {
         limit: limit,
         offset: offset,
+        filterTeam: filter,
       },
     );
   }
 
   searchWorker(
     query: string,
+    limit: number = 15,
+    offset: number = 0,
+    filter: string = "",
   ): Observable<RestResponse<DataListResponse<WorkersItem>>> {
+    console.log(filter);
     return this._get<RestResponse<DataListResponse<WorkersItem>>>(
       `${this.apiWorkers}/search`,
       {
         query: query,
+        limit: limit,
+        offset: offset,
+        filterTeam: filter,
       },
     );
   }

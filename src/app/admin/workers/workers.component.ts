@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, inject, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  signal,
+  ViewChild,
+} from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -28,15 +34,15 @@ import { LoaderComponent } from "../../components/loader/loader.component";
     SearchComponent,
     RouterLink,
     AddButtonComponent,
-    LoaderComponent
-],
+    LoaderComponent,
+  ],
 })
 export class WorkersComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatTable) table!: MatTable<WorkersItem>;
   dataSource!: WorkersDataSource;
   displayedColumns = ["id", "firstName", "lastName", "team"];
-
+  teamFilter = signal<{ name: string }[]>([]);
   readonly router = inject(Router);
   readonly workerService = inject(WorkersService);
 
@@ -48,10 +54,16 @@ export class WorkersComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
     this.dataSource.loadData();
+    this.workerService.getWorkersHints().subscribe((resp) => {
+      if (resp.ok) {
+        this.teamFilter.set(resp.data.teams);
+      }
+    });
   }
 
   searchQuery(query: any) {
-    this.dataSource.query = query;
+    this.dataSource.query = query.search;
+    this.dataSource.filter = query.filter;
     this.dataSource.loadData();
   }
 

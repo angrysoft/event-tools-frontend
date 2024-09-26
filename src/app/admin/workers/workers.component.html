@@ -4,6 +4,7 @@
   <app-search
     (searchRequest)="searchQuery($event)"
     (resetSearch)="resetSearch()"
+    [filters]="teamFilter()"
   />
 
   <div class="mat-elevation-z8 worker-table-wrapper">

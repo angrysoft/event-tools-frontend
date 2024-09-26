@@ -10,6 +10,7 @@ import { WorkersService } from "../services/workers.service";
 export class WorkersDataSource extends DataSource<WorkersItem> {
   private workersSubject = new BehaviorSubject<WorkersItem[]>([]);
   public query = "";
+  public filter = "";
   public loading = signal<boolean>(false);
 
   paginator: MatPaginator | undefined;
@@ -35,10 +36,19 @@ export class WorkersDataSource extends DataSource<WorkersItem> {
 
     let action: Observable<RestResponse<DataListResponse<WorkersItem>>>;
 
-    if (this.query.length > 2) {
-      action = this.workerService.searchWorker(this.query);
+    if (this.query.length > 0) {
+      action = this.workerService.searchWorker(
+        this.query,
+        this.paginator?.pageSize,
+        offset,
+        this.filter,
+      );
     } else {
-      action = this.workerService.getWorkers(this.paginator?.pageSize, offset);
+      action = this.workerService.getWorkers(
+        this.paginator?.pageSize,
+        offset,
+        this.filter,
+      );
     }
     action.subscribe((result) => {
       this.count = result?.data?.count;

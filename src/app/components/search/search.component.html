@@ -1,10 +1,7 @@
-<form
-    [formGroup]="searchForm"
-    (ngSubmit)="onSearch()"
-    class="search-form"
-  >
+<form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
+  <div class="search-field">
     <mat-form-field class="" subscriptSizing="dynamic" appearance="outline">
-        <mat-label>Szukaj</mat-label>
+      <mat-label>Szukaj</mat-label>
       <input
         type="search"
         matInput
@@ -16,7 +13,22 @@
     <button mat-fab>
       <mat-icon>search</mat-icon>
     </button>
-    <button mat-fab type="button" (click)="onReset()" [disabled]="! searchForm.dirty">
-        <mat-icon>backspace</mat-icon>
-      </button>
-  </form>
+    <button
+      mat-fab
+      type="button"
+      (click)="onReset()"
+      [disabled]="!searchForm.dirty"
+    >
+      <mat-icon>backspace</mat-icon>
+    </button>
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>Filtruj po Ekipie</mat-label>
+    <mat-select formControlName="filter" (selectionChange)="onFilterSet()">
+      <mat-option value="none" ></mat-option>
+      @for (fn of filters(); track fn.name) {
+      <mat-option [value]="fn.name">{{ fn.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</form>

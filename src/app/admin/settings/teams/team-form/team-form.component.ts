@@ -90,7 +90,7 @@ export class TeamFormComponent {
       .update(this.teamId(), this.teamForm.value as Team)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl("/admin/settings/teams");
-        else this.handleError(resp.error);
+        else this.handleError(resp);
       });
   }
 
@@ -122,10 +122,5 @@ export class TeamFormComponent {
     this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
       verticalPosition: "top",
     });
-    // this.teamForm.controls.name.setErrors({
-    //   exists: true,
-    // });
-    // console.warn(err.error);
-    // this.error.set(err.data ?? "Coś poszło nie tak...");
   }
 }
