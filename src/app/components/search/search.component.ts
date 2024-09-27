@@ -47,7 +47,6 @@ export class SearchComponent {
   }
 
   onFilterSet() {
-    console.log("selcetion change");
     this.searchRequest.emit(this.searchForm.value);
   }
 

@@ -2,9 +2,10 @@ import {
   AfterViewInit,
   Component,
   inject,
+  input,
   Input,
   OnInit,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
@@ -29,9 +30,15 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
   @Input({ required: true })
   actionsUrl = "";
 
+  tableColumns = input.required<{name:string, def:string}[]>()
+
   @ViewChild(MatTable) table!: MatTable<T>;
   dataSource!: ListDataSource<T>;
-  displayedColumns = ["id", "name", "sort"];
+
+
+  get columnNames() {
+    return this.tableColumns().map((el)=> el.def);
+  }
 
   constructor() {
     this.dataSource = new ListDataSource<T>(this.service);

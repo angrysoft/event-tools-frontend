@@ -93,4 +93,26 @@ export const adminRoutes: Routes = [
         (m) => m.EditTeamComponent,
       ),
   },
+  {
+    path: "settings/rates",
+    title: "Stawki",
+    loadComponent: () =>
+      import("./settings/rates/rates.component").then((m) => m.RatesComponent),
+  },
+  {
+    path: "settings/rates/add",
+    title: "Dodaj Stawkę",
+    loadComponent: () =>
+      import("./settings/rates/rate-form/rate-form.component").then(
+        (m) => m.RateFormComponent,
+      ),
+  },
+  {
+    path: "settings/rates/:id",
+    title: "Edytuj Stawkę",
+    loadComponent: () =>
+      import("./settings/rates/rate-form/rate-form.component").then(
+        (m) => m.RateFormComponent,
+      ),
+  },
 ];

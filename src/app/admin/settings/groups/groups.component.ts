@@ -9,5 +9,9 @@ import { SettingListComponent } from "../setting-list/setting-list.component";
   styleUrl: './groups.component.scss'
 })
 export class GroupsComponent {
-
+  tableColumns = [
+    { name: "id", def: "id" },
+    { name: "Nazwa", def: "name" },
+    { name: "Sortowanie", def: "sort" },
+  ];
 }
