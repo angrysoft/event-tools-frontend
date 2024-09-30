@@ -12,6 +12,6 @@ export class RatesComponent {
   tableColumns = [
     { name: "id", def: "id" },
     { name: "Nazwa", def: "name" },
-    { name: "Typ", def: "rateType" },
+    { name: "Typ", def: "rateTypeName" },
   ];
 }

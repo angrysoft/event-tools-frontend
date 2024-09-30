@@ -18,7 +18,6 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { CrudService } from "../../../../services/crud.service";
 import { Rate, RateForm, RateType } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
 
@@ -52,6 +51,7 @@ export class RateFormComponent {
   error = signal<string>("");
   formTitle = input<string>("Dodaj Stawkę");
   rateTypes = signal<RateType[]>([]);
+  showOvertime = signal<boolean>(false);
   readonly route = inject(ActivatedRoute);
   private _snackBar = inject(MatSnackBar);
 
@@ -80,10 +80,10 @@ export class RateFormComponent {
     effect(() => {
       if (this.rateId() >= 0) {
         this.service.get(this.rateId()).subscribe((resp) => {
-          console.log(resp);
           if (resp.ok) {
             this.rateForm.patchValue(resp.data);
             this.update = true;
+            this.verifyRateType();
           }
         });
       }
@@ -144,7 +144,24 @@ export class RateFormComponent {
     });
   }
 
-  onTypeSet() {
-    throw new Error("Method not implemented.");
+  verifyRateType() {
+    switch (this.rateForm.controls.rateType.value) {
+      case "HOUR_RATE":
+      case "BASE_OVERTIME_RATE":
+        this.showOvertime.set(true);
+        this.rateForm.controls.overtimeAfter.addValidators(Validators.required);
+        this.rateForm.controls.overtimeAfter.updateValueAndValidity({
+          onlySelf: true,
+        });
+        break;
+      default:
+        this.showOvertime.set(false);
+        this.rateForm.controls.overtimeAfter.reset();
+        this.rateForm.controls.overtimeAfter.clearValidators();
+        this.rateForm.controls.overtimeAfter.updateValueAndValidity({
+          onlySelf: true,
+        });
+        break;
+    }
   }
 }
