@@ -30,6 +30,7 @@ interface RateValue {
 }
 
 interface RateValueForm {
+  id: FormControl<number | null>;
   workerId: FormControl<number | null>;
   rateId: FormControl<number | null>;
   perHourOvertimeValue: FormControl<number | null>;

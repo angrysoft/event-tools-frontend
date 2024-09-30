@@ -37,4 +37,18 @@ export class RatesService extends CrudService<Rate> {
         catchError(this.handleError),
       );
   }
+
+  createRateValue(rateValue: Partial<RateValue>): Observable<RestResponse<string>> {
+    return this.http.post<RestResponse<string>>(`${this.api}/values`, rateValue)
+    .pipe(
+      catchError(this.handleError),
+    )
+  }
+
+  updateRateValue(rateValueId: number, rateValue: Partial<RateValue>): Observable<RestResponse<string>> {
+    return this.http.put<RestResponse<string>>(`${this.api}/values/${rateValueId}`, rateValue)
+    .pipe(
+      catchError(this.handleError),
+    )
+  }
 }

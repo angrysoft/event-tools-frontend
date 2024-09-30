@@ -56,7 +56,7 @@ export const adminRoutes: Routes = [
       ),
   },
   {
-    path: "workers/:workerId/rates/:rateId",
+    path: "workers/:workerId/rates/:rateValueId",
     title: "Edytuj Stawkę",
     loadComponent: () =>
       import("./workers/rates/rate-value-form/rate-value-form.component").then(
