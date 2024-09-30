@@ -49,7 +49,6 @@ export class DocFormComponent implements OnInit {
   docId = signal<number>(-1);
   workerId = signal<number>(-1);
   update: boolean = false;
-  formIdName = "doc-form";
   backTo = signal<string>("/admin/workers");
   canSend = signal<boolean>(false);
   docForm: FormGroup<WorkerDocForm>;

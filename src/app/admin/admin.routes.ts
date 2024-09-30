@@ -48,6 +48,22 @@ export const adminRoutes: Routes = [
       ),
   },
   {
+    path: "workers/:workerId/rates/add",
+    title: "Przypisz Dokument",
+    loadComponent: () =>
+      import("./workers/rates/rate-value-form/rate-value-form.component").then(
+        (m) => m.RateValueFormComponent,
+      ),
+  },
+  {
+    path: "workers/:workerId/rates/:rateId",
+    title: "Edytuj Stawkę",
+    loadComponent: () =>
+      import("./workers/rates/rate-value-form/rate-value-form.component").then(
+        (m) => m.RateValueFormComponent,
+      ),
+  },
+  {
     path: "settings/groups",
     title: "Grupy",
     loadComponent: () =>

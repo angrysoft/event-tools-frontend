@@ -1,1 +1,60 @@
-<p>rates works!</p>
+<div class="item-list">
+  <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/rates/add">
+    <mat-icon>add</mat-icon>
+    Przypisz Stawkę
+  </a>
+  @for (rate of workerRates(); track rate.rateValueId) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ rate.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        @if (rate.rateType === "CONSTANT_RATE" || rate.rateType ===
+        "BASE_OVERTIME_RATE") {
+        <mat-list-item>
+          <span> Stawka podstawowa: </span>
+          <span>{{ rate.value }} zł</span>
+        </mat-list-item>
+        } @if (rate.rateType === "HOUR_RATE" || rate.rateType ===
+        "BASE_OVERTIME_RATE") {
+        <mat-list-item>
+          <span> Stawka za nadgodzinę: </span>
+          <span>{{ rate.perHourOvertimeValue }} zł</span>
+        </mat-list-item>
+        } @if (rate.rateType === "HOUR_RATE") {
+        <mat-list-item>
+          <span> Stawka za godzinę: </span>
+          <span>{{ rate.perHourValue }} zł</span>
+        </mat-list-item>
+        }
+      </mat-list>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-actions>
+        <button
+          mat-button
+          routerLink="/admin/workers/{{ workerId() }}/rates/{{
+            rate.rateValueId
+          }}"
+        >
+          Edytuj
+        </button>
+        <button
+          mat-button
+          class="tertiary-button"
+          (click)="removeRateValue(rate.rateValueId)"
+        >
+          Usuń
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+  } @empty {
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <h4>Brak Dokumentów</h4>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>
