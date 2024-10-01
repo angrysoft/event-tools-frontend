@@ -1,6 +1,6 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, effect, inject, OnInit, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -52,7 +52,7 @@ export class RateValueFormComponent implements OnInit {
   readonly service = inject(RatesService);
   rateValueId = signal<number>(-1);
   workerId = signal<number>(-1);
-  update: boolean = false;
+  update = signal<boolean>(false);
   backTo = signal<string>("/admin/workers/");
   canSend = signal<boolean>(false);
   rateValueForm: FormGroup<RateValueForm>;
@@ -63,19 +63,6 @@ export class RateValueFormComponent implements OnInit {
   private _snackBar = inject(MatSnackBar);
 
   constructor() {
-    const paramWorkerId = this.route.snapshot.paramMap.get("workerId") 
-    if (paramWorkerId) {
-      this.workerId.set(Number(paramWorkerId));
-      this.backTo.update(back => back + `${paramWorkerId}`);
-    }
-    const paramRateValueId = this.route.snapshot.paramMap.get("rateValueId");
-    if (paramRateValueId) {
-      console.log(paramRateValueId);
-      this.rateValueId.set(Number(paramRateValueId));
-      this.update = true;
-      
-    }
-
     this.rateValueForm = new FormGroup<RateValueForm>({
       id: new FormControl(null),
       workerId: new FormControl(this.workerId(), Validators.required),
@@ -91,9 +78,31 @@ export class RateValueFormComponent implements OnInit {
       value: new FormControl({ value: 0, disabled: true }, Validators.required),
     });
 
+    const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
+    if (paramWorkerId) {
+      this.workerId.set(Number(paramWorkerId));
+      this.backTo.update((back) => back + `${paramWorkerId}`);
+    }
+    const paramRateValueId = this.route.snapshot.paramMap.get("rateValueId");
+    if (paramRateValueId) {
+      this.rateValueId.set(Number(paramRateValueId));
+      this.service.getRateValue(this.rateValueId()).subscribe((resp) => {
+        if (resp.ok) {
+          this.rateValueForm.patchValue(resp.data);
+          this.update.set(true);
+        }
+      });
+    }
+
     this.service.getAll().subscribe((resp) => {
       if (resp.ok) {
         this.rates.set(resp.data.items);
+      }
+    });
+
+    effect(() => {
+      if (this.update()) {
+        this.verifyRateType();
       }
     });
   }
@@ -102,10 +111,6 @@ export class RateValueFormComponent implements OnInit {
     this.rateValueForm.statusChanges.subscribe((changeEvent) => {
       this.canSend.set(changeEvent === "VALID" && this.rateValueForm.dirty);
     });
-
-    if (this.update) {
-      this.verifyRateType();
-    }
   }
 
   handleSubmit() {
@@ -113,9 +118,7 @@ export class RateValueFormComponent implements OnInit {
       return;
     }
 
-    console.log(this.rateValueForm.value);
-
-    if (this.update) this.updateRateValue();
+    if (this.update()) this.updateRateValue();
     else this.createRateValue();
   }
 
@@ -145,7 +148,6 @@ export class RateValueFormComponent implements OnInit {
       .filter((el) => el.id === this.rateValueForm.controls.rateId.value)
       .at(0);
 
-    console.log(currentRate);
 
     switch (currentRate?.rateType) {
       case "HOUR_RATE":
@@ -168,6 +170,12 @@ export class RateValueFormComponent implements OnInit {
     }
 
     this.rateValueForm.updateValueAndValidity();
+  }
+
+  getRateName() {
+    return this.rates()
+      .filter((el) => el.id === this.rateValueForm.controls.rateId.value)
+      .at(0)?.name;
   }
 
   handleError(err: any) {

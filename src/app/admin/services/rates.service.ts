@@ -29,10 +29,10 @@ export class RatesService extends CrudService<Rate> {
     );
   }
 
-  deleteRateValue(itemId: number): Observable<RestResponse<void | string>> {
-    return this.http
-      .delete<RestResponse<void | string>>(`${this.api}/values/${itemId}`)
-      .pipe(catchError(this.handleError));
+  getRateValue(rateValueId: number): Observable<RestResponse<RateValueDto>> {
+    return this._get<RestResponse<RateValueDto>>(
+      `${this.api}/values/${rateValueId}`,
+    );
   }
 
   createRateValue(
@@ -49,6 +49,12 @@ export class RatesService extends CrudService<Rate> {
   ): Observable<RestResponse<string>> {
     return this.http
       .put<RestResponse<string>>(`${this.api}/values/${rateValueId}`, rateValue)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteRateValue(itemId: number): Observable<RestResponse<void | string>> {
+    return this.http
+      .delete<RestResponse<void | string>>(`${this.api}/values/${itemId}`)
       .pipe(catchError(this.handleError));
   }
 }

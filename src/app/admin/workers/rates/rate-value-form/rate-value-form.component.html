@@ -11,12 +11,14 @@
     id="rate-value-form"
     (submit)="handleSubmit()"
   >
-    @if (! this.update) {
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>Stawka</mat-card-title>
       </mat-card-header>
       <mat-card-content class="form-group">
+        @if (this.update()) {
+        <h3>{{ getRateName() }}</h3>
+        } @else {
         <mat-form-field appearance="outline">
           <mat-label>Rodzaj Stawki</mat-label>
           <mat-select
@@ -28,9 +30,10 @@
             }
           </mat-select>
         </mat-form-field>
+        }
       </mat-card-content>
     </mat-card>
-    }
+
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>Wartości</mat-card-title>
@@ -70,7 +73,7 @@
       </mat-card-content>
     </mat-card>
 
-    @if (update) {
+    @if (update()) {
     <button mat-fab extended type="button" (click)="deleteRateValue()">
       <mat-icon>delete</mat-icon>
       Usuń Stawkę
