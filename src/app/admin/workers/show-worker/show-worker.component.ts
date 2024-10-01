@@ -68,7 +68,6 @@ export class ShowWorkerComponent {
   loading = signal<boolean>(true);
 
   constructor() {
-    console.log(this.tabIndex);
     this.workerService.get(this.workerId).subscribe((response) => {
       if (response.ok) {
         this.worker = response.data;

@@ -19,7 +19,7 @@ interface RateType {
   value: string;
 }
 
-interface RateValue {
+interface RateValueDto {
   rateValueId: number;
   name: string;
   rateType: string;
@@ -38,4 +38,13 @@ interface RateValueForm {
   value: FormControl<number | null>;
 }
 
-export { Rate, RateForm, RateType, RateValue, RateValueForm };
+interface RateValue {
+  id?: number | null;
+  workerId: number | null;
+  rateId: number | null;
+  perHourOvertimeValue: number | null;
+  perHourValue: number | null;
+  value: number | null;
+}
+
+export { Rate, RateForm, RateType, RateValueDto, RateValueForm, RateValue };

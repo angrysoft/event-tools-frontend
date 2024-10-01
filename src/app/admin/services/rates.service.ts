@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CrudService } from "../../services/crud.service";
-import { Rate, RateType, RateValue } from "../models/rate";
+import { Rate, RateType, RateValue, RateValueDto } from "../models/rate";
 import { DataListResponse } from "../../models/data-list-response";
 import { catchError, Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";
@@ -9,7 +9,6 @@ import { RestResponse } from "../../models/rest-response";
   providedIn: "root",
 })
 export class RatesService extends CrudService<Rate> {
-  
   constructor() {
     super();
     this.api = "/api/admin/workers/rates";
@@ -23,8 +22,8 @@ export class RatesService extends CrudService<Rate> {
 
   getWorkerRates(
     workerId: number,
-  ): Observable<RestResponse<DataListResponse<RateValue>>> {
-    return this._get<RestResponse<DataListResponse<RateValue>>>(
+  ): Observable<RestResponse<DataListResponse<RateValueDto>>> {
+    return this._get<RestResponse<DataListResponse<RateValueDto>>>(
       `${this.api}/values`,
       { workerId: workerId },
     );
@@ -33,22 +32,23 @@ export class RatesService extends CrudService<Rate> {
   deleteRateValue(itemId: number): Observable<RestResponse<void | string>> {
     return this.http
       .delete<RestResponse<void | string>>(`${this.api}/values/${itemId}`)
-      .pipe(
-        catchError(this.handleError),
-      );
+      .pipe(catchError(this.handleError));
   }
 
-  createRateValue(rateValue: Partial<RateValue>): Observable<RestResponse<string>> {
-    return this.http.post<RestResponse<string>>(`${this.api}/values`, rateValue)
-    .pipe(
-      catchError(this.handleError),
-    )
+  createRateValue(
+    rateValue: Partial<RateValue>,
+  ): Observable<RestResponse<string>> {
+    return this.http
+      .post<RestResponse<string>>(`${this.api}/values`, rateValue)
+      .pipe(catchError(this.handleError));
   }
 
-  updateRateValue(rateValueId: number, rateValue: Partial<RateValue>): Observable<RestResponse<string>> {
-    return this.http.put<RestResponse<string>>(`${this.api}/values/${rateValueId}`, rateValue)
-    .pipe(
-      catchError(this.handleError),
-    )
+  updateRateValue(
+    rateValueId: number,
+    rateValue: Partial<RateValue>,
+  ): Observable<RestResponse<string>> {
+    return this.http
+      .put<RestResponse<string>>(`${this.api}/values/${rateValueId}`, rateValue)
+      .pipe(catchError(this.handleError));
   }
 }

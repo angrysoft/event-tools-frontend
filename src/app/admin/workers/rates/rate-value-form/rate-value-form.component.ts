@@ -43,9 +43,9 @@ import { RatesService } from "../../../services/rates.service";
   styleUrl: "./rate-value-form.component.scss",
 })
 export class RateValueFormComponent implements OnInit {
-deleteRateValue() {
-throw new Error('Method not implemented.');
-}
+  deleteRateValue() {
+    throw new Error("Method not implemented.");
+  }
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
@@ -63,21 +63,32 @@ throw new Error('Method not implemented.');
   private _snackBar = inject(MatSnackBar);
 
   constructor() {
-    const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
-    if (paramWorkerId) this.workerId.set(Number(paramWorkerId));
+    const paramWorkerId = this.route.snapshot.paramMap.get("workerId") 
+    if (paramWorkerId) {
+      this.workerId.set(Number(paramWorkerId));
+      this.backTo.update(back => back + `${paramWorkerId}`);
+    }
     const paramRateValueId = this.route.snapshot.paramMap.get("rateValueId");
     if (paramRateValueId) {
+      console.log(paramRateValueId);
       this.rateValueId.set(Number(paramRateValueId));
       this.update = true;
+      
     }
 
-    this.rateValueForm = new FormGroup({
-      id: new FormControl(rateValueId());
-      workerId: new FormControl(this.workerId()),
-      rateId: new FormControl(this.rateId()),
-      perHourOvertimeValue: new FormControl({value: 0, disabled:true}, Validators.required),
-      perHourValue: new FormControl({value: 0, disabled:true}, Validators.required),
-      value: new FormControl({value: 0, disabled:true}, Validators.required),
+    this.rateValueForm = new FormGroup<RateValueForm>({
+      id: new FormControl(null),
+      workerId: new FormControl(this.workerId(), Validators.required),
+      rateId: new FormControl(null, Validators.required),
+      perHourOvertimeValue: new FormControl(
+        { value: 0, disabled: true },
+        Validators.required,
+      ),
+      perHourValue: new FormControl(
+        { value: 0, disabled: true },
+        Validators.required,
+      ),
+      value: new FormControl({ value: 0, disabled: true }, Validators.required),
     });
 
     this.service.getAll().subscribe((resp) => {
@@ -91,6 +102,10 @@ throw new Error('Method not implemented.');
     this.rateValueForm.statusChanges.subscribe((changeEvent) => {
       this.canSend.set(changeEvent === "VALID" && this.rateValueForm.dirty);
     });
+
+    if (this.update) {
+      this.verifyRateType();
+    }
   }
 
   handleSubmit() {
@@ -98,6 +113,7 @@ throw new Error('Method not implemented.');
       return;
     }
 
+    console.log(this.rateValueForm.value);
 
     if (this.update) this.updateRateValue();
     else this.createRateValue();
@@ -109,10 +125,14 @@ throw new Error('Method not implemented.');
       else this.handleError(resp);
     });
   }
-  
+
   updateRateValue() {
+    if (!this.rateValueId()) {
+      return;
+    }
+
     this.service
-      .updateRateValue( this.rateValueForm.value)
+      .updateRateValue(this.rateValueId(), this.rateValueForm.value)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.handleError(resp);
