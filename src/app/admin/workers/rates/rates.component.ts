@@ -55,9 +55,7 @@ export class RatesComponent implements OnInit {
         this.service.deleteRateValue(rateValueId).subscribe((response) => {
           if (response.ok) {
             this.workerRates.set(
-              this.workerRates().filter(
-                (rate) => rate.rateValueId !== rateValueId,
-              ),
+              this.workerRates().filter((rate) => rate.id !== rateValueId),
             );
           }
         });

@@ -20,7 +20,7 @@ interface RateType {
 }
 
 interface RateValueDto {
-  rateValueId: number;
+  id: number;
   name: string;
   rateType: string;
   overtimeAfter?: number;

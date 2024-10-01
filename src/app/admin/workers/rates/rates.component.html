@@ -3,7 +3,7 @@
     <mat-icon>add</mat-icon>
     Przypisz Stawkę
   </a>
-  @for (rate of workerRates(); track rate.rateValueId) {
+  @for (rate of workerRates(); track rate.id) {
   <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title>{{ rate.name }}</mat-card-title>
@@ -35,7 +35,7 @@
         <button
           mat-button
           routerLink="/admin/workers/{{ workerId() }}/rates/{{
-            rate.rateValueId
+            rate.id
           }}"
         >
           Edytuj
@@ -43,7 +43,7 @@
         <button
           mat-button
           class="tertiary-button"
-          (click)="removeRateValue(rate.rateValueId)"
+          (click)="removeRateValue(rate.id)"
         >
           Usuń
         </button>

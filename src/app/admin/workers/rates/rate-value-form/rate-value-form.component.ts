@@ -117,7 +117,8 @@ export class RateValueFormComponent implements OnInit {
     if (!this.rateValueForm.valid) {
       return;
     }
-
+    console.log(this.rateValueForm.value);
+    //FIXME workerid in update
     if (this.update()) this.updateRateValue();
     else this.createRateValue();
   }
@@ -140,7 +141,6 @@ export class RateValueFormComponent implements OnInit {
         if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.handleError(resp);
       });
-    throw new Error("Method not implemented.");
   }
 
   verifyRateType() {
