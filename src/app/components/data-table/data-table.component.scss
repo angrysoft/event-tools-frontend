@@ -1,0 +1,13 @@
+.table-wrapper {
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+tr {
+    cursor: pointer;
+}
+
+tr:hover {
+    background-color:  var(--sys-secondary);
+    color: var(--sys-on-secondary-fixed)
+}

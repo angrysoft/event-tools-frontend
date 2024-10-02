@@ -6,7 +6,7 @@
         type="search"
         matInput
         placeholder="Szukaj"
-        formControlName="search"
+        formControlName="query"
       />
       <mat-hint>Minimum 3 znaki</mat-hint>
     </mat-form-field>
@@ -22,13 +22,15 @@
       <mat-icon>backspace</mat-icon>
     </button>
   </div>
+  @if(filters()) {
   <mat-form-field appearance="outline">
     <mat-label>Filtruj po Ekipie</mat-label>
     <mat-select formControlName="filter" (selectionChange)="onFilterSet()">
-      <mat-option value="none" ></mat-option>
+      <mat-option value="none"></mat-option>
       @for (fn of filters(); track fn.name) {
       <mat-option [value]="fn.name">{{ fn.name }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
+  }
 </form>

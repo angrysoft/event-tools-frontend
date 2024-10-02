@@ -1,79 +1,32 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  signal,
-  ViewChild,
-} from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from "@angular/material/icon";
-import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatTable, MatTableModule } from "@angular/material/table";
+import { AfterViewInit, Component, inject, signal } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import { AddButtonComponent } from "../../components/add-button/add-button.component";
+import { DataTableComponent } from "../../components/data-table/data-table.component";
 import { SearchComponent } from "../../components/search/search.component";
 import { WorkersService } from "../services/workers.service";
-import { WorkersItem } from "../models/worker";
-import { WorkersDataSource } from "./workers-datasource";
-import { LoaderComponent } from "../../components/loader/loader.component";
 
 @Component({
   selector: "app-workers",
   templateUrl: "./workers.component.html",
   styleUrl: "./workers.component.scss",
   standalone: true,
-  imports: [
-    MatTableModule,
-    MatPaginatorModule,
-    MatIconModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatFormFieldModule,
-    SearchComponent,
-    RouterLink,
-    AddButtonComponent,
-    LoaderComponent,
-  ],
+  imports: [SearchComponent, RouterLink, DataTableComponent],
 })
 export class WorkersComponent implements AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatTable) table!: MatTable<WorkersItem>;
-  dataSource!: WorkersDataSource;
-  displayedColumns = ["id", "firstName", "lastName", "team"];
   teamFilter = signal<{ name: string }[]>([]);
   readonly router = inject(Router);
   readonly workerService = inject(WorkersService);
-
-  constructor() {
-    this.dataSource = new WorkersDataSource(this.workerService);
-  }
+  tableColumns = [
+    { name: "id", def: "id" },
+    { name: "Imię", def: "firstName" },
+    { name: "Nazwisko", def: "lastName" },
+    { name: "Ekipa", def: "team" },
+  ];
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
-    this.dataSource.loadData();
     this.workerService.getWorkersHints().subscribe((resp) => {
       if (resp.ok) {
         this.teamFilter.set(resp.data.teams);
       }
     });
-  }
-
-  searchQuery(query: any) {
-    this.dataSource.query = query.search;
-    this.dataSource.filter = query.filter;
-    this.dataSource.loadData();
-  }
-
-  resetSearch() {
-    this.paginator.firstPage();
-    this.dataSource.query = "";
-    this.dataSource.loadData();
-  }
-
-  onClick(row: any) {
-    this.router.navigateByUrl(`/admin/workers/${row.id}`);
   }
 }

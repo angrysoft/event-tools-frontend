@@ -4,14 +4,14 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { CrudService } from "../../../services/crud.service";
 
 export class ListDataSource<T> extends DataSource<T> {
-  private listSubject = new BehaviorSubject<T[]>([]);
+  private readonly listSubject = new BehaviorSubject<T[]>([]);
   public query = "";
   public loading = signal<boolean>(false);
 
   count: number = 0;
   tabelFilter: string = "";
 
-  constructor(private crudService: CrudService<T>) {
+  constructor(private readonly crudService: CrudService<T>) {
     super();
   }
 

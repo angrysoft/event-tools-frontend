@@ -11,6 +11,7 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInput } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
+import { SearchQuery, Filter } from "./model";
 
 @Component({
   selector: "app-search",
@@ -31,10 +32,10 @@ import { MatSelectModule } from "@angular/material/select";
 export class SearchComponent {
   searchRequest = output<SearchQuery>();
   resetSearch = output();
-  filters = input<Filter[]>([]);
+  filters = input<Filter[]>();
 
   searchForm: FormGroup = new FormGroup({
-    search: new FormControl("", {
+    query: new FormControl("", {
       nonNullable: true,
       // validators: [Validators.required, Validators.minLength(3)],
     }),
@@ -56,13 +57,4 @@ export class SearchComponent {
     this.resetSearch.emit();
     this.searchForm.reset();
   }
-}
-
-interface Filter {
-  name: string;
-}
-
-interface SearchQuery {
-  search: string;
-  filter: string | null;
 }

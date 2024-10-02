@@ -1,50 +1,7 @@
-<app-loader [loading]="dataSource.loading()" />
-
-<div class="side-content">
-  <app-search
-    (searchRequest)="searchQuery($event)"
-    (resetSearch)="resetSearch()"
-    [filters]="teamFilter()"
-  />
-
-  <div class="mat-elevation-z8 worker-table-wrapper">
-    <table mat-table aria-label="Elements">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef>Imię</th>
-        <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef>Nazwisko</th>
-        <td mat-cell *matCellDef="let row">{{ row.lastName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="team">
-        <th mat-header-cell *matHeaderCellDef>Ekipa</th>
-        <td mat-cell *matCellDef="let row">{{ row.team }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        (click)="onClick(row)"
-      ></tr>
-    </table>
-
-    <mat-paginator
-      #paginator
-      [length]="dataSource.count"
-      [pageIndex]="0"
-      [pageSizeOptions]="[15, 30, 45]"
-      aria-label="Select page"
-    >
-    </mat-paginator>
-  </div>
-  <app-add-button url="/admin/workers/add" />
-</div>
+<app-data-table
+  api="/api/admin/workers"
+  actionsUrl="/admin/workers"
+  [tableColumns]="tableColumns"
+  [search]="true"
+  [filters]="teamFilter()"
+/>

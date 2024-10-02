@@ -137,4 +137,26 @@ export const adminRoutes: Routes = [
         (m) => m.RateFormComponent,
       ),
   },
+  {
+    path: "settings/addons",
+    title: "Dodatki",
+    loadComponent: () =>
+      import("./settings/addons/addons.component").then((m) => m.AddonsComponent),
+  },
+  {
+    path: "settings/addons/add",
+    title: "Dodaj Dodatek",
+    loadComponent: () =>
+      import("./settings/addons/addon-form/addon-form.component").then(
+        (m) => m.AddonFormComponent,
+      ),
+  },
+  {
+    path: "settings/addons/:id",
+    title: "Edytuj Dodatek",
+    loadComponent: () =>
+      import("./settings/addons/addon-form/addon-form.component").then(
+        (m) => m.AddonFormComponent,
+      ),
+  },
 ];

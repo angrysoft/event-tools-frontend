@@ -10,7 +10,7 @@ import { WorkerHints } from "../models/worker-hints";
   providedIn: "root",
 })
 export class WorkersService extends CrudService<Worker> {
-  private apiWorkers = "/api/admin/workers";
+  private readonly apiWorkers = "/api/admin/workers";
 
   constructor() {
     super();
@@ -38,7 +38,6 @@ export class WorkersService extends CrudService<Worker> {
     offset: number = 0,
     filter: string = "",
   ): Observable<RestResponse<DataListResponse<WorkersItem>>> {
-    console.log(filter);
     return this._get<RestResponse<DataListResponse<WorkersItem>>>(
       `${this.apiWorkers}/search`,
       {

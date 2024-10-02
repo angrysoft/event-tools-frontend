@@ -24,18 +24,10 @@ export class CrudService<T> {
     return this.apiUrl;
   }
 
-  getAll(): Observable<RestResponse<DataListResponse<T>>> {
-    return this._get<RestResponse<DataListResponse<T>>>(this.apiUrl);
-  }
-
-  getAllLimitAndOffset(
-    limit: number,
-    offset: number,
+  getAll(
+    opts: { limit: number; offset: number; filter?: string } | null = null,
   ): Observable<RestResponse<DataListResponse<T>>> {
-    return this._get<RestResponse<DataListResponse<T>>>(this.apiUrl, {
-      limit: limit,
-      offset: offset,
-    });
+    return this._get<RestResponse<DataListResponse<T>>>(this.apiUrl, opts);
   }
 
   get(id: number) {
@@ -48,7 +40,10 @@ export class CrudService<T> {
       .pipe(catchError(this.handleError));
   }
 
-  update(itemId:number, item: Partial<T> | FormData): Observable<RestResponse<void | string>> {
+  update(
+    itemId: number,
+    item: Partial<T> | FormData,
+  ): Observable<RestResponse<void | string>> {
     return this.http
       .put<RestResponse<void | string>>(`${this.apiUrl}/${itemId}`, item)
       .pipe(catchError(this.handleError));
@@ -57,9 +52,19 @@ export class CrudService<T> {
   delete(itemId: number): Observable<RestResponse<void | string>> {
     return this.http
       .delete<RestResponse<void | string>>(`${this.apiUrl}/${itemId}`)
-      .pipe(
-        catchError(this.handleError),
-      );
+      .pipe(catchError(this.handleError));
+  }
+
+  search(
+    query: string,
+    opts: { limit: number; offset: number; filter?: string } | null = null,
+  ): Observable<RestResponse<DataListResponse<T>>> {
+    let params = { query: query };
+    if (opts && Object.keys.length > 0) params = { ...params, ...opts };
+    return this._get<RestResponse<DataListResponse<T>>>(
+      `${this.apiUrl}/search`,
+      params,
+    );
   }
 
   protected _get<GT>(
