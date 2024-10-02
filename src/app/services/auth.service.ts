@@ -25,7 +25,7 @@ export class AuthService {
         switch (this.user?.authority) {
           case "ROLE_ADMIN":
           case "ROLE_COORDINATOR":
-            url = "/admin";
+            url = "/admin/dashboard";
             break;
           case "ROLE_WORKER":
             url = "/worker";

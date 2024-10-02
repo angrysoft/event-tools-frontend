@@ -2,6 +2,12 @@ import { Routes } from "@angular/router";
 
 export const adminRoutes: Routes = [
   {
+    path: "dashboard",
+    title: "Dashboard",
+    loadComponent: () =>
+      import("./dashboard/dashboard.component").then((m) => m.DashboardComponent),
+  },
+  {
     path: "workers",
     title: "Pracownicy",
     loadComponent: () =>
