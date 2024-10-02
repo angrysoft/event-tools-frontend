@@ -43,13 +43,9 @@ export class DataTableDataSource<T> extends DataSource<T> {
       offset: offset,
     };
 
-
-
     if (opts?.filter) {
       params = { ...params, filter: opts.filter };
     }
-
-    console.log("opts", opts);
 
     if (opts?.query && opts.query.length > 0) {
       action = this.crudService.search(opts.query, params);
