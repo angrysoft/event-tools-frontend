@@ -51,7 +51,6 @@ export class RateValueFormComponent implements OnInit {
   readonly router = inject(Router);
   readonly service = inject(RatesService);
   rateValueId = signal<number>(-1);
-  workerId = signal<number>(-1);
   update = signal<boolean>(false);
   backTo = signal<string>("/admin/workers/");
   canSend = signal<boolean>(false);
@@ -60,12 +59,12 @@ export class RateValueFormComponent implements OnInit {
   showOvertime = signal<boolean>(false);
   showBaseValue = signal<boolean>(false);
   showPerHour = signal<boolean>(false);
-  private _snackBar = inject(MatSnackBar);
+  private readonly _snackBar = inject(MatSnackBar);
 
   constructor() {
     this.rateValueForm = new FormGroup<RateValueForm>({
       id: new FormControl(null),
-      workerId: new FormControl(this.workerId(), Validators.required),
+      workerId: new FormControl(null, Validators.required),
       rateId: new FormControl(null, Validators.required),
       perHourOvertimeValue: new FormControl(
         { value: 0, disabled: true },
@@ -80,7 +79,7 @@ export class RateValueFormComponent implements OnInit {
 
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
-      this.workerId.set(Number(paramWorkerId));
+      this.rateValueForm.controls.workerId.setValue(Number(paramWorkerId));
       this.backTo.update((back) => back + `${paramWorkerId}`);
     }
     const paramRateValueId = this.route.snapshot.paramMap.get("rateValueId");
@@ -117,8 +116,6 @@ export class RateValueFormComponent implements OnInit {
     if (!this.rateValueForm.valid) {
       return;
     }
-    console.log(this.rateValueForm.value);
-    //FIXME workerid in update
     if (this.update()) this.updateRateValue();
     else this.createRateValue();
   }
@@ -138,7 +135,7 @@ export class RateValueFormComponent implements OnInit {
     this.service
       .updateRateValue(this.rateValueId(), this.rateValueForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo());
+        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
         else this.handleError(resp);
       });
   }
@@ -147,7 +144,6 @@ export class RateValueFormComponent implements OnInit {
     const currentRate = this.rates()
       .filter((el) => el.id === this.rateValueForm.controls.rateId.value)
       .at(0);
-
 
     switch (currentRate?.rateType) {
       case "HOUR_RATE":

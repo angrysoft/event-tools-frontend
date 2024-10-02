@@ -39,7 +39,7 @@
         <mat-card-title>Wartości</mat-card-title>
       </mat-card-header>
       <mat-card-content class="form-group">
-        @if (! rateValueForm.controls.value.disabled) {
+        @if (rateValueForm.controls.value.enabled) {
         <mat-form-field appearance="outline">
           <mat-label>Stawka</mat-label>
           <input
@@ -49,7 +49,7 @@
             placeholder="Stawka"
           />
         </mat-form-field>
-        } @if (! rateValueForm.controls.perHourOvertimeValue.disabled) {
+        } @if (rateValueForm.controls.perHourOvertimeValue.enabled) {
         <mat-form-field appearance="outline">
           <mat-label>Stawka za Nadgodzine</mat-label>
           <input
@@ -59,7 +59,7 @@
             placeholder="Nadgodzina"
           />
         </mat-form-field>
-        } @if (! rateValueForm.controls.perHourValue.disabled) {
+        } @if (rateValueForm.controls.perHourValue.enabled) {
         <mat-form-field appearance="outline">
           <mat-label>Stawka Za godzinę</mat-label>
           <input

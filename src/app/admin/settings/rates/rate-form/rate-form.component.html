@@ -24,8 +24,12 @@
             placeholder="Nazwa"
           />
         </mat-form-field>
+        @if (update()) {
+        <h3>{{ getRateType() }}</h3>
+        } @else {
         <mat-form-field appearance="outline">
           <mat-label>Rodzaj Stawki</mat-label>
+
           <mat-select
             formControlName="rateType"
             (selectionChange)="verifyRateType()"
@@ -35,9 +39,10 @@
             }
           </mat-select>
         </mat-form-field>
+        }
       </mat-card-content>
     </mat-card>
-    @if (showOvertime()) {
+    @if (rateForm.controls.overtimeAfter.enabled) {
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>Nadgodziny</mat-card-title>
@@ -54,7 +59,7 @@
         </mat-form-field>
       </mat-card-content>
     </mat-card>
-    } @if (update) {
+    } @if (update()) {
     <button mat-fab extended type="button" (click)="deleteRate()">
       <mat-icon>delete</mat-icon>
       Usuń Stawkę

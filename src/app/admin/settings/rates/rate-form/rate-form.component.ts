@@ -43,7 +43,7 @@ import { RatesService } from "../../../services/rates.service";
 export class RateFormComponent {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
-  update: boolean = false;
+  update = signal<boolean>(false);
   canSend = signal<boolean>(false);
   service: RatesService;
   rateForm: FormGroup<RateForm>;
@@ -53,7 +53,7 @@ export class RateFormComponent {
   rateTypes = signal<RateType[]>([]);
   showOvertime = signal<boolean>(false);
   readonly route = inject(ActivatedRoute);
-  private _snackBar = inject(MatSnackBar);
+  private readonly _snackBar = inject(MatSnackBar);
 
   constructor() {
     this.service = new RatesService();
@@ -66,15 +66,15 @@ export class RateFormComponent {
 
     const paramRateId = this.route.snapshot.paramMap.get("id");
     if (paramRateId) {
+      this.update.set(true);
       this.rateId.set(Number(paramRateId));
-      this.update = true;
     }
 
     this.rateForm = new FormGroup<RateForm>({
       id: new FormControl(null),
       name: new FormControl("", [Validators.required]),
       rateType: new FormControl("", [Validators.required]),
-      overtimeAfter: new FormControl(),
+      overtimeAfter: new FormControl(null, Validators.required),
     });
 
     effect(() => {
@@ -82,7 +82,6 @@ export class RateFormComponent {
         this.service.get(this.rateId()).subscribe((resp) => {
           if (resp.ok) {
             this.rateForm.patchValue(resp.data);
-            this.update = true;
             this.verifyRateType();
           }
         });
@@ -100,7 +99,7 @@ export class RateFormComponent {
 
   handleSubmit() {
     if (this.rateForm.valid) {
-      if (this.update) this.updateRate();
+      if (this.update()) this.updateRate();
       else this.addRate();
     }
   }
@@ -144,24 +143,25 @@ export class RateFormComponent {
     });
   }
 
+  getRateType() {
+    return this.rateTypes()
+      .filter((el) => el.name === this.rateForm.controls.rateType.value)
+      .at(0)?.value;
+  }
+
   verifyRateType() {
     switch (this.rateForm.controls.rateType.value) {
       case "HOUR_RATE":
       case "BASE_OVERTIME_RATE":
-        this.showOvertime.set(true);
-        this.rateForm.controls.overtimeAfter.addValidators(Validators.required);
-        this.rateForm.controls.overtimeAfter.updateValueAndValidity({
-          onlySelf: true,
-        });
+        this.rateForm.controls.overtimeAfter.enable();
         break;
       default:
-        this.showOvertime.set(false);
         this.rateForm.controls.overtimeAfter.reset();
-        this.rateForm.controls.overtimeAfter.clearValidators();
-        this.rateForm.controls.overtimeAfter.updateValueAndValidity({
-          onlySelf: true,
-        });
+        this.rateForm.controls.overtimeAfter.disable();
         break;
     }
+    this.rateForm.controls.overtimeAfter.updateValueAndValidity({
+      onlySelf: true,
+    });
   }
 }

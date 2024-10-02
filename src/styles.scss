@@ -288,6 +288,10 @@ mat-card-content.form-group-row, .form-group-row {
     mat-card-content.form-group, .form-group {
         grid-template-columns: 1fr;
     }
+
+    .form-section {
+        padding: 0;
+    }
 }
 
 .item-list {
