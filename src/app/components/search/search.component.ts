@@ -48,6 +48,7 @@ export class SearchComponent {
   }
 
   onFilterSet() {
+    if (this.searchForm.get("filter")?.value === "none") this.onReset();
     this.searchRequest.emit(this.searchForm.value);
   }
 
