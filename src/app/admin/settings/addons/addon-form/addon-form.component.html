@@ -1,1 +1,51 @@
-<p>addon-form works!</p>
+<app-form-base
+  backTo="/admin/settings/addons"
+  [formTitle]="formTitle()"
+  formIdName="addon-form"
+  [canSend]="canSend()"
+>
+  <form
+    [formGroup]="addonForm"
+    class="form"
+    id="addon-form"
+    (submit)="handleSubmit()"
+  >
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Stawka</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwa</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            placeholder="Nazwa"
+          />
+        </mat-form-field>
+        @if (update()) {
+        <h3>{{ getAddonType() }}</h3>
+        } @else {
+        <mat-form-field appearance="outline">
+          <mat-label>Rodzaj Dodatku</mat-label>
+
+          <mat-select
+            formControlName="addonType"
+          >
+            @for (rt of addonTypes(); track rt.name) {
+            <mat-option [value]="rt.name">{{ rt.value }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        }
+      </mat-card-content>
+    </mat-card>
+    @if (update()) {
+    <button mat-fab extended type="button" (click)="deleteRate()">
+      <mat-icon>delete</mat-icon>
+      Usuń Dodatek
+    </button>
+    }
+  </form>
+</app-form-base>
