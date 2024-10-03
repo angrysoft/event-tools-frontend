@@ -10,17 +10,14 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list>
-        <mat-list-item>
-          <span> Rejestracja: </span>
-          <span>{{ car.registration }} zł</span>
-        </mat-list-item>
+        <mat-list-item>Rejestracja: {{ car.registration }}</mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-footer>
       <mat-card-actions>
         <button
           mat-button
-          routerLink="/admin/workers/{{ workerId() }}/addons/{{ car.id }}"
+          routerLink="/admin/workers/{{ workerId() }}/cars/{{ car.id }}"
         >
           Edytuj
         </button>

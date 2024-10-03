@@ -91,15 +91,15 @@ export const workersRoutes: Routes = [
     path: "workers/:workerId/cars/add",
     title: "Dodaj Auto",
     loadComponent: () =>
-      import("../settings/cars/car-form/car-form.component").then(
+      import("./cars/car-form/car-form.component").then(
         (m) => m.CarFormComponent,
       ),
   },
   {
-    path: "workers/:workerId/cars/:addonValueId",
+    path: "workers/:workerId/cars/:carId",
     title: "Edytuj Auto",
     loadComponent: () =>
-      import("../settings/cars/car-form/car-form.component").then(
+      import("./cars/car-form/car-form.component").then(
         (m) => m.CarFormComponent,
       ),
   },

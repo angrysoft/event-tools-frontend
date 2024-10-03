@@ -44,19 +44,17 @@ export class CarFormComponent {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   readonly service = inject(CarsService);
+  readonly route = inject(ActivatedRoute);
+  private readonly _snackBar = inject(MatSnackBar);
   update = signal<boolean>(false);
   canSend = signal<boolean>(false);
   carForm: FormGroup<CarForm>;
   carId = signal<number>(-1);
-  error = signal<string>("");
-  formTitle = input<string>("Dodaj Auto");
-  backTo = input<string>("/admin/settings/cars");
-  readonly route = inject(ActivatedRoute);
-  private readonly _snackBar = inject(MatSnackBar);
+  formTitle = input<string>("Dane Auta");
+  backTo = signal<string>("/admin/workers");
 
   constructor() {
-  
-    const paramCarId = this.route.snapshot.paramMap.get("id");
+    const paramCarId = this.route.snapshot.paramMap.get("carId");
     if (paramCarId) {
       this.update.set(true);
       this.carId.set(Number(paramCarId));
@@ -66,9 +64,19 @@ export class CarFormComponent {
       id: new FormControl(null),
       workerId: new FormControl(-1, Validators.required),
       name: new FormControl("", [Validators.required]),
-      registration: new FormControl("", [Validators.required]),
+      registration: new FormControl("", [
+        Validators.required,
+        Validators.maxLength(8),
+      ]),
     });
- //FIXME worker id needed
+
+    const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
+    if (paramWorkerId) {
+      console.log("di", paramWorkerId);
+      this.carForm.patchValue({ workerId: Number(paramWorkerId) });
+      this.backTo.set(`/admin/workers/${paramWorkerId}`);
+    }
+
     effect(() => {
       if (this.carId() >= 0) {
         this.service.get(this.carId()).subscribe((resp) => {
@@ -99,14 +107,14 @@ export class CarFormComponent {
     this.service
       .update(this.carId(), this.carForm.value as Car)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo());
+        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
         else this.handleError(resp);
       });
   }
 
   addCar() {
     this.service.create(this.carForm.value as Car).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo());
+      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
       else this.handleError(resp);
     });
   }

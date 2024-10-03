@@ -1,5 +1,6 @@
 <app-form-base
   [backTo]="backTo()"
+  [queryParams]="{ tab: '2' }"
   [formTitle]="formTitle()"
   formIdName="car-form"
   [canSend]="canSend()"
@@ -31,6 +32,8 @@
             type="text"
             formControlName="registration"
             placeholder="Rejestracja"
+            maxlength="8"
+            autocapitalize="on"
           />
         </mat-form-field>
       </mat-card-content>
