@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, EventEmitter, inject, OnInit, Output, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
@@ -8,11 +8,13 @@ import { MatListModule } from "@angular/material/list";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { LoaderComponent } from "../../../components/loader/loader.component";
 import { Worker } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
 import { DocsComponent } from "../docs/docs.component";
 import { RatesComponent } from "../rates/rates.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
+import { AddonsComponent } from "../addons/addons.component";
+import { CarsComponent } from "../cars/cars.component";
 
 export interface DialogData {
   workerId: number;
@@ -33,7 +35,9 @@ export interface DialogData {
     MatListModule,
     DocsComponent,
     RatesComponent,
-    LoaderComponent
+    LoaderComponent,
+    AddonsComponent,
+    CarsComponent
 ],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",

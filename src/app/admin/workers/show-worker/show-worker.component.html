@@ -130,12 +130,16 @@
       <app-docs [workerId]="workerId" />
     </mat-tab>
 
+    <mat-tab label="Auta">
+      <app-cars [workerId]="workerId" />
+    </mat-tab>
+
     <mat-tab label="Stawki">
       <app-rates [workerId]="workerId" />
     </mat-tab>
 
     <mat-tab label="Dodatki">
-      <app-rates [workerId]="workerId" />
+      <app-addons [workerId]="workerId" />
     </mat-tab>
   </mat-tab-group>
 </section>

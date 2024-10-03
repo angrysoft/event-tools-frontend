@@ -43,9 +43,6 @@ import { RatesService } from "../../../services/rates.service";
   styleUrl: "./rate-value-form.component.scss",
 })
 export class RateValueFormComponent implements OnInit {
-  deleteRateValue() {
-    throw new Error("Method not implemented.");
-  }
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
@@ -122,7 +119,7 @@ export class RateValueFormComponent implements OnInit {
 
   createRateValue() {
     this.service.createRateValue(this.rateValueForm.value).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
+      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
       else this.handleError(resp);
     });
   }
@@ -135,7 +132,7 @@ export class RateValueFormComponent implements OnInit {
     this.service
       .updateRateValue(this.rateValueId(), this.rateValueForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
+        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
         else this.handleError(resp);
       });
   }

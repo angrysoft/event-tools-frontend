@@ -27,14 +27,14 @@ interface AddonValueDto {
 interface AddonValueForm {
   id: FormControl<number | null>;
   workerId: FormControl<number | null>;
-  rateId: FormControl<number | null>;
+  addonId: FormControl<number | null>;
   value: FormControl<number | null>;
 }
 
 interface AddonValue {
   id?: number | null;
   workerId: number | null;
-  rateId: number | null;
+  addonId: number | null;
   value: number | null;
 }
 

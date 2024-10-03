@@ -1,0 +1,47 @@
+<div class="item-list">
+    <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/addons/add">
+      <mat-icon>add</mat-icon>
+      Przypisz Dodatek
+    </a>
+    @for (addon of workerAddons(); track addon.id) {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ addon.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <span> Wartość: </span>
+            <span>{{ addon.value }} zł</span>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-footer>
+        <mat-card-actions>
+          <button
+            mat-button
+            routerLink="/admin/workers/{{ workerId() }}/addons/{{
+              addon.id
+            }}"
+          >
+            Edytuj
+          </button>
+          <button
+            mat-button
+            class="tertiary-button"
+            (click)="removeAddonValue(addon.id)"
+          >
+            Usuń
+          </button>
+        </mat-card-actions>
+      </mat-card-footer>
+    </mat-card>
+    } @empty {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <h4>Brak Dokumentów</h4>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  

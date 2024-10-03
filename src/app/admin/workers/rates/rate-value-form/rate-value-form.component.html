@@ -1,6 +1,6 @@
 <app-form-base
   [backTo]="backTo()"
-  [queryParams]="{ tab: '2' }"
+  [queryParams]="{ tab: '3' }"
   formIdName="rate-value-form"
   formTitle="Dokument"
   [canSend]="canSend()"
@@ -72,12 +72,5 @@
         }
       </mat-card-content>
     </mat-card>
-
-    @if (update()) {
-    <button mat-fab extended type="button" (click)="deleteRateValue()">
-      <mat-icon>delete</mat-icon>
-      Usuń Stawkę
-    </button>
-    }
   </form>
 </app-form-base>
