@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
   title = "Event Tools";
 
   constructor(
-    private matIconRegistry: MatIconRegistry,
-    private auth: AuthService,
+    private readonly matIconRegistry: MatIconRegistry,
+    private readonly auth: AuthService,
   ) {}
 
   ngOnInit(): void {
