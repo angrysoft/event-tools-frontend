@@ -1,3 +1,7 @@
+:host ::ng-deep.mat-mdc-paginator-container  {
+    justify-content: flex-start !important;
+ }
+ 
 .table-wrapper {
     overflow: auto;
     scrollbar-width: thin;

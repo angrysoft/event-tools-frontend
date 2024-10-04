@@ -11,16 +11,16 @@ export const workersRoutes: Routes = [
     path: "workers/add",
     title: "Dodaj Pracownika",
     loadComponent: () =>
-      import("./add-worker/add-worker.component").then(
-        (m) => m.AddWorkerComponent,
+      import("./worker-form/worker-form.component").then(
+        (m) => m.WorkerFormComponent,
       ),
   },
   {
-    path: "workers/edit/:id",
+    path: "workers/edit/:workerId",
     title: "Zmień Dane Pracownika",
     loadComponent: () =>
-      import("./edit-worker/edit-worker.component").then(
-        (m) => m.EditWorkerComponent,
+      import("./worker-form/worker-form.component").then(
+        (m) => m.WorkerFormComponent,
       ),
   },
   {

@@ -5,6 +5,7 @@ import {
   inject,
   input,
   signal,
+  untracked,
 } from "@angular/core";
 import {
   FormControl,
@@ -22,11 +23,12 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
+import { FormBaseComponent } from "../../../components/form-base/form-base.component";
 
 @Component({
   selector: "app-worker-form",
@@ -42,21 +44,23 @@ import { passwordValidator } from "./passwordValidator";
     MatDividerModule,
     MatCardModule,
     RouterLink,
+    FormBaseComponent,
   ],
   templateUrl: "./worker-form.component.html",
   styleUrl: "./worker-form.component.scss",
 })
 export class WorkerFormComponent implements OnInit {
+  readonly route = inject(ActivatedRoute);
   update: boolean = false;
   hasAccount: boolean = false;
-  backTo: string = "/admin/workers";
+  backTo = signal<string>("/admin/workers");
   canSend = signal<boolean>(false);
   passwordCheck = signal<boolean>(false);
   error = signal<string>("");
   workerAccount: FormGroup<WorkerAccount>;
   workerForm: FormGroup<WorkerForm>;
-  workerId = input<number>(-1);
-  formTitle = input<string>("Dodaj Pracownika");
+  workerId = signal<number>(-1);
+  formTitle = input<string>("Dane Pracownika");
 
   hints: WorkerHints = {
     teams: [],
@@ -125,28 +129,27 @@ export class WorkerFormComponent implements OnInit {
       user: this.workerAccount,
     });
 
-    effect(() => {
-      if (this.workerId() >= 0) {
-        this.workerService.get(this.workerId()).subscribe((response) => {
-          if (response.ok) {
-            this.workerForm.patchValue(response.data);
-            this.update = true;
-            this.hasAccount = response.data.hasAccount ?? false;
-            this.backTo = `/admin/workers/${response.data.id}`;
-          }
-        });
-      }
-    });
+    const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
+    if (paramWorkerId) {
+      this.backTo.set(`/admin/workers/${paramWorkerId}`);
+      this.workerId.set(Number(paramWorkerId));
+    }
 
-    // effect(() => {
-    //   if (this.passwordCheck()) {
-    //     this.workerAccount.controls.password.setValidators(Validators.required);
-    //     this.workerAccount.controls.password2.setValidators(
-    //       Validators.required,
-    //     );
-    //     this.workerAccount.setValidators(passwordValidator);
-    //   }
-    // });
+    effect(() => {
+      const wId = this.workerId();
+
+      untracked(() => {
+        if (wId >= 0) {
+          this.workerService.get(wId).subscribe((response) => {
+            if (response.ok) {
+              this.workerForm.patchValue(response.data);
+              this.update = true;
+              this.hasAccount = response.data.hasAccount ?? false;
+            }
+          });
+        }
+      });
+    });
   }
 
   ngOnInit(): void {
@@ -207,7 +210,10 @@ export class WorkerFormComponent implements OnInit {
 
   updateWorker() {
     this.workerService
-      .update(this.workerId(), { ...this.workerForm.value, id: this.workerId() })
+      .update(this.workerId(), {
+        ...this.workerForm.value,
+        id: this.workerId(),
+      })
       .subscribe((response) => {
         if (response.ok) {
           this.router.navigateByUrl("/admin/workers/" + this.workerId());

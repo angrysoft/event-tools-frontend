@@ -72,7 +72,6 @@ export class CarFormComponent {
 
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
-      console.log("di", paramWorkerId);
       this.carForm.patchValue({ workerId: Number(paramWorkerId) });
       this.backTo.set(`/admin/workers/${paramWorkerId}`);
     }

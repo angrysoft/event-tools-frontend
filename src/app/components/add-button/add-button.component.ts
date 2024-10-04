@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, input, Input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
@@ -11,6 +11,5 @@ import { RouterLink } from "@angular/router";
   styleUrl: "./add-button.component.scss",
 })
 export class AddButtonComponent {
-  @Input({ required: true })
-  url = "";
+  url = input.required<string>();
 }

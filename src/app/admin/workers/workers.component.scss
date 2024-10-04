@@ -1,34 +1,4 @@
-:host ::ng-deep.mat-mdc-paginator-container  {
-   justify-content: flex-start !important;
-}
-
-.workers {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    max-height: calc(100% - 4rem);
-    overflow: hidden;
-}
-
-.worker-table-wrapper {
-    overflow: auto;
-    scrollbar-width: thin;
-}
-
-tr {
-    cursor: pointer;
-}
-
-tr:hover {
-    background-color:  var(--sys-secondary);
-    color: var(--sys-on-secondary-fixed)
-}
 
 
-// @media only screen and (min-width: 600px) {
-//     .workers {
-//         max-height: calc(100% - 4rem);
-//         border: 1px solid red;
-//     }
-// }
+
 
