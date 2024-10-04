@@ -248,6 +248,7 @@
                 formControlName="password2"
                 placeholder="Hasło"
               />
+              <mat-error>{{ workerAccount.controls.password2.getError("matchError")}}</mat-error>
             </mat-form-field>
           </div>
           <div class="form-group">

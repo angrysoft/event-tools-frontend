@@ -1,10 +1,10 @@
 import { FormControl, FormGroup } from "@angular/forms";
 
 type WorkerAccount = {
-  username: FormControl<string>;
-  password: FormControl<string>;
-  password2: FormControl<string>;
-  authority: FormControl<string>;
+  username: FormControl<string | null>;
+  password: FormControl<string | null>;
+  password2: FormControl<string | null>;
+  authority: FormControl<string | null>;
 };
 
 type WorkerForm = {

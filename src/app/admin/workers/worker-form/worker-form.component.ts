@@ -75,15 +75,15 @@ export class WorkerFormComponent implements OnInit {
           nonNullable: true,
           validators: [Validators.required, Validators.minLength(3)],
         }),
-        password: new FormControl(),
-        password2: new FormControl(),
+        password: new FormControl(null, Validators.required),
+        password2: new FormControl(null, Validators.required),
         authority: new FormControl("", {
           nonNullable: true,
           validators: [Validators.required],
         }),
       },
       {
-        validators: [passwordValidator],
+        validators: [passwordValidator()],
       },
     );
 
@@ -138,15 +138,15 @@ export class WorkerFormComponent implements OnInit {
       }
     });
 
-    effect(() => {
-      if (this.passwordCheck()) {
-        this.workerAccount.controls.password.setValidators(Validators.required);
-        this.workerAccount.controls.password2.setValidators(
-          Validators.required,
-        );
-        this.workerAccount.setValidators(passwordValidator);
-      }
-    });
+    // effect(() => {
+    //   if (this.passwordCheck()) {
+    //     this.workerAccount.controls.password.setValidators(Validators.required);
+    //     this.workerAccount.controls.password2.setValidators(
+    //       Validators.required,
+    //     );
+    //     this.workerAccount.setValidators(passwordValidator);
+    //   }
+    // });
   }
 
   ngOnInit(): void {
@@ -176,6 +176,7 @@ export class WorkerFormComponent implements OnInit {
   }
 
   disableAccount() {
+    this.workerAccount.reset();
     this.workerAccount.disable();
     this.workerAccount.markAsPristine();
     this.workerAccount.updateValueAndValidity();
