@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-VERSION=0.0.1
+VERSION=$(npm pkg get version | sed 's/"//g')
 
 ng build
 
