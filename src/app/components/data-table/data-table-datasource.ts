@@ -14,6 +14,8 @@ export class DataTableDataSource<T> extends DataSource<T> {
   count: number = 0;
   tabelFilter: string = "";
   defaultPageSize: number = 15;
+  query: string | null = null;
+  filter: string | null = null;
 
   constructor(private readonly crudService: CrudService<T>) {
     super();
@@ -31,7 +33,7 @@ export class DataTableDataSource<T> extends DataSource<T> {
     this.dataSubject.complete();
   }
 
-  loadData(opts: { query?: string; filter?: string | null } | null = null) {
+  loadData() {
     this.loading.set(true);
     const offset =
       (this.paginator?.pageIndex ?? 0) *
@@ -43,12 +45,12 @@ export class DataTableDataSource<T> extends DataSource<T> {
       offset: offset,
     };
 
-    if (opts?.filter) {
-      params = { ...params, filter: opts.filter };
+    if (this.filter) {
+      params = { ...params, filter: this.filter };
     }
 
-    if (opts?.query && opts.query.length > 0) {
-      action = this.crudService.search(opts.query, params);
+    if (this.query && this.query.length > 0) {
+      action = this.crudService.search(this.query, params);
     } else {
       action = this.crudService.getAll(params);
     }

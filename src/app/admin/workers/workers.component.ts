@@ -20,6 +20,7 @@ export class WorkersComponent implements AfterViewInit {
     { name: "Imię", def: "firstName" },
     { name: "Nazwisko", def: "lastName" },
     { name: "Ekipa", def: "team" },
+    { name: "Grupa", def: "group" },
   ];
 
   ngAfterViewInit(): void {

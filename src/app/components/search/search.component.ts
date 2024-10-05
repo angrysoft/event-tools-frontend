@@ -37,7 +37,7 @@ export class SearchComponent {
   searchForm: FormGroup = new FormGroup({
     query: new FormControl("", {
       nonNullable: true,
-      // validators: [Validators.required, Validators.minLength(3)],
+      validators: [Validators.minLength(3)],
     }),
     filter: new FormControl(""),
   });

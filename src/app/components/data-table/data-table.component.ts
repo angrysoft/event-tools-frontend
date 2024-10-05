@@ -96,11 +96,15 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   }
 
   searchQuery(q: SearchQuery) {
+    this.dataSource.query = q.query;
+    this.dataSource.filter = q.filter;
     this.paginator.firstPage();
-    this.dataSource.loadData(q);
+    this.dataSource.loadData();
   }
 
   resetSearch() {
+    this.dataSource.query = "";
+    this.dataSource.filter = "";
     this.paginator.firstPage();
     this.dataSource.loadData();
   }
