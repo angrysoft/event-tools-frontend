@@ -1,10 +1,10 @@
 import {
   Component,
-  OnDestroy,
-  OnInit,
   effect,
   inject,
   input,
+  OnDestroy,
+  OnInit,
   signal,
   untracked,
 } from "@angular/core";
@@ -12,7 +12,6 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  StatusChangeEvent,
   Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -25,12 +24,12 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { debounceTime, Subject, takeUntil } from "rxjs";
+import { FormBaseComponent } from "../../../components/form-base/form-base.component";
 import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
-import { FormBaseComponent } from "../../../components/form-base/form-base.component";
-import { debounce, debounceTime, Subject, Subscription, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-worker-form",
@@ -64,7 +63,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   workerId = signal<number>(-1);
   formTitle = input<string>("Dane Pracownika");
   private readonly destroy = new Subject();
-  sub: Subscription = new Subscription();
 
   hints: WorkerHints = {
     teams: [],
@@ -109,13 +107,13 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
       ]),
       mother: new FormControl("", [Validators.minLength(3)]),
       father: new FormControl("", [Validators.minLength(3)]),
-      phone: new FormControl("", [
+      phone: new FormControl(null, [
         Validators.maxLength(9),
-        Validators.pattern(/\d9/),
+        Validators.pattern(/\d{9}/),
       ]),
-      phoneIce: new FormControl("", [
+      phoneIce: new FormControl(null, [
         Validators.maxLength(9),
-        Validators.pattern(/\d9/),
+        Validators.pattern(/\d{9}/),
       ]),
       email: new FormControl("", [Validators.required, Validators.email]),
       nickname: new FormControl(""),
@@ -171,13 +169,22 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
         this.canSend.set(formEvents === "VALID" && this.workerForm.dirty);
       });
 
-    this.sub = this.workerForm.controls.phone.valueChanges
+    this.workerForm.controls.phone.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy))
       .subscribe((val) => {
-        console.log(val);
         if (typeof val === "string") {
           this.workerForm.controls.phone.setValue(
-            val?.replace(/\s+|[a-zA-Z]+/g, ""),
+            val?.replace(/[\W_a-zA-Z]+/g, ""),
+            { emitEvent: false },
+          );
+        }
+      });
+    this.workerForm.controls.phoneIce.valueChanges
+      .pipe(debounceTime(500), takeUntil(this.destroy))
+      .subscribe((val) => {
+        if (typeof val === "string") {
+          this.workerForm.controls.phoneIce.setValue(
+            val?.replace(/[\W_a-zA-Z]+/g, ""),
             { emitEvent: false },
           );
         }
@@ -187,7 +194,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
-    console.log(this.sub.closed);
   }
 
   toggleAccount() {
