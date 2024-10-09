@@ -1,7 +1,8 @@
-import { Component, inject, input, OnInit, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
+import { MatAccordion, MatExpansionModule, MatExpansionPanel } from "@angular/material/expansion";
 import { MatIcon } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { RouterLink } from "@angular/router";
@@ -9,10 +10,13 @@ import { AddButtonComponent } from "../../../components/add-button/add-button.co
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { RateValueDto } from "../../models/rate";
 import { RatesService } from "../../services/rates.service";
+import { provideNativeDateAdapter } from "@angular/material/core";
 
 @Component({
   selector: "app-rates",
   standalone: true,
+  providers: [provideNativeDateAdapter()],
+
   imports: [
     MatCardModule,
     RouterLink,
@@ -20,17 +24,19 @@ import { RatesService } from "../../services/rates.service";
     AddButtonComponent,
     MatIcon,
     MatListModule,
+    MatExpansionModule
   ],
   templateUrl: "./rates.component.html",
   styleUrl: "./rates.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [MatExpansionPanel]
 })
 export class RatesComponent implements OnInit {
   readonly confirm = inject(MatDialog);
   workerRates = signal<RateValueDto[]>([]);
   workerId = input.required<number>();
   service = inject(RatesService);
-
-  constructor() {}
+  accordion = viewChild.required(MatAccordion);
 
   ngOnInit(): void {
     this.service.getWorkerRates(this.workerId()).subscribe((resp) => {

@@ -1,6 +1,13 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import { Component, effect, inject, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -17,6 +24,7 @@ import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Rate, RateValueForm } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
@@ -42,7 +50,7 @@ import { RatesService } from "../../../services/rates.service";
   templateUrl: "./rate-value-form.component.html",
   styleUrl: "./rate-value-form.component.scss",
 })
-export class RateValueFormComponent implements OnInit {
+export class RateValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
@@ -57,6 +65,7 @@ export class RateValueFormComponent implements OnInit {
   showBaseValue = signal<boolean>(false);
   showPerHour = signal<boolean>(false);
   private readonly _snackBar = inject(MatSnackBar);
+  destroy = new Subject();
 
   constructor() {
     this.rateValueForm = new FormGroup<RateValueForm>({
@@ -104,15 +113,27 @@ export class RateValueFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.rateValueForm.statusChanges.subscribe((changeEvent) => {
-      this.canSend.set(changeEvent === "VALID" && this.rateValueForm.dirty);
-    });
+    this.rateValueForm.statusChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe((changeEvent) => {
+        this.canSend.set(changeEvent === "VALID" && this.rateValueForm.dirty);
+      });
+    this.rateValueForm
+      .get("perHourValue")
+      ?.valueChanges.pipe(takeUntil(this.destroy))
+      .subscribe((val) => console.log(val));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   handleSubmit() {
     if (!this.rateValueForm.valid) {
       return;
     }
+    console.log(this.rateValueForm.value);
     if (this.update()) this.updateRateValue();
     else this.createRateValue();
   }

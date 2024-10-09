@@ -20,7 +20,7 @@
         <h3>{{ getAddonName() }}</h3>
         } @else {
         <mat-form-field appearance="outline">
-          <mat-label>Rodzaj Stawki</mat-label>
+          <mat-label>Rodzaj Dodatku</mat-label>
           <mat-select formControlName="addonId">
             @for (addon of addons(); track addon.id) {
             <mat-option [value]="addon.id">{{ addon.name }}</mat-option>
@@ -40,7 +40,7 @@
           <mat-label>Dodatek</mat-label>
           <input
             matInput
-            type="text"
+            type="number"
             formControlName="value"
             placeholder="Dodatek"
           />

@@ -1,4 +1,11 @@
-import { Component, inject, input, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -9,10 +16,17 @@ import { AddButtonComponent } from "../../../components/add-button/add-button.co
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { AddonValueDto } from "../../models/addon";
 import { AddonsService } from "../../services/addons.service";
+import { provideNativeDateAdapter } from "@angular/material/core";
+import {
+  MatAccordion,
+  MatExpansionModule,
+  MatExpansionPanel,
+} from "@angular/material/expansion";
 
 @Component({
   selector: "app-addons",
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatCardModule,
     RouterLink,
@@ -20,15 +34,19 @@ import { AddonsService } from "../../services/addons.service";
     AddButtonComponent,
     MatIcon,
     MatListModule,
+    MatExpansionModule,
   ],
   templateUrl: "./addons.component.html",
   styleUrl: "./addons.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [MatExpansionPanel],
 })
 export class AddonsComponent {
   readonly confirm = inject(MatDialog);
   workerAddons = signal<AddonValueDto[]>([]);
   workerId = input.required<number>();
   service = inject(AddonsService);
+  accordion = viewChild.required(MatAccordion);
 
   ngOnInit(): void {
     this.service.getWorkerAddons(this.workerId()).subscribe((resp) => {

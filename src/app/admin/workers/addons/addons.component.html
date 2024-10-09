@@ -1,28 +1,25 @@
 <div class="item-list">
-    <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/addons/add">
-      <mat-icon>add</mat-icon>
-      Przypisz Dodatek
-    </a>
+  <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/addons/add">
+    <mat-icon>add</mat-icon>
+    Przypisz Dodatek
+  </a>
+  <div class="expand-actions">
+    <button mat-button (click)="accordion().openAll()">Rozwiń wszystko</button>
+    <button mat-button (click)="accordion().closeAll()">Zwiń wszystko</button>
+  </div>
+  <mat-accordion multi>
     @for (addon of workerAddons(); track addon.id) {
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>{{ addon.name }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          <mat-list-item>
-            <span> Wartość: </span>
-            <span>{{ addon.value }} zł</span>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-      <mat-card-footer>
-        <mat-card-actions>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>{{ addon.name }}</mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item>
+          <span> Wartość: </span>
+          <span>{{ addon.value }} zł</span>
+        </mat-list-item>
+        <mat-list-item>
           <button
             mat-button
-            routerLink="/admin/workers/{{ workerId() }}/addons/{{
-              addon.id
-            }}"
+            routerLink="/admin/workers/{{ workerId() }}/addons/{{ addon.id }}"
           >
             Edytuj
           </button>
@@ -33,15 +30,11 @@
           >
             Usuń
           </button>
-        </mat-card-actions>
-      </mat-card-footer>
-    </mat-card>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
     } @empty {
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <h4>Brak Dokumentów</h4>
-      </mat-card-content>
-    </mat-card>
+    <h4>Brak Dodatków</h4>
     }
-  </div>
-  
+  </mat-accordion>
+</div>
