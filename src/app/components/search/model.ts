@@ -1,10 +1,21 @@
+import { FormControl, FormRecord } from "@angular/forms";
+
 interface Filter {
-  name: string;
+  name:string;
+  values:string[]
 }
 
 interface SearchQuery {
-  query: string;
-  filter: string | null;
+  [key:string]: any
 }
 
-export { Filter, SearchQuery };
+interface SearchQueryForm {
+  query: FormControl<string>;
+  filters: FormRecord;
+}
+
+interface InputFilters {
+  [key:string]:Filter;
+}
+
+export { SearchQuery, InputFilters, SearchQueryForm };

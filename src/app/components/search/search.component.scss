@@ -9,3 +9,13 @@
     grid-template-columns: 1fr auto auto;
     gap: 1rem;
 }
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter {
+    flex-grow: 1;
+}

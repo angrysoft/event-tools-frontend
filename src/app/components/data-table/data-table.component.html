@@ -26,9 +26,9 @@
     </table>
     <mat-paginator
       #paginator
-      [length]="dataSource.count"
+      [length]="dataSource.totalElements"
       [pageIndex]="0"
-      [pageSizeOptions]="[15, 30, 45]"
+      [pageSizeOptions]="[15, 25, 30, 45]"
       pageSize="15"
       aria-label="Wybierz Stronę"
     >

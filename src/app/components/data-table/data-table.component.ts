@@ -19,9 +19,9 @@ import { Subject } from "rxjs";
 import { CrudService } from "../../services/crud.service";
 import { AddButtonComponent } from "../add-button/add-button.component";
 import { LoaderComponent } from "../loader/loader.component";
-import { DataTableDataSource } from "./data-table-datasource";
+import { InputFilters, SearchQuery } from "../search/model";
 import { SearchComponent } from "../search/search.component";
-import { Filter, SearchQuery } from "../search/model";
+import { DataTableDataSource } from "./data-table-datasource";
 
 @Injectable()
 export class DataTablePaginatorIntl implements MatPaginatorIntl {
@@ -63,7 +63,7 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   readonly router = inject(Router);
   itemIdName = input<string>("id");
   search = input<boolean>(false);
-  filters = input<Filter[]>();
+  filters = input<InputFilters>();
   api = input.required<string>();
 
   actionsUrl = input.required<string>();
@@ -96,15 +96,14 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   }
 
   searchQuery(q: SearchQuery) {
-    this.dataSource.query = q.query;
-    this.dataSource.filter = q.filter;
+    this.dataSource.query = q;
+    // this.dataSource.filters = q.filters;
     this.paginator.firstPage();
     this.dataSource.loadData();
   }
 
   resetSearch() {
-    this.dataSource.query = "";
-    this.dataSource.filter = "";
+    this.dataSource.query = {};
     this.paginator.firstPage();
     this.dataSource.loadData();
   }

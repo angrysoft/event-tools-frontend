@@ -22,15 +22,20 @@
       <mat-icon>backspace</mat-icon>
     </button>
   </div>
-  @if(filters()) {
-  <mat-form-field appearance="outline">
-    <mat-label>Filtruj po Ekipie</mat-label>
-    <mat-select formControlName="filter" (selectionChange)="onFilterSet()">
-      <mat-option value="none"></mat-option>
-      @for (fn of filters(); track fn.name) {
-      <mat-option [value]="fn.name">{{ fn.name }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-  }
+  <div class="filters">
+    @for(filter of inputFilters() | keyvalue ;track filter.key) {
+    <mat-form-field appearance="outline" class="filter">
+      <mat-label>{{ filter.value.name }}</mat-label>
+      <mat-select
+        formControlName="{{ filter.key }}"
+        (selectionChange)="onFilterSet()"
+      >
+        <mat-option [value]="null"></mat-option>
+        @for (item of filter.value.values; track item) {
+        <mat-option [value]="item">{{ item }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    }
+  </div>
 </form>

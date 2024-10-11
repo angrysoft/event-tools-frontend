@@ -3,6 +3,7 @@ import { EventEmitter, inject, Injectable, Output } from "@angular/core";
 import { Observable, catchError, of, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { DataListResponse } from "../models/data-list-response";
+import { Page } from "../models/page";
 
 @Injectable({
   providedIn: "root",
@@ -28,6 +29,13 @@ export class CrudService<T> {
     opts: { limit: number; offset: number; filter?: string } | null = null,
   ): Observable<RestResponse<DataListResponse<T>>> {
     return this._get<RestResponse<DataListResponse<T>>>(this.apiUrl, opts);
+  }
+
+  getAllPaged(
+    opts: { [key: string]: any } | null = null,
+  ): Observable<RestResponse<Page<T>>> {
+    console.log(opts);
+    return this._get<RestResponse<Page<T>>>(this.apiUrl, opts);
   }
 
   get(id: number) {
@@ -65,6 +73,13 @@ export class CrudService<T> {
       `${this.apiUrl}/search`,
       params,
     );
+  }
+
+  searchPaged(
+    opts: { [key: string]: string } | null = null,
+  ): Observable<RestResponse<Page<T>>> {
+    console.log(opts);
+    return this._get<RestResponse<Page<T>>>(`${this.apiUrl}/search`, opts);
   }
 
   protected _get<GT>(
