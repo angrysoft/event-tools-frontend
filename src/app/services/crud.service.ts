@@ -34,7 +34,6 @@ export class CrudService<T> {
   getAllPaged(
     opts: { [key: string]: any } | null = null,
   ): Observable<RestResponse<Page<T>>> {
-    console.log(opts);
     return this._get<RestResponse<Page<T>>>(this.apiUrl, opts);
   }
 

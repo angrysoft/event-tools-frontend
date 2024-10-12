@@ -49,7 +49,6 @@ export class SearchComponent implements AfterViewInit {
   searchForm: FormRecord;
   inputFilters = computed(() => {
     const filters = this.filters();
-    console.log(filters);
     if (filters) {
       Object.keys(filters ?? {}).forEach((f) =>
         this.searchForm.setControl(f, new FormControl(null)),

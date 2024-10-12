@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, HostListener, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
@@ -11,10 +11,10 @@ import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confi
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { Worker } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
-import { DocsComponent } from "../docs/docs.component";
-import { RatesComponent } from "../rates/rates.component";
 import { AddonsComponent } from "../addons/addons.component";
 import { CarsComponent } from "../cars/cars.component";
+import { DocsComponent } from "../docs/docs.component";
+import { RatesComponent } from "../rates/rates.component";
 
 export interface DialogData {
   workerId: number;
@@ -100,5 +100,9 @@ export class ShowWorkerComponent {
     });
   }
 
+  @HostListener("document:keydown.Escape", ['$event'])
+  handleCancel(event: any) {
+    this.router.navigateByUrl("/admin/workers", { replaceUrl: true });
+  }
   
 }
