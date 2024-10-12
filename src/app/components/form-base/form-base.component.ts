@@ -1,8 +1,8 @@
-import { Component, input, signal } from "@angular/core";
+import { Component, HostListener, inject, input, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-form-base",
@@ -19,5 +19,11 @@ export class FormBaseComponent {
 
   canSend = input<boolean>(false);
   error = signal<string>("");
-  
+
+  router = inject(Router);
+
+  @HostListener("document:keydown.Escape", ['$event'])
+  handleCancel(event: any) {
+    this.router.navigateByUrl(this.backTo(), { replaceUrl: true });
+  }
 }

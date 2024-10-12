@@ -1,7 +1,7 @@
-import { Component, input } from "@angular/core";
+import { Component, HostListener, inject, input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-add-button",
@@ -12,4 +12,10 @@ import { RouterLink } from "@angular/router";
 })
 export class AddButtonComponent {
   url = input.required<string>();
+  router = inject(Router);
+
+  @HostListener("document:keydown.Alt.a", ['$event'])
+  handleAdd() {
+    this.router.navigateByUrl(this.url(), { replaceUrl: true });
+  }
 }
