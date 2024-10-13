@@ -1,13 +1,20 @@
-import { Component, inject, input, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked
+} from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
-import { RouterLink } from "@angular/router";
-import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
-import { MatButtonModule } from "@angular/material/button";
-import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 import { MatIcon } from "@angular/material/icon";
-import { DocsService } from "../../services/docs.service";
+import { RouterLink } from "@angular/router";
+import { AddButtonComponent } from "../../../components/add-button/add-button.component";
+import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { WorkerDoc } from "../../models/worker-doc";
+import { DocsService } from "../../services/docs.service";
 
 @Component({
   selector: "app-docs",
@@ -22,18 +29,20 @@ import { WorkerDoc } from "../../models/worker-doc";
   templateUrl: "./docs.component.html",
   styleUrl: "./docs.component.scss",
 })
-export class DocsComponent implements OnInit {
+export class DocsComponent {
   readonly confirm = inject(MatDialog);
   // readonly router = inject(Router);
   workerId = input.required<number>();
   readonly docService = inject(DocsService);
-  workerDocs = signal<WorkerDoc[]>([]);
+  workerDocs = input.required<WorkerDoc[]>();
+  docList = signal<WorkerDoc[]>([]);
 
-  ngOnInit(): void {
-    this.docService.getWorkersDocs(this.workerId()).subscribe((response) => {
-      if (response.ok) {
-        this.workerDocs.set(response.data);
-      }
+  constructor() {
+    effect(() => {
+      const list = this.workerDocs();
+      untracked(() => {
+        if (list) this.docList.set(list);
+      });
     });
   }
 
@@ -55,8 +64,8 @@ export class DocsComponent implements OnInit {
       if (result === true) {
         this.docService.delete(docId).subscribe((response) => {
           if (response.ok) {
-            this.workerDocs.set(
-              this.workerDocs().filter((doc) => doc.id !== docId),
+            this.docList.set(
+              this.docList().filter((doc) => doc.id !== docId),
             );
           }
         });

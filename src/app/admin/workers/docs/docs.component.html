@@ -3,7 +3,7 @@
     <mat-icon>add</mat-icon>
     Dodaj Dokument
   </a>
-  @for (doc of workerDocs(); track doc.id) {
+  @for (doc of docList(); track doc.id) {
   <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title>{{ doc.name }}</mat-card-title>

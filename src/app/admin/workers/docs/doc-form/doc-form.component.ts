@@ -53,7 +53,7 @@ export class DocFormComponent implements OnInit {
   canSend = signal<boolean>(false);
   docForm: FormGroup<WorkerDocForm>;
   dropZoneClasses = signal<string[]>(["drop-zone"]);
-  private _snackBar = inject(MatSnackBar);
+  private readonly _snackBar = inject(MatSnackBar);
   fileInfo = signal<string>("Dodaj plik albo upuść tutaj.");
 
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -82,14 +82,19 @@ export class DocFormComponent implements OnInit {
       name: new FormControl("", [Validators.required]),
       expire: new FormControl(),
       expirationDate: new FormControl(false),
-      workerId: new FormControl(this.workerId(), [Validators.required]),
+      worker: new FormControl(this.workerId(), [Validators.required]),
     });
 
     effect(() => {
       if (this.docId() >= 0 && this.workerId() >= 0) {
         this.docsService.get(this.docId()).subscribe((resp) => {
           if (resp.ok) {
-            this.docForm.patchValue(resp.data);
+            console.log("reps:", resp.data);
+
+            this.docForm.patchValue({
+              ...resp.data,
+              worker: resp.data.worker?.id,
+            });
           }
         });
       }

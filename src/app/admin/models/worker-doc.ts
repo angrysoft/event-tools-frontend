@@ -1,31 +1,36 @@
 import { FormControl } from "@angular/forms";
+import { WorkerId } from "./worker";
 
 type WorkerDoc = {
   id: number | null;
   name: string | null;
   fileName: string | null;
-  workerId: number | null;
+  worker: WorkerId | null;
   hasExpirationDate: boolean | null;
   expirationDate?: boolean | null;
   expire: Date | null;
 };
 
+interface WorkerIdFrom {
+  id: FormControl<number | null>;
+}
+
 interface WorkerDocForm {
-  id: FormControl<WorkerDoc["id"]>;
+  id: FormControl<number | null>;
   file: FormControl<File | null>;
-  expirationDate: FormControl<WorkerDoc["hasExpirationDate"]>;
-  name: FormControl<WorkerDoc["name"]>;
-  expire: FormControl<WorkerDoc["expire"]>;
-  workerId: FormControl<WorkerDoc["workerId"]>;
+  expirationDate: FormControl<boolean | null>;
+  name: FormControl<string | null>;
+  expire: FormControl<Date | null>;
+  worker: FormControl<number | null>;
 }
 
 interface WorkerDocData {
   id: number | null;
   name: string | null;
   file: File | null;
-  workerId: number | null;
+  worker: number | null;
   expirationDate: boolean | null;
   expire: Date | null;
 }
 
-export { WorkerDoc, WorkerDocForm, WorkerDocData };
+export { WorkerDoc, WorkerDocData, WorkerDocForm };

@@ -1,3 +1,9 @@
+import { WorkerDoc } from "./worker-doc";
+
+interface WorkerId {
+  id: number | null;
+}
+
 interface WorkerBase {
   id: number | null;
   firstName: string | null;
@@ -22,6 +28,7 @@ interface Worker extends WorkerBase {
   password?: string;
   password2?: string;
   authority?: string;
+  workerDoc: WorkerDoc[];
 }
 
 interface WorkersItem {
@@ -32,4 +39,4 @@ interface WorkersItem {
   team: string;
 }
 
-export { Worker, WorkerBase, WorkersItem };
+export { Worker, WorkerBase, WorkersItem, WorkerId };

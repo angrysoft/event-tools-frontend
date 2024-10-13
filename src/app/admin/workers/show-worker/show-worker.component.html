@@ -7,7 +7,7 @@
     </button>
     <h2>Dane Pracownika</h2>
     <div class="details-actions">
-      <button mat-flat-button routerLink="/admin/workers/edit/{{ worker.id }}">
+      <button mat-flat-button routerLink="/admin/workers/edit/{{ worker().id }}">
         Edytuj
       </button>
       <button mat-flat-button class="delete-button" (click)="removeWorker()">
@@ -26,30 +26,30 @@
           <mat-card-content>
             <p>
               <span class="label">Imię: </span>
-              <span>{{ worker.firstName }} </span>
-              @if (worker.secondName) {
+              <span>{{ worker().firstName }} </span>
+              @if (worker().secondName) {
               <span class="label">Drugie Imię: </span>
-              <span>{{ worker.secondName }} </span>
+              <span>{{ worker().secondName }} </span>
               }
             </p>
             <p>
               <span class="label">Nazwisko: </span>
-              <span>{{ worker.lastName }} </span>
+              <span>{{ worker().lastName }} </span>
             </p>
             <p>
               <span class="label">Matka: </span>
-              <span>{{ worker.mother }} </span>
+              <span>{{ worker().mother }} </span>
             </p>
             <p>
               <span class="label">Ojciec: </span>
-              <span>{{ worker.father }} </span>
+              <span>{{ worker().father }} </span>
             </p>
             <p>
               <span class="label">Ksywa:</span>
-              <span>{{ worker.nickname ?? "" }} </span>
+              <span>{{ worker().nickname ?? "" }} </span>
             </p>
             <p>
-              <span class="label" [style.color]="worker.color"
+              <span class="label" [style.color]="worker().color"
                 >Kolor Kierownika
               </span>
             </p>
@@ -64,16 +64,16 @@
             <p>
               <span class="label">Telefon: </span>
               <span
-                ><a class="url" href="tel:{{ worker.phone }}">{{
-                  worker.phone
+                ><a class="url" href="tel:{{ worker().phone }}">{{
+                  worker().phone
                 }}</a></span
               >
             </p>
             <p>
               <span class="label">Telefon Alarmowy: </span>
               <span
-                ><a class="url" href="tel:{{ worker.phoneIce }}">{{
-                  worker.phoneIce
+                ><a class="url" href="tel:{{ worker().phoneIce }}">{{
+                  worker().phoneIce
                 }}</a></span
               >
             </p>
@@ -83,8 +83,8 @@
                 ><a
                   class="url"
                   target="_blank"
-                  href="mailto://{{ worker.email }}"
-                  >{{ worker.email }}</a
+                  href="mailto://{{ worker().email }}"
+                  >{{ worker().email }}</a
                 ></span
               >
             </p>
@@ -98,28 +98,28 @@
           <mat-card-content>
             <p>
               <span class="label">Pesel: </span>
-              <span>{{ worker.pesel }}</span>
+              <span>{{ worker().pesel }}</span>
             </p>
             <p>
               <span class="label">Numer i Seria Dowodu: </span>
-              <span>{{ worker.docNumber }}</span>
+              <span>{{ worker().docNumber }}</span>
             </p>
           </mat-card-content>
         </mat-card>
 
         <mat-card appearance="outlined">
           <mat-card-content>
-            <p>
+            <!-- <p>
               <span class="label">Ekipa: </span>
-              <span>{{ worker.teamId }} </span>
+              <span>{{ worker().teamId }} </span>
             </p>
             <p>
               <span class="label">Grupa: </span>
-              <span>{{ worker.groupId }} </span>
-            </p>
+              <span>{{ worker().groupId }} </span>
+            </p> -->
             <p>
               <span class="label">Konto w aplikacji: </span>
-              <span> @if (worker.hasAccount) { Tak } @else { Nie } </span>
+              <span> @if (worker().hasAccount) { Tak } @else { Nie } </span>
             </p>
           </mat-card-content>
         </mat-card>
@@ -127,7 +127,7 @@
     </mat-tab>
 
     <mat-tab label="Dokumenty">
-      <app-docs [workerId]="workerId" />
+      <app-docs [workerId]="workerId" [workerDocs]="worker().workerDoc"/>
     </mat-tab>
 
     <mat-tab label="Auta">

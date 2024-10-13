@@ -37,13 +37,13 @@ export interface DialogData {
     RatesComponent,
     LoaderComponent,
     AddonsComponent,
-    CarsComponent
-],
+    CarsComponent,
+  ],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",
 })
 export class ShowWorkerComponent {
-  worker: Worker = {
+  worker = signal<Worker>({
     firstName: "",
     lastName: "",
     id: 0,
@@ -61,7 +61,8 @@ export class ShowWorkerComponent {
     phoneIce: null,
     mother: null,
     father: null,
-  };
+    workerDoc: [],
+  });
 
   readonly confirm = inject(MatDialog);
   readonly workerService: WorkersService = inject(WorkersService);
@@ -74,11 +75,10 @@ export class ShowWorkerComponent {
   constructor() {
     this.workerService.get(this.workerId).subscribe((response) => {
       if (response.ok) {
-        this.worker = response.data;
+        this.worker.set(response.data);
       }
       this.loading.set(false);
     });
-
   }
 
   removeWorker() {
@@ -87,22 +87,20 @@ export class ShowWorkerComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === true && this.worker.id) {
+      if (result === true && this.worker().id) {
         this.workerService
-          .delete(this.worker.id)
+          .delete(this.worker().id ?? -1)
           .subscribe((response) => {
-            console.log(response);
             if (response.ok) {
-              this.router.navigateByUrl("/admin/workers");
+              this.router.navigateByUrl("/admin/workers", { replaceUrl: true });
             }
           });
       }
     });
   }
 
-  @HostListener("document:keydown.Escape", ['$event'])
+  @HostListener("document:keydown.Escape", ["$event"])
   handleCancel(event: any) {
     this.router.navigateByUrl("/admin/workers", { replaceUrl: true });
   }
-  
 }

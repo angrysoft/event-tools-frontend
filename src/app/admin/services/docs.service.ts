@@ -19,7 +19,7 @@ export class DocsService extends CrudService<WorkerDoc> {
     });
   }
 
-  updateDoc(docId: number, doc: Partial<WorkerDoc>) {
+  updateDoc(docId: number, doc: Partial<WorkerDocData>) {
     return this.update(docId, this.prepareDate(doc));
   }
 
@@ -29,14 +29,20 @@ export class DocsService extends CrudService<WorkerDoc> {
 
   private prepareDate(doc: Partial<WorkerDocData>): FormData {
     const formData = new FormData();
+    if (doc.id) {
+      formData.set("id", doc.id.toString());
+    }
+    
     formData.set("name", doc.name ?? "");
+
     if (doc.expire && !(doc.expire instanceof Date)) {
       doc.expire = new Date(doc.expire as string);
     }
+    
     formData.set("expire", doc.expire?.toLocaleDateString() ?? "");
     formData.set("expirationDate", doc.expirationDate?.toString() ?? "false");
     if (doc.file) formData.set("file", doc.file);
-    formData.set("workerId", doc.workerId?.toString() ?? "");
+    formData.set("worker", doc.worker?.toString() ?? "");
     return formData;
   }
 }
