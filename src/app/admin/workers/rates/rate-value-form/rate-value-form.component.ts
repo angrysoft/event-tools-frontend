@@ -80,6 +80,10 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
         { value: 0, disabled: true },
         Validators.required,
       ),
+      overtimeAddonValue: new FormControl(
+        { value: 0, disabled: true },
+        Validators.required,
+      ),
       value: new FormControl({ value: 0, disabled: true }, Validators.required),
     });
 
@@ -170,10 +174,18 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
         this.rateValueForm.controls.value.disable();
 
         break;
+
       case "BASE_OVERTIME_RATE":
         this.rateValueForm.controls.perHourOvertimeValue.enable();
         this.rateValueForm.controls.perHourValue.disable();
         this.rateValueForm.controls.value.enable();
+        break;
+  
+      case "BASE_OVERTIME_ADDON":
+        this.rateValueForm.controls.value.enable();
+        this.rateValueForm.controls.overtimeAddonValue.enable();
+        this.rateValueForm.controls.perHourOvertimeValue.disable();
+        this.rateValueForm.controls.perHourValue.disable();
         break;
 
       case "CONSTANT_RATE":

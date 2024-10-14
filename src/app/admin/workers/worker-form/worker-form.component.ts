@@ -146,6 +146,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
       untracked(() => {
         if (wId >= 0) {
           this.workerService.get(wId).subscribe((response) => {
+            console.log(response.data);
             if (response.ok) {
               this.workerForm.patchValue(response.data);
               this.update = true;
@@ -245,7 +246,9 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
       })
       .subscribe((response) => {
         if (response.ok) {
-          this.router.navigateByUrl("/admin/workers/" + this.workerId(), {replaceUrl:true});
+          this.router.navigateByUrl("/admin/workers/" + this.workerId(), {
+            replaceUrl: true,
+          });
         } else {
           this.showMsg(response.data ?? "Coś poszło nie tak", "Zamknij");
         }
@@ -255,7 +258,9 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   addWorker() {
     this.workerService.create(this.workerForm.value).subscribe((response) => {
       if (response.ok) {
-        this.router.navigateByUrl("/admin/workers/" + response.data, {replaceUrl:true});
+        this.router.navigateByUrl("/admin/workers/" + response.data, {
+          replaceUrl: true,
+        });
       } else {
         this.workerForm.controls.firstName.setErrors({ exists: true });
         this.error.set(response.error ?? "Cos Poszło nie tak...");

@@ -48,6 +48,14 @@ export const workersRoutes: Routes = [
       ),
   },
   {
+    path: "workers/:workerId/basic",
+    title: "Przypisz Podstawe",
+    loadComponent: () =>
+      import("./rates/basic-form/basic-form.component").then(
+        (m) => m.BasicFormComponent,
+      ),
+  },
+  {
     path: "workers/:workerId/rates/add",
     title: "Przypisz Stawkę",
     loadComponent: () =>
@@ -83,9 +91,7 @@ export const workersRoutes: Routes = [
     path: "workers/:workerId/cars",
     title: "Auta",
     loadComponent: () =>
-      import("./cars/cars.component").then(
-        (m) => m.CarsComponent,
-      ),
+      import("./cars/cars.component").then((m) => m.CarsComponent),
   },
   {
     path: "workers/:workerId/cars/add",

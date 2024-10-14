@@ -21,12 +21,13 @@ interface RateType {
 
 interface RateValueDto {
   id: number;
-  name: string;
+  rateName: string;
   rateType: string;
   overtimeAfter?: number;
   value: number;
   perHourOvertimeValue: number;
   perHourValue: number;
+  overtimeAddonValue: number;
 }
 
 interface RateValueForm {
@@ -34,6 +35,7 @@ interface RateValueForm {
   workerId: FormControl<number | null>;
   rateId: FormControl<number | null>;
   perHourOvertimeValue: FormControl<number | null>;
+  overtimeAddonValue: FormControl<number | null>;
   perHourValue: FormControl<number | null>;
   value: FormControl<number | null>;
 }
@@ -44,7 +46,22 @@ interface RateValue {
   rateId: number | null;
   perHourOvertimeValue: number | null;
   perHourValue: number | null;
+  overtimeAddonValue: number | null;
   value: number | null;
 }
 
-export { Rate, RateForm, RateType, RateValueDto, RateValueForm, RateValue };
+interface BasicPayForm {
+  value: FormControl<number | null>;
+}
+
+interface BasicPayData {
+  value: number | null;
+}
+
+export {
+  BasicPayData, BasicPayForm, Rate,
+  RateForm,
+  RateType, RateValue, RateValueDto,
+  RateValueForm
+};
+

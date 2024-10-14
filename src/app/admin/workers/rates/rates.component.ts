@@ -1,8 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal, viewChild } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnInit,
+  signal,
+  viewChild,
+} from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
-import { MatAccordion, MatExpansionModule, MatExpansionPanel } from "@angular/material/expansion";
+import {
+  MatAccordion,
+  MatExpansionModule,
+  MatExpansionPanel,
+} from "@angular/material/expansion";
 import { MatIcon } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { RouterLink } from "@angular/router";
@@ -11,6 +23,7 @@ import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confi
 import { RateValueDto } from "../../models/rate";
 import { RatesService } from "../../services/rates.service";
 import { provideNativeDateAdapter } from "@angular/material/core";
+import { BasicPay } from "../../models/worker";
 
 @Component({
   selector: "app-rates",
@@ -24,19 +37,26 @@ import { provideNativeDateAdapter } from "@angular/material/core";
     AddButtonComponent,
     MatIcon,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
   ],
   templateUrl: "./rates.component.html",
   styleUrl: "./rates.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [MatExpansionPanel]
+  viewProviders: [MatExpansionPanel],
 })
 export class RatesComponent implements OnInit {
   readonly confirm = inject(MatDialog);
   workerRates = signal<RateValueDto[]>([]);
   workerId = input.required<number>();
+  basicPay = input.required<BasicPay>();
   service = inject(RatesService);
   accordion = viewChild.required(MatAccordion);
+
+  ratesWithBase = [
+    "CONSTANT_RATE",
+    "BASE_OVERTIME_RATE",
+    "BASE_OVERTIME_ADDON",
+  ];
 
   ngOnInit(): void {
     this.service.getWorkerRates(this.workerId()).subscribe((resp) => {

@@ -62,6 +62,12 @@ export class ShowWorkerComponent {
     mother: null,
     father: null,
     workerDoc: [],
+    basicPay: {
+      value: 0,
+      worker: {
+        id: -1,
+      },
+    },
   });
 
   readonly confirm = inject(MatDialog);
@@ -74,8 +80,18 @@ export class ShowWorkerComponent {
 
   constructor() {
     this.workerService.get(this.workerId).subscribe((response) => {
+      console.log();
       if (response.ok) {
-        this.worker.set(response.data);
+        const data = response.data;
+        if (!response.data.basicPay) {
+          data.basicPay = {
+            value: 0,
+            worker: {
+              id: -1,
+            },
+          };
+        }
+        this.worker.set(data);
       }
       this.loading.set(false);
     });

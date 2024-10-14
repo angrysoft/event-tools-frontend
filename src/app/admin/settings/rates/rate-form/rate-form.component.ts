@@ -51,7 +51,6 @@ export class RateFormComponent {
   error = signal<string>("");
   formTitle = input<string>("Dodaj Stawkę");
   rateTypes = signal<RateType[]>([]);
-  showOvertime = signal<boolean>(false);
   readonly route = inject(ActivatedRoute);
   private readonly _snackBar = inject(MatSnackBar);
 
@@ -74,7 +73,7 @@ export class RateFormComponent {
       id: new FormControl(null),
       name: new FormControl("", [Validators.required]),
       rateType: new FormControl("", [Validators.required]),
-      overtimeAfter: new FormControl(null, Validators.required),
+      overtimeAfter: new FormControl({value:null, disabled:true}, Validators.required),
     });
 
     effect(() => {
@@ -127,10 +126,10 @@ export class RateFormComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true && this.rateId()) {
-        this.service.delete(this.rateId()).subscribe((response) => {
-          if (response.ok) {
+        this.service.delete(this.rateId()).subscribe((resp) => {
+          if (resp.ok) {
             this.router.navigateByUrl("/admin/settings/rates");
-          }
+          } else this.handleError(resp);
         });
       }
     });
@@ -153,6 +152,7 @@ export class RateFormComponent {
     switch (this.rateForm.controls.rateType.value) {
       case "HOUR_RATE":
       case "BASE_OVERTIME_RATE":
+      case "BASE_OVERTIME_ADDON":
         this.rateForm.controls.overtimeAfter.enable();
         break;
       default:

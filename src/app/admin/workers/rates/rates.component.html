@@ -8,13 +8,33 @@
     <button mat-button (click)="accordion().closeAll()">Zwiń wszystko</button>
   </div>
   <mat-accordion multi>
-    @for (rate of workerRates(); track rate.id) {
     <mat-expansion-panel>
-      <mat-expansion-panel-header>{{ rate.name }}</mat-expansion-panel-header>
+      <mat-expansion-panel-header>Podstawa</mat-expansion-panel-header>
 
       <mat-list>
-        @if (rate.rateType === "CONSTANT_RATE" || rate.rateType ===
-        "BASE_OVERTIME_RATE") {
+        <mat-list-item>
+          <span> Wartość postawy: </span>
+          <span>{{ basicPay().value }} zł</span>
+        </mat-list-item>
+        <mat-list-item>
+          <button
+            mat-button
+            routerLink="/admin/workers/{{ workerId() }}/basic"
+            [queryParams]="{ value: basicPay().value }"
+          >
+            Edytuj
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    @for (rate of workerRates(); track rate.id) {
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>{{
+        rate.rateName
+      }}</mat-expansion-panel-header>
+
+      <mat-list>
+        @if (ratesWithBase.includes(rate.rateType)) {
         <mat-list-item>
           <span> Stawka podstawowa: </span>
           <span>{{ rate.value }} zł</span>

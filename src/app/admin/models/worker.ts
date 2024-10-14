@@ -10,6 +10,11 @@ interface WorkerBase {
   lastName: string | null;
 }
 
+interface BasicPay {
+  value: number;
+  worker: WorkerId;
+}
+
 interface Worker extends WorkerBase {
   secondName: string | null;
   phone: string | null;
@@ -29,6 +34,7 @@ interface Worker extends WorkerBase {
   password2?: string;
   authority?: string;
   workerDoc: WorkerDoc[];
+  basicPay: BasicPay;
 }
 
 interface WorkersItem {
@@ -39,4 +45,4 @@ interface WorkersItem {
   team: string;
 }
 
-export { Worker, WorkerBase, WorkersItem, WorkerId };
+export { Worker, WorkerBase, WorkersItem, WorkerId, BasicPay };
