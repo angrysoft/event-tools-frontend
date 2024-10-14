@@ -50,6 +50,11 @@
           <span> Stawka za godzinę: </span>
           <span>{{ rate.perHourValue }} zł</span>
         </mat-list-item>
+        } @if (rate.rateType === "BASE_OVERTIME_ADDON") {
+        <mat-list-item>
+          <span> Dodatek: </span>
+          <span>{{ rate.overtimeAddonValue }} zł</span>
+        </mat-list-item>
         }
         <mat-list-item>
           <button

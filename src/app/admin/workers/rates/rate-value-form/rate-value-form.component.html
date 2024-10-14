@@ -69,6 +69,16 @@
             placeholder="Godzinowa"
           />
         </mat-form-field>
+        } @if (rateValueForm.controls.overtimeAddonValue.enabled) {
+        <mat-form-field appearance="outline">
+          <mat-label>Dodatek</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="overtimeAddonValue"
+            placeholder="Dodatek"
+          />
+        </mat-form-field>
         }
       </mat-card-content>
     </mat-card>
