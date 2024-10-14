@@ -81,8 +81,14 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
           nonNullable: true,
           validators: [Validators.required, Validators.minLength(3)],
         }),
-        password: new FormControl(null, Validators.required),
-        password2: new FormControl(null, Validators.required),
+        password: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(8),
+        ]),
+        password2: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(8),
+        ]),
         authority: new FormControl("", {
           nonNullable: true,
           validators: [Validators.required],
@@ -131,7 +137,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
       ]),
       groupId: new FormControl(null, [Validators.required]),
       hasAccount: new FormControl(false),
-      user: this.workerAccount,
+      userAccount: this.workerAccount,
     });
 
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");

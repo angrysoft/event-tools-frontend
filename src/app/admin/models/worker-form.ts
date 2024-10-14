@@ -23,7 +23,7 @@ type WorkerForm = {
   pesel: FormControl<string | null>;
   docNumber: FormControl<string | null>;
   hasAccount: FormControl<boolean | null>;
-  user?: FormGroup<WorkerAccount>;
+  userAccount?: FormGroup<WorkerAccount>;
 };
 
 export type { WorkerAccount, WorkerForm };
