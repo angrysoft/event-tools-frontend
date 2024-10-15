@@ -1,84 +1,68 @@
-<div class="item-list">
-  <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/rates/add">
-    <mat-icon>add</mat-icon>
-    Przypisz Stawkę
-  </a>
-  <div class="expand-actions">
-    <button mat-button (click)="accordion().openAll()">Rozwiń wszystko</button>
-    <button mat-button (click)="accordion().closeAll()">Zwiń wszystko</button>
-  </div>
-  <mat-accordion multi>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>Podstawa</mat-expansion-panel-header>
-
-      <mat-list>
-        <mat-list-item>
-          <span> Wartość postawy: </span>
-          <span>{{ basicPay().value }} zł</span>
-        </mat-list-item>
-        <mat-list-item>
-          <button
-            mat-button
-            routerLink="/admin/workers/{{ workerId() }}/basic"
-            [queryParams]="{ value: basicPay().value }"
-          >
-            Edytuj
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
+<mat-card appearance="outlined" class="rates">
+  <mat-card-header>
+    <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/rates/add">
+      <mat-icon>add</mat-icon>
+      Przypisz Stawkę
+    </a>
+  </mat-card-header>
+  <mat-card-content class="rate-list mat-elevation-z8">
+    <section class="rate-item">
+      <div>
+        <strong>Podstawa:</strong>
+        {{ basicPay().value }} zł
+      </div>
+      <div></div>
+      <div class="rate-actions">
+        <button
+          mat-button
+          routerLink="/admin/workers/{{ workerId() }}/basic"
+          [queryParams]="{ value: basicPay().value }"
+        >
+          Edytuj
+        </button>
+      </div>
+    </section>
+    <mat-divider />
     @for (rate of workerRates(); track rate.id) {
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>{{
-        rate.rateName
-      }}</mat-expansion-panel-header>
-
-      <mat-list>
+    <section class="rate-item">
+      <h4>{{ rate.rateName }}</h4>
+      <div class="rate-value">
         @if (ratesWithBase.includes(rate.rateType)) {
-        <mat-list-item>
-          <span> Stawka podstawowa: </span>
-          <span>{{ rate.value }} zł</span>
-        </mat-list-item>
+        <div>Stawka podstawowa: {{ rate.value }} zł</div>
         } @if (rate.rateType === "HOUR_RATE" || rate.rateType ===
         "BASE_OVERTIME_RATE") {
-        <mat-list-item>
-          <span> Stawka za nadgodzinę: </span>
-          <span>{{ rate.perHourOvertimeValue }} zł</span>
-        </mat-list-item>
+        <div>
+          <span>Stawka za nadgodzinę: {{ rate.perHourOvertimeValue }} zł</span>
+        </div>
         } @if (rate.rateType === "HOUR_RATE") {
-        <mat-list-item>
-          <span> Stawka za godzinę: </span>
-          <span>{{ rate.perHourValue }} zł</span>
-        </mat-list-item>
+        <div>
+          <span> Stawka za godzinę: {{ rate.perHourValue }} zł</span>
+        </div>
         } @if (rate.rateType === "BASE_OVERTIME_ADDON") {
-        <mat-list-item>
-          <span> Dodatek: </span>
-          <span>{{ rate.overtimeAddonValue }} zł</span>
-        </mat-list-item>
+        <div>
+          <span> Dodatek: {{ rate.overtimeAddonValue }} zł</span>
+        </div>
         }
-        <mat-list-item>
-          <button
-            mat-button
-            routerLink="/admin/workers/{{ workerId() }}/rates/{{ rate.id }}"
-          >
-            Edytuj
-          </button>
-          <button
-            mat-button
-            class="tertiary-button"
-            (click)="removeRateValue(rate.id)"
-          >
-            Usuń
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
+      </div>
+      <div class="rate-actions">
+        <button
+          mat-button
+          routerLink="/admin/workers/{{ workerId() }}/rates/{{ rate.id }}"
+        >
+          Edytuj
+        </button>
+        <button
+          mat-button
+          class="tertiary-button"
+          (click)="removeRateValue(rate.id)"
+        >
+          Usuń
+        </button>
+      </div>
+    </section>
+    <mat-divider />
     } @empty {
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <h4>Brak Przypisanych Stawek</h4>
-      </mat-card-content>
-    </mat-card>
+    <h4>Brak Przypisanych Stawek</h4>
     }
-  </mat-accordion>
-</div>
+  </mat-card-content>
+</mat-card>

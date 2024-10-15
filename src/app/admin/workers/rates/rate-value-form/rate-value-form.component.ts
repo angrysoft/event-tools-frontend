@@ -122,10 +122,6 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
       .subscribe((changeEvent) => {
         this.canSend.set(changeEvent === "VALID" && this.rateValueForm.dirty);
       });
-    this.rateValueForm
-      .get("perHourValue")
-      ?.valueChanges.pipe(takeUntil(this.destroy))
-      .subscribe((val) => console.log(val));
   }
 
   ngOnDestroy(): void {

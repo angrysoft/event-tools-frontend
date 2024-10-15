@@ -1,40 +1,34 @@
-<div class="item-list">
-  <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/addons/add">
-    <mat-icon>add</mat-icon>
-    Przypisz Dodatek
-  </a>
-  <div class="expand-actions">
-    <button mat-button (click)="accordion().openAll()">Rozwiń wszystko</button>
-    <button mat-button (click)="accordion().closeAll()">Zwiń wszystko</button>
-  </div>
-  <mat-accordion multi>
-    @for (addon of workerAddons(); track addon.id) {
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>{{ addon.name }}</mat-expansion-panel-header>
-      <mat-list>
-        <mat-list-item>
-          <span> Wartość: </span>
-          <span>{{ addon.value }} zł</span>
-        </mat-list-item>
-        <mat-list-item>
-          <button
-            mat-button
-            routerLink="/admin/workers/{{ workerId() }}/addons/{{ addon.id }}"
-          >
-            Edytuj
-          </button>
-          <button
-            mat-button
-            class="tertiary-button"
-            (click)="removeAddonValue(addon.id)"
-          >
-            Usuń
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
-    } @empty {
-    <h4>Brak Dodatków</h4>
-    }
-  </mat-accordion>
-</div>
+<mat-card appearance="outlined" class="rates">
+  <mat-card-header>
+    <a mat-fab extended routerLink="/admin/workers/{{ workerId() }}/addons/add">
+      <mat-icon>add</mat-icon>
+      Przypisz Dodatek
+    </a>
+  </mat-card-header>
+  @for (addon of workerAddons(); track addon.id) {
+  <section class="rate-item">
+    <h4>{{ addon.name }}</h4>
+    <div class="rate-value">
+      <span> Wartość: </span>
+      <span>{{ addon.value }} zł</span>
+    </div>
+    <div class="rate-actions">
+      <button
+        mat-button
+        routerLink="/admin/workers/{{ workerId() }}/addons/{{ addon.id }}"
+      >
+        Edytuj
+      </button>
+      <button
+        mat-button
+        class="tertiary-button"
+        (click)="removeAddonValue(addon.id)"
+      >
+        Usuń
+      </button>
+    </div>
+  </section>
+  } @empty {
+  <h4>Brak Dodatków</h4>
+  }
+</mat-card>

@@ -1,0 +1,40 @@
+.rates {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.rate-value {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.rate-list {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.rate-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.5rem;
+    overflow: hidden;
+    border-bottom: 1px solid var(--mat-app-elevation-shadow-level-1);
+}
+
+.rate-actions{
+    justify-self: end;
+}
+
+@media only screen and (max-width: 960px) {
+    .rate-item {
+        grid-template-columns: 1fr;
+    }
+}
