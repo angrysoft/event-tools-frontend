@@ -1,34 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  OnInit,
-  signal,
-  viewChild,
-} from "@angular/core";
+import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
-import {
-  MatAccordion,
-  MatExpansionModule,
-  MatExpansionPanel,
-} from "@angular/material/expansion";
 import { MatIcon } from "@angular/material/icon";
-import { MatListModule } from "@angular/material/list";
 import { RouterLink } from "@angular/router";
 import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { RateValueDto } from "../../models/rate";
-import { RatesService } from "../../services/rates.service";
-import { provideNativeDateAdapter } from "@angular/material/core";
 import { BasicPay } from "../../models/worker";
+import { RatesService } from "../../services/rates.service";
+import { MatDividerModule } from "@angular/material/divider";
 
 @Component({
   selector: "app-rates",
   standalone: true,
-  providers: [provideNativeDateAdapter()],
 
   imports: [
     MatCardModule,
@@ -36,13 +21,10 @@ import { BasicPay } from "../../models/worker";
     MatButtonModule,
     AddButtonComponent,
     MatIcon,
-    MatListModule,
-    MatExpansionModule,
+    MatDividerModule,
   ],
   templateUrl: "./rates.component.html",
   styleUrl: "./rates.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [MatExpansionPanel],
 })
 export class RatesComponent implements OnInit {
   readonly confirm = inject(MatDialog);
@@ -50,7 +32,6 @@ export class RatesComponent implements OnInit {
   workerId = input.required<number>();
   basicPay = input.required<BasicPay>();
   service = inject(RatesService);
-  accordion = viewChild.required(MatAccordion);
 
   ratesWithBase = [
     "CONSTANT_RATE",

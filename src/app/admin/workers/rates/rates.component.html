@@ -5,13 +5,13 @@
       Przypisz Stawkę
     </a>
   </mat-card-header>
-  <mat-card-content class="rate-list mat-elevation-z8">
+  <mat-card-content class="rate-list mat-elevation-z4">
     <section class="rate-item">
       <div>
         <strong>Podstawa:</strong>
-        {{ basicPay().value }} zł
+        
       </div>
-      <div></div>
+      <div>Wysokość Podstawy: {{ basicPay().value }} zł</div>
       <div class="rate-actions">
         <button
           mat-button

@@ -5,30 +5,33 @@
       Przypisz Dodatek
     </a>
   </mat-card-header>
-  @for (addon of workerAddons(); track addon.id) {
-  <section class="rate-item">
-    <h4>{{ addon.name }}</h4>
-    <div class="rate-value">
-      <span> Wartość: </span>
-      <span>{{ addon.value }} zł</span>
-    </div>
-    <div class="rate-actions">
-      <button
-        mat-button
-        routerLink="/admin/workers/{{ workerId() }}/addons/{{ addon.id }}"
-      >
-        Edytuj
-      </button>
-      <button
-        mat-button
-        class="tertiary-button"
-        (click)="removeAddonValue(addon.id)"
-      >
-        Usuń
-      </button>
-    </div>
-  </section>
-  } @empty {
-  <h4>Brak Dodatków</h4>
-  }
+  <mat-card-content class="rate-list mat-elevation-z4">
+    @for (addon of workerAddons(); track addon.id) {
+    <section class="rate-item">
+      <h4>{{ addon.name }}</h4>
+      <div class="rate-value">
+        <span> Wartość: </span>
+        <span>{{ addon.value }} zł</span>
+      </div>
+      <div class="rate-actions">
+        <button
+          mat-button
+          routerLink="/admin/workers/{{ workerId() }}/addons/{{ addon.id }}"
+        >
+          Edytuj
+        </button>
+        <button
+          mat-button
+          class="tertiary-button"
+          (click)="removeAddonValue(addon.id)"
+        >
+          Usuń
+        </button>
+      </div>
+    </section>
+    <mat-divider />
+    } @empty {
+    <h4>Brak Dodatków</h4>
+    }
+  </mat-card-content>
 </mat-card>
