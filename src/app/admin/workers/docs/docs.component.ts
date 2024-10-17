@@ -67,7 +67,7 @@ export class DocsComponent {
             this.docList.set(
               this.docList().filter((doc) => doc.id !== docId),
             );
-          }
+          } else this.docService.showError(response);
         });
       }
     });

@@ -10,27 +10,46 @@ import { WorkerDoc, WorkerDocData } from "../models/worker-doc";
 export class DocsService extends CrudService<WorkerDoc> {
   constructor() {
     super();
-    this.api = "/api/admin/workers/doc";
+    this.api = "/api/admin/workers";
   }
 
   getWorkersDocs(workerId: number): Observable<RestResponse<WorkerDoc[]>> {
-    return this._get<RestResponse<WorkerDoc[]>>(this.api, {
+    return this._get<RestResponse<WorkerDoc[]>>(`${this.api}/${workerId}/doc`, {
       workerId: workerId,
     });
   }
 
-  updateDoc(docId: number, doc: Partial<WorkerDocData>) {
-    return this.update(docId, this.prepareDate(doc));
+  getDoc(workerId: number, docId: number): Observable<RestResponse<WorkerDoc>> {
+    return this._get<RestResponse<WorkerDoc>>(
+      `${this.api}/${workerId}/doc/${docId}`,
+    ).pipe(catchError(this.handleError));
+  }
+
+  updateDoc(
+    docId: number,
+    doc: Partial<WorkerDocData>,
+  ): Observable<RestResponse<void | string>> {
+    return this.http
+      .put<RestResponse<void | string>>(
+        `${this.api}/${doc.worker}/doc/${docId}`,
+        this.prepareDate(doc),
+      )
+      .pipe(catchError(this.handleError));
   }
 
   createDoc(doc: Partial<WorkerDocData>) {
-    return this.create(this.prepareDate(doc));
+    return this.http
+      .post<RestResponse<void | string>>(
+        `${this.api}/${doc.worker}/doc`,
+        this.prepareDate(doc),
+      )
+      .pipe(catchError(this.handleError));
   }
 
   deleteDoc(workerId: number, docId: number) {
     return this.http
       .delete<RestResponse<void | string>>(
-        `/api/admin/workers/${workerId}/doc/${docId}`,
+        `${this.api}/${workerId}/doc/${docId}`,
       )
       .pipe(catchError(this.handleError));
   }

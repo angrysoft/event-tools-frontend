@@ -65,4 +65,5 @@ export class WorkersService extends CrudService<Worker> {
       )
       .pipe(catchError(this.handleError));
   }
+  
 }

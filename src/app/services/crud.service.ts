@@ -4,6 +4,7 @@ import { Observable, catchError, of, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { DataListResponse } from "../models/data-list-response";
 import { Page } from "../models/page";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: "root",
@@ -11,6 +12,7 @@ import { Page } from "../models/page";
 export class CrudService<T> {
   readonly http = inject(HttpClient);
   private apiUrl = "";
+  private readonly _snackBar = inject(MatSnackBar);
 
   @Output()
   authenticated = new EventEmitter<boolean>();
@@ -111,7 +113,7 @@ export class CrudService<T> {
       case 401:
         return new Observable<RestResponse<string>>();
       case 400:
-        return throwError(() => new Error(err.error.error));
+        return of(err.error);
       case 409:
         return of(err.error);
       default:
@@ -119,5 +121,12 @@ export class CrudService<T> {
           () => new Error("Something bad happened; please try again later."),
         );
     }
+  }
+
+  showError(err: any) {
+    console.warn(err.error);
+    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
+      verticalPosition: "top",
+    });
   }
 }

@@ -14,7 +14,6 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map, Observable, shareReplay } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
@@ -53,7 +52,6 @@ export class DocFormComponent implements OnInit {
   canSend = signal<boolean>(false);
   docForm: FormGroup<WorkerDocForm>;
   dropZoneClasses = signal<string[]>(["drop-zone"]);
-  private readonly _snackBar = inject(MatSnackBar);
   fileInfo = signal<string>("Dodaj plik albo upuść tutaj.");
 
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -87,16 +85,16 @@ export class DocFormComponent implements OnInit {
 
     effect(() => {
       if (this.docId() >= 0 && this.workerId() >= 0) {
-        this.docsService.get(this.docId()).subscribe((resp) => {
-          if (resp.ok) {
-            console.log("reps:", resp.data);
-
-            this.docForm.patchValue({
-              ...resp.data,
-              worker: resp.data.worker?.id,
-            });
-          }
-        });
+        this.docsService
+          .getDoc(this.workerId(), this.docId())
+          .subscribe((resp) => {
+            if (resp.ok) {
+              this.docForm.patchValue({
+                ...resp.data,
+                worker: resp.data.worker?.id,
+              });
+            }
+          });
       }
     });
   }
@@ -153,23 +151,15 @@ export class DocFormComponent implements OnInit {
     this.docsService
       .updateDoc(this.docId(), this.docForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo());
-        else this.handleError(resp);
+        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=1");
+        else this.docsService.showError(resp);
       });
   }
 
   createDoc() {
     this.docsService.createDoc(this.docForm.value).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=1");
-      else this.handleError(resp);
+      else this.docsService.showError(resp);
     });
   }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
-    });
-  }
-  //TODO: komponent który słucha zdarzeń i dopala snack bara
 }
