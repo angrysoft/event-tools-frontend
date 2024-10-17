@@ -1,25 +1,40 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, StatusChangeEvent, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../../../components/confirm-dialog/confirm-dialog.component';
-import { FormBaseComponent } from '../../../../components/form-base/form-base.component';
-import { AddonForm, AddonType } from '../../../models/addon';
-import { Rate } from '../../../models/rate';
-import { AddonsService } from '../../../services/addons.service';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  StatusChangeEvent,
+  Validators,
+} from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatOptionModule } from "@angular/material/core";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
+import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
+import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
+import { AddonForm, AddonType } from "../../../models/addon";
+import { Rate } from "../../../models/rate";
+import { AddonsService } from "../../../services/addons.service";
 
 @Component({
-  selector: 'app-addon-form',
+  selector: "app-addon-form",
   standalone: true,
-  imports: [ FormBaseComponent,
+  imports: [
+    FormBaseComponent,
     ReactiveFormsModule,
     MatCardModule,
     MatLabel,
@@ -29,11 +44,12 @@ import { AddonsService } from '../../../services/addons.service';
     MatButtonModule,
     MatIcon,
     MatOptionModule,
-    MatSelectModule,],
-  templateUrl: './addon-form.component.html',
-  styleUrl: './addon-form.component.scss'
+    MatSelectModule,
+  ],
+  templateUrl: "./addon-form.component.html",
+  styleUrl: "./addon-form.component.scss",
 })
-export class AddonFormComponent {
+export class AddonFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   update = signal<boolean>(false);
@@ -41,11 +57,10 @@ export class AddonFormComponent {
   service: AddonsService;
   addonForm: FormGroup<AddonForm>;
   addonId = signal<number>(-1);
-  error = signal<string>("");
-  formTitle = input<string>("Dodaj Dodatek");
+  formTitle = "Dodatek";
   addonTypes = signal<AddonType[]>([]);
   readonly route = inject(ActivatedRoute);
-  private readonly _snackBar = inject(MatSnackBar);
+  private readonly destroy = new Subject();
 
   constructor() {
     this.service = new AddonsService();
@@ -80,11 +95,20 @@ export class AddonFormComponent {
   }
 
   ngOnInit(): void {
-    this.addonForm.events.subscribe((formEvents) => {
-      if (formEvents instanceof StatusChangeEvent) {
-        this.canSend.set(formEvents.status === "VALID" && this.addonForm.dirty);
-      }
-    });
+    this.addonForm.events
+      .pipe(takeUntil(this.destroy))
+      .subscribe((formEvents) => {
+        if (formEvents instanceof StatusChangeEvent) {
+          this.canSend.set(
+            formEvents.status === "VALID" && this.addonForm.dirty,
+          );
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   handleSubmit() {
@@ -99,14 +123,14 @@ export class AddonFormComponent {
       .update(this.addonId(), this.addonForm.value as Rate)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl("/admin/settings/addons");
-        else this.handleError(resp);
+        else this.service.showError(resp);
       });
   }
 
   addRate() {
     this.service.create(this.addonForm.value as Rate).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl("/admin/settings/addons");
-      else this.handleError(resp);
+      else this.service.showError(resp);
     });
   }
 
@@ -126,17 +150,9 @@ export class AddonFormComponent {
     });
   }
 
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
-    });
-  }
-
   getAddonType() {
     return this.addonTypes()
       .filter((el) => el.name === this.addonForm.controls.addonType.value)
       .at(0)?.value;
   }
-
 }

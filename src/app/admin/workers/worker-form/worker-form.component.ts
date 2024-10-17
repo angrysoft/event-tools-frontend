@@ -22,7 +22,6 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
@@ -72,7 +71,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
 
   readonly workerService: WorkersService = inject(WorkersService);
   readonly router: Router = inject(Router);
-  readonly snackBar: MatSnackBar = inject(MatSnackBar);
 
   constructor() {
     this.workerAccount = new FormGroup<WorkerAccount>(
@@ -227,10 +225,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
     this.workerForm.updateValueAndValidity();
   }
 
-  showMsg(msg: string, action: string) {
-    this.snackBar.open(msg, action, { duration: 5000 });
-  }
-
   handleSubmit() {
     this.error.set("");
     console.debug(this.workerForm.value);
@@ -256,7 +250,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
             replaceUrl: true,
           });
         } else {
-          this.showMsg(response.data ?? "Coś poszło nie tak", "Zamknij");
+          this.workerService.showError(response);
         }
       });
   }

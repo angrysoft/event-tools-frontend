@@ -53,7 +53,7 @@ export class CarsComponent {
         this.service.delete(carId).subscribe((response) => {
           if (response.ok) {
             this.cars.set(this.cars().filter((rate) => rate.id !== carId));
-          }
+          } else this.service.showError(response);
         });
       }
     });

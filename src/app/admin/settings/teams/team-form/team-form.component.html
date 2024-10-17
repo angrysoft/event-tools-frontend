@@ -1,6 +1,6 @@
 <app-form-base
-  backTo="/admin/settings/teams"
-  [formTitle]="formTitle()"
+  [backTo]="backTo"
+  [formTitle]="formTitle"
   formIdName="team-form"
   [canSend]="canSend()"
 >
@@ -35,7 +35,7 @@
         </mat-form-field>
       </mat-card-content>
     </mat-card>
-    @if (update) {
+    @if (update()) {
     <button mat-fab extended type="button" (click)="deleteTeam()">
       <mat-icon>delete</mat-icon>
       Usuń Ekipę

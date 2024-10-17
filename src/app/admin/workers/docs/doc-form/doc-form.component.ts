@@ -1,6 +1,13 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import { Component, effect, inject, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -15,7 +22,7 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
-import { map, Observable, shareReplay } from "rxjs";
+import { map, Observable, shareReplay, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { WorkerDocForm } from "../../../models/worker-doc";
 import { DocsService } from "../../../services/docs.service";
@@ -40,19 +47,20 @@ import { DocsService } from "../../../services/docs.service";
   templateUrl: "./doc-form.component.html",
   styleUrl: "./doc-form.component.scss",
 })
-export class DocFormComponent implements OnInit {
+export class DocFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly docsService = inject(DocsService);
   docId = signal<number>(-1);
   workerId = signal<number>(-1);
-  update: boolean = false;
   backTo = signal<string>("/admin/workers");
   canSend = signal<boolean>(false);
-  docForm: FormGroup<WorkerDocForm>;
   dropZoneClasses = signal<string[]>(["drop-zone"]);
   fileInfo = signal<string>("Dodaj plik albo upuść tutaj.");
+  update = signal<boolean>(false);
+  docForm: FormGroup<WorkerDocForm>;
+  private readonly destroy = new Subject();
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -65,7 +73,7 @@ export class DocFormComponent implements OnInit {
     const paramDocId = this.route.snapshot.paramMap.get("id");
     if (paramDocId) {
       this.docId.set(Number(paramDocId));
-      this.update = true;
+      this.update.set(true);
     }
 
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
@@ -100,9 +108,16 @@ export class DocFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.docForm.statusChanges.subscribe((changeEvent) => {
-      this.canSend.set(changeEvent === "VALID" && this.docForm.dirty);
-    });
+    this.docForm.statusChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe((changeEvent) => {
+        this.canSend.set(changeEvent === "VALID" && this.docForm.dirty);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   onDrop(ev: DragEvent) {
@@ -143,7 +158,7 @@ export class DocFormComponent implements OnInit {
       this.docForm.controls.expirationDate.setValue(true);
     }
 
-    if (this.update) this.updateDoc();
+    if (this.update()) this.updateDoc();
     else this.createDoc();
   }
 

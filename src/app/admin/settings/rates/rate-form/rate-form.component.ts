@@ -1,4 +1,12 @@
-import { Component, effect, inject, input, signal } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -14,8 +22,8 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Rate, RateForm, RateType } from "../../../models/rate";
@@ -40,19 +48,19 @@ import { RatesService } from "../../../services/rates.service";
   templateUrl: "./rate-form.component.html",
   styleUrl: "./rate-form.component.scss",
 })
-export class RateFormComponent {
+export class RateFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
+  readonly route = inject(ActivatedRoute);
   update = signal<boolean>(false);
   canSend = signal<boolean>(false);
+  rateId = signal<number>(-1);
+  rateTypes = signal<RateType[]>([]);
   service: RatesService;
   rateForm: FormGroup<RateForm>;
-  rateId = signal<number>(-1);
-  error = signal<string>("");
-  formTitle = input<string>("Dodaj Stawkę");
-  rateTypes = signal<RateType[]>([]);
-  readonly route = inject(ActivatedRoute);
-  private readonly _snackBar = inject(MatSnackBar);
+  formTitle = "Stawka";
+  private readonly destroy = new Subject();
+  readonly backTo = "/admin/settings/rates";
 
   constructor() {
     this.service = new RatesService();
@@ -73,7 +81,10 @@ export class RateFormComponent {
       id: new FormControl(null),
       name: new FormControl("", [Validators.required]),
       rateType: new FormControl("", [Validators.required]),
-      overtimeAfter: new FormControl({value:null, disabled:true}, Validators.required),
+      overtimeAfter: new FormControl(
+        { value: null, disabled: true },
+        Validators.required,
+      ),
     });
 
     effect(() => {
@@ -89,11 +100,20 @@ export class RateFormComponent {
   }
 
   ngOnInit(): void {
-    this.rateForm.events.subscribe((formEvents) => {
-      if (formEvents instanceof StatusChangeEvent) {
-        this.canSend.set(formEvents.status === "VALID" && this.rateForm.dirty);
-      }
-    });
+    this.rateForm.events
+      .pipe(takeUntil(this.destroy))
+      .subscribe((formEvents) => {
+        if (formEvents instanceof StatusChangeEvent) {
+          this.canSend.set(
+            formEvents.status === "VALID" && this.rateForm.dirty,
+          );
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   handleSubmit() {
@@ -107,15 +127,15 @@ export class RateFormComponent {
     this.service
       .update(this.rateId(), this.rateForm.value as Rate)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl("/admin/settings/rates");
-        else this.handleError(resp);
+        if (resp.ok) this.router.navigateByUrl(this.backTo);
+        else this.service.showError(resp);
       });
   }
 
   addRate() {
     this.service.create(this.rateForm.value as Rate).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl("/admin/settings/rates");
-      else this.handleError(resp);
+      if (resp.ok) this.router.navigateByUrl(this.backTo);
+      else this.service.showError(resp);
     });
   }
 
@@ -128,17 +148,10 @@ export class RateFormComponent {
       if (result === true && this.rateId()) {
         this.service.delete(this.rateId()).subscribe((resp) => {
           if (resp.ok) {
-            this.router.navigateByUrl("/admin/settings/rates");
-          } else this.handleError(resp);
+            this.router.navigateByUrl(this.backTo);
+          } else this.service.showError(resp);
         });
       }
-    });
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
     });
   }
 

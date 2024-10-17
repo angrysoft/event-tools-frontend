@@ -1,6 +1,6 @@
 <app-form-base
-  backTo="/admin/settings/groups"
-  [formTitle]="formTitle()"
+  [backTo]="backTo"
+  [formTitle]="formTitle"
   formIdName="group-form"
   [canSend]="canSend()"
 >
@@ -35,9 +35,14 @@
         </mat-form-field>
       </mat-card-content>
     </mat-card>
-    @if (update) {
-        {{ error() }}
-    <button mat-fab extended type="button" class="delete-button" (click)="deleteGroup()">
+    @if (update()) {
+    <button
+      mat-fab
+      extended
+      type="button"
+      class="delete-button"
+      (click)="deleteGroup()"
+    >
       <mat-icon>delete</mat-icon>
       Usuń Grupę
     </button>

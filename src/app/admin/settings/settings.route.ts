@@ -13,16 +13,16 @@ export const settingsRoutes: Routes = [
     path: "settings/groups/add",
     title: "Dodaj Grupe",
     loadComponent: () =>
-      import("./groups/add-group/add-group.component").then(
-        (m) => m.AddGroupComponent,
+      import("./groups/group-form/group-form.component").then(
+        (m) => m.GroupFormComponent,
       ),
   },
   {
-    path: "settings/groups/:id",
+    path: "settings/groups/:groupId",
     title: "Edycja Grupy",
     loadComponent: () =>
-      import("./groups/edit-group/edit-group.component").then(
-        (m) => m.EditGroupComponent,
+      import("./groups/group-form/group-form.component").then(
+        (m) => m.GroupFormComponent,
       ),
   },
   {
@@ -35,16 +35,16 @@ export const settingsRoutes: Routes = [
     path: "settings/teams/add",
     title: "Dodaj Ekipe",
     loadComponent: () =>
-      import(".//teams/add-team/add-team.component").then(
-        (m) => m.AddTeamComponent,
+      import(".//teams/team-form/team-form.component").then(
+        (m) => m.TeamFormComponent,
       ),
   },
   {
-    path: "settings/teams/:id",
+    path: "settings/teams/:teamId",
     title: "Edytuj Ekipe",
     loadComponent: () =>
-      import("./teams/edit-team/edit-team.component").then(
-        (m) => m.EditTeamComponent,
+      import("./teams/team-form/team-form.component").then(
+        (m) => m.TeamFormComponent,
       ),
   },
   {

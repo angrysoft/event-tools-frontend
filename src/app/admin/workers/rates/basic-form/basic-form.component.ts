@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -7,7 +7,6 @@ import {
 } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
 import { MatInputModule } from "@angular/material/input";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
@@ -26,15 +25,14 @@ import { WorkersService } from "../../../services/workers.service";
   templateUrl: "./basic-form.component.html",
   styleUrl: "./basic-form.component.scss",
 })
-export class BasicFormComponent implements OnInit {
-  basicForm: FormGroup<BasicPayForm>;
+export class BasicFormComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
   router = inject(Router);
-  destroy = new Subject();
+  service = inject(WorkersService);
   canSend = signal<boolean>(false);
   backTo = signal<string>("/admin/workers/");
-  service = inject(WorkersService);
-  private readonly _snackBar = inject(MatSnackBar);
+  basicForm: FormGroup<BasicPayForm>;
+  destroy = new Subject();
   workerId: number = 0;
 
   constructor() {
@@ -76,14 +74,7 @@ export class BasicFormComponent implements OnInit {
       .updateBasicPay(this.workerId, this.basicForm.value)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
-        else this.handleError(resp);
+        else this.service.showError(resp);
       });
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
-    });
   }
 }

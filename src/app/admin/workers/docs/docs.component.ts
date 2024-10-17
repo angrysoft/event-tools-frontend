@@ -4,7 +4,7 @@ import {
   inject,
   input,
   signal,
-  untracked
+  untracked,
 } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -31,9 +31,8 @@ import { DocsService } from "../../services/docs.service";
 })
 export class DocsComponent {
   readonly confirm = inject(MatDialog);
-  // readonly router = inject(Router);
-  workerId = input.required<number>();
   readonly docService = inject(DocsService);
+  workerId = input.required<number>();
   workerDocs = input.required<WorkerDoc[]>();
   docList = signal<WorkerDoc[]>([]);
 
@@ -44,10 +43,6 @@ export class DocsComponent {
         if (list) this.docList.set(list);
       });
     });
-  }
-
-  getFile(id: number | null) {
-    console.log("get file " + id);
   }
 
   removeFile(docId: number | null) {
@@ -62,13 +57,15 @@ export class DocsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.docService.deleteDoc(this.workerId(), docId).subscribe((response) => {
-          if (response.ok) {
-            this.docList.set(
-              this.docList().filter((doc) => doc.id !== docId),
-            );
-          } else this.docService.showError(response);
-        });
+        this.docService
+          .deleteDoc(this.workerId(), docId)
+          .subscribe((response) => {
+            if (response.ok) {
+              this.docList.set(
+                this.docList().filter((doc) => doc.id !== docId),
+              );
+            } else this.docService.showError(response);
+          });
       }
     });
   }

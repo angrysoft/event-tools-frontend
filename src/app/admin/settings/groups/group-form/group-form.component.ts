@@ -2,11 +2,10 @@ import {
   Component,
   effect,
   inject,
-  input,
+  OnDestroy,
   OnInit,
-  signal,
+  signal
 } from "@angular/core";
-import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import {
   FormControl,
   FormGroup,
@@ -14,17 +13,18 @@ import {
   StatusChangeEvent,
   Validators,
 } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import { MatIcon } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
+import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
+import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { CrudService } from "../../../../services/crud.service";
 import { Group, GroupForm } from "../../../models/group";
-import { MatCardModule } from "@angular/material/card";
-import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { Router } from "@angular/router";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
-import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
-import { MatIcon } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
-import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-group-form",
@@ -43,21 +43,27 @@ import { MatSnackBar } from "@angular/material/snack-bar";
   templateUrl: "./group-form.component.html",
   styleUrl: "./group-form.component.scss",
 })
-export class GroupFormComponent implements OnInit {
+export class GroupFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
+  readonly route = inject(ActivatedRoute);
   readonly confirm = inject(MatDialog);
-  update: boolean = false;
+  update = signal<boolean>(false);
   canSend = signal<boolean>(false);
   service: CrudService<Group>;
   groupForm: FormGroup<GroupForm>;
-  groupId = input<number>(-1);
-  error = signal<string>("");
-  formTitle = input<string>("Dodaj Grupę");
-  private _snackBar = inject(MatSnackBar);
+  groupId = signal<number>(-1);
+  formTitle = "Grupa";
+  readonly backTo = "/admin/settings/groups";
+  private readonly destroy = new Subject();
 
   constructor() {
     this.service = new CrudService<Group>();
     this.service.api = "/api/admin/workers/groups";
+    const paramGroupId = this.route.snapshot.paramMap.get("groupId");
+    if (paramGroupId) {
+      this.update.set(true);
+      this.groupId.set(Number(paramGroupId));
+    }
 
     this.groupForm = new FormGroup<GroupForm>({
       id: new FormControl(null),
@@ -70,7 +76,6 @@ export class GroupFormComponent implements OnInit {
         this.service.get(this.groupId()).subscribe((resp) => {
           if (resp.ok) {
             this.groupForm.patchValue(resp.data);
-            this.update = true;
           }
         });
       }
@@ -78,31 +83,42 @@ export class GroupFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.groupForm.events.subscribe((formEvents) => {
-      if (formEvents instanceof StatusChangeEvent) {
-        this.canSend.set(formEvents.status === "VALID" && this.groupForm.dirty);
-      }
-    });
+    this.groupForm.events
+      .pipe(takeUntil(this.destroy))
+      .subscribe((formEvents) => {
+        if (formEvents instanceof StatusChangeEvent) {
+          this.canSend.set(
+            formEvents.status === "VALID" && this.groupForm.dirty,
+          );
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   handleSubmit() {
     if (this.groupForm.valid) {
-      if (this.update) this.updateGroup();
+      if (this.update()) this.updateGroup();
       else this.addGroup();
     }
   }
 
   updateGroup() {
-    this.service.update(this.groupId(), this.groupForm.value as Group).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-      else this.handleError(resp);
-    });
+    this.service
+      .update(this.groupId(), this.groupForm.value as Group)
+      .subscribe((resp) => {
+        if (resp.ok) this.router.navigateByUrl(this.backTo);
+        else this.service.showError(resp);
+      });
   }
 
   addGroup() {
     this.service.create(this.groupForm.value as Group).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-      else this.handleError(resp);
+      if (resp.ok) this.router.navigateByUrl(this.backTo);
+      else this.service.showError(resp);
     });
   }
 
@@ -114,17 +130,10 @@ export class GroupFormComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true && this.groupId()) {
         this.service.delete(this.groupId()).subscribe((resp) => {
-          if (resp.ok) this.router.navigateByUrl("/admin/settings/groups");
-          else this.handleError(resp);
+          if (resp.ok) this.router.navigateByUrl(this.backTo);
+          else this.service.showError(resp);
         });
       }
-    });
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
     });
   }
 }

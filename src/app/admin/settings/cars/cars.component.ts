@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { DataTableComponent } from "../../../components/data-table/data-table.component";
 
 @Component({
-  selector: 'app-cars',
+  selector: "app-cars",
   standalone: true,
-  imports: [],
-  templateUrl: './cars.component.html',
-  styleUrl: './cars.component.scss'
+  imports: [DataTableComponent],
+  templateUrl: "./cars.component.html",
+  styleUrl: "./cars.component.scss",
 })
 export class CarsComponent {
-
+  tableColumns = [
+    { name: "id", def: "id" },
+    { name: "Nazwa", def: "name" },
+    { name: "Rejestracja", def: "registration" },
+    { name: "Kierowca", def: "driver" },
+  ];
 }

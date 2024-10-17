@@ -28,10 +28,10 @@ import { MatDividerModule } from "@angular/material/divider";
 })
 export class RatesComponent implements OnInit {
   readonly confirm = inject(MatDialog);
-  workerRates = signal<RateValueDto[]>([]);
+  service = inject(RatesService);
   workerId = input.required<number>();
   basicPay = input.required<BasicPay>();
-  service = inject(RatesService);
+  workerRates = signal<RateValueDto[]>([]);
 
   ratesWithBase = [
     "CONSTANT_RATE",
@@ -64,7 +64,7 @@ export class RatesComponent implements OnInit {
             this.workerRates.set(
               this.workerRates().filter((rate) => rate.id !== rateValueId),
             );
-          }
+          } else this.service.showError(response);
         });
       }
     });
