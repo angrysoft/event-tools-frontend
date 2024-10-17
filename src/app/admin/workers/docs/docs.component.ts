@@ -62,7 +62,7 @@ export class DocsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.docService.delete(docId).subscribe((response) => {
+        this.docService.deleteDoc(this.workerId(), docId).subscribe((response) => {
           if (response.ok) {
             this.docList.set(
               this.docList().filter((doc) => doc.id !== docId),
