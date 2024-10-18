@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { settingsRoutes } from "./settings/settings.route";
 import { workersRoutes } from "./workers/worker.routes";
+import { eventsRoutes } from "./events/events.routes";
 
 export const adminRoutes: Routes = [
   {
@@ -13,4 +14,17 @@ export const adminRoutes: Routes = [
   },
   ...workersRoutes,
   ...settingsRoutes,
+  ...eventsRoutes,
+  {
+    path: "calendar",
+    title: "Kalendarz Imprez",
+    loadComponent: () =>
+      import("./calendar/calendar.component").then((m) => m.CalendarComponent),
+  },
+  {
+    path: "work-schedule",
+    title: "Kalendarz Imprez",
+    loadComponent: () =>
+      import("./work-schedule/work-schedule.component").then((m) => m.WorkScheduleComponent),
+  },
 ];

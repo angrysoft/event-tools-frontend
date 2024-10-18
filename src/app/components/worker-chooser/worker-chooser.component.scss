@@ -1,0 +1,22 @@
+:host ::ng-deep.mat-mdc-paginator-container  {
+    justify-content: flex-start !important;
+ }
+ 
+.table-wrapper {
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+tr {
+    cursor: pointer;
+}
+
+tr:hover {
+    background-color:  var(--sys-secondary);
+    color: var(--sys-on-secondary-fixed)
+}
+
+.selected-row {
+    background-color:  var(--sys-secondary);
+    color: var(--sys-on-secondary-fixed)
+}
