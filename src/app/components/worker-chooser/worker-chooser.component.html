@@ -1,8 +1,13 @@
 <app-loader [loading]="dataSource.loading()" />
 
-<div class="side-content">
-    <button mat-fab extended (click)="emitApprove()">Zatwierdź</button>
-  @if(search()) {
+<div class="worker-dialog">
+  <mat-dialog-actions>
+    <button mat-button cdkFocusInitial [mat-dialog-close]="false">
+      Anuluj
+    </button>
+    <button mat-button [mat-dialog-close]="true">Ok</button>
+  </mat-dialog-actions>
+  @if(config.search) {
   <app-search
     (searchRequest)="searchQuery($event)"
     (resetSearch)="resetSearch()"
@@ -23,7 +28,7 @@
         mat-row
         *matRowDef="let row; columns: columnNames"
         (click)="onClick(row)"
-        [class.selected-row]="selectedWorkers().has(row)"
+        [class.selected-row]="config.data.has(row)"
       ></tr>
     </table>
     <mat-paginator

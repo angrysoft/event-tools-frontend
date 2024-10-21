@@ -1,6 +1,6 @@
 import { FormControl } from "@angular/forms";
 
-interface Event {
+interface EventItem {
   id: number;
   name: string;
   number: string;
@@ -10,7 +10,7 @@ interface Event {
   chiefId: number;
 }
 
-interface EventForm {
+interface EventItemForm {
   id: FormControl<number | null>;
   name: FormControl<string | null>;
   number: FormControl<string | null>;
@@ -20,4 +20,16 @@ interface EventForm {
   chiefId: FormControl<number | null>;
 }
 
-export { Event, EventForm };
+interface EventItemDto {
+  id: number;
+  name: string;
+  number: string;
+  description: string;
+  coordinator: string;
+  accountManager: string;
+  chief: string;
+  editors: string[]
+  color: string;
+}
+
+export { EventItem, EventItemForm, EventItemDto };

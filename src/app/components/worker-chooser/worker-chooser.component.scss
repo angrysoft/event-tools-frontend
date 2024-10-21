@@ -20,3 +20,8 @@ tr:hover {
     background-color:  var(--sys-secondary);
     color: var(--sys-on-secondary-fixed)
 }
+
+.worker-dialog {
+    max-height: 95dvh;
+    max-width: 95 dvw;
+}

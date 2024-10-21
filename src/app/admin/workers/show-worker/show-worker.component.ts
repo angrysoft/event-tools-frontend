@@ -80,7 +80,6 @@ export class ShowWorkerComponent {
 
   constructor() {
     this.workerService.get(this.workerId).subscribe((response) => {
-      console.log();
       if (response.ok) {
         const data = response.data;
         if (!response.data.basicPay) {

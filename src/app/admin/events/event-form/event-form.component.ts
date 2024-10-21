@@ -23,13 +23,12 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
-import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
-import { AddonType } from "../../models/addon";
-import { EventForm } from "../../models/events";
-import { EventsService } from "../../services/events.service";
-import { OfficeWorkers, WorkerBase } from "../../models/worker";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
+import { EventItemForm, EventItem } from "../../models/events";
+import { OfficeWorkers, WorkerBase } from "../../models/worker";
+import { EventsService } from "../../services/events.service";
+import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 
 @Component({
   selector: "app-event-form",
@@ -52,7 +51,6 @@ import { WorkerChooserComponent } from "../../../components/worker-chooser/worke
   styleUrl: "./event-form.component.scss",
 })
 export class EventFormComponent implements OnInit, OnDestroy {
-
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   readonly route = inject(ActivatedRoute);
@@ -64,11 +62,11 @@ export class EventFormComponent implements OnInit, OnDestroy {
     accountManagers: [],
   });
   service: EventsService;
-  eventForm: FormGroup<EventForm>;
+  eventForm: FormGroup<EventItemForm>;
   formTitle = "Impreza";
   backTo = "/admin/events";
   private readonly destroy = new Subject();
-  selectedChief: Set<WorkerBase> = new Set();
+  chiefName = signal<string>("");
 
   constructor() {
     this.service = new EventsService();
@@ -77,9 +75,10 @@ export class EventFormComponent implements OnInit, OnDestroy {
     if (paramEventId) {
       this.update.set(true);
       this.eventId.set(Number(paramEventId));
+      this.backTo = this.backTo + "/" + paramEventId;
     }
 
-    this.eventForm = new FormGroup<EventForm>({
+    this.eventForm = new FormGroup<EventItemForm>({
       id: new FormControl(null),
       name: new FormControl("", [Validators.required]),
       number: new FormControl("", [Validators.required]),
@@ -99,7 +98,7 @@ export class EventFormComponent implements OnInit, OnDestroy {
       if (this.eventId() >= 0) {
         this.service.get(this.eventId()).subscribe((resp) => {
           if (resp.ok) {
-            // this.eventForm.patchValue(resp.data);
+            this.eventForm.patchValue(resp.data);
           }
         });
       }
@@ -126,39 +125,43 @@ export class EventFormComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.eventForm.valid) {
-      if (this.update()) this.updateRate();
-      else this.addRate();
+      if (this.update()) this.updateEvent();
+      else this.addEvent();
     }
   }
 
-  updateRate() {
+  updateEvent() {
     this.service
-      .update(this.eventId(), this.eventForm.value as Event)
+      .update(this.eventId(), this.eventForm.value as EventItem)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo);
         else this.service.showError(resp);
       });
   }
 
-  addRate() {
-    this.service.create(this.eventForm.value as Event).subscribe((resp) => {
+  addEvent() {
+    this.service.create(this.eventForm.value as EventItem).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl(this.backTo);
       else this.service.showError(resp);
     });
   }
 
-  deleteRate() {
-    const dialogRef = this.confirm.open(ConfirmDialogComponent, {
-      data: { msg: "Czy na pewno chcesz usunąć ?" },
+  chooseChief() {
+    const config: WorkerChooserConfig = {
+      single: true,
+      search: true,
+      data: new Set(),
+    };
+
+    const dialogRef = this.confirm.open(WorkerChooserComponent, {
+      data: config,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === true && this.eventId()) {
-        this.service.delete(this.eventId()).subscribe((response) => {
-          if (response.ok) {
-            this.router.navigateByUrl("/admin/settings/addons");
-          } else this.service.showError(response);
-        });
+      if (result === true) {
+        const chief = config.data.keys().next().value;
+        this.eventForm.controls.chiefId.setValue(Number(chief?.id));
+        this.chiefName.set(chief?.firstName + " " + chief?.lastName);
       }
     });
   }

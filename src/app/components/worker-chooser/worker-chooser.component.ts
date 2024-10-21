@@ -2,11 +2,16 @@ import { SelectionModel } from "@angular/cdk/collections";
 import {
   Component,
   inject,
-  input,
   output,
   signal,
-  ViewChild,
+  ViewChild
 } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+} from "@angular/material/dialog";
 import {
   MatPaginator,
   MatPaginatorIntl,
@@ -16,13 +21,13 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { WorkerBase } from "../../admin/models/worker";
+import { WorkersService } from "../../admin/services/workers.service";
 import { DataTablePaginatorIntl } from "../data-table/data-table.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { InputFilters, SearchQuery } from "../search/model";
 import { SearchComponent } from "../search/search.component";
 import { DataTableDataSource } from "./data-table-datasource";
-import { WorkersService } from "../../admin/services/workers.service";
-import { MatButtonModule } from "@angular/material/button";
+import { WorkerChooserConfig } from "./worker-chooser-config";
 
 @Component({
   selector: "app-worker-chooser",
@@ -34,6 +39,8 @@ import { MatButtonModule } from "@angular/material/button";
     MatPaginatorModule,
     LoaderComponent,
     SearchComponent,
+    MatDialogActions,
+    MatDialogClose,
   ],
   templateUrl: "./worker-chooser.component.html",
   styleUrl: "./worker-chooser.component.scss",
@@ -42,8 +49,6 @@ import { MatButtonModule } from "@angular/material/button";
 export class WorkerChooserComponent<T> {
   readonly service = inject(WorkersService);
   readonly router = inject(Router);
-  itemIdName = input<string>("id");
-  search = input<boolean>(false);
   approve = output<Set<WorkerBase>>();
   filters = signal<InputFilters>({
     team: {
@@ -55,9 +60,9 @@ export class WorkerChooserComponent<T> {
       values: [],
     },
   });
-  single = input<boolean>(false);
   selection = new SelectionModel<WorkerBase>(true, []);
   selectedWorkers = signal<Set<WorkerBase>>(new Set());
+  config: WorkerChooserConfig = inject(MAT_DIALOG_DATA);
 
   tableColumns = [
     { name: "id", def: "id" },
@@ -98,15 +103,14 @@ export class WorkerChooserComponent<T> {
   }
 
   onClick(row: any) {
-    if (this.single()) {
-      this.selectedWorkers.set(new Set([row]));
-      console.log(this.selectedWorkers());
+    if (this.config.single) {
+      this.config.data = new Set([row]);
       return;
     }
-    if (this.selectedWorkers().has(row)) {
-      this.selectedWorkers().delete(row);
+    if (this.config.data.has(row)) {
+      this.config.data.delete(row);
     } else {
-      this.selectedWorkers().add(row);
+      this.config.data.add(row);
     }
   }
 
