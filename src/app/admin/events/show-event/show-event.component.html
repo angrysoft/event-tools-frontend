@@ -7,7 +7,10 @@
     </button>
     <h2>Dane Pracownika</h2>
     <div class="details-actions">
-      <button mat-flat-button routerLink="/admin/events/edit/{{ eventData().id }}">
+      <button
+        mat-flat-button
+        routerLink="/admin/events/edit/{{ eventData().id }}"
+      >
         Edytuj
       </button>
       <button mat-flat-button class="delete-button" (click)="removeEvent()">
@@ -45,20 +48,15 @@
               <span class="label">Kierownik:</span>
               <span>{{ eventData().chief }} </span>
             </p>
-            <p>
-              <span class="label" [style.color]="eventData().color"
-                >Kolor Kierownika
-              </span>
-            </p>
           </mat-card-content>
         </mat-card>
 
         <mat-card appearance="outlined">
           <mat-card-header>
-            <mat-card-title>Szczegóły</mat-card-title>
+            <mat-card-title>Opis</mat-card-title>
           </mat-card-header>
-          <mat-card-content>
-            <p>{{ eventData().description }}</p>
+          <mat-card-content class="description">
+            <section [innerHTML]="eventData().description | safeHtml"></section>
           </mat-card-content>
         </mat-card>
       </div>
@@ -68,12 +66,6 @@
     <mat-tab label="Dokumenty">
       <!-- @defer () {
       <app-docs [eventId]="eventId" />
-      } -->
-    </mat-tab>
-
-    <mat-tab label="Auta">
-      <!-- @defer () {
-      <app-cars [workerId]="workerId" />
       } -->
     </mat-tab>
   </mat-tab-group>

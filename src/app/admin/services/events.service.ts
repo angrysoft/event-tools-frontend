@@ -18,5 +18,9 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
     return this._get<RestResponse<OfficeWorkers>>("/api/admin/workers/office");
   }
 
-
+  getInfo(eventId: number) {
+    return this._get<RestResponse<EventItemDto>>(
+      `${this.api}/info/${eventId}`,
+    );
+  }
 }

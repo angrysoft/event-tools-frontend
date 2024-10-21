@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   effect,
+  ElementRef,
   inject,
   OnDestroy,
   OnInit,
   signal,
+  ViewChild,
 } from "@angular/core";
 import {
   FormControl,
@@ -22,7 +25,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
+import { debounceTime, fromEvent, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { EventItemForm, EventItem } from "../../models/events";
@@ -50,10 +53,11 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
   templateUrl: "./event-form.component.html",
   styleUrl: "./event-form.component.scss",
 })
-export class EventFormComponent implements OnInit, OnDestroy {
+export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   readonly route = inject(ActivatedRoute);
+  readonly service = inject(EventsService);
   update = signal<boolean>(false);
   canSend = signal<boolean>(false);
   eventId = signal<number>(-1);
@@ -61,16 +65,15 @@ export class EventFormComponent implements OnInit, OnDestroy {
     coordinators: [],
     accountManagers: [],
   });
-  service: EventsService;
   eventForm: FormGroup<EventItemForm>;
   formTitle = "Impreza";
   backTo = "/admin/events";
   private readonly destroy = new Subject();
   chiefName = signal<string>("");
+  @ViewChild("editor")
+  editor!: ElementRef;
 
   constructor() {
-    this.service = new EventsService();
-
     const paramEventId = this.route.snapshot.paramMap.get("eventId");
     if (paramEventId) {
       this.update.set(true);
@@ -98,7 +101,9 @@ export class EventFormComponent implements OnInit, OnDestroy {
       if (this.eventId() >= 0) {
         this.service.get(this.eventId()).subscribe((resp) => {
           if (resp.ok) {
+            console.log(resp.data);
             this.eventForm.patchValue(resp.data);
+            this.editor.nativeElement.innerHTML = resp.data.description;
           }
         });
       }
@@ -110,11 +115,22 @@ export class EventFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy))
       .subscribe((formEvents) => {
         if (formEvents instanceof StatusChangeEvent) {
-          console.log(this.eventForm.value);
           this.canSend.set(
             formEvents.status === "VALID" && this.eventForm.dirty,
           );
         }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    fromEvent(this.editor.nativeElement, "input")
+      .pipe(takeUntil(this.destroy), debounceTime(500))
+      .subscribe(() => {
+        this.eventForm.controls.description.setValue(
+          this.editor.nativeElement.innerHTML,
+        );
+        this.eventForm.controls.description.markAsDirty();
+        this.eventForm.controls.description.updateValueAndValidity();
       });
   }
 
@@ -123,7 +139,13 @@ export class EventFormComponent implements OnInit, OnDestroy {
     this.destroy.complete();
   }
 
+  setDescription(text: any) {
+    console.log(text);
+    this.eventForm.controls.description.setValue(text.data);
+  }
+
   handleSubmit() {
+    console.log(this.eventForm.value, this.eventForm.valid);
     if (this.eventForm.valid) {
       if (this.update()) this.updateEvent();
       else this.addEvent();
@@ -164,9 +186,5 @@ export class EventFormComponent implements OnInit, OnDestroy {
         this.chiefName.set(chief?.firstName + " " + chief?.lastName);
       }
     });
-  }
-
-  onApprove(ev: Set<WorkerBase>) {
-    console.log(ev);
   }
 }

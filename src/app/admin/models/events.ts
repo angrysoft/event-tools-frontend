@@ -29,7 +29,6 @@ interface EventItemDto {
   accountManager: string;
   chief: string;
   editors: string[]
-  color: string;
 }
 
 export { EventItem, EventItemForm, EventItemDto };

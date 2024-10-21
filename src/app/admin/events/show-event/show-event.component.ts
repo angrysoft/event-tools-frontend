@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confi
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { EventItemDto } from "../../models/events";
 import { EventsService } from "../../services/events.service";
+import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
 
 @Component({
   selector: "app-show-event",
@@ -20,6 +21,7 @@ import { EventsService } from "../../services/events.service";
     MatTabsModule,
     LoaderComponent,
     RouterLink,
+    SafeHtmlPipe,
   ],
   templateUrl: "./show-event.component.html",
   styleUrl: "./show-event.component.scss",
@@ -37,8 +39,7 @@ export class ShowEventComponent {
     coordinator: "",
     accountManager: "",
     chief: "",
-    editors: [],
-    color: "",
+    editors: []
   });
 
   loading = signal<boolean>(true);
@@ -46,7 +47,7 @@ export class ShowEventComponent {
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
 
   constructor() {
-    this.service.get(this.eventId).subscribe((resp) => {
+    this.service.getInfo(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventData.set(resp.data as EventItemDto);
       }
