@@ -22,6 +22,8 @@ tr:hover {
 }
 
 .worker-dialog {
+    display: grid;
+    grid-template-rows: auto 1fr;
     max-height: 95dvh;
-    max-width: 95 dvw;
+    max-width: 95dvw;
 }

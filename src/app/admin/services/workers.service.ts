@@ -4,18 +4,16 @@ import { DataListResponse } from "../../models/data-list-response";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
 import { BasicPayData } from "../models/rate";
-import { Worker, WorkersItem } from "../models/worker";
+import { OfficeWorkers, Worker, WorkerBase, WorkersItem } from "../models/worker";
 import { WorkerHints } from "../models/worker-hints";
 
 @Injectable({
   providedIn: "root",
 })
 export class WorkersService extends CrudService<Worker> {
-  private readonly apiWorkers = "/api/admin/workers";
-
   constructor() {
     super();
-    this.api = this.apiWorkers;
+    this.api = "/api/admin/workers";
   }
 
   getWorkers(
@@ -23,14 +21,11 @@ export class WorkersService extends CrudService<Worker> {
     offset: number = 0,
     filter: string = "",
   ): Observable<RestResponse<DataListResponse<WorkersItem>>> {
-    return this._get<RestResponse<DataListResponse<WorkersItem>>>(
-      this.apiWorkers,
-      {
-        limit: limit,
-        offset: offset,
-        filterTeam: filter,
-      },
-    );
+    return this._get<RestResponse<DataListResponse<WorkersItem>>>(this.api, {
+      limit: limit,
+      offset: offset,
+      filterTeam: filter,
+    });
   }
 
   searchWorker(
@@ -40,7 +35,7 @@ export class WorkersService extends CrudService<Worker> {
     filter: string = "",
   ): Observable<RestResponse<DataListResponse<WorkersItem>>> {
     return this._get<RestResponse<DataListResponse<WorkersItem>>>(
-      `${this.apiWorkers}/search`,
+      `${this.api}/search`,
       {
         query: query,
         limit: limit,
@@ -51,7 +46,7 @@ export class WorkersService extends CrudService<Worker> {
   }
 
   getWorkersHints(): Observable<RestResponse<WorkerHints>> {
-    return this._get<RestResponse<WorkerHints>>(`${this.apiWorkers}/hints`);
+    return this._get<RestResponse<WorkerHints>>(`${this.api}/hints`);
   }
 
   updateBasicPay(
@@ -60,10 +55,21 @@ export class WorkersService extends CrudService<Worker> {
   ): Observable<RestResponse<void | string>> {
     return this.http
       .put<RestResponse<void | string>>(
-        `${this.apiWorkers}/basic/${workerId}`,
+        `${this.api}/basic/${workerId}`,
         basicPay,
       )
       .pipe(catchError(this.handleError));
   }
-  
+
+  getWorkersNames(
+    workersIds: number[],
+  ): Observable<RestResponse<WorkerBase[]>> {
+    return this._get<RestResponse<WorkerBase[]>>(`${this.api}/ids`, {
+      ids: workersIds.join(","),
+    });
+  }
+
+  getOfficeWorkers(): Observable<RestResponse<OfficeWorkers>> {
+    return this._get<RestResponse<OfficeWorkers>>("/api/admin/workers/office");
+  }
 }

@@ -1,4 +1,4 @@
-import { FormControl } from "@angular/forms";
+import { FormArray, FormControl } from "@angular/forms";
 
 interface EventItem {
   id: number;
@@ -8,6 +8,7 @@ interface EventItem {
   coordinatorId: number;
   accountManagerId: number;
   chiefId: number;
+  eventChiefs: number[];
 }
 
 interface EventItemForm {
@@ -18,6 +19,7 @@ interface EventItemForm {
   coordinatorId: FormControl<number | null>;
   accountManagerId: FormControl<number | null>;
   chiefId: FormControl<number | null>;
+  eventChiefs: FormArray;
 }
 
 interface EventItemDto {
@@ -28,7 +30,7 @@ interface EventItemDto {
   coordinator: string;
   accountManager: string;
   chief: string;
-  editors: string[]
+  editors: string[];
 }
 
 export { EventItem, EventItemForm, EventItemDto };

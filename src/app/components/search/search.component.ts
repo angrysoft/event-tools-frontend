@@ -1,29 +1,24 @@
+import { CommonModule } from "@angular/common";
 import {
   AfterViewInit,
   Component,
-  effect,
-  input,
-  signal,
-  OnInit,
-  output,
-  untracked,
   computed,
+  input,
+  output
 } from "@angular/core";
 import {
   FormControl,
-  FormGroup,
   FormRecord,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatOptionModule } from "@angular/material/core";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInput } from "@angular/material/input";
-import { MatSelectChange, MatSelectModule } from "@angular/material/select";
-import { SearchQuery, InputFilters, SearchQueryForm } from "./model";
-import { CommonModule } from "@angular/common";
+import { MatSelectModule } from "@angular/material/select";
+import { InputFilters, SearchQuery } from "./model";
 
 @Component({
   selector: "app-search",

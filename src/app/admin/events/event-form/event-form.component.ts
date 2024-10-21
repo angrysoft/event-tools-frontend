@@ -7,9 +7,11 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  untracked,
   ViewChild,
 } from "@angular/core";
 import {
+  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -32,6 +34,7 @@ import { EventItemForm, EventItem } from "../../models/events";
 import { OfficeWorkers, WorkerBase } from "../../models/worker";
 import { EventsService } from "../../services/events.service";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
+import { WorkersService } from "../../services/workers.service";
 
 @Component({
   selector: "app-event-form",
@@ -58,6 +61,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly confirm = inject(MatDialog);
   readonly route = inject(ActivatedRoute);
   readonly service = inject(EventsService);
+  readonly workerService = inject(WorkersService);
   update = signal<boolean>(false);
   canSend = signal<boolean>(false);
   eventId = signal<number>(-1);
@@ -65,6 +69,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
     coordinators: [],
     accountManagers: [],
   });
+  eventChiefs = signal<WorkerBase[]>([]);
   eventForm: FormGroup<EventItemForm>;
   formTitle = "Impreza";
   backTo = "/admin/events";
@@ -89,25 +94,49 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
       accountManagerId: new FormControl(null, Validators.required),
       chiefId: new FormControl(null, Validators.required),
       description: new FormControl(""),
+      eventChiefs: new FormArray<any>([]),
     });
 
-    this.service.getOfficeWorkers().subscribe((resp) => {
+    this.workerService.getOfficeWorkers().subscribe((resp) => {
       if (resp.ok) {
         this.officeWorkers.set(resp.data);
       }
     });
 
     effect(() => {
-      if (this.eventId() >= 0) {
-        this.service.get(this.eventId()).subscribe((resp) => {
-          if (resp.ok) {
-            console.log(resp.data);
-            this.eventForm.patchValue(resp.data);
-            this.editor.nativeElement.innerHTML = resp.data.description;
-          }
-        });
-      }
+      const eventId = this.eventId();
+
+      untracked(() => {
+        if (eventId >= 0) {
+          this.service.get(this.eventId()).subscribe((resp) => {
+            if (resp.ok) {
+              const data: EventItem = resp.data as EventItem;
+              console.log(data);
+              this.eventForm.patchValue(data);
+              this.editor.nativeElement.innerHTML = data.description;
+
+              this.getChiefs(data);
+            }
+          });
+        }
+      });
     });
+  }
+
+  private getChiefs(data: EventItem) {
+    this.workerService
+      .getWorkersNames([...data.eventChiefs, data.chiefId])
+      .subscribe((resp) => {
+        if (resp.ok) {
+          const mainChief = resp.data
+            .filter((el) => el.id == data.chiefId)
+            .at(0);
+          this.eventChiefs.set(
+            resp.data.filter((el) => data.eventChiefs.includes(el.id ?? -1)),
+          );
+          this.chiefName.set(`${mainChief?.firstName} ${mainChief?.lastName}`);
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -184,6 +213,8 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
         const chief = config.data.keys().next().value;
         this.eventForm.controls.chiefId.setValue(Number(chief?.id));
         this.chiefName.set(chief?.firstName + " " + chief?.lastName);
+        this.eventForm.controls.chiefId.markAsDirty();
+        this.eventForm.controls.chiefId.updateValueAndValidity();
       }
     });
   }
