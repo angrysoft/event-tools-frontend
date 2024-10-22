@@ -45,4 +45,9 @@ interface WorkersItem {
   team: string;
 }
 
-export { Worker, WorkerBase, WorkersItem, WorkerId, BasicPay };
+interface OfficeWorkers {
+  coordinators: WorkerBase[];
+  accountManagers: WorkerBase[];
+}
+
+export { Worker, WorkerBase, WorkersItem, WorkerId, BasicPay, OfficeWorkers };

@@ -60,7 +60,7 @@ export class AddonsComponent {
             this.workerAddons.set(
               this.workerAddons().filter((rate) => rate.id !== rateValueId),
             );
-          }
+          } else this.service.showError(response);
         });
       }
     });

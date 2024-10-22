@@ -1,0 +1,72 @@
+<app-loader [loading]="loading()" />
+
+<section class="event-details-section">
+  <header class="event-details-header">
+    <button mat-icon-button routerLink="/admin/events">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>Dane Pracownika</h2>
+    <div class="details-actions">
+      <button
+        mat-flat-button
+        routerLink="/admin/events/edit/{{ eventData().id }}"
+      >
+        Edytuj
+      </button>
+      <button mat-flat-button class="delete-button" (click)="removeEvent()">
+        Usuń
+      </button>
+    </div>
+  </header>
+
+  <mat-tab-group [selectedIndex]="tabIndex">
+    <mat-tab label="Dane Personalne">
+      @defer () {
+      <div class="event-data">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Dane Imprezy</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              <span class="label">Nazwa: </span>
+              <span>{{ eventData().name }} </span>
+            </p>
+            <p>
+              <span class="label">Numer: </span>
+              <span>{{ eventData().number }} </span>
+            </p>
+            <p>
+              <span class="label">Koordynator: </span>
+              <span>{{ eventData().coordinator }} </span>
+            </p>
+            <p>
+              <span class="label">Opiekun Klienta: </span>
+              <span>{{ eventData().accountManager }} </span>
+            </p>
+            <p>
+              <span class="label">Kierownik:</span>
+              <span>{{ eventData().chief }} </span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Opis</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="description">
+            <section [innerHTML]="eventData().description | safeHtml"></section>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      }
+    </mat-tab>
+
+    <mat-tab label="Dokumenty">
+      <!-- @defer () {
+      <app-docs [eventId]="eventId" />
+      } -->
+    </mat-tab>
+  </mat-tab-group>
+</section>

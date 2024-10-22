@@ -1,0 +1,88 @@
+<app-form-base
+  [backTo]="backTo"
+  [formTitle]="formTitle"
+  formIdName="event-form"
+  [canSend]="canSend()"
+>
+  <form
+    [formGroup]="eventForm"
+    class="form"
+    id="event-form"
+    (submit)="handleSubmit()"
+  >
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Impreza</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Nazwa</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="name"
+              placeholder="Nazwa"
+              autofocus
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Numer</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="number"
+              placeholder="Numer"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Koordynator</mat-label>
+
+            <mat-select formControlName="coordinatorId">
+              @for (worker of officeWorkers().coordinators; track worker.id) {
+              <mat-option [value]="worker.id"
+                >{{ worker.firstName }} {{ worker.lastName }}</mat-option
+              >
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Opiekun klienta</mat-label>
+
+            <mat-select formControlName="accountManagerId">
+              @for (worker of officeWorkers().accountManagers; track worker.id)
+              {
+              <mat-option [value]="worker.id"
+                >{{ worker.firstName }} {{ worker.lastName }}</mat-option
+              >
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="outline" style="flex-grow: 1">
+            <mat-label>Kierownik</mat-label>
+            <input matInput type="text" readonly [value]="chiefName()" />
+          </mat-form-field>
+          <button
+            mat-fab
+            extended
+            (click)="chooseChief()"
+            type="button"
+            style="flex-grow: 1"
+          >
+            Ustaw
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Opis</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="form-group-row">
+        <section contenteditable class="editor" #editor></section>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</app-form-base>

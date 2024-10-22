@@ -1,20 +1,18 @@
 import { AfterViewInit, Component, inject, signal } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
 import { DataTableComponent } from "../../components/data-table/data-table.component";
+import { InputFilters } from "../../components/search/model";
 import { SearchComponent } from "../../components/search/search.component";
 import { WorkersService } from "../services/workers.service";
-import { InputFilters } from "../../components/search/model";
 
 @Component({
   selector: "app-workers",
   templateUrl: "./workers.component.html",
   styleUrl: "./workers.component.scss",
   standalone: true,
-  imports: [SearchComponent, RouterLink, DataTableComponent],
+  imports: [SearchComponent, DataTableComponent],
 })
 export class WorkersComponent implements AfterViewInit {
   inputFilters = signal<InputFilters>({});
-  readonly router = inject(Router);
   readonly workerService = inject(WorkersService);
   tableColumns = [
     { name: "id", def: "id" },

@@ -22,7 +22,6 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
@@ -59,13 +58,9 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
   update = signal<boolean>(false);
   backTo = signal<string>("/admin/workers/");
   canSend = signal<boolean>(false);
-  rateValueForm: FormGroup<RateValueForm>;
   rates = signal<Rate[]>([]);
-  showOvertime = signal<boolean>(false);
-  showBaseValue = signal<boolean>(false);
-  showPerHour = signal<boolean>(false);
-  private readonly _snackBar = inject(MatSnackBar);
-  destroy = new Subject();
+  rateValueForm: FormGroup<RateValueForm>;
+  private readonly destroy = new Subject();
 
   constructor() {
     this.rateValueForm = new FormGroup<RateValueForm>({
@@ -141,7 +136,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
   createRateValue() {
     this.service.createRateValue(this.rateValueForm.value).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
-      else this.handleError(resp);
+      else this.service.showError(resp);
     });
   }
 
@@ -154,7 +149,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
       .updateRateValue(this.rateValueId(), this.rateValueForm.value)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
-        else this.handleError(resp);
+        else this.service.showError(resp);
       });
   }
 
@@ -176,7 +171,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
         this.rateValueForm.controls.perHourValue.disable();
         this.rateValueForm.controls.value.enable();
         break;
-  
+
       case "BASE_OVERTIME_ADDON":
         this.rateValueForm.controls.value.enable();
         this.rateValueForm.controls.overtimeAddonValue.enable();
@@ -198,12 +193,5 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
     return this.rates()
       .filter((el) => el.id === this.rateValueForm.controls.rateId.value)
       .at(0)?.name;
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
-    });
   }
 }

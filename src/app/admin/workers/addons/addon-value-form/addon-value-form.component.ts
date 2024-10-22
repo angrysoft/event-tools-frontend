@@ -1,6 +1,6 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -15,8 +15,8 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Addon, AddonValueForm } from "../../../models/addon";
 import { AddonsService } from "../../../services/addons.service";
@@ -42,7 +42,7 @@ import { AddonsService } from "../../../services/addons.service";
   templateUrl: "./addon-value-form.component.html",
   styleUrl: "./addon-value-form.component.scss",
 })
-export class AddonValueFormComponent {
+export class AddonValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
@@ -51,9 +51,9 @@ export class AddonValueFormComponent {
   update = signal<boolean>(false);
   backTo = signal<string>("/admin/workers/");
   canSend = signal<boolean>(false);
-  addonValueForm: FormGroup<AddonValueForm>;
   addons = signal<Addon[]>([]);
-  private readonly _snackBar = inject(MatSnackBar);
+  addonValueForm: FormGroup<AddonValueForm>;
+  private readonly destroy = new Subject();
 
   constructor() {
     this.addonValueForm = new FormGroup<AddonValueForm>({
@@ -89,9 +89,16 @@ export class AddonValueFormComponent {
   }
 
   ngOnInit(): void {
-    this.addonValueForm.statusChanges.subscribe((changeEvent) => {
-      this.canSend.set(changeEvent === "VALID" && this.addonValueForm.dirty);
-    });
+    this.addonValueForm.statusChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe((changeEvent) => {
+        this.canSend.set(changeEvent === "VALID" && this.addonValueForm.dirty);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   handleSubmit() {
@@ -107,7 +114,7 @@ export class AddonValueFormComponent {
       .createAddonValue(this.addonValueForm.value)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=4");
-        else this.handleError(resp);
+        else this.service.showError(resp);
       });
   }
 
@@ -120,7 +127,7 @@ export class AddonValueFormComponent {
       .updateAddonValue(this.addonValueId(), this.addonValueForm.value)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=4");
-        else this.handleError(resp);
+        else this.service.showError(resp);
       });
   }
 
@@ -128,16 +135,5 @@ export class AddonValueFormComponent {
     return this.addons()
       .filter((el) => el.id === this.addonValueForm.controls.addonId.value)
       .at(0)?.name;
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
-    });
-  }
-
-  deleteAddonValue() {
-    throw new Error("Method not implemented.");
   }
 }

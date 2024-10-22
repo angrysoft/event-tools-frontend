@@ -43,6 +43,10 @@ export interface DialogData {
   styleUrl: "./show-worker.component.scss",
 })
 export class ShowWorkerComponent {
+  readonly confirm = inject(MatDialog);
+  readonly workerService: WorkersService = inject(WorkersService);
+  readonly router = inject(Router);
+  readonly route = inject(ActivatedRoute);
   worker = signal<Worker>({
     firstName: "",
     lastName: "",
@@ -69,18 +73,13 @@ export class ShowWorkerComponent {
       },
     },
   });
+  loading = signal<boolean>(true);
 
-  readonly confirm = inject(MatDialog);
-  readonly workerService: WorkersService = inject(WorkersService);
-  readonly router = inject(Router);
-  readonly route = inject(ActivatedRoute);
   workerId: number = Number(this.route.snapshot.paramMap.get("id"));
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
-  loading = signal<boolean>(true);
 
   constructor() {
     this.workerService.get(this.workerId).subscribe((response) => {
-      console.log();
       if (response.ok) {
         const data = response.data;
         if (!response.data.basicPay) {
@@ -109,7 +108,7 @@ export class ShowWorkerComponent {
           .subscribe((response) => {
             if (response.ok) {
               this.router.navigateByUrl("/admin/workers", { replaceUrl: true });
-            }
+            } else this.workerService.showError(response);
           });
       }
     });

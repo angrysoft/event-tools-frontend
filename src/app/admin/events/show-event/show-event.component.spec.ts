@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddGroupComponent } from './add-group.component';
+import { ShowEventComponent } from './show-event.component';
 
-describe('AddGroupComponent', () => {
-  let component: AddGroupComponent;
-  let fixture: ComponentFixture<AddGroupComponent>;
+describe('ShowEventComponent', () => {
+  let component: ShowEventComponent;
+  let fixture: ComponentFixture<ShowEventComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddGroupComponent]
+      imports: [ShowEventComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddGroupComponent);
+    fixture = TestBed.createComponent(ShowEventComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

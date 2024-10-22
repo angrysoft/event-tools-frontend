@@ -31,17 +31,21 @@ export class DataTableDataSource<T> extends DataSource<T> {
     this.dataSubject.complete();
   }
 
+  get length() {
+    return this.dataSubject.value.length;
+  }
+
   loadData() {
     this.loading.set(true);
 
     let action: Observable<RestResponse<Page<T>>>;
-    let params: {[key:string]: string | number} = {
+    let params: { [key: string]: string | number } = {
       pageNumber: this.paginator?.pageIndex ?? 0,
       pageSize: this.paginator?.pageSize ?? this.defaultPageSize,
     };
 
     if (this.query && Object.keys(this.query).length > 0) {
-      action = this.crudService.searchPaged({...params, ...this.query});
+      action = this.crudService.searchPaged({ ...params, ...this.query });
     } else {
       action = this.crudService.getAllPaged(params);
     }

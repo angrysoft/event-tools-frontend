@@ -7,7 +7,10 @@
     </button>
     <h2>Dane Pracownika</h2>
     <div class="details-actions">
-      <button mat-flat-button routerLink="/admin/workers/edit/{{ worker().id }}">
+      <button
+        mat-flat-button
+        routerLink="/admin/workers/edit/{{ worker().id }}"
+      >
         Edytuj
       </button>
       <button mat-flat-button class="delete-button" (click)="removeWorker()">
@@ -18,6 +21,7 @@
 
   <mat-tab-group [selectedIndex]="tabIndex">
     <mat-tab label="Dane Personalne">
+      @defer () {
       <div class="worker-data">
         <mat-card appearance="outlined">
           <mat-card-header>
@@ -109,14 +113,6 @@
 
         <mat-card appearance="outlined">
           <mat-card-content>
-            <!-- <p>
-              <span class="label">Ekipa: </span>
-              <span>{{ worker().teamId }} </span>
-            </p>
-            <p>
-              <span class="label">Grupa: </span>
-              <span>{{ worker().groupId }} </span>
-            </p> -->
             <p>
               <span class="label">Konto w aplikacji: </span>
               <span> @if (worker().hasAccount) { Tak } @else { Nie } </span>
@@ -124,22 +120,31 @@
           </mat-card-content>
         </mat-card>
       </div>
+      }
     </mat-tab>
 
     <mat-tab label="Dokumenty">
-      <app-docs [workerId]="workerId" [workerDocs]="worker().workerDoc"/>
+      @defer () {
+      <app-docs [workerId]="workerId" [workerDocs]="worker().workerDoc" />
+      }
     </mat-tab>
 
     <mat-tab label="Auta">
+      @defer () {
       <app-cars [workerId]="workerId" />
+      }
     </mat-tab>
 
     <mat-tab label="Stawki">
-      <app-rates [workerId]="workerId" [basicPay]="worker().basicPay"/>
+      @defer () {
+      <app-rates [workerId]="workerId" [basicPay]="worker().basicPay" />
+      }
     </mat-tab>
 
     <mat-tab label="Dodatki">
+      @defer () {
       <app-addons [workerId]="workerId" />
+      }
     </mat-tab>
   </mat-tab-group>
 </section>

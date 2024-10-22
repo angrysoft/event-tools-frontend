@@ -1,4 +1,12 @@
-import { Component, effect, inject, input, signal } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -12,12 +20,12 @@ import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { CrudService } from "../../../../services/crud.service";
 import { Team, TeamForm } from "../../../models/teams";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-team-form",
@@ -36,21 +44,28 @@ import { MatSnackBar } from "@angular/material/snack-bar";
   templateUrl: "./team-form.component.html",
   styleUrl: "./team-form.component.scss",
 })
-export class TeamFormComponent {
+export class TeamFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
+  readonly route = inject(ActivatedRoute);
   readonly confirm = inject(MatDialog);
-  update: boolean = false;
+  update = signal<boolean>(false);
   canSend = signal<boolean>(false);
+  teamId = signal<number>(-1);
   service: CrudService<Team>;
   teamForm: FormGroup<TeamForm>;
-  teamId = input<number>(-1);
-  error = signal<string>("");
-  formTitle = input<string>("Dodaj Grupę");
-  private _snackBar = inject(MatSnackBar);
+  formTitle = "Grupa";
+  readonly backTo = "/admin/settings/teams";
+
+  private readonly destroy = new Subject();
 
   constructor() {
     this.service = new CrudService<Team>();
     this.service.api = "/api/admin/workers/teams";
+    const paramTeamId = this.route.snapshot.paramMap.get("teamId");
+    if (paramTeamId) {
+      this.update.set(true);
+      this.teamId.set(Number(paramTeamId));
+    }
 
     this.teamForm = new FormGroup<TeamForm>({
       id: new FormControl(null),
@@ -63,7 +78,6 @@ export class TeamFormComponent {
         this.service.get(this.teamId()).subscribe((resp) => {
           if (resp.ok) {
             this.teamForm.patchValue(resp.data);
-            this.update = true;
           }
         });
       }
@@ -71,16 +85,25 @@ export class TeamFormComponent {
   }
 
   ngOnInit(): void {
-    this.teamForm.events.subscribe((formEvents) => {
-      if (formEvents instanceof StatusChangeEvent) {
-        this.canSend.set(formEvents.status === "VALID" && this.teamForm.dirty);
-      }
-    });
+    this.teamForm.events
+      .pipe(takeUntil(this.destroy))
+      .subscribe((formEvents) => {
+        if (formEvents instanceof StatusChangeEvent) {
+          this.canSend.set(
+            formEvents.status === "VALID" && this.teamForm.dirty,
+          );
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 
   handleSubmit() {
     if (this.teamForm.valid) {
-      if (this.update) this.updateTeam();
+      if (this.update()) this.updateTeam();
       else this.addTeam();
     }
   }
@@ -89,15 +112,15 @@ export class TeamFormComponent {
     this.service
       .update(this.teamId(), this.teamForm.value as Team)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl("/admin/settings/teams");
-        else this.handleError(resp);
+        if (resp.ok) this.router.navigateByUrl(this.backTo);
+        else this.service.showError(resp);
       });
   }
 
   addTeam() {
     this.service.create(this.teamForm.value as Team).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl("/admin/settings/teams");
-      else this.handleError(resp);
+      if (resp.ok) this.router.navigateByUrl(this.backTo);
+      else this.service.showError(resp);
     });
   }
 
@@ -110,17 +133,10 @@ export class TeamFormComponent {
       if (result === true && this.teamId()) {
         this.service.delete(this.teamId()).subscribe((response) => {
           if (response.ok) {
-            this.router.navigateByUrl("/admin/settings/teams");
-          }
+            this.router.navigateByUrl(this.backTo);
+          } else this.service.showError(response);
         });
       }
-    });
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
     });
   }
 }
