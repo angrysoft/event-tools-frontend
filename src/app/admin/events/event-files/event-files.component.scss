@@ -1,3 +1,7 @@
+.header {
+    gap: 1rem;
+}
+
 .file-section {
     display: flex;
     flex-direction: column;
@@ -36,4 +40,11 @@
     .rate-item {
         grid-template-columns: 1fr;
     }
+}
+
+.drop-zone-on {
+    cursor: pointer;
+    border: 1px dashed green;
+    color: green;
+    background-color: var(--sys-tertiary-fixed-dim);
 }

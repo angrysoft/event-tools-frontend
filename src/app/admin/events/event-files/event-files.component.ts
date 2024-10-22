@@ -16,6 +16,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDivider } from "@angular/material/divider";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { Subject } from "rxjs";
+import { DownloadDialogComponent } from "../../../components/download-dialog/download-dialog.component";
 
 @Component({
   selector: "app-event-files",
@@ -36,6 +38,8 @@ export class EventFilesComponent {
   service = inject(EventsService);
   files = signal<EventFile[]>([]);
   confirm = inject(MatDialog);
+  dropZoneClasses = signal<string[]>(["drop-zone"]);
+  private readonly cancel = new Subject();
 
   constructor() {
     effect(() => {
@@ -48,6 +52,53 @@ export class EventFilesComponent {
         }
       });
     });
+  }
+
+  onDrop(ev: DragEvent) {
+    ev.preventDefault();
+    this.sendFile(ev.dataTransfer!.files);
+    this.dropZoneClasses.set(["drop-zone"]);
+  }
+
+  onDragOver(ev: DragEvent) {
+    ev.preventDefault();
+    this.dropZoneClasses.set(["drop-zone", "drop-zone-on"]);
+  }
+
+  onDragLeave(ev: DragEvent) {
+    ev.preventDefault();
+    this.dropZoneClasses.set(["drop-zone"]);
+  }
+
+  onFileChange(ev: Event) {
+    const input = ev.target as HTMLInputElement;
+    this.sendFile(input.files);
+  }
+
+  sendFile(files: FileList | null) {
+    if (!files) return;
+    const dialogRef = this.confirm.open(DownloadDialogComponent, {
+      data: { msg: "Usnąć Imprezę jest to operacja nieodwracalna" },
+    });
+
+
+    for (const file of files) {
+      console.log(file);
+      // .subscribe((httpEvent) => {
+      //   if (httpEvent.type == HttpEventType.UploadProgress) {
+      //   if (httpEvent.total) {
+      //   this.progress = `${Math.round(
+      //   100 * (httpEvent.loaded / httpEvent.total)
+      //   )}%`;
+      //   }
+      //   }
+      //   if (httpEvent.type === HttpEventType.Response) {
+      //   this.message = 'Wysłano!';
+      //   this.resultClass = 'bg-success';
+      //   }
+      //   });
+    }
+
   }
 
   removeFile(fileName: string) {

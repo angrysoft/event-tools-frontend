@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
 import { EventFile, EventItem, EventItemDto } from "../models/events";
+import { Observable } from "rxjs";
+import { HttpEvent } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -23,6 +25,21 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
   deleteFile(eventId: number, fileName: string) {
     return this.http.delete<RestResponse<string>>(
       `${this.api}/${eventId}/file/${fileName}`,
+    );
+  }
+
+  sendFile(eventId: number, file: File) {
+    const formData = new FormData();
+    formData.append("eventId", eventId.toString());
+    formData.append("file", file);
+
+    return this.http.post(
+      `${this.api}/${eventId}/file`,
+      formData,
+      {
+        reportProgress: true,
+        observe: "events",
+      },
     );
   }
 }

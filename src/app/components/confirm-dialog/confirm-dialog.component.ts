@@ -1,14 +1,12 @@
 import { Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
-  MatDialogTitle,
-  MatDialogContent,
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
+  MatDialogContent,
+  MatDialogTitle
 } from "@angular/material/dialog";
-import { ShowWorkerComponent } from "../../admin/workers/show-worker/show-worker.component";
 
 export interface DialogData {
   msg: string;
@@ -28,6 +26,5 @@ export interface DialogData {
   styleUrl: "./confirm-dialog.component.scss",
 })
 export class ConfirmDialogComponent {
-  readonly dialogRef = inject(MatDialogRef<ShowWorkerComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 }
