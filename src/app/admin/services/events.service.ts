@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
-import { CrudService } from "../../services/crud.service";
 import { RestResponse } from "../../models/rest-response";
-import { OfficeWorkers, WorkerBase } from "../models/worker";
-import { Observable } from "rxjs";
-import { EventItem, EventItemDto } from "../models/events";
+import { CrudService } from "../../services/crud.service";
+import { EventFile, EventItem, EventItemDto } from "../models/events";
 
 @Injectable({
   providedIn: "root",
@@ -16,5 +14,15 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
 
   getInfo(eventId: number) {
     return this._get<RestResponse<EventItemDto>>(`${this.api}/info/${eventId}`);
+  }
+
+  getEventFiles(eventId: number) {
+    return this._get<RestResponse<EventFile[]>>(`${this.api}/${eventId}/file`);
+  }
+
+  deleteFile(eventId: number, fileName: string) {
+    return this.http.delete<RestResponse<string>>(
+      `${this.api}/${eventId}/file/${fileName}`,
+    );
   }
 }

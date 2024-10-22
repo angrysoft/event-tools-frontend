@@ -33,4 +33,12 @@ interface EventItemDto {
   editors: string[];
 }
 
-export { EventItem, EventItemForm, EventItemDto };
+interface EventFile {
+  event: {
+    id: number;
+  }
+  fileName: string;
+  size: number;
+}
+
+export { EventItem, EventItemForm, EventItemDto, EventFile };

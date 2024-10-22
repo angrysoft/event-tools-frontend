@@ -63,10 +63,10 @@
       }
     </mat-tab>
 
-    <mat-tab label="Dokumenty">
-      <!-- @defer () {
-      <app-docs [eventId]="eventId" />
-      } -->
+    <mat-tab label="Pliki">
+      @defer () {
+      <app-event-files [eventId]="eventData().id" />
+      }
     </mat-tab>
   </mat-tab-group>
 </section>
