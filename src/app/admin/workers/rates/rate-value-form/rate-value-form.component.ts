@@ -168,6 +168,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
 
       case "BASE_OVERTIME_RATE":
         this.rateValueForm.controls.perHourOvertimeValue.enable();
+        this.rateValueForm.controls.overtimeAddonValue.disable();
         this.rateValueForm.controls.perHourValue.disable();
         this.rateValueForm.controls.value.enable();
         break;
