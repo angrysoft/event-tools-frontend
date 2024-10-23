@@ -1,20 +1,12 @@
 import { HttpClient, HttpEventType } from "@angular/common/http";
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  effect,
-  inject,
-  signal,
-  untracked,
-} from "@angular/core";
+import { AfterContentInit, Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { MatDialogModule, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { MatIconModule } from "@angular/material/icon";
-import { MatProgressBar } from "@angular/material/progress-bar";
-import { SendStatus } from "./model";
-import { catchError, of, Subject, takeUntil, throwError } from "rxjs";
+import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
 import { MatDivider } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatListModule } from "@angular/material/list";
+import { MatProgressBar } from "@angular/material/progress-bar";
+import { catchError, of, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-send-dialog",
@@ -25,6 +17,7 @@ import { MatDivider } from "@angular/material/divider";
     MatProgressBar,
     MatIconModule,
     MatDivider,
+    MatListModule
   ],
   templateUrl: "./send-dialog.component.html",
   styleUrl: "./send-dialog.component.scss",
@@ -32,91 +25,68 @@ import { MatDivider } from "@angular/material/divider";
 export class SendDialogComponent implements AfterContentInit {
   readonly data = inject(MAT_DIALOG_DATA);
   http = inject(HttpClient);
+  progress = signal<number>(0);
   sending = signal<boolean>(true);
-  sendStatuses = signal<SendStatus[]>([]);
-  
+  error = signal<string | null>(null);
+  cancel = new Subject();
+  fileNames = signal<string[]>([]);
 
   ngAfterContentInit(): void {
-    for (const file of this.data.files) {
-      this.sendFile(file);
-    }
-  }
-
-  sendFile(file: File) {
-    const progress = signal<number>(0);
-    const fileSending = signal<boolean>(true);
-    const error = signal<string | null>(null);
-    const cancel = new Subject();
-
-    this.sendStatuses.update((st) => {
-      st.push({
-        name: file.name,
-        progress: progress,
-        sending: fileSending,
-        error: error,
-        cancel : () => {
-          cancel.next(null);
-          cancel.complete();
-          fileSending.set(false);
-          this.checkTotalSendStatus()
-          console.log("cancel clicked");
-        }
-      });
-      return st;
-    });
-
     const formData = new FormData();
     formData.append("eventId", this.data.eventId);
-    formData.append("file", file);
+    for (const file of this.data.files) {
+      formData.append("files", file);
+      this.fileNames.update((l) => {
+        l.push(file.name);
+        return l;
+      });
+    }
+    this.sendFiles(formData);
+  }
 
+  sendFiles(filesFromData: FormData) {
     this.http
-      .post(this.data.url, formData, {
+      .post(this.data.url, filesFromData, {
         reportProgress: true,
         observe: "events",
       })
       .pipe(
-        takeUntil(cancel),
+        takeUntil(this.cancel),
         catchError((err) => {
           if (err.status === 413) {
-            error.set("Plik jest za duży");
+            this.error.set("Plik jest za duży");
           } else {
-            error.set(err.data ?? "Coś poszło nie tak...");
+            this.error.set(err.data ?? "Coś poszło nie tak...");
           }
-          progress.set(0);
-          fileSending.set(false);
-          this.checkTotalSendStatus();
+          this.progress.set(0);
+          this.sending.set(false);
           return of(err);
         }),
       )
       .subscribe((httpEvent) => {
+        console.log(httpEvent);
         if (httpEvent.type == HttpEventType.UploadProgress) {
           if (httpEvent.total) {
             if (httpEvent.total == httpEvent.loaded) {
-              fileSending.set(false);
-              progress.set(100);
-              this.checkTotalSendStatus();
+              this.sending.set(false);
+              this.progress.set(100);
             }
-            progress.set(
+            this.progress.set(
               Math.round(100 * (httpEvent.loaded / httpEvent.total)),
             );
           }
         }
         if (httpEvent.type === HttpEventType.Response) {
-          fileSending.set(false);
-          progress.set(100);
-          this.checkTotalSendStatus();
+          this.sending.set(false);
+          this.progress.set(100);
         }
       });
   }
 
-  checkTotalSendStatus() {
-    let snd = false;
-    const statuses = [...this.sendStatuses()];
-    for (const status of statuses) {
-      if (status.sending()) snd = true;
-    }
-    this.sending.set(snd);
+  cancelSend() {
+    this.cancel.next(null);
+    this.cancel.complete();
+    this.sending.set(false);
+    console.log("cancel clicked");
   }
-
-  
 }

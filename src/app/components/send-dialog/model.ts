@@ -5,7 +5,6 @@ interface SendStatus {
   progress: WritableSignal<number>;
   sending: WritableSignal<boolean>;
   error: WritableSignal<string | null>;
-  cancel: () => void;
 }
 
 export { SendStatus };

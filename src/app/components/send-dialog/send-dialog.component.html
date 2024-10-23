@@ -1,22 +1,24 @@
 <h2 mat-dialog-title>{{ data.header }}</h2>
 <mat-dialog-content>
-  @for (status of sendStatuses(); track $index) {
   <div class="progress">
-    <div>{{ status.name }}</div>
+    <mat-list>
+      @for (name of fileNames(); track $index) {
+      <mat-list-item>{{ name }}</mat-list-item>
+      }
+    </mat-list>
     <div class="status">
-      <mat-progress-bar mode="determinate" [value]="status.progress()" />
-      @if (status.sending()) {
-      <mat-icon (click)="status.cancel()">cancel</mat-icon>
+      <mat-progress-bar mode="determinate" [value]="progress()" />
+      @if (sending()) {
+      <mat-icon (click)="cancelSend()">cancel</mat-icon>
       } @else {
       <mat-icon style="padding: 0.5rem">check_circle</mat-icon>
       }
     </div>
-    @if (status.error()) {
-    <div style="color: red">{{ status.error() }}</div>
+    @if (error()) {
+    <div style="color: red">{{ error() }}</div>
     }
   </div>
   <mat-divider />
-  }
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]="true" [disabled]="sending()">
