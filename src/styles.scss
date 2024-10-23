@@ -300,3 +300,8 @@ mat-card-content.form-group-row, .form-group-row {
     padding: 1rem;
     margin-top: 1rem
 }
+
+//Dialog fix scroll
+.mdc-dialog__surface {
+    overflow-y: hidden !important;
+    }

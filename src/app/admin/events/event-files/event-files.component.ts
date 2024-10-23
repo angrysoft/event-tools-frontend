@@ -5,19 +5,20 @@ import {
   input,
   signal,
   untracked,
+  ViewChild,
 } from "@angular/core";
-import { EventFile } from "../../models/events";
-import { MatListModule } from "@angular/material/list";
-import { FileSizePipe } from "../../../pipes/file-size.pipe";
-import { EventsService } from "../../services/events.service";
-import { MatIconModule } from "@angular/material/icon";
-import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
-import { MatDivider } from "@angular/material/divider";
-import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
+import { MatDivider } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatListModule } from "@angular/material/list";
 import { Subject } from "rxjs";
-import { DownloadDialogComponent } from "../../../components/download-dialog/download-dialog.component";
+import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { SendDialogComponent } from "../../../components/send-dialog/send-dialog.component";
+import { FileSizePipe } from "../../../pipes/file-size.pipe";
+import { EventFile } from "../../models/events";
+import { EventsService } from "../../services/events.service";
 
 @Component({
   selector: "app-event-files",
@@ -39,6 +40,7 @@ export class EventFilesComponent {
   files = signal<EventFile[]>([]);
   confirm = inject(MatDialog);
   dropZoneClasses = signal<string[]>(["drop-zone"]);
+  @ViewChild("file") inputFile: any;
   private readonly cancel = new Subject();
 
   constructor() {
@@ -77,33 +79,30 @@ export class EventFilesComponent {
 
   sendFile(files: FileList | null) {
     if (!files) return;
-    const dialogRef = this.confirm.open(DownloadDialogComponent, {
-      data: { msg: "Usnąć Imprezę jest to operacja nieodwracalna" },
+
+    const dialogRef = this.confirm.open(SendDialogComponent, {
+      data: {
+        header: "Przesyłam pliki",
+        url: `${this.service.api}/${this.eventId()}/file`,
+        files: files,
+        eventId: this.eventId().toString(),
+      },
+      disableClose: true,
     });
 
-
-    for (const file of files) {
-      console.log(file);
-      // .subscribe((httpEvent) => {
-      //   if (httpEvent.type == HttpEventType.UploadProgress) {
-      //   if (httpEvent.total) {
-      //   this.progress = `${Math.round(
-      //   100 * (httpEvent.loaded / httpEvent.total)
-      //   )}%`;
-      //   }
-      //   }
-      //   if (httpEvent.type === HttpEventType.Response) {
-      //   this.message = 'Wysłano!';
-      //   this.resultClass = 'bg-success';
-      //   }
-      //   });
-    }
-
+    dialogRef.afterClosed().subscribe((result) => {
+      this.inputFile.nativeElement.value = "";
+      if (result === true) {
+        this.service.getEventFiles(this.eventId()).subscribe((resp) => {
+          if (resp.ok) this.files.set(resp.data);
+        });
+      }
+    });
   }
 
   removeFile(fileName: string) {
     const dialogRef = this.confirm.open(ConfirmDialogComponent, {
-      data: { msg: "Usnąć Imprezę jest to operacja nieodwracalna" },
+      data: { msg: "Usnąć plik ?" },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

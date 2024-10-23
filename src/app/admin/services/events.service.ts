@@ -2,8 +2,6 @@ import { Injectable } from "@angular/core";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
 import { EventFile, EventItem, EventItemDto } from "../models/events";
-import { Observable } from "rxjs";
-import { HttpEvent } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
