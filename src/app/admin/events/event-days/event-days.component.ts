@@ -94,13 +94,12 @@ export class EventDaysComponent {
 
     confirm.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.service
-          .delDay(this.eventId, this.eventDays().at(this.tabIndex())?.id ?? -1)
-          .subscribe((resp) => {
-            if (resp.ok) {
-              this.eventDays.update((days) => days.splice(this.tabIndex(), 1));
-            }
-          });
+        const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
+        this.service.delDay(this.eventId, dayId).subscribe((resp) => {
+          if (resp.ok) {
+            this.eventDays.update((days) => days.filter((d) => d.id !== dayId));
+          }
+        });
       }
     });
   }
