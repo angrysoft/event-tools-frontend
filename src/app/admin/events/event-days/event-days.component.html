@@ -1,0 +1,31 @@
+<section class="main-section">
+  <header class="header">
+    <button mat-icon-button routerLink="{{ backTo }}">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>{{ name }}</h2>
+  </header>
+  <div class="days-actions">
+    <button mat-fab extended (click)="addDay()" title="alt+a">
+      <mat-icon>add</mat-icon>Dodaj Dzień
+    </button>
+    <button
+      mat-fab
+      extended
+      (click)="delDay()"
+      title="alt-x"
+      [disabled]="eventDays().length === 0"
+    >
+      <mat-icon>delete</mat-icon>Usuń Dzień
+    </button>
+  </div>
+  <mat-divider />
+  <mat-tab-group
+    [selectedIndex]="tabIndex()"
+    (selectedIndexChange)="tabIndex.set($event)"
+  >
+    @for (day of eventDays(); track day.startDate) {
+    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}"> </mat-tab>
+    }
+  </mat-tab-group>
+</section>

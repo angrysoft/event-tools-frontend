@@ -36,9 +36,27 @@ interface EventItemDto {
 interface EventFile {
   event: {
     id: number;
-  }
+  };
   fileName: string;
   size: number;
 }
 
-export { EventItem, EventItemForm, EventItemDto, EventFile };
+interface WorkerDay {}
+
+interface EventDay {
+  id?: number;
+  event: number;
+  info: string;
+  startDate: Date;
+  state: string;
+  workerDays: WorkerDay[];
+}
+
+export {
+  EventItem,
+  EventItemForm,
+  EventItemDto,
+  EventFile,
+  EventDay,
+  WorkerDay,
+};

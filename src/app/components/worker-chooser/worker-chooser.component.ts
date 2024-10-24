@@ -1,11 +1,5 @@
 import { SelectionModel } from "@angular/cdk/collections";
-import {
-  Component,
-  inject,
-  output,
-  signal,
-  ViewChild
-} from "@angular/core";
+import { Component, inject, signal, ViewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
   MAT_DIALOG_DATA,
@@ -49,7 +43,6 @@ import { WorkerChooserConfig } from "./worker-chooser-config";
 export class WorkerChooserComponent<T> {
   readonly service = inject(WorkersService);
   readonly router = inject(Router);
-  approve = output<Set<WorkerBase>>();
   filters = signal<InputFilters>({
     team: {
       name: "",
@@ -104,13 +97,13 @@ export class WorkerChooserComponent<T> {
 
   onClick(row: any) {
     if (this.config.single) {
-      this.config.data = new Set([row]);
-      return;
-    }
-    if (this.config.data.has(row)) {
-      this.config.data.delete(row);
+      this.selectedWorkers.set(new Set([row]));
     } else {
-      this.config.data.add(row);
+      this.selectedWorkers.update((sel) => {
+        if (sel.has(row)) sel.delete(row);
+        else sel.add(row);
+        return sel;
+      });
     }
   }
 
@@ -124,9 +117,5 @@ export class WorkerChooserComponent<T> {
     this.dataSource.query = {};
     this.paginator.firstPage();
     this.dataSource.loadData();
-  }
-
-  emitApprove() {
-    this.approve.emit(new Set(this.selectedWorkers()));
   }
 }
