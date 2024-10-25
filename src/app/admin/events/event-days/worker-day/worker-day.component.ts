@@ -22,7 +22,13 @@ export class WorkerDayComponent implements AfterViewInit {
   dataSource!: WorkerDayDataSource<WorkerDay>;
   
   tableColumns: { name: string; def: string }[] = [
-    { name: "Pracownik", def: "workerNAme" },
+    { name: "Start", def: "startTime" },
+    { name: "Koniec", def: "endTime" },
+    { name: "Pracownik", def: "workerName" },
+    { name: "Stawka", def: "rateName" },
+    { name: "Kwota", def: "calculatedRate" },
+    { name: "Dodatki", def: "addons" },
+    { name: "Suma", def: "total" },
   ];
 
   constructor() {
@@ -32,7 +38,7 @@ export class WorkerDayComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.table.dataSource = this.dataSource;
     this.dataSource.loadData(this.day().workerDays);
-    console.log(this.day().workerDays);
+    console.log("afte View ",this.day().workerDays);
   }
 
   get columnNames() {

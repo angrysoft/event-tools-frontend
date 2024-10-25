@@ -51,6 +51,7 @@ export class EventDaysComponent {
   constructor() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
+        console.log("resp",resp.data);
         this.eventDays.set(
           resp.data.map((day) => {
             day.startDate = new Date(day.startDate);

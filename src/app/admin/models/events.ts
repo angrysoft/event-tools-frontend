@@ -42,11 +42,24 @@ interface EventFile {
 }
 
 interface WorkerDay {
+  id: number;
+  eventDay: number;
+  worker: number;
+  rate: number;
+  startTime: string | Date;
+  endTime: string | Date;
   workerName: string;
-  startDate: string;
-  endDate: string;
-  
+  rateName: string;
+  calculatedRate: {
+    amount: number;
+  };
+  total: {
+    amount: number;
+  };
+  workerDayAddons: WorkerAddons[];
 }
+
+interface WorkerAddons {}
 
 interface EventDay {
   id?: number;
