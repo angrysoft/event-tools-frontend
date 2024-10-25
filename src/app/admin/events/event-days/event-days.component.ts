@@ -18,6 +18,7 @@ import { EventDaysService } from "../../services/event-days.service";
 import { AddDayComponent } from "./add-day/add-day.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { DatePipe } from "@angular/common";
+import { WorkerDayComponent } from "./worker-day/worker-day.component";
 
 @Component({
   selector: "app-event-days",
@@ -30,6 +31,7 @@ import { DatePipe } from "@angular/common";
     MatDividerModule,
     RouterLink,
     DatePipe,
+    WorkerDayComponent,
   ],
   templateUrl: "./event-days.component.html",
   styleUrl: "./event-days.component.scss",
@@ -43,6 +45,8 @@ export class EventDaysComponent {
   name = this.route.snapshot.queryParamMap.get("name");
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = `/admin/events/${this.eventId}`;
+
+  //FIXME: get worker days ;!!!!
 
   constructor() {
     this.service.getDays(this.eventId).subscribe((resp) => {
@@ -102,6 +106,11 @@ export class EventDaysComponent {
         });
       }
     });
+  }
+
+  duplicateDay() {
+    const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
+    console.log(dayId);
   }
 
   @HostListener("document:keydown.Alt.a", ["$event"])

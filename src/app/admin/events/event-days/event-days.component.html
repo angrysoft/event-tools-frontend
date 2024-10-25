@@ -12,6 +12,14 @@
     <button
       mat-fab
       extended
+      (click)="duplicateDay()"
+      [disabled]="eventDays().length === 0"
+    >
+      <mat-icon>content_copy</mat-icon>Duplikuj
+    </button>
+    <button
+      mat-fab
+      extended
       (click)="delDay()"
       title="alt-x"
       [disabled]="eventDays().length === 0"
@@ -25,7 +33,11 @@
     (selectedIndexChange)="tabIndex.set($event)"
   >
     @for (day of eventDays(); track day.startDate) {
-    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}"> </mat-tab>
+    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
+      <app-worker-day [day]="day"></app-worker-day>
+    </mat-tab>
+    } @empty {
+        <h2>Nic tu jeszcze nie ma</h2>
     }
   </mat-tab-group>
 </section>

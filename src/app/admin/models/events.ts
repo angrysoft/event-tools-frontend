@@ -41,7 +41,12 @@ interface EventFile {
   size: number;
 }
 
-interface WorkerDay {}
+interface WorkerDay {
+  workerName: string;
+  startDate: string;
+  endDate: string;
+  
+}
 
 interface EventDay {
   id?: number;
