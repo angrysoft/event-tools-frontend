@@ -63,24 +63,16 @@ export class WorkerDayComponent implements AfterViewInit, OnInit {
     return this.tableColumns.map((el) => el.def);
   }
 
-  get isNothingSelected() {
-    return this.selection.isEmpty();
-  }
-
   get isMultipleSelected() {
     // always return true ?!?!
     //this.selection.isMultipleSelection()
     return this.selection.selected.length !== 1;
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.length;
-    return numSelected === numRows;
+    return this.selection.selected.length === this.dataSource.length;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
@@ -90,7 +82,6 @@ export class WorkerDayComponent implements AfterViewInit, OnInit {
     this.selection.select(...this.day().workerDays);
   }
 
-  /** The label for the checkbox on the passed row */
   checkboxLabel(row?: WorkerDay): string {
     if (!row) {
       return `${this.isAllSelected() ? "deselect" : "select"} all`;
