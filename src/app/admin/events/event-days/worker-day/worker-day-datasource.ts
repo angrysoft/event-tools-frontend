@@ -1,8 +1,9 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
+import { WorkerDay } from "../../../models/events";
 
-export class WorkerDayDataSource<WorkerDay> extends DataSource<WorkerDay> {
+export class WorkerDayDataSource extends DataSource<WorkerDay> {
   private readonly dataSubject = new BehaviorSubject<WorkerDay[]>([]);
   public loading = signal<boolean>(false);
   length: number = 0;
@@ -20,6 +21,10 @@ export class WorkerDayDataSource<WorkerDay> extends DataSource<WorkerDay> {
   }
 
   loadData(workerDays: WorkerDay[]) {
+    // const data = workerDays.map((day: WorkerDay) => {
+    //   day.startTime = new Date(day.startTime);
+    //   return day;
+    // });
     this.loading.set(true);
     this.dataSubject.next(workerDays);
     this.length = workerDays.length;

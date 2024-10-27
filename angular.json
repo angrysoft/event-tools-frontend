@@ -4,6 +4,9 @@
     "newProjectRoot": "projects",
     "projects": {
         "event-tools": {
+            "i18n": {
+                "sourceLocale": "pl-PL"
+            },
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -21,8 +24,8 @@
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": [
-                          "zone.js",
-                          "@angular/localize/init"
+                            "zone.js",
+                            "@angular/localize/init"
                         ],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
@@ -84,9 +87,9 @@
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
                         "polyfills": [
-                          "zone.js",
-                          "zone.js/testing",
-                          "@angular/localize/init"
+                            "zone.js",
+                            "zone.js/testing",
+                            "@angular/localize/init"
                         ],
                         "tsConfig": "tsconfig.spec.json",
                         "inlineStyleLanguage": "scss",
@@ -104,6 +107,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }
