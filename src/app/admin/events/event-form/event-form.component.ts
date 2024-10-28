@@ -208,10 +208,9 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
       data: config,
     });
 
-    dialogRef.afterClosed().subscribe((result:Set<WorkerBase> | null) => {
-      if (result && result.size > 0) {
-        console.log(result);
-        const chief = result.keys().next().value;
+    dialogRef.afterClosed().subscribe((result: Array<WorkerBase> | null) => {
+      if (result && result.length > 0) {
+        const chief = result.at(0);
         this.eventForm.controls.chiefId.setValue(Number(chief?.id));
         this.chiefName.set(chief?.firstName + " " + chief?.lastName);
         this.eventForm.controls.chiefId.markAsDirty();

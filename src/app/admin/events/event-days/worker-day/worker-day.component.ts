@@ -2,8 +2,11 @@ import { SelectionModel } from "@angular/cdk/collections";
 import {
   AfterViewInit,
   Component,
+  effect,
+  inject,
   input,
   OnInit,
+  untracked,
   ViewChild,
 } from "@angular/core";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -14,6 +17,9 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDivider } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { DatePipe } from "@angular/common";
+import { MatDialog } from "@angular/material/dialog";
+import { AddWorkersComponent } from "./add-workers/add-workers.component";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-worker-day",
@@ -25,11 +31,13 @@ import { DatePipe } from "@angular/common";
     MatDivider,
     MatIcon,
     DatePipe,
+    RouterLink,
   ],
   templateUrl: "./worker-day.component.html",
   styleUrl: "./worker-day.component.scss",
 })
-export class WorkerDayComponent implements AfterViewInit, OnInit {
+export class WorkerDayComponent implements AfterViewInit {
+  dialog = inject(MatDialog);
   day = input.required<EventDay>();
 
   selection = new SelectionModel<WorkerDay>(true, []);
@@ -49,11 +57,15 @@ export class WorkerDayComponent implements AfterViewInit, OnInit {
 
   constructor() {
     this.dataSource = new WorkerDayDataSource();
+    effect(() => {
+      const days = this.day().workerDays ?? [];
+      untracked(() => {
+        if (days.length > 0) this.dataSource.loadData(days);
+      });
+    });
   }
 
-  ngOnInit(): void {
-    this.dataSource.loadData(this.day().workerDays);
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.table.dataSource = this.dataSource;
@@ -91,7 +103,23 @@ export class WorkerDayComponent implements AfterViewInit, OnInit {
     }`;
   }
 
-  changeSelection() {
-    console.log(this.selection.selected, this.selection.selected.length !== 1);
+  addWorkers() {
+    const addWorkersDialog = this.dialog.open(AddWorkersComponent, {
+      data: { ...this.day() },
+      disableClose: true,
+      maxWidth: "90dvw",
+    });
+
+    addWorkersDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result);
+      }
+    });
   }
+
+  editWorker() {}
+
+  removeWorkers() {}
+
+  changeWorker() {}
 }

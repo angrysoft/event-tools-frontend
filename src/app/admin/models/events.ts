@@ -59,7 +59,23 @@ interface WorkerDay {
   workerDayAddons: WorkerAddons[];
 }
 
-interface WorkerAddons {}
+interface WorkerDayForm {
+  id: FormControl<number | null>;
+  eventDay: FormControl<number | null>;
+  rate: FormControl<number | null>;
+  startTime: FormControl<Date | string | null>;
+  startHour: FormControl<string | null>;
+  endTime: FormControl<Date | string | null>;
+  endHour: FormControl<string | null>;
+  workers: FormArray;
+  workerDayAddons: FormArray;
+}
+
+interface WorkerAddons {
+  name: string;
+  value: string;
+  type: string;
+}
 
 interface EventDay {
   id?: number;
@@ -77,4 +93,5 @@ export {
   EventFile,
   EventDay,
   WorkerDay,
+  WorkerDayForm,
 };

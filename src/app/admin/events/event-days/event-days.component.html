@@ -27,6 +27,14 @@
     >
       <mat-icon>delete</mat-icon>Usuń Dzień
     </button>
+    <button
+      mat-fab
+      extended
+      (click)="addWorkers()"
+      [disabled]="eventDays().length === 0"
+    >
+      <mat-icon>add</mat-icon>Dodaj Pracowników
+    </button>
   </div>
   <mat-divider />
   <mat-tab-group

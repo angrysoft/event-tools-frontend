@@ -1,0 +1,61 @@
+<app-form-base
+  [backTo]="backTo"
+  [formTitle]="formTitle"
+  formIdName="add-workers-form"
+  [canSend]="canSend()"
+>
+  <form [formGroup]="addWorkersForm" class="form" id="add-workers-form">
+    <mat-card appearance="outlined">
+      <mat-card-header>Czas</mat-card-header>
+      <mat-card-content class="form-group-col">
+        <mat-form-field appearance="outline">
+          <mat-label>Czas startu </mat-label>
+          <input matInput type="time" formControlName="startHour" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data Zakonczenia</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="endTime" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Czas zakończenia</mat-label>
+          <input matInput type="time" formControlName="endHour" />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header class="card-header-action">
+        <h3>Pracownicy</h3>
+        <button mat-flat-button type="button" (click)="chooseWorkers()">Wybierz</button>
+      </mat-card-header>
+      <mat-card-content class="form-gorup-row">
+        <div class="worker-list">
+          @for (worker of workers(); track worker.id) {
+          <div class="form-group">
+            <mat-form-field appearance="outline">
+                <mat-label>Pracownik</mat-label>
+                <input matInput type="text" readonly [value]="worker.name" />
+            </mat-form-field>
+          </div>
+          } @empty { Dodaj pracowników }
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <h3>Dodatki</h3>
+      </mat-card-header>
+      <mat-card-content>
+        <div>
+          <button mat-flat-button type="button">Dodaj</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</app-form-base>

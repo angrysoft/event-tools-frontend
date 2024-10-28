@@ -129,4 +129,8 @@ export class CrudService<T> {
       verticalPosition: "top",
     });
   }
+
+  showMsg(msg: string, duration:number = 3000) {
+    this._snackBar.open(msg, "Zamknij", { verticalPosition: "top", duration: duration });
+  }
 }

@@ -1,10 +1,10 @@
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { CollectionViewer, DataSource, SelectionModel } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
+import { Page } from "../../models/page";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
-import { Page } from "../../models/page";
 import { SearchQuery } from "../search/model";
 
 export class DataTableDataSource<T> extends DataSource<T> {
@@ -14,6 +14,7 @@ export class DataTableDataSource<T> extends DataSource<T> {
   totalElements: number = 0;
   defaultPageSize: number = 15;
   query: SearchQuery = {};
+  
 
   constructor(private readonly crudService: CrudService<T>) {
     super();

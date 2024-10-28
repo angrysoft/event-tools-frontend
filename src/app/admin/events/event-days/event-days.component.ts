@@ -12,7 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { EventDay } from "../../models/events";
 import { EventDaysService } from "../../services/event-days.service";
 import { AddDayComponent } from "./add-day/add-day.component";
@@ -39,6 +39,7 @@ import { WorkerDayComponent } from "./worker-day/worker-day.component";
 export class EventDaysComponent {
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   service = inject(EventDaysService);
   eventDays = signal<EventDay[]>([]);
   tabIndex = signal<number>(0);
@@ -51,7 +52,7 @@ export class EventDaysComponent {
   constructor() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
-        console.log("resp",resp.data);
+        console.log("resp", resp.data);
         this.eventDays.set(
           resp.data.map((day) => {
             day.startDate = new Date(day.startDate);
@@ -107,6 +108,11 @@ export class EventDaysComponent {
         });
       }
     });
+  }
+
+  addWorkers() {
+    const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
+    this.router.navigateByUrl(`/admin/events/${this.eventId}/day/${dayId} `);
   }
 
   duplicateDay() {

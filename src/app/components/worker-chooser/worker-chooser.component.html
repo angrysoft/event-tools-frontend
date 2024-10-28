@@ -2,10 +2,8 @@
 
 <div class="worker-dialog">
   <mat-dialog-actions>
-    <button mat-button cdkFocusInitial [mat-dialog-close]="null">
-      Anuluj
-    </button>
-    <button mat-button [mat-dialog-close]="selectedWorkers()">Ok</button>
+    <button mat-button cdkFocusInitial [mat-dialog-close]="null">Anuluj</button>
+    <button mat-button [mat-dialog-close]="selection.selected">Ok</button>
   </mat-dialog-actions>
   @if(config.search) {
   <app-search
@@ -16,19 +14,30 @@
   }
   <div class="mat-elevation-z8 table-wrapper">
     <table mat-table aria-label="Elements">
-      @for (col of tableColumns; track col.def) {
+      @for (col of tableColumns; track col.def) { @if (col.def === "select") {
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="selection.toggle(row)"
+            [checked]="isSelected(row)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      } @else {
       <ng-container matColumnDef="{{ col.def }}">
         <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
         <td mat-cell *matCellDef="let row">{{ row[col.def] }}</td>
       </ng-container>
-      }
+      } }
 
       <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
       <tr
         mat-row
         *matRowDef="let row; columns: columnNames"
-        (click)="onClick(row)"
-        [class.selected-row]="selectedWorkers().has(row)"
+        (click)="selection.toggle(row)"
       ></tr>
     </table>
     <mat-paginator

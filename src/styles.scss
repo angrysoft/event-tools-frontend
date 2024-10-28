@@ -271,11 +271,12 @@ mat-card-content.form-group-row, .form-group-row {
     padding: 1rem;
 }
 
-.field-group {
-    display: grid;
-    grid-template-columns: 1fr;
+mat-card-content.form-group-col, .form-group-col {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
-    flex-direction: column;
+    padding: 1rem;
 }
 
 /* sm */

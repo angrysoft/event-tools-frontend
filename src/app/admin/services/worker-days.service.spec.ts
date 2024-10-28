@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CrudService } from './crud.service';
+import { WorkerDaysService } from './worker-days.service';
 
-describe('CrudService', () => {
-  let service: CrudService<{[key:string]: any}>;
+describe('WorkerDaysService', () => {
+  let service: WorkerDaysService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CrudService);
+    service = TestBed.inject(WorkerDaysService);
   });
 
   it('should be created', () => {

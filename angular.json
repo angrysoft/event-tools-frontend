@@ -5,7 +5,7 @@
     "projects": {
         "event-tools": {
             "i18n": {
-                "sourceLocale": "pl-PL"
+                "sourceLocale": "pl"
             },
             "projectType": "application",
             "schematics": {

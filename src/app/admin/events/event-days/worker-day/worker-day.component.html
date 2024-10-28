@@ -1,26 +1,27 @@
 <div class="mat-elevation-z8 table-wrapper">
   <div class="workers-actions">
-    <button mat-flat-button (click)="changeSelection()">
-      <mat-icon>add</mat-icon>Dodaj
-    </button>
+    
+
     <button
       mat-flat-button
       [disabled]="selection.isEmpty()"
-      (click)="changeSelection()"
+      (click)="editWorker()"
     >
       <mat-icon>edit</mat-icon>Edytuj
     </button>
+    
     <button
       mat-flat-button
       [disabled]="isMultipleSelected"
-      (click)="changeSelection()"
+      (click)="changeWorker()"
     >
       <mat-icon>change_circle</mat-icon>Zmień Pracownika
     </button>
+    
     <button
       mat-flat-button
       [disabled]="selection.isEmpty()"
-      (click)="changeSelection()"
+      (click)="removeWorkers()"
       class="delete-button"
     >
       <mat-icon>delete</mat-icon>Usuń
@@ -40,6 +41,7 @@
         </mat-checkbox>
       </th>
       <td mat-cell *matCellDef="let row">
+        {{row.select}}
         <mat-checkbox
           (click)="$event.stopPropagation()"
           (change)="$event ? selection.toggle(row) : null"

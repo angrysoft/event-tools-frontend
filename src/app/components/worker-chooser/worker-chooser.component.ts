@@ -22,6 +22,7 @@ import { InputFilters, SearchQuery } from "../search/model";
 import { SearchComponent } from "../search/search.component";
 import { DataTableDataSource } from "./data-table-datasource";
 import { WorkerChooserConfig } from "./worker-chooser-config";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @Component({
   selector: "app-worker-chooser",
@@ -35,6 +36,7 @@ import { WorkerChooserConfig } from "./worker-chooser-config";
     SearchComponent,
     MatDialogActions,
     MatDialogClose,
+    MatCheckboxModule,
   ],
   templateUrl: "./worker-chooser.component.html",
   styleUrl: "./worker-chooser.component.scss",
@@ -53,11 +55,11 @@ export class WorkerChooserComponent<T> {
       values: [],
     },
   });
-  selection = new SelectionModel<WorkerBase>(true, []);
-  selectedWorkers = signal<Set<WorkerBase>>(new Set());
   config: WorkerChooserConfig = inject(MAT_DIALOG_DATA);
+  selection = new SelectionModel<WorkerBase>(!this.config.single, [], true);
 
   tableColumns = [
+    { name: "selection", def: "select" },
     { name: "id", def: "id" },
     { name: "Imię", def: "firstName" },
     { name: "Nazwisko", def: "lastName" },
@@ -95,18 +97,6 @@ export class WorkerChooserComponent<T> {
     });
   }
 
-  onClick(row: any) {
-    if (this.config.single) {
-      this.selectedWorkers.set(new Set([row]));
-    } else {
-      this.selectedWorkers.update((sel) => {
-        if (sel.has(row)) sel.delete(row);
-        else sel.add(row);
-        return sel;
-      });
-    }
-  }
-
   searchQuery(q: SearchQuery) {
     this.dataSource.query = q;
     this.paginator.firstPage();
@@ -117,5 +107,9 @@ export class WorkerChooserComponent<T> {
     this.dataSource.query = {};
     this.paginator.firstPage();
     this.dataSource.loadData();
+  }
+
+  isSelected(row: any) {
+    return this.selection.selected.some((el) => el.id === row.id);
   }
 }
