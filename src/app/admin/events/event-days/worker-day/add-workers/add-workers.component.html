@@ -47,7 +47,7 @@
       <mat-card-content class="form-gorup-row">
         <div class="worker-list" formArrayName="workers">
           @for (worker of workers.controls; track $index) {
-          <div class="worker-field">
+          <div class="field">
             <mat-form-field appearance="outline">
               <mat-label>Pracownik</mat-label>
               <input
@@ -75,21 +75,50 @@
       </mat-card-content>
     </mat-card>
     <mat-card appearance="outlined">
-      <mat-card-header>
-        <h3>Dodatki</h3>
+      <mat-card-header class="addons-header">
+        <mat-card-title>Dodatki</mat-card-title>
+        <mat-card-subtitle
+          >Jeżeli pracownik nie ma przypisanej wartości dodatku zostanie on
+          pominięty.</mat-card-subtitle
+        >
       </mat-card-header>
-      <mat-card-content>
-        <div class="worker-field">
+      <mat-card-content class="addons">
+        <mat-chip-listbox>
+          @for (addon of workerDayAddons; track addon.value.id) {
+          <mat-chip-option (removed)="removeAddon($index)">
+            {{ addon.value.name }}
+            @if (addon.value.type === "VARIABLE_ADDON") { -
+            {{ addon.value.value }}
+            }
+            <button matChipRemove aria-label="'remove reactive form' + keyword">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-option>
+          }
+        </mat-chip-listbox>
+        <div class="field">
           <mat-form-field appearance="outline">
             <mat-label>Dodatki</mat-label>
-            <mat-select>
+            <mat-select [formControl]="addonGroup.controls.id">
               @for (addon of addons(); track addon.id) {
-              <mat-option [value]="addon.id">{{ addon.name }}</mat-option>
+              <mat-option [value]="addon.id">
+                {{ addon.name }}
+              </mat-option>
               }
             </mat-select>
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Wartość</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="addonGroup.controls.value"
+            />
+          </mat-form-field>
 
-          <button mat-flat-button type="button">Dodaj</button>
+          <button mat-flat-button type="button" (click)="addAddon()">
+            Dodaj
+          </button>
         </div>
       </mat-card-content>
     </mat-card>

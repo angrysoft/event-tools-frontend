@@ -29,12 +29,13 @@ import { FormBaseComponent } from "../../../../../components/form-base/form-base
 import { WorkerChooserConfig } from "../../../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../../../components/worker-chooser/worker-chooser.component";
 import { WorkerRatesPipe } from "../../../../../pipes/worker-rates.pipe";
-import { Addon } from "../../../../models/addon";
+import { Addon, AddonForm } from "../../../../models/addon";
 import { EventDay, WorkerDay, WorkerDayForm } from "../../../../models/events";
 import { Rate } from "../../../../models/rate";
 import { WorkerBase } from "../../../../models/worker";
 import { RatesService } from "../../../../services/rates.service";
 import { WorkerDaysService } from "../../../../services/worker-days.service";
+import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
   selector: "app-add-workers",
@@ -51,6 +52,7 @@ import { WorkerDaysService } from "../../../../services/worker-days.service";
     MatIconModule,
     DatePipe,
     WorkerRatesPipe,
+    MatChipsModule,
   ],
   templateUrl: "./add-workers.component.html",
   styleUrl: "./add-workers.component.scss",
@@ -66,6 +68,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
 
   addWorkersForm: FormGroup<WorkerDayForm>;
+  addonGroup: FormGroup<AddonGroup>;
   destroy = new Subject();
   formTitle = "Dodaj Pracowników";
   eventId = Number(this.route.snapshot.paramMap.get("eventId"));
@@ -94,6 +97,11 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       endHour: new FormControl("21:00"),
       workers: this.fb.array([], Validators.required),
       workerDayAddons: this.fb.array([]),
+    });
+
+    this.addonGroup = this.fb.group({
+      id: new FormControl(),
+      value: new FormControl(),
     });
 
     this.service.getEventDay(this.eventId, this.dayId).subscribe((resp) => {
@@ -144,6 +152,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     });
 
     this.service.getAddons().subscribe((resp) => {
+      console.log(resp);
       if (resp.ok) this.addons.set(resp.data.items);
     });
   }
@@ -163,6 +172,10 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
   get workers() {
     return this.addWorkersForm.controls.workers;
+  }
+
+  get workerDayAddons() {
+    return this.addWorkersForm.controls.workerDayAddons.controls;
   }
 
   chooseWorkers() {
@@ -214,6 +227,36 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     this.addWorkersForm.controls.workers.removeAt(idx);
   }
 
+  addAddon() {
+    const addon = this.addons().find((a) => a.id === this.addonGroup.value.id);
+    if (
+      !addon ||
+      (addon.addonType === "VARIABLE_ADDON" &&
+        this.addonGroup.value.value === null)
+    )
+      return;
+    if (
+      this.addWorkersForm.controls.workerDayAddons.value.find(
+        (a: Addon) => a.id === addon.id,
+      )
+    )
+      return;
+
+    const addonGroup = this.fb.group({
+      id: new FormControl(addon.id, Validators.required),
+      name: new FormControl(addon.name),
+      type: new FormControl(addon.addonType),
+      value: new FormControl(this.addonGroup.value.value),
+    });
+    console.log(addonGroup.value);
+    this.addWorkersForm.controls.workerDayAddons.push(addonGroup);
+    this.addonGroup.reset();
+  }
+
+  removeAddon(idx: number) {
+    this.addWorkersForm.controls.workerDayAddons.removeAt(idx);
+  }
+
   handleSubmit() {
     if (this.addWorkersForm.valid && this.addWorkersForm.dirty) {
       const workersDays: WorkerDay[] = [];
@@ -233,6 +276,8 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       if (formValues?.endTime && formValues.startTime)
         console.log(formValues.endTime > formValues.startTime);
 
+      console.log(workersDays);
+
       this.service
         .storeEventDay(this.eventId, this.dayId, workersDays)
         .subscribe((resp) => {
@@ -243,4 +288,9 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         });
     }
   }
+}
+
+interface AddonGroup {
+  id: FormControl<number | null>;
+  value: FormControl<number | null>;
 }

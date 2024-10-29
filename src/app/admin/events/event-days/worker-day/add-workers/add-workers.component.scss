@@ -11,9 +11,21 @@
     gap:1rem;
 }
 
-.worker-field {
+.field {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+    align-items: baseline;
+}
+
+.addon-header {
+    padding: 1rem;
+}
+
+.addons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
 }
