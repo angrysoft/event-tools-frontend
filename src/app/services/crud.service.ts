@@ -108,6 +108,28 @@ export class CrudService<T> {
       );
   }
 
+  protected _post<GT>(
+    api: string,
+    data: GT | null = null,
+  ): Observable<RestResponse<string>> {
+    return this.http
+      .post<RestResponse<string>>(api, data, {
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  protected _put<GT>(
+    api: string,
+    data: GT | null = null,
+  ): Observable<RestResponse<string>> {
+    return this.http
+      .put<RestResponse<string>>(api, data, {
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   protected handleError(err: any) {
     switch (err.status) {
       case 401:
@@ -127,10 +149,14 @@ export class CrudService<T> {
     console.warn(err.error);
     this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
       verticalPosition: "top",
+      duration: 5000,
     });
   }
 
-  showMsg(msg: string, duration:number = 3000) {
-    this._snackBar.open(msg, "Zamknij", { verticalPosition: "top", duration: duration });
+  showMsg(msg: string, duration: number = 3000) {
+    this._snackBar.open(msg, "Zamknij", {
+      verticalPosition: "top",
+      duration: duration,
+    });
   }
 }
