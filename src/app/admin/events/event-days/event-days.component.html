@@ -6,20 +6,18 @@
     <h2>{{ name }}</h2>
   </header>
   <div class="days-actions">
-    <button mat-fab extended (click)="addDay()" title="alt+a">
+    <button mat-flat-button (click)="addDay()" title="alt+a">
       <mat-icon>add</mat-icon>Dodaj Dzień
     </button>
     <button
-      mat-fab
-      extended
+      mat-flat-button
       (click)="duplicateDay()"
       [disabled]="eventDays().length === 0"
     >
       <mat-icon>content_copy</mat-icon>Duplikuj
     </button>
     <button
-      mat-fab
-      extended
+      mat-flat-button
       (click)="delDay()"
       title="alt-x"
       [disabled]="eventDays().length === 0"
@@ -28,8 +26,7 @@
       <mat-icon>delete</mat-icon>Usuń Dzień
     </button>
     <button
-      mat-fab
-      extended
+      mat-flat-button
       (click)="addWorkers()"
       [disabled]="eventDays().length === 0"
     >
