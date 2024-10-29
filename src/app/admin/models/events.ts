@@ -81,7 +81,7 @@ interface EventDay {
   id?: number;
   event: number;
   info: string;
-  startDate: Date;
+  startDate: Date | string;
   state: string;
   workerDays: WorkerDay[];
 }

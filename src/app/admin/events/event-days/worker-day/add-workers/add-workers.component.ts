@@ -187,9 +187,10 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     workers.forEach((worker) => {
       this.rateSrv.getWorkerRates(worker.id ?? -1).subscribe((resp) => {
         const ratesId: number[] = [];
+        console.log(resp.data);
         if (resp.ok)
           resp.data.items.forEach((r) => {
-            ratesId.push(r.id);
+            ratesId.push(r.rateId);
           });
 
         const workerGroup = this.fb.group({
@@ -228,15 +229,14 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         };
         workersDays.push(workerDay);
       });
-      
+
       if (formValues?.endTime && formValues.startTime)
         console.log(formValues.endTime > formValues.startTime);
 
       this.service
         .storeEventDay(this.eventId, this.dayId, workersDays)
         .subscribe((resp) => {
-          if (resp.ok)
-            this.router.navigateByUrl(`/admin/events/${this.eventId}`);
+          if (resp.ok) this.router.navigateByUrl(this.backTo);
           else {
             this.service.showError(resp);
           }

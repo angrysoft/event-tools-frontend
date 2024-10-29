@@ -19,6 +19,7 @@ import { AddDayComponent } from "./add-day/add-day.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { DatePipe } from "@angular/common";
 import { WorkerDayComponent } from "./worker-day/worker-day.component";
+import { dateToString } from "../../../utils/date";
 
 @Component({
   selector: "app-event-days",
@@ -75,7 +76,7 @@ export class EventDaysComponent {
       this.service
         .addDay(this.eventId, {
           event: this.eventId,
-          startDate: result.startDate,
+          startDate: dateToString(result.startDate),
           state: "TEMPLATE",
           info: result.info,
           workerDays: [],

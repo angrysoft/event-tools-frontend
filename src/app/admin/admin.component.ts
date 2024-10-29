@@ -12,7 +12,7 @@ import { map, shareReplay } from "rxjs/operators";
 import { AuthService } from "../services/auth.service";
 import { MatMenuModule } from "@angular/material/menu";
 import { Router, RouterOutlet } from "@angular/router";
-import { MenuActionComponent } from "../menu-action/menu-action.component";
+import { MenuActionComponent } from "../components/menu-action/menu-action.component";
 
 @Component({
   selector: "app-main",
