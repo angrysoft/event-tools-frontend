@@ -58,7 +58,7 @@ export class AuthService {
 
   getUser() {
     this.http
-      .get<RestResponse<User>>("/api/user", { withCredentials: true })
+      .get<RestResponse<User>>("/api/workers/whoami", { withCredentials: true })
       .pipe(
         catchError((err) => {
           if (err.status === 401) {

@@ -10,6 +10,7 @@ import { LoaderComponent } from "../../../components/loader/loader.component";
 import { EventItemDto } from "../../models/events";
 import { EventsService } from "../../services/events.service";
 import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
+import { EventFilesComponent } from "../event-files/event-files.component";
 
 @Component({
   selector: "app-show-event",
@@ -22,7 +23,8 @@ import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
     LoaderComponent,
     RouterLink,
     SafeHtmlPipe,
-  ],
+    EventFilesComponent
+],
   templateUrl: "./show-event.component.html",
   styleUrl: "./show-event.component.scss",
 })
@@ -49,7 +51,7 @@ export class ShowEventComponent {
   constructor() {
     this.service.getInfo(this.eventId).subscribe((resp) => {
       if (resp.ok) {
-        this.eventData.set(resp.data as EventItemDto);
+        this.eventData.set(resp.data);
       }
       this.loading.set(false);
     });

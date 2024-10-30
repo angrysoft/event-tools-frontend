@@ -32,4 +32,20 @@ export const eventsRoutes: Routes = [
         (m) => m.EventFormComponent,
       ),
   },
+  {
+    path: "events/:eventId/day",
+    title: "Harmonogram",
+    loadComponent: () =>
+      import("./event-days/event-days.component").then(
+        (m) => m.EventDaysComponent,
+      ),
+  },
+  {
+    path: "events/:eventId/day/:dayId",
+    title: "Dodaj Pracowników",
+    loadComponent: () =>
+      import("./event-days/worker-day/add-workers/add-workers.component").then(
+        (m) => m.AddWorkersComponent,
+      ),
+  },
 ];

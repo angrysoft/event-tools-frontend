@@ -33,4 +33,66 @@ interface EventItemDto {
   editors: string[];
 }
 
-export { EventItem, EventItemForm, EventItemDto };
+interface EventFile {
+  event: {
+    id: number;
+  };
+  fileName: string;
+  size: number;
+}
+
+interface WorkerDay {
+  id?: number | null;
+  eventDay?: number | null;
+  worker?: number | null;
+  rate?: number | null;
+  startTime: string | Date;
+  endTime: string | Date;
+  workerName?: string;
+  rateName?: string;
+  rateMoney?: string;
+  total?: string;
+  addons?: string;
+  workerDayAddons: WorkerAddons[];
+}
+
+interface WorkerDayForm {
+  id: FormControl<number | null>;
+  eventDay: FormControl<number | null>;
+  rate: FormControl<number | null>;
+  startTime: FormControl<Date | string | null>;
+  startHour: FormControl<string | null>;
+  endTime: FormControl<Date | string | null>;
+  endHour: FormControl<string | null>;
+  workers: FormArray;
+  workerDayAddons: FormArray;
+}
+
+interface WorkerAddons {
+  eventDay: number;
+  worker: number;
+  value?: number;
+  money?: string;
+  name: string;
+  type: string;
+}
+
+interface EventDay {
+  id?: number;
+  event: number;
+  info: string;
+  startDate: Date | string;
+  state: string;
+  workerDays: WorkerDay[];
+}
+
+export {
+  EventItem,
+  EventItemForm,
+  EventItemDto,
+  EventFile,
+  EventDay,
+  WorkerDay,
+  WorkerDayForm,
+  WorkerAddons,
+};

@@ -4,6 +4,14 @@ interface Addon {
   id: number;
   name: string;
   addonType: string;
+  value?: number;
+}
+
+interface AddonWorkDay {
+  addon: number;
+  name: string;
+  addonType: string;
+  value?: number;
 }
 
 interface AddonForm {
@@ -38,4 +46,12 @@ interface AddonValue {
   value: number | null;
 }
 
-export { Addon, AddonForm, AddonType, AddonValueDto, AddonValueForm, AddonValue };
+export {
+  Addon,
+  AddonForm,
+  AddonType,
+  AddonValueDto,
+  AddonValueForm,
+  AddonWorkDay,
+  AddonValue,
+};

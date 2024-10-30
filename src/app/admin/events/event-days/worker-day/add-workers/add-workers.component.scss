@@ -1,0 +1,30 @@
+.worker-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.card-header-action {
+    display: flex;
+    align-items: center;
+    gap:1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.addon-header {
+    padding: 1rem;
+}
+
+.addons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}

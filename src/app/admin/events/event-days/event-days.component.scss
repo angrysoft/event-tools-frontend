@@ -1,0 +1,20 @@
+.main-section, .header {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.header {
+    align-items: center;
+}
+
+.main-section {
+    flex-direction: column;
+}
+
+.days-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+}

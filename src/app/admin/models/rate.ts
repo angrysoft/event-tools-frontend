@@ -23,6 +23,7 @@ interface RateValueDto {
   id: number;
   rateName: string;
   rateType: string;
+  rateId: number;
   overtimeAfter?: number;
   value: number;
   perHourOvertimeValue: number;
@@ -59,9 +60,12 @@ interface BasicPayData {
 }
 
 export {
-  BasicPayData, BasicPayForm, Rate,
+  BasicPayData,
+  BasicPayForm,
+  Rate,
   RateForm,
-  RateType, RateValue, RateValueDto,
-  RateValueForm
+  RateType,
+  RateValue,
+  RateValueDto,
+  RateValueForm,
 };
-

@@ -1,11 +1,5 @@
 import { SelectionModel } from "@angular/cdk/collections";
-import {
-  Component,
-  inject,
-  output,
-  signal,
-  ViewChild
-} from "@angular/core";
+import { Component, inject, signal, ViewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
   MAT_DIALOG_DATA,
@@ -28,6 +22,7 @@ import { InputFilters, SearchQuery } from "../search/model";
 import { SearchComponent } from "../search/search.component";
 import { DataTableDataSource } from "./data-table-datasource";
 import { WorkerChooserConfig } from "./worker-chooser-config";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @Component({
   selector: "app-worker-chooser",
@@ -41,6 +36,7 @@ import { WorkerChooserConfig } from "./worker-chooser-config";
     SearchComponent,
     MatDialogActions,
     MatDialogClose,
+    MatCheckboxModule,
   ],
   templateUrl: "./worker-chooser.component.html",
   styleUrl: "./worker-chooser.component.scss",
@@ -49,7 +45,6 @@ import { WorkerChooserConfig } from "./worker-chooser-config";
 export class WorkerChooserComponent<T> {
   readonly service = inject(WorkersService);
   readonly router = inject(Router);
-  approve = output<Set<WorkerBase>>();
   filters = signal<InputFilters>({
     team: {
       name: "",
@@ -60,11 +55,11 @@ export class WorkerChooserComponent<T> {
       values: [],
     },
   });
-  selection = new SelectionModel<WorkerBase>(true, []);
-  selectedWorkers = signal<Set<WorkerBase>>(new Set());
   config: WorkerChooserConfig = inject(MAT_DIALOG_DATA);
+  selection = new SelectionModel<WorkerBase>(!this.config.single, [], true);
 
   tableColumns = [
+    { name: "selection", def: "select" },
     { name: "id", def: "id" },
     { name: "Imię", def: "firstName" },
     { name: "Nazwisko", def: "lastName" },
@@ -102,18 +97,6 @@ export class WorkerChooserComponent<T> {
     });
   }
 
-  onClick(row: any) {
-    if (this.config.single) {
-      this.config.data = new Set([row]);
-      return;
-    }
-    if (this.config.data.has(row)) {
-      this.config.data.delete(row);
-    } else {
-      this.config.data.add(row);
-    }
-  }
-
   searchQuery(q: SearchQuery) {
     this.dataSource.query = q;
     this.paginator.firstPage();
@@ -126,7 +109,7 @@ export class WorkerChooserComponent<T> {
     this.dataSource.loadData();
   }
 
-  emitApprove() {
-    this.approve.emit(new Set(this.selectedWorkers()));
+  isSelected(row: any) {
+    return this.selection.selected.some((el) => el.id === row.id);
   }
 }
