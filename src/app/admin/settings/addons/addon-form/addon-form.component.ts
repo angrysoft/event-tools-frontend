@@ -28,6 +28,7 @@ import { FormBaseComponent } from "../../../../components/form-base/form-base.co
 import { AddonForm, AddonType } from "../../../models/addon";
 import { Rate } from "../../../models/rate";
 import { AddonsService } from "../../../services/addons.service";
+import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-addon-form",
@@ -44,6 +45,7 @@ import { AddonsService } from "../../../services/addons.service";
     MatIcon,
     MatOptionModule,
     MatSelectModule,
+    AutofocusDirective
   ],
   templateUrl: "./addon-form.component.html",
   styleUrl: "./addon-form.component.scss",

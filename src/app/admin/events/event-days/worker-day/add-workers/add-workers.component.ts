@@ -78,6 +78,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   formTitle = "Dodaj Pracowników";
   eventId = Number(this.route.snapshot.paramMap.get("eventId"));
   dayId = Number(this.route.snapshot.paramMap.get("dayId"));
+  tab = this.route.snapshot.queryParamMap.get("tab") ?? 0;
   backTo = `/admin/events/${this.eventId}/day`;
 
   canSend = signal<boolean>(false);
@@ -92,6 +93,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   });
 
   constructor() {
+    //FIXME validate dates
     this.addWorkersForm = this.fb.group<WorkerDayForm>({
       id: new FormControl(),
       eventDay: new FormControl(this.dayId, Validators.required),
@@ -238,9 +240,10 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         this.addonGroup.value.value === null)
     )
       return;
+
     if (
       this.addWorkersForm.controls.workerDayAddons.value.find(
-        (a: Addon) => a.id === addon.id,
+        (a: any) => a.addon === addon.id,
       )
     )
       return;
@@ -286,11 +289,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         };
         workersDays.push(workerDay);
       }
-
-      if (formValues?.endTime && formValues.startTime)
-        console.log(formValues.endTime > formValues.startTime);
-
-      console.log(workersDays);
 
       this.service
         .storeEventDay(this.eventId, this.dayId, workersDays)

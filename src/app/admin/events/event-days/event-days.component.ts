@@ -43,7 +43,7 @@ export class EventDaysComponent {
   router = inject(Router);
   service = inject(EventDaysService);
   eventDays = signal<EventDay[]>([]);
-  tabIndex = signal<number>(0);
+  tabIndex = signal<number>(2);
   name = this.route.snapshot.queryParamMap.get("name");
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = `/admin/events/${this.eventId}`;
@@ -64,7 +64,15 @@ export class EventDaysComponent {
 
     effect(() => {
       const idx = this.eventDays().length;
-      untracked(() => this.tabIndex.set(idx));
+      untracked(() => {
+        const tab = this.route.snapshot.queryParamMap.get("tab");
+        console.log(tab);
+        if (tab) {
+          this.tabIndex.set(Number(tab));
+        } else {
+          this.tabIndex.set(idx);
+        }
+      });
     });
   }
 
@@ -92,7 +100,11 @@ export class EventDaysComponent {
             result.id = resp.data;
             this.eventDays.update((d) => {
               d.push(result);
-              return d;
+              return d.sort((s, e) => {
+                if (s.startDate == e.startDate) return 0;
+                if (s.startDate > e.startDate) return 1;
+                else return -1;
+              });
             });
           }
         });
@@ -120,7 +132,9 @@ export class EventDaysComponent {
 
   addWorkers() {
     const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
-    this.router.navigateByUrl(`/admin/events/${this.eventId}/day/${dayId} `);
+    this.router.navigateByUrl(
+      `/admin/events/${this.eventId}/day/${dayId}?tab=${this.tabIndex()}`,
+    );
   }
 
   duplicateDay() {

@@ -28,6 +28,7 @@ import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/co
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Rate, RateForm, RateType } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
+import {AutofocusDirective} from "../../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-rate-form",
@@ -44,6 +45,7 @@ import { RatesService } from "../../../services/rates.service";
     MatIcon,
     MatOptionModule,
     MatSelectModule,
+    AutofocusDirective
   ],
   templateUrl: "./rate-form.component.html",
   styleUrl: "./rate-form.component.scss",
