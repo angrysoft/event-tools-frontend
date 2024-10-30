@@ -53,7 +53,6 @@ export class EventDaysComponent {
   constructor() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
-        console.log("resp", resp.data);
         this.eventDays.set(
           resp.data.map((day) => {
             day.startDate = new Date(day.startDate);
@@ -73,6 +72,13 @@ export class EventDaysComponent {
     const addDialog = this.dialog.open(AddDayComponent, { disableClose: true });
     addDialog.afterClosed().subscribe((result) => {
       if (!result) return;
+      console.log({
+        event: this.eventId,
+        startDate: dateToString(result.startDate),
+        state: "TEMPLATE",
+        info: result.info,
+        workerDays: [],
+      });
       this.service
         .addDay(this.eventId, {
           event: this.eventId,
@@ -83,6 +89,7 @@ export class EventDaysComponent {
         })
         .subscribe((resp) => {
           if (resp.ok) {
+            result.id = resp.data;
             this.eventDays.update((d) => {
               d.push(result);
               return d;

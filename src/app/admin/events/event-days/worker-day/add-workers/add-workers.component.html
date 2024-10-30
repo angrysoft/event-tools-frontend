@@ -84,7 +84,7 @@
       </mat-card-header>
       <mat-card-content class="addons">
         <mat-chip-listbox>
-          @for (addon of workerDayAddons; track addon.value.id) {
+          @for (addon of workerDayAddons; track addon.value.addon) {
           <mat-chip-option (removed)="removeAddon($index)">
             {{ addon.value.name }}
             @if (addon.value.type === "VARIABLE_ADDON") { -
@@ -116,7 +116,8 @@
             />
           </mat-form-field>
 
-          <button mat-flat-button type="button" (click)="addAddon()">
+          <button mat-fab extended type="button" (click)="addAddon()">
+            <mat-icon>add</mat-icon>
             Dodaj
           </button>
         </div>

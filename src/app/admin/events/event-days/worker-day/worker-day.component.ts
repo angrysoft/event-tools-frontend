@@ -50,7 +50,7 @@ export class WorkerDayComponent implements AfterViewInit {
     { name: "Koniec", def: "endTime" },
     { name: "Pracownik", def: "workerName" },
     { name: "Stawka", def: "rateName" },
-    { name: "Kwota", def: "calculatedRate" },
+    { name: "Kwota", def: "rateMoney" },
     { name: "Dodatki", def: "addons" },
     { name: "Suma", def: "total" },
   ];

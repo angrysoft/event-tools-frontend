@@ -7,6 +7,13 @@ interface Addon {
   value?: number;
 }
 
+interface AddonWorkDay {
+  addon: number;
+  name: string;
+  addonType: string;
+  value?: number;
+}
+
 interface AddonForm {
   id: FormControl<number | null>;
   name: FormControl<string | null>;
@@ -45,5 +52,6 @@ export {
   AddonType,
   AddonValueDto,
   AddonValueForm,
+  AddonWorkDay,
   AddonValue,
 };

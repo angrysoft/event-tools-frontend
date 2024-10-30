@@ -2,8 +2,8 @@
 
 <div class="worker-dialog">
   <mat-dialog-actions>
-    <button mat-button cdkFocusInitial [mat-dialog-close]="null">Anuluj</button>
-    <button mat-button [mat-dialog-close]="selection.selected">Ok</button>
+    <button mat-stroked-button cdkFocusInitial [mat-dialog-close]="null">Anuluj</button>
+    <button mat-stroked-button [mat-dialog-close]="selection.selected">Ok</button>
   </mat-dialog-actions>
   @if(config.search) {
   <app-search

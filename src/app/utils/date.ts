@@ -1,6 +1,6 @@
 function dateToString(date: Date) {
   return `${date.getFullYear()}-${addPad(date.getMonth() + 1)}-${addPad(
-    date.getDay(),
+    date.getDate(),
   )}`;
 }
 

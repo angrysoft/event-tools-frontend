@@ -25,8 +25,15 @@ export class WorkerDayDataSource extends DataSource<WorkerDay> {
     //   day.startTime = new Date(day.startTime);
     //   return day;
     // });
+
+    const days = workerDays.map((d) => {
+      d.addons = d.workerDayAddons
+        .map((addon) => `${addon.name}:${addon.money}`)
+        .join("\n");
+      return d;
+    });
     this.loading.set(true);
-    this.dataSubject.next(workerDays);
+    this.dataSubject.next(days);
     this.length = workerDays.length;
     this.loading.set(false);
   }

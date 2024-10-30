@@ -29,8 +29,13 @@ import { FormBaseComponent } from "../../../../../components/form-base/form-base
 import { WorkerChooserConfig } from "../../../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../../../components/worker-chooser/worker-chooser.component";
 import { WorkerRatesPipe } from "../../../../../pipes/worker-rates.pipe";
-import { Addon, AddonForm } from "../../../../models/addon";
-import { EventDay, WorkerDay, WorkerDayForm } from "../../../../models/events";
+import { Addon } from "../../../../models/addon";
+import {
+  EventDay,
+  WorkerDay,
+  WorkerDayForm,
+  WorkerAddons,
+} from "../../../../models/events";
 import { Rate } from "../../../../models/rate";
 import { WorkerBase } from "../../../../models/worker";
 import { RatesService } from "../../../../services/rates.service";
@@ -152,7 +157,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     });
 
     this.service.getAddons().subscribe((resp) => {
-      console.log(resp);
       if (resp.ok) this.addons.set(resp.data.items);
     });
   }
@@ -200,7 +204,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     workers.forEach((worker) => {
       this.rateSrv.getWorkerRates(worker.id ?? -1).subscribe((resp) => {
         const ratesId: number[] = [];
-        console.log(resp.data);
         if (resp.ok)
           resp.data.items.forEach((r) => {
             ratesId.push(r.rateId);
@@ -243,12 +246,13 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       return;
 
     const addonGroup = this.fb.group({
-      id: new FormControl(addon.id, Validators.required),
+      eventDay: new FormControl(this.eventDay().id),
+      worker: new FormControl(-1),
+      addon: new FormControl(addon.id, Validators.required),
+      value: new FormControl(this.addonGroup.value.value),
       name: new FormControl(addon.name),
       type: new FormControl(addon.addonType),
-      value: new FormControl(this.addonGroup.value.value),
     });
-    console.log(addonGroup.value);
     this.addWorkersForm.controls.workerDayAddons.push(addonGroup);
     this.addonGroup.reset();
   }
@@ -260,18 +264,28 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   handleSubmit() {
     if (this.addWorkersForm.valid && this.addWorkersForm.dirty) {
       const workersDays: WorkerDay[] = [];
+
       const formValues = this.addWorkersForm.value;
-      formValues.workers.forEach((w: any) => {
+
+      for (const w of formValues.workers) {
+        const workerDayAddons: WorkerAddons[] = [];
+        formValues.workerDayAddons.forEach((a: any) => {
+          workerDayAddons.push({
+            ...a,
+            worker: w.id,
+          });
+        });
+
         const workerDay: WorkerDay = {
           eventDay: formValues.eventDay,
           worker: w.id,
           rate: w.rate,
           startTime: formValues.startTime ?? "",
           endTime: formValues.endTime ?? "",
-          workerDayAddons: formValues.workerDayAddons,
+          workerDayAddons: workerDayAddons,
         };
         workersDays.push(workerDay);
-      });
+      }
 
       if (formValues?.endTime && formValues.startTime)
         console.log(formValues.endTime > formValues.startTime);

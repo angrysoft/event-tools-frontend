@@ -50,12 +50,9 @@ interface WorkerDay {
   endTime: string | Date;
   workerName?: string;
   rateName?: string;
-  calculatedRate?: {
-    amount: number;
-  };
-  total?: {
-    amount: number;
-  };
+  rateMoney?: string;
+  total?: string;
+  addons?: string;
   workerDayAddons: WorkerAddons[];
 }
 
@@ -72,8 +69,11 @@ interface WorkerDayForm {
 }
 
 interface WorkerAddons {
+  eventDay: number;
+  worker: number;
+  value?: number;
+  money?: string;
   name: string;
-  value: string;
   type: string;
 }
 
@@ -94,4 +94,5 @@ export {
   EventDay,
   WorkerDay,
   WorkerDayForm,
+  WorkerAddons,
 };
