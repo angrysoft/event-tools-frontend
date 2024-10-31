@@ -4,8 +4,11 @@ function dateToString(date: Date) {
   )}`;
 }
 
-function dateTimeToString(date: Date) {
-  return date.toJSON().replace("Z", "");
+function dateTimeToString(date: Date | string | undefined | null) {
+  if (!date) return;
+  if (typeof date == "string") date = new Date(date);
+
+  return `${dateToString(date)}T${date.toLocaleTimeString("pl-PL")}`;
 }
 
 function addPad(n: number): string {

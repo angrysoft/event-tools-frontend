@@ -41,6 +41,7 @@ import { WorkerBase } from "../../../../models/worker";
 import { RatesService } from "../../../../services/rates.service";
 import { WorkerDaysService } from "../../../../services/worker-days.service";
 import { MatChipsModule } from "@angular/material/chips";
+import { dateTimeToString } from "../../../../../utils/date";
 
 @Component({
   selector: "app-add-workers",
@@ -122,7 +123,9 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         endTime.setMinutes(0);
 
         this.addWorkersForm.controls.startTime.setValue(startTime);
-        this.addWorkersForm.controls.endTime.setValue(endTime);
+        this.addWorkersForm.controls.endTime.setValue(endTime, {
+          emitEvent: false,
+        });
         this.eventDay.set(resp.data);
       }
     });
@@ -130,28 +133,27 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     this.addWorkersForm.controls.startHour.valueChanges
       .pipe(takeUntil(this.destroy), debounceTime(500))
       .subscribe((value) => {
-        const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
-        if (t?.length === 3) {
-          const startTime = new Date(
-            this.addWorkersForm.controls.startTime.value?.toString() as string,
-          );
-          startTime.setHours(Number(t.at(1)));
-          startTime.setMinutes(Number(t.at(2)));
-          this.addWorkersForm.controls.startTime.setValue(startTime);
-        }
+        this.setDateTimeForControl(
+          this.addWorkersForm.controls.startTime,
+          value ?? "",
+        );
       });
     this.addWorkersForm.controls.endHour.valueChanges
       .pipe(takeUntil(this.destroy), debounceTime(500))
       .subscribe((value) => {
-        const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
-        if (t?.length === 3) {
-          const endTime = new Date(
-            this.addWorkersForm.controls.endTime.value?.toString() as string,
-          );
-          endTime.setHours(Number(t.at(1)));
-          endTime.setMinutes(Number(t.at(2)));
-          this.addWorkersForm.controls.endTime.setValue(endTime);
-        }
+        this.setDateTimeForControl(
+          this.addWorkersForm.controls.endTime,
+          value ?? "",
+        );
+      });
+
+    this.addWorkersForm.controls.endTime.valueChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe(() => {
+        this.setDateTimeForControl(
+          this.addWorkersForm.controls.endTime,
+          this.addWorkersForm.controls.endHour.value ?? "",
+        );
       });
 
     this.service.getRates().subscribe((resp) => {
@@ -174,6 +176,20 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
+  }
+
+  private setDateTimeForControl(control: FormControl, value: string) {
+    const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
+
+    if (t?.length === 3) {
+      let controlValue = control.value;
+      if (typeof controlValue === "string") {
+        controlValue = new Date(control.value?.toString() as string);
+      }
+      controlValue.setHours(Number(t.at(1)));
+      controlValue.setMinutes(Number(t.at(2)));
+      control.setValue(controlValue, { emitEvent: false });
+    }
   }
 
   get workers() {
@@ -283,8 +299,8 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
           eventDay: formValues.eventDay,
           worker: w.id,
           rate: w.rate,
-          startTime: formValues.startTime ?? "",
-          endTime: formValues.endTime ?? "",
+          startTime: dateTimeToString(formValues.startTime) ?? "",
+          endTime: dateTimeToString(formValues.endTime) ?? "",
           workerDayAddons: workerDayAddons,
         };
         workersDays.push(workerDay);
