@@ -1,34 +1,33 @@
+import { SelectionModel } from "@angular/cdk/collections";
+import { DatePipe } from "@angular/common";
 import {
+  AfterViewInit,
   Component,
-  effect,
   HostListener,
   inject,
   signal,
-  untracked,
 } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { dateToString } from "../../../utils/date";
 import { EventDay, WorkerDay } from "../../models/events";
 import { EventDaysService } from "../../services/event-days.service";
-import { AddDayComponent } from "./add-day/add-day.component";
-import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
-import { DatePipe } from "@angular/common";
-import { WorkerDayComponent } from "./worker-day/worker-day.component";
-import { dateToString } from "../../../utils/date";
-import { SelectionModel } from "@angular/cdk/collections";
 import { WorkerDaysService } from "../../services/worker-days.service";
+import { AddDayComponent } from "./add-day/add-day.component";
+import { WorkerDayComponent } from "./worker-day/worker-day.component";
+import { ChangeTimeComponent } from "./change-time/change-time.component";
 
 @Component({
   selector: "app-event-days",
   standalone: true,
   imports: [
     MatTabsModule,
-    MatCardModule,
     MatButtonModule,
     MatIcon,
     MatDividerModule,
@@ -39,10 +38,7 @@ import { WorkerDaysService } from "../../services/worker-days.service";
   templateUrl: "./event-days.component.html",
   styleUrl: "./event-days.component.scss",
 })
-export class EventDaysComponent {
-  editRatesAndAddons() {
-    throw new Error("Method not implemented.");
-  }
+export class EventDaysComponent implements AfterViewInit {
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -50,43 +46,34 @@ export class EventDaysComponent {
   workerDayService = inject(WorkerDaysService);
 
   eventDays = signal<EventDay[]>([]);
-  tabIndex = signal<number>(2);
+  tabIdx = new FormControl(1);
   name = this.route.snapshot.queryParamMap.get("name");
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = `/admin/events/${this.eventId}`;
   selection = new SelectionModel<WorkerDay>(true, []);
-
-  //FIXME: get worker days ;!!!!
+  dayId = -1;
 
   constructor() {
+    this.lodaDays();
+  }
+
+  ngAfterViewInit(): void {
+    this.tabIdx.setValue(1);
+  }
+
+  private lodaDays() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
-        this.eventDays.set(
-          resp.data.map((day) => {
-            day.startDate = new Date(day.startDate);
-            return day;
-          }),
-        );
+        this.eventDays.set(resp.data);
       }
-    });
-
-    effect(() => {
-      const idx = this.eventDays().length;
-      untracked(() => {
-        const tab = this.route.snapshot.queryParamMap.get("tab");
-        console.log(tab);
-        if (tab) {
-          this.tabIndex.set(Number(tab));
-        } else {
-          this.tabIndex.set(idx);
-        }
-      });
     });
   }
 
   tabChange(idx: number) {
+    this.dayId = this.eventDays().at(idx)?.id ?? -1;
     this.selection.clear();
-    this.tabIndex.set(idx);
+    this.tabIdx.setValue(idx);
+    console.log("idx: ", idx);
   }
 
   get isMultipleSelected() {
@@ -139,10 +126,11 @@ export class EventDaysComponent {
 
     confirm.afterClosed().subscribe((result) => {
       if (result === true) {
-        const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
-        this.service.delDay(this.eventId, dayId).subscribe((resp) => {
+        this.service.delDay(this.eventId, this.dayId).subscribe((resp) => {
           if (resp.ok) {
-            this.eventDays.update((days) => days.filter((d) => d.id !== dayId));
+            this.eventDays.update((days) =>
+              days.filter((d) => d.id !== this.dayId),
+            );
           }
         });
       }
@@ -150,18 +138,43 @@ export class EventDaysComponent {
   }
 
   addWorkers() {
-    const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${dayId}?tab=${this.tabIndex()}`,
+      `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx.value}`,
     );
   }
 
   duplicateDay() {
-    const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
-    console.log(dayId);
+    console.log("duplicate", this.dayId);
   }
 
-  editTime() {}
+  editTime() {
+    const firstDay = this.selection.selected.at(0);
+
+    const timeDialog = this.dialog.open(ChangeTimeComponent, {
+      data: {
+        startTime: firstDay?.startTime,
+        endTime: firstDay?.endTime,
+      },
+      maxWidth: "95vw",
+    });
+
+    timeDialog.afterClosed().subscribe((result) => {
+      this.workerDayService
+        .changeTime(this.eventId, this.dayId, {
+          workers: this.selection.selected
+            .map((w) => w.worker)
+            .filter((w) => typeof w === "number"),
+          startTime: result.startTime,
+          endTime: result.endTime,
+        })
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.lodaDays();
+            this.selection.clear();
+          }
+        });
+    });
+  }
 
   removeWorkers() {
     const delDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -170,17 +183,33 @@ export class EventDaysComponent {
 
     delDialog.afterClosed().subscribe((result) => {
       if (result && result === true) {
-        this.workerDayService.removeWorkersDays(
-          this.eventId,
-          this.selection.selected
-            .map((w) => w.id)
-            .filter((w) => typeof w === "number"),
-        );
+        this.workerDayService
+          .removeWorkersDays(
+            this.eventId,
+            this.dayId,
+            this.selection.selected
+              .map((w) => w.worker)
+              .filter((w) => typeof w === "number"),
+          )
+          .subscribe((resp) => {
+            if (resp.ok) {
+              this.lodaDays();
+              this.selection.clear();
+            }
+          });
       }
     });
   }
 
   changeWorker() {}
+
+  changeStatus() {
+    throw new Error("Method not implemented.");
+  }
+
+  editRatesAndAddons() {
+    throw new Error("Method not implemented.");
+  }
 
   @HostListener("document:keydown.Alt.a", ["$event"])
   handleAdd() {

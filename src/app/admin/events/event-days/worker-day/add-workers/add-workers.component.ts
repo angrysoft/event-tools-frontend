@@ -1,11 +1,9 @@
-import { DatePipe } from "@angular/common";
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   OnDestroy,
   OnInit,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormBuilder,
@@ -16,6 +14,7 @@ import {
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
@@ -26,22 +25,22 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../../components/form-base/form-base.component";
+import { WorkTimeComponent } from "../../../../../components/work-time/work-time.component";
 import { WorkerChooserConfig } from "../../../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../../../components/worker-chooser/worker-chooser.component";
 import { WorkerRatesPipe } from "../../../../../pipes/worker-rates.pipe";
+import { dateTimeToString } from "../../../../../utils/date";
 import { Addon } from "../../../../models/addon";
 import {
   EventDay,
+  WorkerAddons,
   WorkerDay,
   WorkerDayForm,
-  WorkerAddons,
 } from "../../../../models/events";
 import { Rate } from "../../../../models/rate";
 import { WorkerBase } from "../../../../models/worker";
 import { RatesService } from "../../../../services/rates.service";
 import { WorkerDaysService } from "../../../../services/worker-days.service";
-import { MatChipsModule } from "@angular/material/chips";
-import { dateTimeToString } from "../../../../../utils/date";
 
 @Component({
   selector: "app-add-workers",
@@ -56,9 +55,9 @@ import { dateTimeToString } from "../../../../../utils/date";
     MatCardModule,
     MatSelectModule,
     MatIconModule,
-    DatePipe,
     WorkerRatesPipe,
     MatChipsModule,
+    WorkTimeComponent
   ],
   templateUrl: "./add-workers.component.html",
   styleUrl: "./add-workers.component.scss",
@@ -94,7 +93,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   });
 
   constructor() {
-    //FIXME validate dates
     this.addWorkersForm = this.fb.group<WorkerDayForm>({
       id: new FormControl(),
       eventDay: new FormControl(this.dayId, Validators.required),
@@ -130,31 +128,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.addWorkersForm.controls.startHour.valueChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((value) => {
-        this.setDateTimeForControl(
-          this.addWorkersForm.controls.startTime,
-          value ?? "",
-        );
-      });
-    this.addWorkersForm.controls.endHour.valueChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((value) => {
-        this.setDateTimeForControl(
-          this.addWorkersForm.controls.endTime,
-          value ?? "",
-        );
-      });
-
-    this.addWorkersForm.controls.endTime.valueChanges
-      .pipe(takeUntil(this.destroy))
-      .subscribe(() => {
-        this.setDateTimeForControl(
-          this.addWorkersForm.controls.endTime,
-          this.addWorkersForm.controls.endHour.value ?? "",
-        );
-      });
 
     this.service.getRates().subscribe((resp) => {
       if (resp.ok) this.rates.set(resp.data.items);
@@ -176,20 +149,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
-  }
-
-  private setDateTimeForControl(control: FormControl, value: string) {
-    const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
-
-    if (t?.length === 3) {
-      let controlValue = control.value;
-      if (typeof controlValue === "string") {
-        controlValue = new Date(control.value?.toString() as string);
-      }
-      controlValue.setHours(Number(t.at(1)));
-      controlValue.setMinutes(Number(t.at(2)));
-      control.setValue(controlValue, { emitEvent: false });
-    }
   }
 
   get workers() {

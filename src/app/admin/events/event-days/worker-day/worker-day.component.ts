@@ -59,7 +59,7 @@ export class WorkerDayComponent implements AfterViewInit {
     effect(() => {
       const days = this.day().workerDays ?? [];
       untracked(() => {
-        if (days.length > 0) this.dataSource.loadData(days);
+        this.dataSource.loadData(days);
       });
     });
   }

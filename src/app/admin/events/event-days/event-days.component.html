@@ -6,74 +6,85 @@
     <h2>{{ name }}</h2>
   </header>
   <div class="actions">
-    <button mat-flat-button (click)="addDay()" title="alt+a">
-      <mat-icon>add</mat-icon>Dodaj Dzień
-    </button>
+    <div class="action-buttons">
+      <button mat-flat-button (click)="addDay()" title="alt+a">
+        <mat-icon>add</mat-icon>Dodaj Dzień
+      </button>
 
-    <button
-      mat-flat-button
-      (click)="duplicateDay()"
-      [disabled]="eventDays().length === 0"
-    >
-      <mat-icon>content_copy</mat-icon>Duplikuj
-    </button>
+      <button
+        mat-flat-button
+        (click)="duplicateDay()"
+        [disabled]="eventDays().length === 0"
+      >
+        <mat-icon>content_copy</mat-icon>Duplikuj
+      </button>
 
-    <button
-      mat-flat-button
-      (click)="delDay()"
-      title="alt-x"
-      [disabled]="eventDays().length === 0"
-      class="delete-button"
-    >
-      <mat-icon>delete</mat-icon>Usuń Dzień
-    </button>
+      <button
+        mat-flat-button
+        (click)="delDay()"
+        title="alt-x"
+        [disabled]="eventDays().length === 0"
+        class="delete-button"
+      >
+        <mat-icon>delete</mat-icon>Usuń Dzień
+      </button>
+      
+      <button
+        mat-flat-button
+        (click)="changeStatus()"
+        [disabled]="eventDays().length === 0"
+      >
+        <mat-icon>content_copy</mat-icon>Zmień status
+      </button>
+      <mat-divider vertical="true" />
+    </div>
 
-    <mat-divider vertical="true" />
+    <div class="action-buttons">
+      <button
+        mat-flat-button
+        (click)="addWorkers()"
+        [disabled]="eventDays().length === 0"
+      >
+        <mat-icon>person_add</mat-icon>Dodaj
+      </button>
 
-    <button
-      mat-flat-button
-      (click)="addWorkers()"
-      [disabled]="eventDays().length === 0"
-    >
-      <mat-icon>add</mat-icon>Dodaj Pracowników
-    </button>
+      <button
+        mat-flat-button
+        [disabled]="selection.isEmpty()"
+        (click)="editTime()"
+      >
+        <mat-icon>schedule</mat-icon>Godziny
+      </button>
 
-    <button
-      mat-flat-button
-      [disabled]="selection.isEmpty()"
-      (click)="editTime()"
-    >
-      <mat-icon>edit</mat-icon>Godziny
-    </button>
+      <button
+        mat-flat-button
+        [disabled]="selection.isEmpty()"
+        (click)="editRatesAndAddons()"
+      >
+        <mat-icon>money</mat-icon>Stawki/Dodatki
+      </button>
 
-    <button
-      mat-flat-button
-      [disabled]="selection.isEmpty()"
-      (click)="editRatesAndAddons()"
-    >
-      <mat-icon>money</mat-icon>Stawki/Dodatki
-    </button>
+      <button
+        mat-flat-button
+        [disabled]="isMultipleSelected"
+        (click)="changeWorker()"
+      >
+        <mat-icon>change_circle</mat-icon>Zmień Pracownika
+      </button>
 
-    <button
-      mat-flat-button
-      [disabled]="isMultipleSelected"
-      (click)="changeWorker()"
-    >
-      <mat-icon>change_circle</mat-icon>Zmień Pracownika
-    </button>
-
-    <button
-      mat-flat-button
-      [disabled]="selection.isEmpty()"
-      (click)="removeWorkers()"
-      class="delete-button"
-    >
-      <mat-icon>delete</mat-icon>Usuń
-    </button>
+      <button
+        mat-flat-button
+        [disabled]="selection.isEmpty()"
+        (click)="removeWorkers()"
+        class="delete-button"
+      >
+        <mat-icon>person_remove</mat-icon>Usuń
+      </button>
+    </div>
   </div>
   <mat-divider />
   <mat-tab-group
-    [selectedIndex]="tabIndex()"
+    [selectedIndex]="tabIdx.value"
     (selectedIndexChange)="tabChange($event)"
   >
     @for (day of eventDays(); track day.startDate) {

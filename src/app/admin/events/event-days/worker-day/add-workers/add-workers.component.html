@@ -13,29 +13,13 @@
   >
     <mat-card appearance="outlined">
       <mat-card-header>Czas</mat-card-header>
-      <mat-card-content class="form-group-col">
-        <mat-form-field appearance="outline">
-          <mat-label
-            >Czas startu
-            {{ addWorkersForm.value.startTime | date : "short" }}</mat-label
-          >
-          <input matInput type="time" formControlName="startHour" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Data Zakonczenia</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="endTime" />
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Czas zakończenia</mat-label>
-          <input matInput type="time" formControlName="endHour" />
-        </mat-form-field>
+      <mat-card-content>
+        <app-work-time 
+        [startTime]="addWorkersForm.controls.startTime"
+        [startHour]="addWorkersForm.controls.startHour"
+        [endTime]="addWorkersForm.controls.endTime"
+        [endHour]="addWorkersForm.controls.endHour"
+        />
       </mat-card-content>
     </mat-card>
     <mat-card appearance="outlined">

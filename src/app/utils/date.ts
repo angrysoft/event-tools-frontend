@@ -15,4 +15,9 @@ function addPad(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
-export { dateToString, dateTimeToString };
+function getTimeFromDataTimeString(dateIn: string): string {
+  const date = new Date(dateIn);
+  return date.toLocaleTimeString();
+}
+
+export { dateToString, dateTimeToString, getTimeFromDataTimeString };

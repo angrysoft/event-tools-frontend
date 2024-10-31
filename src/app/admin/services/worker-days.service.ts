@@ -11,7 +11,7 @@ import { Addon } from "../models/addon";
   providedIn: "root",
 })
 export class WorkerDaysService extends CrudService<WorkerDay> {
-  private readonly userApi = "/api/events"
+  private readonly userApi = "/api/events";
   constructor() {
     super();
     this.api = "/api/admin/events";
@@ -38,12 +38,26 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
 
   storeEventDay(eventId: number, dayId: number, workerDays: WorkerDay[]) {
     return this._put<WorkerDay[]>(
-      `${this.userApi}/${eventId}/day/${dayId}`,
+      `${this.userApi}/${eventId}/day/${dayId}/add`,
       workerDays,
     );
   }
 
-  removeWorkersDays(eventId: number, workers: number[]) {
-    return this._put<number[]>(`${this.userApi}/${eventId}/day`, workers);
+  removeWorkersDays(eventId: number, dayId: number, workers: number[]) {
+    return this._put<number[]>(
+      `${this.userApi}/${eventId}/day/${dayId}/remove`,
+      workers,
+    );
+  }
+
+  changeTime(
+    eventId: number,
+    dayId: number,
+    data: { workers: number[]; startTime: any; endTime: any },
+  ) {
+    return this._put<{ workers: number[]; startTime: any; endTime: any }>(
+      `${this.userApi}/${eventId}/day/${dayId}/time`,
+      data,
+    );
   }
 }
