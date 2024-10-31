@@ -13,13 +13,15 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { EventDay } from "../../models/events";
+import { EventDay, WorkerDay } from "../../models/events";
 import { EventDaysService } from "../../services/event-days.service";
 import { AddDayComponent } from "./add-day/add-day.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { DatePipe } from "@angular/common";
 import { WorkerDayComponent } from "./worker-day/worker-day.component";
 import { dateToString } from "../../../utils/date";
+import { SelectionModel } from "@angular/cdk/collections";
+import { WorkerDaysService } from "../../services/worker-days.service";
 
 @Component({
   selector: "app-event-days",
@@ -38,15 +40,21 @@ import { dateToString } from "../../../utils/date";
   styleUrl: "./event-days.component.scss",
 })
 export class EventDaysComponent {
+  editRatesAndAddons() {
+    throw new Error("Method not implemented.");
+  }
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
   router = inject(Router);
   service = inject(EventDaysService);
+  workerDayService = inject(WorkerDaysService);
+
   eventDays = signal<EventDay[]>([]);
   tabIndex = signal<number>(2);
   name = this.route.snapshot.queryParamMap.get("name");
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = `/admin/events/${this.eventId}`;
+  selection = new SelectionModel<WorkerDay>(true, []);
 
   //FIXME: get worker days ;!!!!
 
@@ -74,6 +82,17 @@ export class EventDaysComponent {
         }
       });
     });
+  }
+
+  tabChange(idx: number) {
+    this.selection.clear();
+    this.tabIndex.set(idx);
+  }
+
+  get isMultipleSelected() {
+    // always return true ?!?!
+    //this.selection().isMultipleSelection()
+    return this.selection.selected.length !== 1;
   }
 
   addDay() {
@@ -141,6 +160,27 @@ export class EventDaysComponent {
     const dayId = this.eventDays().at(this.tabIndex())?.id ?? -1;
     console.log(dayId);
   }
+
+  editTime() {}
+
+  removeWorkers() {
+    const delDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: { msg: "Czy na pewno chcesz usunąć" },
+    });
+
+    delDialog.afterClosed().subscribe((result) => {
+      if (result && result === true) {
+        this.workerDayService.removeWorkersDays(
+          this.eventId,
+          this.selection.selected
+            .map((w) => w.id)
+            .filter((w) => typeof w === "number"),
+        );
+      }
+    });
+  }
+
+  changeWorker() {}
 
   @HostListener("document:keydown.Alt.a", ["$event"])
   handleAdd() {

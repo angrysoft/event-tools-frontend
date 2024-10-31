@@ -8,6 +8,7 @@ import { RestResponse } from "../../models/rest-response";
   providedIn: "root",
 })
 export class EventDaysService extends CrudService<EventDay> {
+  
   constructor() {
     super();
     this.api = "/api/admin/events";

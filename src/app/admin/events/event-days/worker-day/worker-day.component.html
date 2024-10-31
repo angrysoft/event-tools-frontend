@@ -1,32 +1,4 @@
 <div class="mat-elevation-z8 table-wrapper">
-  <div class="workers-actions">
-    
-
-    <button
-      mat-flat-button
-      [disabled]="selection.isEmpty()"
-      (click)="editWorker()"
-    >
-      <mat-icon>edit</mat-icon>Edytuj
-    </button>
-    
-    <button
-      mat-flat-button
-      [disabled]="isMultipleSelected"
-      (click)="changeWorker()"
-    >
-      <mat-icon>change_circle</mat-icon>Zmień Pracownika
-    </button>
-    
-    <button
-      mat-flat-button
-      [disabled]="selection.isEmpty()"
-      (click)="removeWorkers()"
-      class="delete-button"
-    >
-      <mat-icon>delete</mat-icon>Usuń
-    </button>
-  </div>
   <mat-divider />
   <table mat-table aria-label="Elements">
     @for (col of tableColumns; track col.def) { @if (col.def === "select") {
@@ -34,8 +6,8 @@
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox
           (change)="$event ? toggleAllRows() : null"
-          [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [checked]="selection().hasValue() && isAllSelected()"
+          [indeterminate]="selection().hasValue() && !isAllSelected()"
           [aria-label]="checkboxLabel()"
         >
         </mat-checkbox>
@@ -44,8 +16,8 @@
         {{row.select}}
         <mat-checkbox
           (click)="$event.stopPropagation()"
-          (change)="$event ? selection.toggle(row) : null"
-          [checked]="selection.isSelected(row)"
+          (change)="$event ? selection().toggle(row) : null"
+          [checked]="selection().isSelected(row)"
           [aria-label]="checkboxLabel(row)"
         >
         </mat-checkbox>
@@ -66,7 +38,7 @@
     <tr
       mat-row
       *matRowDef="let row; columns: columnNames"
-      (click)="selection.toggle(row)"
+      (click)="selection().toggle(row)"
     ></tr>
   </table>
 </div>
