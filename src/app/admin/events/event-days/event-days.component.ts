@@ -159,6 +159,13 @@ export class EventDaysComponent implements AfterViewInit {
     });
 
     timeDialog.afterClosed().subscribe((result) => {
+      console.log({
+        workers: this.selection.selected
+          .map((w) => w.worker)
+          .filter((w) => typeof w === "number"),
+        startTime: result.startTime,
+        endTime: result.endTime,
+      });
       this.workerDayService
         .changeTime(this.eventId, this.dayId, {
           workers: this.selection.selected
@@ -171,7 +178,7 @@ export class EventDaysComponent implements AfterViewInit {
           if (resp.ok) {
             this.lodaDays();
             this.selection.clear();
-          }
+          } else this.workerDayService.showError(resp);
         });
     });
   }

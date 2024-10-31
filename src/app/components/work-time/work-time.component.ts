@@ -25,7 +25,7 @@ import { dateTimeToString } from "../../utils/date";
   ],
   templateUrl: "./work-time.component.html",
   styleUrl: "./work-time.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkTimeComponent implements AfterContentInit, OnDestroy {
   destroy = new Subject();
@@ -60,7 +60,7 @@ export class WorkTimeComponent implements AfterContentInit, OnDestroy {
   }
 
   private setDateTimeForControl(control: FormControl, value: string) {
-    const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
+    const t = RegExp(/^(\d+):(\d+)/).exec(value ?? "");
 
     if (t?.length === 3) {
       let controlValue = control.value;
@@ -69,6 +69,7 @@ export class WorkTimeComponent implements AfterContentInit, OnDestroy {
       }
       controlValue.setHours(Number(t.at(1)));
       controlValue.setMinutes(Number(t.at(2)));
+
       control.setValue(dateTimeToString(controlValue), { emitEvent: false });
     }
   }
