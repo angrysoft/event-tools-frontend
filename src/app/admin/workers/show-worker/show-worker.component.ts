@@ -72,6 +72,9 @@ export class ShowWorkerComponent {
         id: -1,
       },
     },
+    password: null,
+    password2: null,
+    authority: null
   });
   loading = signal<boolean>(true);
 
