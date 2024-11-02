@@ -92,7 +92,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(9),
         Validators.pattern(/\d{9}/),
       ]),
-      email: new FormControl("", [Validators.required, Validators.email]),
+      email: new FormControl("", [Validators.email]),
       nickname: new FormControl(""),
       color: new FormControl(null),
       teamId: new FormControl(null, [Validators.required]),
@@ -199,7 +199,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
     this.workerForm.controls.password.enable();
     this.workerForm.controls.password2.enable();
     this.workerForm.controls.authority.enable();
-    this.workerForm.addValidators(passwordValidator);
+    this.workerForm.addValidators(passwordValidator());
     // this.passwordCheck.set(checkPasswords);
     this.workerForm.updateValueAndValidity();
   }
@@ -213,6 +213,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
     this.workerForm.controls.password2.reset();
     this.workerForm.controls.authority.disable();
     this.workerForm.controls.authority.reset();
+    this.workerForm.removeValidators(passwordValidator);
     // this.workerAccount.markAsPristine();
     this.workerForm.updateValueAndValidity();
   }
@@ -260,7 +261,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
           replaceUrl: true,
         });
       } else {
-        this.workerForm.controls.firstName.setErrors({ exists: true });
+        this.workerService.showError(response);
         this.error.set(response.error ?? "Cos Poszło nie tak...");
       }
     });
