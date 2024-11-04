@@ -1,10 +1,4 @@
-import {
-  Component,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal
-} from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -57,7 +51,7 @@ import { WorkerDaysService } from "../../../../services/worker-days.service";
     MatIconModule,
     WorkerRatesPipe,
     MatChipsModule,
-    WorkTimeComponent
+    WorkTimeComponent,
   ],
   templateUrl: "./add-workers.component.html",
   styleUrl: "./add-workers.component.scss",
@@ -127,7 +121,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         this.eventDay.set(resp.data);
       }
     });
-
 
     this.service.getRates().subscribe((resp) => {
       if (resp.ok) this.rates.set(resp.data.items);
@@ -258,6 +251,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
           eventDay: formValues.eventDay,
           worker: w.id,
           rate: w.rate,
+          workerName: w.name,
           startTime: dateTimeToString(formValues.startTime) ?? "",
           endTime: dateTimeToString(formValues.endTime) ?? "",
           workerDayAddons: workerDayAddons,
