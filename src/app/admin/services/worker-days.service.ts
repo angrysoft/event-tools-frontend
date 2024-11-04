@@ -43,10 +43,10 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
     );
   }
 
-  removeWorkersDays(eventId: number, dayId: number, workers: number[]) {
+  removeWorkersDays(eventId: number, dayId: number, workerDays: number[]) {
     return this._put<number[]>(
       `${this.userApi}/${eventId}/day/${dayId}/remove`,
-      workers,
+      workerDays,
     );
   }
 

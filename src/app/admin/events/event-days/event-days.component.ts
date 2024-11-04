@@ -183,7 +183,7 @@ export class EventDaysComponent implements AfterViewInit {
     });
   }
 
-  removeWorkers() {
+  removeWorkersDays() {
     const delDialog = this.dialog.open(ConfirmDialogComponent, {
       data: { msg: "Czy na pewno chcesz usunąć" },
     });
@@ -195,7 +195,7 @@ export class EventDaysComponent implements AfterViewInit {
             this.eventId,
             this.dayId,
             this.selection.selected
-              .map((w) => w.worker)
+              .map((wd) => wd.id)
               .filter((w) => typeof w === "number"),
           )
           .subscribe((resp) => {
