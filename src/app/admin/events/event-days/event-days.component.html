@@ -88,7 +88,11 @@
     (selectedIndexChange)="tabChange($event)"
   >
     @for (day of eventDays(); track day.startDate) {
-    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
+    <mat-tab
+      label="{{ day.startDate | date : 'dd/MM/YYYY' }} - {{
+        statuses()[day.state]
+      }}"
+    >
       <app-worker-day [day]="day" [selection]="selection"></app-worker-day>
     </mat-tab>
     } @empty {

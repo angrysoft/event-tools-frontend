@@ -22,6 +22,8 @@ import { WorkerDaysService } from "../../services/worker-days.service";
 import { AddDayComponent } from "./add-day/add-day.component";
 import { WorkerDayComponent } from "./worker-day/worker-day.component";
 import { ChangeTimeComponent } from "./change-time/change-time.component";
+import { DuplicateDaysComponent } from "./duplicate-days/duplicate-days.component";
+import { ChangeStatusComponent } from "./change-status/change-status.component";
 
 @Component({
   selector: "app-event-days",
@@ -45,6 +47,7 @@ export class EventDaysComponent implements AfterViewInit {
   service = inject(EventDaysService);
   workerDayService = inject(WorkerDaysService);
 
+  statuses = signal<{ [key: string]: string }>({});
   eventDays = signal<EventDay[]>([]);
   tabIdx = new FormControl(1);
   name = this.route.snapshot.queryParamMap.get("name");
@@ -54,6 +57,9 @@ export class EventDaysComponent implements AfterViewInit {
   dayId = -1;
 
   constructor() {
+    this.workerDayService.getStatuses().subscribe((resp) => {
+      if (resp.ok) this.statuses.set(resp.data);
+    });
     this.lodaDays();
   }
 
@@ -144,7 +150,27 @@ export class EventDaysComponent implements AfterViewInit {
   }
 
   duplicateDay() {
-    console.log("duplicate", this.dayId);
+    const duplicateDialog = this.dialog.open(DuplicateDaysComponent, {
+      data: {
+        startTime: this.eventDays().at(this.tabIdx.value ?? 0)?.startDate,
+      },
+      maxWidth: "95vw",
+    });
+    duplicateDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
+      const payload = {
+        start: dateToString(result.start),
+        end: dateToString(result.end),
+      };
+      this.workerDayService
+        .duplicateDays(this.eventId, this.dayId, payload)
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.lodaDays();
+            this.selection.clear();
+          } else this.workerDayService.showError(resp);
+        });
+    });
   }
 
   editTime() {
@@ -159,6 +185,7 @@ export class EventDaysComponent implements AfterViewInit {
     });
 
     timeDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
       const workerDays: any = {};
       this.selection.selected.forEach((sel) => {
         if (sel.id) workerDays[sel.id] = sel.workerName;
@@ -206,11 +233,49 @@ export class EventDaysComponent implements AfterViewInit {
   changeWorker() {}
 
   changeStatus() {
-    throw new Error("Method not implemented.");
+    console.log("stats", this.dayId);
+    const changeStatusDialog = this.dialog.open(ChangeStatusComponent, {
+      data: {
+        statuses: this.statuses(),
+      },
+      maxWidth: "95vw",
+    });
+    changeStatusDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
+      const payload: any = [];
+
+      console.log(result);
+
+      if (result.changeAll) {
+        this.eventDays().forEach((d) => {
+          if (d.id)
+            payload.push({
+              status: result.status,
+              dayId: d.id,
+            });
+        });
+      }
+
+      this.workerDayService
+        .changeStatus(this.eventId, payload)
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.lodaDays();
+            this.selection.clear();
+          } else this.workerDayService.showError(resp);
+        });
+    });
   }
 
   editRatesAndAddons() {
-    throw new Error("Method not implemented.");
+    this.router.navigateByUrl(
+      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx.value}`,
+      {
+        state: {
+          selected: this.selection.selected.slice(),
+        },
+      },
+    );
   }
 
   @HostListener("document:keydown.Alt.a", ["$event"])

@@ -48,4 +48,12 @@ export const eventsRoutes: Routes = [
         (m) => m.AddWorkersComponent,
       ),
   },
+  {
+    path: "events/:eventId/day/:dayId/change",
+    title: "Zmień stawki",
+    loadComponent: () =>
+      import("./event-days/change-rates/change-rates.component").then(
+        (m) => m.ChangeRatesComponent,
+      ),
+  },
 ];

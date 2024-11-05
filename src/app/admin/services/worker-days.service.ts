@@ -65,4 +65,27 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
       endTime: any;
     }>(`${this.userApi}/${eventId}/day/${dayId}/time`, data);
   }
+
+  duplicateDays(
+    eventId: number,
+    dayId: number,
+    range: { [key: string]: string },
+  ) {
+    return this._put<{
+      [key: number]: string;
+    }>(`${this.userApi}/${eventId}/day/${dayId}/duplicate`, range);
+  }
+
+  changeStatus(eventId: number, payload: [{ status: string; dayId: number }]) {
+    return this._put<[{ status: string; dayId: number }]>(
+      `${this.userApi}/${eventId}/day/status`,
+      payload,
+    );
+  }
+
+  getStatuses() {
+    return this._get<RestResponse<{ [key: string]: string }>>(
+      `${this.userApi}/day/statuses`,
+    );
+  }
 }
