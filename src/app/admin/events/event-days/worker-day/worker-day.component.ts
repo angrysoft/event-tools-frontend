@@ -46,7 +46,7 @@ export class WorkerDayComponent implements AfterViewInit {
     { name: "select", def: "select" },
     { name: "Start", def: "startTime" },
     { name: "Koniec", def: "endTime" },
-    { name: "Godziny", def: "hours" },
+    { name: "Godziny", def: "workHours" },
     { name: "Pracownik", def: "workerName" },
     { name: "Stawka", def: "rateName" },
     { name: "Kwota", def: "rateMoney" },

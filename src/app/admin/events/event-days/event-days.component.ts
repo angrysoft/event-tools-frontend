@@ -159,18 +159,13 @@ export class EventDaysComponent implements AfterViewInit {
     });
 
     timeDialog.afterClosed().subscribe((result) => {
-      console.log({
-        workers: this.selection.selected
-          .map((w) => w.worker)
-          .filter((w) => typeof w === "number"),
-        startTime: result.startTime,
-        endTime: result.endTime,
+      const workerDays: any = {};
+      this.selection.selected.forEach((sel) => {
+        if (sel.id) workerDays[sel.id] = sel.workerName;
       });
       this.workerDayService
         .changeTime(this.eventId, this.dayId, {
-          workers: this.selection.selected
-            .map((w) => w.worker)
-            .filter((w) => typeof w === "number"),
+          workerDays: workerDays,
           startTime: result.startTime,
           endTime: result.endTime,
         })

@@ -53,11 +53,16 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   changeTime(
     eventId: number,
     dayId: number,
-    data: { workers: number[]; startTime: any; endTime: any },
+    data: {
+      workerDays: { [key: number]: string };
+      startTime: any;
+      endTime: any;
+    },
   ) {
-    return this._put<{ workers: number[]; startTime: any; endTime: any }>(
-      `${this.userApi}/${eventId}/day/${dayId}/time`,
-      data,
-    );
+    return this._put<{
+      workerDays: { [key: number]: string };
+      startTime: any;
+      endTime: any;
+    }>(`${this.userApi}/${eventId}/day/${dayId}/time`, data);
   }
 }
