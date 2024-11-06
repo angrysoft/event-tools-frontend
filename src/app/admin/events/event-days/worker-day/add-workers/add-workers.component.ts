@@ -24,7 +24,7 @@ import { WorkerChooserConfig } from "../../../../../components/worker-chooser/wo
 import { WorkerChooserComponent } from "../../../../../components/worker-chooser/worker-chooser.component";
 import { WorkerRatesPipe } from "../../../../../pipes/worker-rates.pipe";
 import { dateTimeToString } from "../../../../../utils/date";
-import { Addon } from "../../../../models/addon";
+import { Addon, AddonGroup } from "../../../../models/addon";
 import {
   EventDay,
   WorkerAddons,
@@ -269,9 +269,4 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         });
     }
   }
-}
-
-interface AddonGroup {
-  id: FormControl<number | null>;
-  value: FormControl<number | null>;
 }
