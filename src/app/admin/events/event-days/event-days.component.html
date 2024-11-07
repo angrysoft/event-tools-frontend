@@ -13,14 +13,6 @@
 
       <button
         mat-flat-button
-        (click)="duplicateDay()"
-        [disabled]="eventDays().length === 0"
-      >
-        <mat-icon>content_copy</mat-icon>Duplikuj
-      </button>
-
-      <button
-        mat-flat-button
         (click)="delDay()"
         title="alt-x"
         [disabled]="eventDays().length === 0"
@@ -46,6 +38,14 @@
         [disabled]="eventDays().length === 0"
       >
         <mat-icon>person_add</mat-icon>Dodaj
+      </button>
+
+      <button
+        mat-flat-button
+        (click)="duplicateDay()"
+        [disabled]="selection.isEmpty()"
+      >
+        <mat-icon>content_copy</mat-icon>Duplikuj
       </button>
 
       <button

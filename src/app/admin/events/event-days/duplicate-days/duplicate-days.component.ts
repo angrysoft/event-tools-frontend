@@ -53,6 +53,8 @@ export class DuplicateDaysComponent {
   }
 
   ngOnInit(): void {
+    this.canSend.set(this.duplicateDaysForm.valid);
+
     this.duplicateDaysForm.statusChanges
       .pipe(takeUntil(this.destroy))
       .subscribe((status) => {

@@ -161,6 +161,7 @@ export class EventDaysComponent implements AfterViewInit {
       const payload = {
         start: dateToString(result.start),
         end: dateToString(result.end),
+        workers: this.selection.selected,
       };
       this.workerDayService
         .duplicateDays(this.eventId, this.dayId, payload)

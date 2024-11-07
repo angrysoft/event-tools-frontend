@@ -3,7 +3,7 @@
   [backTo]="backTo"
   [queryParams]="{tab:tab}"
   [formTitle]="formTitle"
-  formIdName="add-workers-form"
+  formIdName="change-rate-form"
   [canSend]="canSend()"
 >
   <form
@@ -38,6 +38,19 @@
                 }
               </mat-select>
             </mat-form-field>
+            <mat-chip-listbox>
+                @for (addon of worker.get("workerDayAddons")?.value; track addon.addon) {
+                <mat-chip-option (removed)="removeWorkerAddon(worker, $index)">
+                  {{ addon.name }}
+                  @if (addon.type === "VARIABLE_ADDON") { -
+                  {{ addon.value }}
+                  }
+                  <button matChipRemove aria-label="'remove reactive form' + keyword">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+                }
+              </mat-chip-listbox>
           </div>
           } @empty { Dodaj pracowników }
         </div>

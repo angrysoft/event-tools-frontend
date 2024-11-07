@@ -152,6 +152,12 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     this.changeRateForm.controls.workerDayAddons.removeAt(idx);
   }
 
+  removeWorkerAddon(worker: any, idx: number) {
+    worker.get("workerDayAddons").removeAt(idx);
+    this.changeRateForm.updateValueAndValidity();
+    this.changeRateForm.markAsDirty();
+  }
+
   private updateWorkerList(selection: WorkerSelect[]) {
     console.log(selection);
     selection.forEach((workerDay) => {
@@ -162,11 +168,12 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
             ratesId.push(r.rateId);
           });
 
-        const workerGroup = this.fb.group({
+        const workerGroup: FormGroup<WorkersRateDay> = this.fb.group({
           id: new FormControl(workerDay.id, Validators.required),
           name: new FormControl(workerDay.workerName),
           rate: new FormControl(workerDay.rate, Validators.required),
           rates: new FormControl(ratesId),
+          workerDayAddons: this.fb.array(workerDay.workerDayAddons),
         });
         if (
           !this.changeRateForm.controls.workers.controls.some(
@@ -204,10 +211,19 @@ interface ChangeRateForm {
   workerDayAddons: FormArray;
 }
 
+interface WorkersRateDay {
+  id: FormControl<number | null>;
+  name: FormControl<string | null>;
+  rate: FormControl<number | null>;
+  rates: FormControl<number[] | null>;
+  workerDayAddons: FormArray;
+}
+
 interface WorkerSelect {
   id: number;
-  eventDay: number
+  eventDay: number;
   worker: number;
   rate: number;
   workerName: string;
+  workerDayAddons: any[];
 }
