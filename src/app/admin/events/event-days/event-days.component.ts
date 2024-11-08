@@ -16,7 +16,11 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { dateToString } from "../../../utils/date";
-import { EventDay, WorkerDay } from "../../models/events";
+import {
+  EventDay,
+  WorkerDay,
+  WorkerDayStatusPayload,
+} from "../../models/events";
 import { EventDaysService } from "../../services/event-days.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
 import { AddDayComponent } from "./add-day/add-day.component";
@@ -234,28 +238,30 @@ export class EventDaysComponent implements AfterViewInit {
   changeWorker() {}
 
   changeStatus() {
-    console.log("stats", this.dayId);
     const changeStatusDialog = this.dialog.open(ChangeStatusComponent, {
       data: {
         statuses: this.statuses(),
       },
       maxWidth: "95vw",
     });
+
     changeStatusDialog.afterClosed().subscribe((result) => {
       if (!result) return;
-      const payload: any = [];
+      const payload: WorkerDayStatusPayload = {
+        status: result.status,
+        eventDays: [],
+      };
 
-      console.log(result);
-
+      const workerDaysToChangeStatus: number[] = [];
       if (result.changeAll) {
         this.eventDays().forEach((d) => {
-          if (d.id)
-            payload.push({
-              status: result.status,
-              dayId: d.id,
-            });
+          if (d.id) workerDaysToChangeStatus.push(d.id);
         });
+      } else {
+        workerDaysToChangeStatus.push(this.dayId);
       }
+
+      payload.eventDays = workerDaysToChangeStatus;
 
       this.workerDayService
         .changeStatus(this.eventId, payload)

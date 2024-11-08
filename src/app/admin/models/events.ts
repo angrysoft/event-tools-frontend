@@ -86,6 +86,11 @@ interface EventDay {
   workerDays: WorkerDay[];
 }
 
+interface WorkerDayStatusPayload {
+  status: string;
+  eventDays: number[];
+}
+
 export {
   EventItem,
   EventItemForm,
@@ -95,4 +100,5 @@ export {
   WorkerDay,
   WorkerDayForm,
   WorkerAddons,
+  WorkerDayStatusPayload,
 };

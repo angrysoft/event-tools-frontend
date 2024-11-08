@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CrudService } from "../../services/crud.service";
-import { EventDay, WorkerDay } from "../models/events";
+import { EventDay, WorkerDay, WorkerDayStatusPayload } from "../models/events";
 import { Rate } from "../models/rate";
 import { Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";
@@ -69,17 +69,17 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   duplicateDays(
     eventId: number,
     dayId: number,
-    payload: { start: string, end:string, workers: WorkerDay[] },
+    payload: { start: string; end: string; workers: WorkerDay[] },
   ) {
     console.log(payload);
-    
+
     return this._put<{
       [key: number]: string;
     }>(`${this.userApi}/${eventId}/day/${dayId}/duplicate`, payload);
   }
 
-  changeStatus(eventId: number, payload: [{ status: string; dayId: number }]) {
-    return this._put<[{ status: string; dayId: number }]>(
+  changeStatus(eventId: number, payload: WorkerDayStatusPayload) {
+    return this._put<WorkerDayStatusPayload>(
       `${this.userApi}/${eventId}/day/status`,
       payload,
     );
