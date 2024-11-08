@@ -91,6 +91,12 @@ interface WorkerDayStatusPayload {
   eventDays: number[];
 }
 
+interface DuplicateDaysPayload {
+  from:string;
+  to:string;
+  workerDays: WorkerDay[];
+}
+
 export {
   EventItem,
   EventItemForm,
@@ -101,4 +107,5 @@ export {
   WorkerDayForm,
   WorkerAddons,
   WorkerDayStatusPayload,
+  DuplicateDaysPayload
 };

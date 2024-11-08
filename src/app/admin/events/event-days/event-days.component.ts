@@ -17,6 +17,7 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { dateToString } from "../../../utils/date";
 import {
+  DuplicateDaysPayload,
   EventDay,
   WorkerDay,
   WorkerDayStatusPayload,
@@ -162,13 +163,13 @@ export class EventDaysComponent implements AfterViewInit {
     });
     duplicateDialog.afterClosed().subscribe((result) => {
       if (!result) return;
-      const payload = {
-        start: dateToString(result.start),
-        end: dateToString(result.end),
-        workers: this.selection.selected,
+      const payload: DuplicateDaysPayload = {
+        from: dateToString(result.start),
+        to: dateToString(result.end),
+        workerDays: this.selection.selected,
       };
       this.workerDayService
-        .duplicateDays(this.eventId, this.dayId, payload)
+        .duplicateDays(this.eventId, payload)
         .subscribe((resp) => {
           if (resp.ok) {
             this.lodaDays();
