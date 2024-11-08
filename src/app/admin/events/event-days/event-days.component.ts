@@ -80,11 +80,12 @@ export class EventDaysComponent implements AfterViewInit {
     });
   }
 
-  tabChange(idx: number) {
-    this.dayId = this.eventDays().at(idx)?.id ?? -1;
+  tabChange(tab:any) {
+    console.dir(tab);
+    this.dayId = this.eventDays().at(tab.index)?.id ?? -1;
     this.selection.clear();
-    this.tabIdx.setValue(idx);
-    console.log("idx: ", idx);
+    this.tabIdx.setValue(tab.index);
+    console.log("idx: ", tab);
   }
 
   get isMultipleSelected() {
@@ -114,15 +115,16 @@ export class EventDaysComponent implements AfterViewInit {
         })
         .subscribe((resp) => {
           if (resp.ok) {
-            result.id = resp.data;
-            this.eventDays.update((d) => {
-              d.push(result);
-              return d.sort((s, e) => {
-                if (s.startDate == e.startDate) return 0;
-                if (s.startDate > e.startDate) return 1;
-                else return -1;
-              });
-            });
+            // result.id = resp.data;
+            // this.eventDays.update((d) => {
+            //   d.push(result);
+            //   return d.sort((s, e) => {
+            //     if (s.startDate == e.startDate) return 0;
+            //     if (s.startDate > e.startDate) return 1;
+            //     else return -1;
+            //   });
+            // });
+            this.lodaDays();
           }
         });
     });
@@ -139,9 +141,10 @@ export class EventDaysComponent implements AfterViewInit {
       if (result === true) {
         this.service.delDay(this.eventId, this.dayId).subscribe((resp) => {
           if (resp.ok) {
-            this.eventDays.update((days) =>
-              days.filter((d) => d.id !== this.dayId),
-            );
+          //   this.eventDays.update((days) =>
+          //     days.filter((d) => d.id !== this.dayId),
+          //   );
+          this.lodaDays();
           }
         });
       }
@@ -163,13 +166,17 @@ export class EventDaysComponent implements AfterViewInit {
     });
     duplicateDialog.afterClosed().subscribe((result) => {
       if (!result) return;
+      const workerDays:number[] = [];
+      this.selection.selected.forEach(s=> {if(s.id) workerDays.push(s.id)});
+
       const payload: DuplicateDaysPayload = {
         from: dateToString(result.start),
         to: dateToString(result.end),
-        workerDays: this.selection.selected,
-      };
+        workerDays: workerDays,
+      }
+      
       this.workerDayService
-        .duplicateDays(this.eventId, payload)
+        .duplicateDays(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
           if (resp.ok) {
             this.lodaDays();

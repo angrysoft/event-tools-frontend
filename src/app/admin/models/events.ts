@@ -94,7 +94,7 @@ interface WorkerDayStatusPayload {
 interface DuplicateDaysPayload {
   from:string;
   to:string;
-  workerDays: WorkerDay[];
+  workerDays: number[];
 }
 
 export {

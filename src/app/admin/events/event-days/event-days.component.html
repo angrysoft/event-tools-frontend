@@ -85,7 +85,8 @@
   <mat-divider />
   <mat-tab-group
     [selectedIndex]="tabIdx.value"
-    (selectedIndexChange)="tabChange($event)"
+    (selectedIndexChange)="tabIdx.setValue($event)"
+    (selectedTabChange)="tabChange($event)"
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab
@@ -93,7 +94,7 @@
         statuses()[day.state]
       }}"
     >
-      <app-worker-day [day]="day" [selection]="selection"></app-worker-day>
+      <app-worker-day [day]="day" [selection]="selection" />
     </mat-tab>
     } @empty {
     <h2>Nic tu jeszcze nie ma</h2>
