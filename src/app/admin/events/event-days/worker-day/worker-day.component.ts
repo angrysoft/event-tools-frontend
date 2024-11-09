@@ -13,9 +13,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDivider } from "@angular/material/divider";
-import { MatIcon } from "@angular/material/icon";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { RouterLink } from "@angular/router";
 import { EventDay, WorkerDay } from "../../../models/events";
 import { WorkerDayDataSource } from "./worker-day-datasource";
 
@@ -27,9 +25,7 @@ import { WorkerDayDataSource } from "./worker-day-datasource";
     MatCheckboxModule,
     MatButtonModule,
     MatDivider,
-    MatIcon,
     DatePipe,
-    RouterLink,
   ],
   templateUrl: "./worker-day.component.html",
   styleUrl: "./worker-day.component.scss",

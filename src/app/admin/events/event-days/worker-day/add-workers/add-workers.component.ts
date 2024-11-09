@@ -217,7 +217,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       return;
 
     const addonGroup = this.fb.group({
-      eventDay: new FormControl(this.eventDay().id),
       worker: new FormControl(-1),
       addon: new FormControl(addon.id, Validators.required),
       value: new FormControl(this.addonGroup.value.value),

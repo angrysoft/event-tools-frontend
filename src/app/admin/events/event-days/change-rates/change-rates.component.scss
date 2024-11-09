@@ -3,3 +3,9 @@
     padding: 1rem;
     gap: 1rem;
 }
+
+@media only screen and (max-width: 960px) {
+    .field {
+        flex-direction: column;
+    }
+}

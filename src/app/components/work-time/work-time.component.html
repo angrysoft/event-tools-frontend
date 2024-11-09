@@ -7,7 +7,7 @@
   <mat-form-field appearance="outline">
     <mat-label>Data Zakonczenia</mat-label>
     <input matInput [matDatepicker]="picker" [formControl]="endTime()" />
-    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-hint>Zmień jeżeli powyżej 24h lub po godzi 00</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>

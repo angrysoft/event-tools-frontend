@@ -1,5 +1,7 @@
+import { SelectionModel } from "@angular/cdk/collections";
 import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -9,8 +11,10 @@ import {
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDivider } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
@@ -40,11 +44,14 @@ import { WorkerDaysService } from "../../../services/worker-days.service";
     MatIconModule,
     WorkerRatesPipe,
     MatChipsModule,
+    MatDivider,
+    MatCheckboxModule,
   ],
   templateUrl: "./change-rates.component.html",
   styleUrl: "./change-rates.component.scss",
 })
 export class ChangeRatesComponent implements OnInit, OnDestroy {
+
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -62,10 +69,12 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     workerDays: [],
   });
 
+  workerSelection = new SelectionModel<AbstractControl>(true, []);
+
   changeRateForm: FormGroup<ChangeRateForm>;
   addonGroup: FormGroup<AddonGroup>;
   destroy = new Subject();
-  formTitle = "Dodaj Pracowników";
+  formTitle = "Stawki / Dodatki";
   eventId = Number(this.route.snapshot.paramMap.get("eventId"));
   dayId = Number(this.route.snapshot.paramMap.get("dayId"));
   tab = this.route.snapshot.queryParamMap.get("tab") ?? 0;
@@ -120,6 +129,22 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     return this.changeRateForm.controls.workerDayAddons.controls;
   }
 
+  getAddonType(addon: number): string {
+    return this.addons().filter(a=> a.id === addon).at(0)?.addonType ?? "";
+  }
+
+  isSelectedAll(): boolean {
+    return this.workerSelection.selected.length === this.workers.length;
+  }
+
+  toggleAllRows() {
+    if (this.isSelectedAll()) {
+      this.workerSelection.clear();
+    } else {
+      this.workerSelection.select(...this.workers.controls);
+    }
+  }
+
   addAddon() {
     const addon = this.addons().find((a) => a.id === this.addonGroup.value.id);
     if (
@@ -129,22 +154,25 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     )
       return;
 
-    if (
-      this.changeRateForm.controls.workerDayAddons.value.find(
-        (a: any) => a.addon === addon.id,
-      )
-    )
-      return;
+    for (const worker of this.workerSelection.selected) {
+      const workerDayAddons = worker.get("workerDayAddons") as FormArray;
 
-    const addonGroup = this.fb.group({
-      eventDay: new FormControl(this.eventDay().id),
-      worker: new FormControl(-1),
-      addon: new FormControl(addon.id, Validators.required),
-      value: new FormControl(this.addonGroup.value.value),
-      name: new FormControl(addon.name),
-      type: new FormControl(addon.addonType),
-    });
-    this.changeRateForm.controls.workerDayAddons.push(addonGroup);
+      if (
+        !workerDayAddons ||
+        workerDayAddons?.value.find((a: any) => a.addon === addon.id)
+      )
+        continue;
+
+      const addonGroup = this.fb.group({
+        eventDay: new FormControl(this.eventDay().id),
+        worker: new FormControl(-1),
+        addon: new FormControl(addon.id, Validators.required),
+        value: new FormControl(this.addonGroup.value.value),
+        name: new FormControl(addon.name),
+        type: new FormControl(addon.addonType),
+      });
+      workerDayAddons.push(addonGroup);
+    }
     this.addonGroup.reset();
   }
 

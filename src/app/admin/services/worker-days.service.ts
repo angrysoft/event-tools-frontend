@@ -42,6 +42,7 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   storeEventDay(eventId: number, dayId: number, workerDays: WorkerDay[]) {
+    console.log(workerDays)
     return this._put<WorkerDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/add`,
       workerDays,
