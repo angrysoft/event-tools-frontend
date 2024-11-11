@@ -75,12 +75,17 @@
         </div>
       </mat-card-content>
     </mat-card>
-    <mat-card appearance="outlined">
+    <app-worker-day-addons
+      [addons]="addons()"
+      [workerSelection]="workerSelection"
+      (update)="addonsChanged()"
+    />
+    <!-- <mat-card appearance="outlined">
       <mat-card-header class="addons-header">
         <mat-card-title>Dodatki</mat-card-title>
         <mat-card-subtitle
           >Jeżeli pracownik nie ma przypisanej wartości dodatku zostanie on
-          pominięty.</mat-card-subtitle
+          pominięty przy zapisie.</mat-card-subtitle
         >
       </mat-card-header>
       <mat-card-content class="addons">
@@ -117,6 +122,6 @@
           </button>
         </div>
       </mat-card-content>
-    </mat-card>
+    </mat-card> -->
   </form>
 </app-form-base>

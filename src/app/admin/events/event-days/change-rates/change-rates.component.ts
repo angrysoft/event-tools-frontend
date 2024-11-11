@@ -28,6 +28,7 @@ import { EventDay, WorkersRateDay } from "../../../models/events";
 import { Rate } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
+import { WorkerDayAddonsComponent } from "../../../../components/worker-day-addons/worker-day-addons.component";
 
 @Component({
   selector: "app-change-rates",
@@ -46,6 +47,7 @@ import { WorkerDaysService } from "../../../services/worker-days.service";
     MatChipsModule,
     MatDivider,
     MatCheckboxModule,
+    WorkerDayAddonsComponent,
   ],
   templateUrl: "./change-rates.component.html",
   styleUrl: "./change-rates.component.scss",
@@ -141,41 +143,9 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     }
   }
 
-  addAddon() {
-    const addon = this.addons().find((a) => a.id === this.addonGroup.value.id);
-    if (
-      !addon ||
-      (addon.addonType === "VARIABLE_ADDON" &&
-        this.addonGroup.value.value === null)
-    )
-      return;
-
-    for (const worker of this.workerSelection.selected) {
-      const workerDayAddons = worker.get("workerDayAddons") as FormArray;
-
-      if (
-        !workerDayAddons ||
-        workerDayAddons?.value.find((a: any) => a.addon === addon.id)
-      )
-        continue;
-
-      const addonGroup = this.fb.group({
-        eventDay: new FormControl(this.eventDay().id),
-        worker: new FormControl(worker.value.worker),
-        addon: new FormControl(addon.id, Validators.required),
-        value: new FormControl(this.addonGroup.value.value),
-        name: new FormControl(addon.name),
-      });
-      workerDayAddons.push(addonGroup);
-    }
-    this.changeRateForm.markAsDirty();
-    this.addonGroup.reset();
-  }
-
   removeWorkerAddon(worker: any, idx: number) {
     worker.get("workerDayAddons").removeAt(idx);
-    this.changeRateForm.updateValueAndValidity();
-    this.changeRateForm.markAsDirty();
+    this.addonsChanged();
   }
 
   private updateWorkerList(selection: WorkerSelect[]) {
@@ -207,11 +177,19 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     });
   }
 
+  addonsChanged() {
+    this.changeRateForm.markAsDirty();
+    this.changeRateForm.updateValueAndValidity();
+  }
+
   handleSubmit() {
     if (this.changeRateForm.valid && this.changeRateForm.dirty) {
-
       this.service
-        .changeRates(this.eventId, this.dayId, this.changeRateForm.value.workers)
+        .changeRates(
+          this.eventId,
+          this.dayId,
+          this.changeRateForm.value.workers,
+        )
         .subscribe((resp) => {
           if (resp.ok) this.router.navigateByUrl(this.backTo);
           else {
@@ -225,8 +203,6 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 interface ChangeRateForm {
   workers: FormArray;
 }
-
-
 
 interface WorkerSelect {
   id: number;
