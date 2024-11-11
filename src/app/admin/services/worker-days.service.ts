@@ -96,6 +96,7 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   changeRates(eventId: number, dayId: number, payload: WorkersRateDay[]) {
+    console.log(payload);
     return this._put<WorkersRateDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/rates`,
       payload,

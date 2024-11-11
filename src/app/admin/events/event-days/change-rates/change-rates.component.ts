@@ -149,7 +149,6 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
   }
 
   private updateWorkerList(selection: WorkerSelect[]) {
-    console.log(selection);
     selection.forEach((workerDay) => {
       this.rateSrv.getWorkerRates(workerDay.worker ?? -1).subscribe((resp) => {
         const ratesId: number[] = [];
@@ -184,11 +183,22 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.changeRateForm.valid && this.changeRateForm.dirty) {
+      const payload: WorkersRateDay[] = [];
+      this.changeRateForm.value.workers.forEach((w:any) => {
+        payload.push({
+          worker: w.worker,
+          workerDay: w.workerDay,
+          workerDayAddons: w.workerDayAddons,
+          workerName: w.workerName,
+          rate: w.rate,
+          rates: w.rates,
+        });
+      })
       this.service
         .changeRates(
           this.eventId,
           this.dayId,
-          this.changeRateForm.value.workers,
+          payload,
         )
         .subscribe((resp) => {
           if (resp.ok) this.router.navigateByUrl(this.backTo);
