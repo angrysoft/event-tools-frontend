@@ -5,6 +5,7 @@ import {
   EventDay,
   WorkerDay,
   WorkerDayStatusPayload,
+  WorkersRateDay,
 } from "../models/events";
 import { Rate } from "../models/rate";
 import { Observable } from "rxjs";
@@ -42,7 +43,7 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   storeEventDay(eventId: number, dayId: number, workerDays: WorkerDay[]) {
-    console.log(workerDays)
+    console.log(workerDays);
     return this._put<WorkerDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/add`,
       workerDays,
@@ -91,6 +92,13 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   getStatuses() {
     return this._get<RestResponse<{ [key: string]: string }>>(
       `${this.userApi}/day/statuses`,
+    );
+  }
+
+  changeRates(eventId: number, dayId: number, payload: WorkersRateDay[]) {
+    return this._put<WorkersRateDay[]>(
+      `${this.userApi}/${eventId}/day/${dayId}/rates`,
+      payload,
     );
   }
 }

@@ -24,7 +24,7 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { WorkerRatesPipe } from "../../../../pipes/worker-rates.pipe";
 import { Addon, AddonGroup } from "../../../models/addon";
-import { EventDay } from "../../../models/events";
+import { EventDay, WorkersRateDay } from "../../../models/events";
 import { Rate } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
@@ -51,7 +51,6 @@ import { WorkerDaysService } from "../../../services/worker-days.service";
   styleUrl: "./change-rates.component.scss",
 })
 export class ChangeRatesComponent implements OnInit, OnDestroy {
-
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -82,10 +81,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.changeRateForm = this.fb.group<ChangeRateForm>({
-      id: new FormControl(),
-      eventDay: new FormControl(this.dayId, Validators.required),
       workers: this.fb.array([], Validators.required),
-      workerDayAddons: this.fb.array([]),
     });
 
     this.service.getRates().subscribe((resp) => {
@@ -125,12 +121,12 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     return this.changeRateForm.controls.workers;
   }
 
-  get workerDayAddons() {
-    return this.changeRateForm.controls.workerDayAddons.controls;
-  }
-
   getAddonType(addon: number): string {
-    return this.addons().filter(a=> a.id === addon).at(0)?.addonType ?? "";
+    return (
+      this.addons()
+        .filter((a) => a.id === addon)
+        .at(0)?.addonType ?? ""
+    );
   }
 
   isSelectedAll(): boolean {
@@ -165,19 +161,15 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
       const addonGroup = this.fb.group({
         eventDay: new FormControl(this.eventDay().id),
-        worker: new FormControl(-1),
+        worker: new FormControl(worker.value.worker),
         addon: new FormControl(addon.id, Validators.required),
         value: new FormControl(this.addonGroup.value.value),
         name: new FormControl(addon.name),
-        type: new FormControl(addon.addonType),
       });
       workerDayAddons.push(addonGroup);
     }
+    this.changeRateForm.markAsDirty();
     this.addonGroup.reset();
-  }
-
-  removeAddon(idx: number) {
-    this.changeRateForm.controls.workerDayAddons.removeAt(idx);
   }
 
   removeWorkerAddon(worker: any, idx: number) {
@@ -197,8 +189,9 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
           });
 
         const workerGroup: FormGroup<WorkersRateDay> = this.fb.group({
-          id: new FormControl(workerDay.id, Validators.required),
-          name: new FormControl(workerDay.workerName),
+          workerDay: new FormControl(workerDay.id, Validators.required),
+          workerName: new FormControl(workerDay.workerName),
+          worker: new FormControl(workerDay.worker, Validators.required),
           rate: new FormControl(workerDay.rate, Validators.required),
           rates: new FormControl(ratesId),
           workerDayAddons: this.fb.array(workerDay.workerDayAddons),
@@ -216,36 +209,24 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     if (this.changeRateForm.valid && this.changeRateForm.dirty) {
-      const formValues = this.changeRateForm.value;
 
-      console.log(formValues);
-
-      // this.service
-      //   .storeEventDay(this.eventId, this.dayId, workersDays)
-      //   .subscribe((resp) => {
-      //     if (resp.ok) this.router.navigateByUrl(this.backTo);
-      //     else {
-      //       this.service.showError(resp);
-      //     }
-      //   });
+      this.service
+        .changeRates(this.eventId, this.dayId, this.changeRateForm.value.workers)
+        .subscribe((resp) => {
+          if (resp.ok) this.router.navigateByUrl(this.backTo);
+          else {
+            this.service.showError(resp);
+          }
+        });
     }
   }
 }
 
 interface ChangeRateForm {
-  id: FormControl<number | null>;
-  eventDay: FormControl<number | null>;
   workers: FormArray;
-  workerDayAddons: FormArray;
 }
 
-interface WorkersRateDay {
-  id: FormControl<number | null>;
-  name: FormControl<string | null>;
-  rate: FormControl<number | null>;
-  rates: FormControl<number[] | null>;
-  workerDayAddons: FormArray;
-}
+
 
 interface WorkerSelect {
   id: number;

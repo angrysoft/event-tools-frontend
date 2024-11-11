@@ -97,6 +97,15 @@ interface DuplicateDaysPayload {
   workerDays: number[];
 }
 
+interface WorkersRateDay {
+  workerDay: FormControl<number | null>;
+  workerName: FormControl<string | null>;
+  worker: FormControl<number | null>;
+  rate: FormControl<number | null>;
+  rates: FormControl<number[] | null>;
+  workerDayAddons: FormArray;
+}
+
 export {
   EventItem,
   EventItemForm,
@@ -107,5 +116,6 @@ export {
   WorkerDayForm,
   WorkerAddons,
   WorkerDayStatusPayload,
-  DuplicateDaysPayload
+  DuplicateDaysPayload,
+  WorkersRateDay
 };
