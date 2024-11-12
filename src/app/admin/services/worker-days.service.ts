@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CrudService } from "../../services/crud.service";
 import {
+  ChangeWorkerPayload,
   DuplicateDaysPayload,
   EventDay,
   WorkerDay,
@@ -43,7 +44,6 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   storeEventDay(eventId: number, dayId: number, workerDays: WorkerDay[]) {
-    console.log(workerDays);
     return this._put<WorkerDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/add`,
       workerDays,
@@ -74,8 +74,6 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   duplicateDays(eventId: number, dayId: number, payload: DuplicateDaysPayload) {
-    console.log(payload);
-
     return this._put<DuplicateDaysPayload>(
       `${this.userApi}/${eventId}/day/${dayId}/duplicate`,
       payload,
@@ -96,9 +94,15 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   changeRates(eventId: number, dayId: number, payload: WorkersRateDay[]) {
-    console.log(payload);
     return this._put<WorkersRateDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/rates`,
+      payload,
+    );
+  }
+
+  changeWorker(eventId: number, dayId: number, payload: ChangeWorkerPayload) {
+    return this._put<ChangeWorkerPayload>(
+      `${this.userApi}/${eventId}/day/${dayId}/worker`,
       payload,
     );
   }

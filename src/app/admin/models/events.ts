@@ -92,8 +92,8 @@ interface WorkerDayStatusPayload {
 }
 
 interface DuplicateDaysPayload {
-  from:string;
-  to:string;
+  from: string;
+  to: string;
   workerDays: number[];
 }
 
@@ -104,6 +104,12 @@ interface WorkersRateDay {
   rate: FormControl<number | null>;
   rates: FormControl<number[] | null>;
   workerDayAddons: FormArray;
+}
+
+interface ChangeWorkerPayload {
+  worker: number;
+  workerName: string;
+  workerDay: number;
 }
 
 export {
@@ -117,5 +123,6 @@ export {
   WorkerAddons,
   WorkerDayStatusPayload,
   DuplicateDaysPayload,
-  WorkersRateDay
+  WorkersRateDay,
+  ChangeWorkerPayload
 };

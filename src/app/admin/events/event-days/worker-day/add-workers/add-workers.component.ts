@@ -156,7 +156,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     const config: WorkerChooserConfig = {
       single: false,
       search: true,
-      data: new Set(),
     };
 
     const dialogRef = this.dialog.open(WorkerChooserComponent, {
