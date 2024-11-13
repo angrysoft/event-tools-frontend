@@ -30,6 +30,7 @@
           mat-cell
           *matCellDef="let row"
           [style.backgroundColor]="row | color : day.day"
+          (click)="onClick(day.day)"
         >
           {{ row | row : day.day }}
         </td>
@@ -40,7 +41,6 @@
       <tr
         mat-row
         *matRowDef="let row; columns: columnNames"
-        (click)="onClick(row)"
       ></tr>
     </table>
   </div>
