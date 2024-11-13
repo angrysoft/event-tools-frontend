@@ -1,6 +1,6 @@
-<app-loader [loading]="dataSource.loading()" />
+<app-loader [loading]="loading()" />
 
-<section class="main-section">
+<section class="side-content">
   <div class="actions">
     <div class="action-buttons">
       <button mat-icon-button (click)="prevMonth()">
@@ -14,34 +14,21 @@
       {{ currentDate | date : "dd/MM/YYYY" }}
     </div>
   </div>
-  <div class="mat-elevation-z8 table-wrapper">
-    <table mat-table aria-label="Elements">
-      <ng-container matColumnDef="workerName" sticky>
-        <th mat-header-cell *matHeaderCellDef>Imię Nazwisko</th>
-        <td mat-cell *matCellDef="let row">{{ row.workerName }}</td>
-      </ng-container>
-
-      @for (day of schedules()?.days; track day.day) {
-      <ng-container matColumnDef="{{ day.day }}">
-        <th mat-header-cell *matHeaderCellDef>
-          {{ day.date | date : "EE dd/MM" }}
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          [style.backgroundColor]="row | color : day.day"
-          (click)="onClick(day.day)"
-        >
-          {{ row | row : day.day }}
-        </td>
-      </ng-container>
-      }
-
-      <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: columnNames"
-      ></tr>
-    </table>
+  <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
+    <div class="col sticky-row sticky-col" style="z-index: 10;">Imię Nazwisko</div>
+    @for (day of days; track day.day) {
+    <div class="col sticky-row">{{ day.date | date : "EE dd/MM" }}</div>
+    } @for (row of rows; track row.workerName) {
+    <div class="col sticky-col">{{ row.workerName }}</div>
+    @for (day of days; track day.day) { 
+        @if(row.days[day.day]) {
+            @for (item of row.days[day.day]; track $index) {
+    <div class="col" [style.backgroundColor]="item.color" (click)="onClick(item)">{{ item.eventName }}</div>
+        }
+    } @else {
+        <div class="empty"></div>
+    }
+    } }
   </div>
+  <button mat-button>Załaduj wiecej</button>
 </section>

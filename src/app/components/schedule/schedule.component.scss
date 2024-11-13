@@ -21,50 +21,47 @@
     padding: 0.1rem;
 }
 
-// .schedule {
-//     display: grid;
-// }
-
-// .row {
-//     position: relative;
-//     display: flex;
-//     gap:1rem;
-//     overflow: auto;
-// }
-
-// .col {
-//     text-wrap: nowrap;
-//     flex-grow: 1;
-//     padding: 0.1rem;
-// }
-// .row:first-child {
-//     position: sticky;
-//     left: 0;
-// }
-
-.table-wrapper {
+.schedule {
+    display: grid;
     overflow: auto;
     scrollbar-width: thin;
+    position: relative;
 }
 
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
+.row {
+    position: relative;
+    display: flex;
+    gap:1rem;
+    
+}
 
-  td, th {
-    border: 1px solid var(--mat-divider-color);
-    text-align: left;
-    padding:0.5rem;
-  }
-
-tr {
-    cursor: pointer;
+.col,
+.empty {
     text-wrap: nowrap;
+    padding: 0.5rem;
+    border-collapse: collapse;
+    border: 1px solid var(--mat-divider-color);
+
+}
+.col {
+    cursor: pointer;
 }
 
-// tr:hover {
-//     background-color:  var(--sys-secondary);
-//     color: var(--sys-on-secondary-fixed)
-// }
+.row:first-child {
+    position: sticky;
+    left: 0;
+}
+
+.sticky-row, .sticky-col {
+    position: sticky;
+    background-color: var(--mat-app-background-color, var(--mat-app-background));
+    color: var(--mat-app-text-color, var(--mat-app-on-background));
+}
+
+.sticky-row {
+    top:0;
+}
+
+.sticky-col {
+    left: 0;
+}
