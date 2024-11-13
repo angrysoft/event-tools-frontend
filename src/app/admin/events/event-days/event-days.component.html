@@ -1,11 +1,11 @@
-<app-loader [loading]="loading()"/>
+<app-loader [loading]="loading()" />
 
 <section class="main-section">
   <header class="header">
     <button mat-icon-button routerLink="{{ backTo }}">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h2>{{ name }}</h2>
+    <h2>{{ name }} - {{ tabLabel() }} - <span [class]="stateCls">{{ dayStatus() }}</span></h2>
   </header>
   <div class="actions">
     <div class="action-buttons">
@@ -86,15 +86,14 @@
   </div>
   <mat-divider />
   <mat-tab-group
-    [selectedIndex]="tabIdx.value"
+    [(selectedIndex)]="tabIdx.value"
     (selectedIndexChange)="tabIdx.setValue($event)"
     (selectedTabChange)="tabChange($event)"
+    #tabs
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab
-      label="{{ day.startDate | date : 'dd/MM/YYYY' }} - {{
-        statuses()[day.state]
-      }}"
+      label="{{ day.startDate | date : 'dd/MM/YYYY' }}"
     >
       <app-worker-day [day]="day" [selection]="selection" />
     </mat-tab>

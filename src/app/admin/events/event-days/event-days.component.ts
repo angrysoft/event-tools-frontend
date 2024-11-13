@@ -1,18 +1,25 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import {
+  AfterContentInit,
   AfterViewInit,
   Component,
+  effect,
   HostListener,
   inject,
   signal,
+  ViewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
-import { MatTabChangeEvent, MatTabsModule } from "@angular/material/tabs";
+import {
+  MatTabChangeEvent,
+  MatTabGroup,
+  MatTabsModule,
+} from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { dateToString } from "../../../utils/date";
@@ -67,7 +74,11 @@ export class EventDaysComponent implements AfterViewInit {
   backTo = `/admin/events/${this.eventId}`;
   selection = new SelectionModel<WorkerDay>(true, []);
   dayId = -1;
-  dayTabTitle = signal<string>("");
+  tabLabel = signal<string>("");
+  dayStatus = signal<string>("");
+  stateCls="";
+
+  @ViewChild(MatTabGroup) tabs!: MatTabGroup;
 
   constructor() {
     this.workerDayService.getStatuses().subscribe((resp) => {
@@ -77,25 +88,40 @@ export class EventDaysComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.tabIdx.setValue(1);
+    this.tabIdx.setValue(2);
+
+    this.tabs.selectedIndex = 2;
+    console.log("tab", this.tabIdx.value, this.tabs.selectedIndex);
   }
 
   private lodaDays() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventDays.set(resp.data);
+
+        this.setStatus();
       }
       this.loading.set(false);
     });
   }
 
   tabChange(tab: MatTabChangeEvent) {
-    console.log(tab);
+    if (!tab) return;
     this.dayId = this.eventDays().at(tab.index)?.id ?? -1;
     this.selection.clear();
-    this.tabIdx.setValue(tab.index);
-    this.dayTabTitle.set(`${this.name} - ${tab.tab.textLabel} - `);
-    console.log("idx: ", tab);
+    // this.tabIdx.setValue(tab.index);
+    this.tabLabel.set(tab.tab.textLabel);
+    this.setStatus();
+  }
+
+  setStatus() {
+    const state = this.eventDays().at(this.tabIdx.value ?? -1)?.state ?? ""
+    const status =
+      this.statuses()[state];
+    if (status) {
+      this.dayStatus.set(status);
+      this.stateCls = state;
+    }
   }
 
   get isMultipleSelected() {
