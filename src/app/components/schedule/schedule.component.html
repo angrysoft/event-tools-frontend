@@ -1,0 +1,47 @@
+<app-loader [loading]="dataSource.loading()" />
+
+<section class="main-section">
+  <div class="actions">
+    <div class="action-buttons">
+      <button mat-icon-button (click)="prevMonth()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+      <mat-divider vertical="true" />
+      {{ currentDate | date : "dd/MM/YYYY" }}
+    </div>
+  </div>
+  <div class="mat-elevation-z8 table-wrapper">
+    <table mat-table aria-label="Elements">
+      <ng-container matColumnDef="workerName" sticky>
+        <th mat-header-cell *matHeaderCellDef>Imię Nazwisko</th>
+        <td mat-cell *matCellDef="let row">{{ row.workerName }}</td>
+      </ng-container>
+
+      @for (day of schedules()?.days; track day.day) {
+      <ng-container matColumnDef="{{ day.day }}">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ day.date | date : "EE dd/MM" }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [style.backgroundColor]="row | color : day.day"
+        >
+          {{ row | row : day.day }}
+        </td>
+      </ng-container>
+      }
+
+      <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columnNames"
+        (click)="onClick(row)"
+      ></tr>
+    </table>
+  </div>
+</section>
