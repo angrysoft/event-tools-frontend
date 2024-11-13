@@ -12,7 +12,6 @@ export class RowPipe implements PipeTransform {
     if (row) {
       result = row.map((r:any)=> r.eventName).at(0);
     }
-    console.log(value);
     return result;
   }
 

@@ -12,7 +12,6 @@ export class ColorPipe implements PipeTransform {
     if (row) {
       result = row.map((r:any)=> r.color).at(0);
     }
-    console.log(value);
     return result;
   }
 
