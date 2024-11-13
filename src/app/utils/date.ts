@@ -4,12 +4,20 @@ function dateToString(date: Date) {
   )}`;
 }
 
-function dateTimeToString(date: Date) {
-  return date.toJSON().replace("Z", "");
+function dateTimeToString(date: Date | string | undefined | null) {
+  if (!date) return;
+  if (typeof date == "string") date = new Date(date);
+
+  return `${dateToString(date)}T${date.toLocaleTimeString("pl-PL")}`;
 }
 
 function addPad(n: number): string {
   return n.toString().padStart(2, "0");
 }
 
-export { dateToString, dateTimeToString };
+function getTimeFromDataTimeString(dateIn: string): string {
+  const date = new Date(dateIn);
+  return date.toLocaleTimeString();
+}
+
+export { dateToString, dateTimeToString, getTimeFromDataTimeString };

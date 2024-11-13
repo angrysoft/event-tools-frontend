@@ -7,8 +7,9 @@ export function passwordValidator(): ValidatorFn {
 
     if (password?.value !== password2?.value) {
       password2?.setErrors({ matchError: "Hasła się różnią" });
+      return { match: true };
     }
-
+    password2?.setErrors(null);
     return null;
   };
 }

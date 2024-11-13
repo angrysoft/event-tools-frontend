@@ -48,10 +48,8 @@ import { WorkersService } from "../../services/workers.service";
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    MatIcon,
     MatOptionModule,
     MatSelectModule,
-    WorkerChooserComponent,
   ],
   templateUrl: "./event-form.component.html",
   styleUrl: "./event-form.component.scss",
@@ -201,7 +199,6 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
     const config: WorkerChooserConfig = {
       single: true,
       search: true,
-      data: new Set(),
     };
 
     const dialogRef = this.confirm.open(WorkerChooserComponent, {

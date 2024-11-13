@@ -135,8 +135,8 @@ export class CrudService<T> {
       case 401:
         return new Observable<RestResponse<string>>();
       case 400:
-        return of(err.error);
       case 409:
+      case 404:
         return of(err.error);
       default:
         return throwError(

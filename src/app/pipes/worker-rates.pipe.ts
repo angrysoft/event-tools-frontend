@@ -7,6 +7,8 @@ import { Rate } from "../admin/models/rate";
 })
 export class WorkerRatesPipe implements PipeTransform {
   transform(value: Rate[], accepted: number[]): Rate[] {
-    return value.filter((v) => accepted.includes(v.id));
+    return value
+      .filter((v) => accepted.includes(v.id))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 }

@@ -1,12 +1,4 @@
-import { DatePipe } from "@angular/common";
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal,
-} from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -16,6 +8,7 @@ import {
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialog } from "@angular/material/dialog";
@@ -26,21 +19,22 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../../components/form-base/form-base.component";
+import { WorkTimeComponent } from "../../../../../components/work-time/work-time.component";
 import { WorkerChooserConfig } from "../../../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../../../components/worker-chooser/worker-chooser.component";
 import { WorkerRatesPipe } from "../../../../../pipes/worker-rates.pipe";
-import { Addon } from "../../../../models/addon";
+import { dateTimeToString } from "../../../../../utils/date";
+import { Addon, AddonGroup } from "../../../../models/addon";
 import {
   EventDay,
+  WorkerAddons,
   WorkerDay,
   WorkerDayForm,
-  WorkerAddons,
 } from "../../../../models/events";
 import { Rate } from "../../../../models/rate";
 import { WorkerBase } from "../../../../models/worker";
 import { RatesService } from "../../../../services/rates.service";
 import { WorkerDaysService } from "../../../../services/worker-days.service";
-import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
   selector: "app-add-workers",
@@ -55,9 +49,9 @@ import { MatChipsModule } from "@angular/material/chips";
     MatCardModule,
     MatSelectModule,
     MatIconModule,
-    DatePipe,
     WorkerRatesPipe,
     MatChipsModule,
+    WorkTimeComponent,
   ],
   templateUrl: "./add-workers.component.html",
   styleUrl: "./add-workers.component.scss",
@@ -93,7 +87,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   });
 
   constructor() {
-    //FIXME validate dates
     this.addWorkersForm = this.fb.group<WorkerDayForm>({
       id: new FormControl(),
       eventDay: new FormControl(this.dayId, Validators.required),
@@ -122,37 +115,12 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         endTime.setMinutes(0);
 
         this.addWorkersForm.controls.startTime.setValue(startTime);
-        this.addWorkersForm.controls.endTime.setValue(endTime);
+        this.addWorkersForm.controls.endTime.setValue(endTime, {
+          emitEvent: false,
+        });
         this.eventDay.set(resp.data);
       }
     });
-
-    this.addWorkersForm.controls.startHour.valueChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((value) => {
-        const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
-        if (t?.length === 3) {
-          const startTime = new Date(
-            this.addWorkersForm.controls.startTime.value?.toString() as string,
-          );
-          startTime.setHours(Number(t.at(1)));
-          startTime.setMinutes(Number(t.at(2)));
-          this.addWorkersForm.controls.startTime.setValue(startTime);
-        }
-      });
-    this.addWorkersForm.controls.endHour.valueChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((value) => {
-        const t = RegExp(/^(\d+):(\d+)$/).exec(value ?? "");
-        if (t?.length === 3) {
-          const endTime = new Date(
-            this.addWorkersForm.controls.endTime.value?.toString() as string,
-          );
-          endTime.setHours(Number(t.at(1)));
-          endTime.setMinutes(Number(t.at(2)));
-          this.addWorkersForm.controls.endTime.setValue(endTime);
-        }
-      });
 
     this.service.getRates().subscribe((resp) => {
       if (resp.ok) this.rates.set(resp.data.items);
@@ -188,7 +156,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     const config: WorkerChooserConfig = {
       single: false,
       search: true,
-      data: new Set(),
     };
 
     const dialogRef = this.dialog.open(WorkerChooserComponent, {
@@ -249,7 +216,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       return;
 
     const addonGroup = this.fb.group({
-      eventDay: new FormControl(this.eventDay().id),
       worker: new FormControl(-1),
       addon: new FormControl(addon.id, Validators.required),
       value: new FormControl(this.addonGroup.value.value),
@@ -283,8 +249,9 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
           eventDay: formValues.eventDay,
           worker: w.id,
           rate: w.rate,
-          startTime: formValues.startTime ?? "",
-          endTime: formValues.endTime ?? "",
+          workerName: w.name,
+          startTime: dateTimeToString(formValues.startTime) ?? "",
+          endTime: dateTimeToString(formValues.endTime) ?? "",
           workerDayAddons: workerDayAddons,
         };
         workersDays.push(workerDay);
@@ -300,9 +267,4 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         });
     }
   }
-}
-
-interface AddonGroup {
-  id: FormControl<number | null>;
-  value: FormControl<number | null>;
 }

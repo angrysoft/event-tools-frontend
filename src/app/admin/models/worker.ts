@@ -1,3 +1,4 @@
+import { FormControl } from "@angular/forms";
 import { WorkerDoc } from "./worker-doc";
 
 interface WorkerId {
@@ -30,9 +31,9 @@ interface Worker extends WorkerBase {
   pesel: string | null;
   docNumber: string | null;
   hasAccount: boolean | null;
-  password?: string;
-  password2?: string;
-  authority?: string;
+  password: string | null;
+  password2: string | null;
+  authority: string | null;
   workerDoc: WorkerDoc[];
   basicPay: BasicPay;
 }
@@ -50,4 +51,34 @@ interface OfficeWorkers {
   accountManagers: WorkerBase[];
 }
 
-export { Worker, WorkerBase, WorkersItem, WorkerId, BasicPay, OfficeWorkers };
+interface WorkerForm {
+  firstName: FormControl<string | null>;
+  secondName: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  mother: FormControl<string | null>;
+  father: FormControl<string | null>;
+  phone: FormControl<string | null>;
+  phoneIce: FormControl<string | null>;
+  email: FormControl<string | null>;
+  nickname: FormControl<string | null>;
+  color: FormControl<string | null>;
+  teamId: FormControl<number | null>;
+  groupId: FormControl<number | null>;
+  pesel: FormControl<string | null>;
+  docNumber: FormControl<string | null>;
+  hasAccount: FormControl<boolean | null>;
+  username: FormControl<string | null>;
+  password: FormControl<string | null>;
+  password2: FormControl<string | null>;
+  authority: FormControl<string | null>;
+}
+
+export {
+  BasicPay,
+  OfficeWorkers,
+  Worker,
+  WorkerBase,
+  WorkerId,
+  WorkersItem,
+  WorkerForm,
+};

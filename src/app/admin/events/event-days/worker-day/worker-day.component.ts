@@ -1,25 +1,21 @@
 import { SelectionModel } from "@angular/cdk/collections";
+import { DatePipe } from "@angular/common";
 import {
   AfterViewInit,
   Component,
   effect,
   inject,
   input,
-  OnInit,
   untracked,
   ViewChild,
 } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDialog } from "@angular/material/dialog";
+import { MatDivider } from "@angular/material/divider";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { EventDay, WorkerDay } from "../../../models/events";
 import { WorkerDayDataSource } from "./worker-day-datasource";
-import { MatButtonModule } from "@angular/material/button";
-import { MatDivider } from "@angular/material/divider";
-import { MatIcon } from "@angular/material/icon";
-import { DatePipe } from "@angular/common";
-import { MatDialog } from "@angular/material/dialog";
-import { AddWorkersComponent } from "./add-workers/add-workers.component";
-import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-worker-day",
@@ -29,9 +25,7 @@ import { RouterLink } from "@angular/router";
     MatCheckboxModule,
     MatButtonModule,
     MatDivider,
-    MatIcon,
     DatePipe,
-    RouterLink,
   ],
   templateUrl: "./worker-day.component.html",
   styleUrl: "./worker-day.component.scss",
@@ -39,8 +33,8 @@ import { RouterLink } from "@angular/router";
 export class WorkerDayComponent implements AfterViewInit {
   dialog = inject(MatDialog);
   day = input.required<EventDay>();
+  selection = input.required<SelectionModel<WorkerDay>>();
 
-  selection = new SelectionModel<WorkerDay>(true, []);
   @ViewChild(MatTable) table!: MatTable<WorkerDay>;
   dataSource!: WorkerDayDataSource;
 
@@ -48,6 +42,7 @@ export class WorkerDayComponent implements AfterViewInit {
     { name: "select", def: "select" },
     { name: "Start", def: "startTime" },
     { name: "Koniec", def: "endTime" },
+    { name: "Godziny", def: "workHours" },
     { name: "Pracownik", def: "workerName" },
     { name: "Stawka", def: "rateName" },
     { name: "Kwota", def: "rateMoney" },
@@ -60,12 +55,10 @@ export class WorkerDayComponent implements AfterViewInit {
     effect(() => {
       const days = this.day().workerDays ?? [];
       untracked(() => {
-        if (days.length > 0) this.dataSource.loadData(days);
+        this.dataSource.loadData(days);
       });
     });
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.table.dataSource = this.dataSource;
@@ -75,51 +68,25 @@ export class WorkerDayComponent implements AfterViewInit {
     return this.tableColumns.map((el) => el.def);
   }
 
-  get isMultipleSelected() {
-    // always return true ?!?!
-    //this.selection.isMultipleSelection()
-    return this.selection.selected.length !== 1;
-  }
-
   isAllSelected() {
-    return this.selection.selected.length === this.dataSource.length;
+    return this.selection().selected.length === this.dataSource.length;
   }
 
   toggleAllRows() {
     if (this.isAllSelected()) {
-      this.selection.clear();
+      this.selection().clear();
       return;
     }
 
-    this.selection.select(...this.day().workerDays);
+    this.selection().select(...this.day().workerDays);
   }
 
   checkboxLabel(row?: WorkerDay): string {
     if (!row) {
       return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+    return `${this.selection().isSelected(row) ? "deselect" : "select"} row ${
       row.id
     }`;
   }
-
-  addWorkers() {
-    const addWorkersDialog = this.dialog.open(AddWorkersComponent, {
-      data: { ...this.day() },
-      disableClose: true,
-      maxWidth: "90dvw",
-    });
-
-    addWorkersDialog.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(result);
-      }
-    });
-  }
-
-  editWorker() {}
-
-  removeWorkers() {}
-
-  changeWorker() {}
 }

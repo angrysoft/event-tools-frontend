@@ -46,6 +46,11 @@ interface AddonValue {
   value: number | null;
 }
 
+interface AddonGroup {
+  id: FormControl<number | null>;
+  value: FormControl<number | null>;
+}
+
 export {
   Addon,
   AddonForm,
@@ -54,4 +59,5 @@ export {
   AddonValueForm,
   AddonWorkDay,
   AddonValue,
+  AddonGroup,
 };

@@ -1,6 +1,13 @@
 import { Injectable } from "@angular/core";
 import { CrudService } from "../../services/crud.service";
-import { EventDay, WorkerDay } from "../models/events";
+import {
+  ChangeWorkerPayload,
+  DuplicateDaysPayload,
+  EventDay,
+  WorkerDay,
+  WorkerDayStatusPayload,
+  WorkersRateDay,
+} from "../models/events";
 import { Rate } from "../models/rate";
 import { Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";
@@ -11,6 +18,7 @@ import { Addon } from "../models/addon";
   providedIn: "root",
 })
 export class WorkerDaysService extends CrudService<WorkerDay> {
+  private readonly userApi = "/api/events";
   constructor() {
     super();
     this.api = "/api/admin/events";
@@ -36,6 +44,66 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
   }
 
   storeEventDay(eventId: number, dayId: number, workerDays: WorkerDay[]) {
-    return this._put<WorkerDay[]>(`${this.api}/${eventId}/day/${dayId}`, workerDays);
+    return this._put<WorkerDay[]>(
+      `${this.userApi}/${eventId}/day/${dayId}/add`,
+      workerDays,
+    );
+  }
+
+  removeWorkersDays(eventId: number, dayId: number, workerDays: number[]) {
+    return this._put<number[]>(
+      `${this.userApi}/${eventId}/day/${dayId}/remove`,
+      workerDays,
+    );
+  }
+
+  changeTime(
+    eventId: number,
+    dayId: number,
+    data: {
+      workerDays: { [key: number]: string };
+      startTime: any;
+      endTime: any;
+    },
+  ) {
+    return this._put<{
+      workerDays: { [key: number]: string };
+      startTime: any;
+      endTime: any;
+    }>(`${this.userApi}/${eventId}/day/${dayId}/time`, data);
+  }
+
+  duplicateDays(eventId: number, dayId: number, payload: DuplicateDaysPayload) {
+    return this._put<DuplicateDaysPayload>(
+      `${this.userApi}/${eventId}/day/${dayId}/duplicate`,
+      payload,
+    );
+  }
+
+  changeStatus(eventId: number, payload: WorkerDayStatusPayload) {
+    return this._put<WorkerDayStatusPayload>(
+      `${this.userApi}/${eventId}/day/status`,
+      payload,
+    );
+  }
+
+  getStatuses() {
+    return this._get<RestResponse<{ [key: string]: string }>>(
+      `${this.userApi}/day/statuses`,
+    );
+  }
+
+  changeRates(eventId: number, dayId: number, payload: WorkersRateDay[]) {
+    return this._put<WorkersRateDay[]>(
+      `${this.userApi}/${eventId}/day/${dayId}/rates`,
+      payload,
+    );
+  }
+
+  changeWorker(eventId: number, dayId: number, payload: ChangeWorkerPayload) {
+    return this._put<ChangeWorkerPayload>(
+      `${this.userApi}/${eventId}/day/${dayId}/worker`,
+      payload,
+    );
   }
 }

@@ -1,20 +1,42 @@
 .main-section, .header {
     display: flex;
     gap: 1rem;
+    
+}
+
+.main-section {
     padding: 1rem;
 }
 
 .header {
     align-items: center;
+    padding: 0.5rem;
 }
 
 .main-section {
     flex-direction: column;
 }
 
-.days-actions {
+.actions, .action-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 1rem;
+}
+
+.actions{
+    padding: 0.5rem;
+}
+
+.CHIEF {
+    color: red;
+}
+
+.TEMPLATE {
+    color: aqua;
+}
+.COORDINATOR {
+    color:darkorange;
+}
+.APPROVED {
+    color:green;
 }

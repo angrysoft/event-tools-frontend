@@ -206,10 +206,10 @@
       >
     </div>
 
-    } @if (workerForm.controls.userAccount?.status !== "DISABLED") {
+    } @if (workerForm.controls.username.enabled) {
     <mat-card appearance="outlined">
       <mat-card-content>
-        <div [formGroup]="workerAccount">
+        <div>
           <div class="form-group">
             <mat-form-field appearance="outline">
               <mat-label>Login</mat-label>
@@ -242,7 +242,7 @@
                 placeholder="Hasło"
               />
               <mat-error>{{
-                workerAccount.controls.password2.getError("matchError")
+                workerForm.controls.password2.getError("matchError")
               }}</mat-error>
             </mat-form-field>
           </div>

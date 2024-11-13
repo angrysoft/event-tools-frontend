@@ -25,10 +25,10 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
-import { WorkerAccount, WorkerForm } from "../../models/worker-form";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
+import { WorkerForm } from "../../models/worker";
 
 @Component({
   selector: "app-worker-form",
@@ -57,7 +57,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   canSend = signal<boolean>(false);
   passwordCheck = signal<boolean>(false);
   error = signal<string>("");
-  workerAccount: FormGroup<WorkerAccount>;
   workerForm: FormGroup<WorkerForm>;
   workerId = signal<number>(-1);
   formTitle = input<string>("Dane Pracownika");
@@ -73,32 +72,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   readonly router: Router = inject(Router);
 
   constructor() {
-    this.workerAccount = new FormGroup<WorkerAccount>(
-      {
-        username: new FormControl("", {
-          nonNullable: true,
-          validators: [Validators.required, Validators.minLength(3)],
-        }),
-        password: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(8),
-        ]),
-        password2: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(8),
-        ]),
-        authority: new FormControl("", {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
-      },
-      {
-        validators: [passwordValidator()],
-      },
-    );
-
-    this.workerAccount.disable();
-
     this.workerForm = new FormGroup<WorkerForm>({
       firstName: new FormControl("", [
         Validators.required,
@@ -119,7 +92,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(9),
         Validators.pattern(/\d{9}/),
       ]),
-      email: new FormControl("", [Validators.required, Validators.email]),
+      email: new FormControl("", [Validators.email]),
       nickname: new FormControl(""),
       color: new FormControl(null),
       teamId: new FormControl(null, [Validators.required]),
@@ -135,7 +108,22 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
       ]),
       groupId: new FormControl(null, [Validators.required]),
       hasAccount: new FormControl(false),
-      userAccount: this.workerAccount,
+
+      username: new FormControl({ value: null, disabled: true }, [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      password: new FormControl({ value: null, disabled: true }, [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      password2: new FormControl({ value: null, disabled: true }, [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      authority: new FormControl({ value: null, disabled: true }, [
+        Validators.required,
+      ]),
     });
 
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
@@ -207,16 +195,27 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   }
 
   enableAccount(checkPasswords: boolean) {
-    this.workerAccount.enable();
-    this.passwordCheck.set(checkPasswords);
-    this.workerAccount.updateValueAndValidity();
+    this.workerForm.controls.username.enable();
+    this.workerForm.controls.password.enable();
+    this.workerForm.controls.password2.enable();
+    this.workerForm.controls.authority.enable();
+    this.workerForm.addValidators(passwordValidator());
+    // this.passwordCheck.set(checkPasswords);
+    this.workerForm.updateValueAndValidity();
   }
 
   disableAccount() {
-    this.workerAccount.reset();
-    this.workerAccount.disable();
-    this.workerAccount.markAsPristine();
-    this.workerAccount.updateValueAndValidity();
+    this.workerForm.controls.username.disable();
+    this.workerForm.controls.username.reset();
+    this.workerForm.controls.password.disable();
+    this.workerForm.controls.password.reset();
+    this.workerForm.controls.password2.disable();
+    this.workerForm.controls.password2.reset();
+    this.workerForm.controls.authority.disable();
+    this.workerForm.controls.authority.reset();
+    this.workerForm.removeValidators(passwordValidator);
+    // this.workerAccount.markAsPristine();
+    this.workerForm.updateValueAndValidity();
   }
 
   setAccountToDelete() {
@@ -262,7 +261,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
           replaceUrl: true,
         });
       } else {
-        this.workerForm.controls.firstName.setErrors({ exists: true });
+        this.workerService.showError(response);
         this.error.set(response.error ?? "Cos Poszło nie tak...");
       }
     });

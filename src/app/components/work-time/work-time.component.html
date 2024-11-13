@@ -1,0 +1,18 @@
+<div class="form-group-col">
+  <mat-form-field appearance="outline">
+    <mat-label>Czas startu {{ startTime().value | date : "short" }}</mat-label>
+    <input matInput type="time" [formControl]="startHour()" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Data Zakonczenia</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="endTime()" />
+    <mat-hint>Zmień jeżeli powyżej 24h lub po godzi 00</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Czas zakończenia</mat-label>
+    <input matInput type="time" [formControl]="endHour()" />
+  </mat-form-field>
+</div>
