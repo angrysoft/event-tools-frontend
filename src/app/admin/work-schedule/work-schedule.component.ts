@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { ScheduleComponent } from "../../components/schedule/schedule.component";
 import { Router } from "@angular/router";
-import { WorkerDaySchedule } from "../../models/schedule";
+import { ScheduleAction, WorkerDaySchedule } from "../../models/schedule";
 
 @Component({
   selector: "app-work-schedule",
@@ -13,9 +13,16 @@ import { WorkerDaySchedule } from "../../models/schedule";
 export class WorkScheduleComponent {
   private readonly router = inject(Router);
 
-  onAction(data: WorkerDaySchedule) {
-    this.router.navigateByUrl(
-      `/admin/events/${data.eventId}/day?name=${data.eventName}&tab=${data.startDate}`, 
-    );
+  onAction(action: ScheduleAction) {
+    if (action.action == "event") {
+      const data = action.data as WorkerDaySchedule;
+      this.router.navigateByUrl(
+        `/admin/events/${data.eventId}/day?name=${data.eventName}&tab=${data.startDate}`,
+      );
+    } else if (action.action == "worker") {
+      this.router.navigateByUrl(
+        `/admin/workers/${(action.data as { workerId: number }).workerId}`,
+      );
+    }
   }
 }

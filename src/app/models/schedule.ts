@@ -3,11 +3,14 @@ interface Schedule {
   count: number;
   offset: number;
   size: number;
+  total: number;
   days: Day[];
 }
 
 interface WorkerSchedule {
+  id: number;
   workerName: string;
+  color: string;
   days: {
     [key: string]: WorkerDaySchedule[];
   };
@@ -28,4 +31,9 @@ interface Day {
   weekName: string;
 }
 
-export { Schedule, WorkerSchedule, WorkerDaySchedule, Day };
+interface ScheduleAction {
+  action: "worker" | "event";
+  data: WorkerDaySchedule | { workerId: number };
+}
+
+export { Schedule, WorkerSchedule, WorkerDaySchedule, Day, ScheduleAction };
