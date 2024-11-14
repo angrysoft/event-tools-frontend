@@ -1,0 +1,79 @@
+.actions, .action-buttons {
+    display: flex;
+
+    gap: 1rem;
+    padding: 0.1rem;
+}
+
+.actions {
+    flex-wrap: wrap;
+}
+
+.schedule-wrapper {
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+.schedule {
+    display: grid;
+    position: relative;
+}
+
+.row {
+    position: relative;
+    display: flex;
+    gap:1rem;
+    
+}
+
+.col,
+.empty {
+    display: grid;
+    align-items: center;
+    border-collapse: collapse;
+    border: 1px solid var(--mat-divider-color);
+}
+.col {
+    cursor: pointer;
+}
+
+.data, .header {
+    padding: 0.5rem;
+    // text-shadow: 1px 1px 2px rgba(116, 116, 116, 0.411);
+}
+
+.header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.header, .nowrap {
+    text-wrap: nowrap;
+}
+
+.row:first-child {
+    position: sticky;
+    left: 0;
+}
+
+.sticky-row, .sticky-col {
+    position: sticky;
+    background-color: var(--mat-app-background-color, var(--mat-app-background));
+    color: var(--mat-app-text-color, var(--mat-app-on-background));
+}
+
+.sticky-row {
+    top:0;
+}
+
+.sticky-col {
+    left: 0;
+}
+
+#month.mat-mdc-form-field {
+    max-width: 9rem;
+}
+
+#year.mat-mdc-form-field {
+    max-width: 6rem !important;
+}

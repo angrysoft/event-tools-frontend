@@ -13,11 +13,16 @@ import { Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";
 import { DataListResponse } from "../../models/data-list-response";
 import { Addon } from "../models/addon";
+import { ScheduleService } from "../../services/schedule.service";
+import { Schedule } from "../../models/schedule";
 
 @Injectable({
   providedIn: "root",
 })
-export class WorkerDaysService extends CrudService<WorkerDay> {
+export class WorkerDaysService
+  extends CrudService<WorkerDay>
+  implements ScheduleService
+{
   private readonly userApi = "/api/events";
   constructor() {
     super();
@@ -105,5 +110,17 @@ export class WorkerDaysService extends CrudService<WorkerDay> {
       `${this.userApi}/${eventId}/day/${dayId}/worker`,
       payload,
     );
+  }
+
+  getSchedule(
+    limit: number,
+    offset: number,
+    date: string,
+  ): Observable<RestResponse<Schedule>> {
+    return this._get<RestResponse<Schedule>>(`${this.userApi}/schedule`, {
+      limit: limit,
+      offset: offset,
+      date: date,
+    });
   }
 }
