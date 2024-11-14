@@ -1,6 +1,5 @@
 .actions, .action-buttons {
     display: flex;
-
     gap: 1rem;
     padding: 0.1rem;
 }
@@ -10,20 +9,21 @@
 }
 
 .schedule-wrapper {
-    overflow: auto;
-    scrollbar-width: thin;
+   display: grid; 
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid green;
 }
 
 .schedule {
+    border: 1px solid red;
     display: grid;
+    height: 100%;
+    scrollbar-width: thin;
     position: relative;
-}
-
-.row {
-    position: relative;
-    display: flex;
-    gap:1rem;
-    
+    overflow: auto;
 }
 
 .col,

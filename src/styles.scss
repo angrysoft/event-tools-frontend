@@ -222,12 +222,36 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: grid;
 }
 
+mat-sidenav-content {
+    box-sizing:border-box;
+    padding: 0 !important;
+    position: relative;
+}
+
+
+.mat-drawer-content {
+    display: grid !important;
+    grid-template-rows: auto auto 1fr;
+    overflow: hidden !important;
+    height: 100dvh;
+}
+
 .side-content {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        max-height: calc(100% - 4rem);
-        overflow: hidden;
+    box-sizing:border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+}
+
+app-workers,
+app-events,
+app-schedule,
+app-work-schedule {
+    height: 100%;
+    overflow: hidden;
 }
 
 .delete-button {
@@ -306,3 +330,4 @@ mat-card-content.form-group-col, .form-group-col {
 .mdc-dialog__surface {
     overflow-y: hidden !important;
     }
+

@@ -143,7 +143,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
             });
           this.offset = resp.data.offset;
           this.loading.set(false);
-          this.last.nativeElement.style.display = "block";
+          // this.last.nativeElement.style.display = "block";
         }
       });
   }

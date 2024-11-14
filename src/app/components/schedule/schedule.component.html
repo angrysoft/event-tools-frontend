@@ -31,50 +31,60 @@
         </mat-form-field>
         <mat-form-field appearance="outline" id="year">
           <mat-label>Rok</mat-label>
-          <input matInput type="number" min="2024" formControlName="year"  size="4" maxlength="4"/>
+          <input
+            matInput
+            type="number"
+            min="2024"
+            formControlName="year"
+            size="4"
+            maxlength="4"
+          />
         </mat-form-field>
       </div>
     </form>
   </div>
   <div class="schedule-wrapper">
-      <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
-        <div class="col sticky-row sticky-col" style="z-index: 10">
-          <div class="header">Imię Nazwisko</div>
-        </div>
-        @for (day of days; track day.day) {
-        <div class="col sticky-row">
-          <div class="header">
-            {{ day.date | date : "EE dd/MM" }}
-          </div>
-        </div>
-        } @for (row of rows; track row.workerName) {
-        <div class="col sticky-col">
-          <div
-            class="data nowrap"
-            [style.backgroundColor]="row.color"
-            [style.color]="getTextColor(row.color)"
-            (click)="goToWorker(row.id)"
-          >
-            {{ row.workerName }}
-          </div>
-        </div>
-        @for (day of days; track day.day) { @if(row.days[day.day]) {
-        <div class="col">
-          @for (item of row.days[day.day]; track $index) {
-          <div
-            [style.backgroundColor]="item.color"
-            [style.color]="getTextColor(item.color)"
-            (click)="onClick(item)"
-            class="data"
-          >
-            {{ item.eventName }}
-          </div>
-          }
-        </div>
-        } @else {
-        <div class="empty"></div>
-        } } }
+    <div
+      class="mat-elevation-z8 schedule"
+      [style.gridTemplateColumns]="cssCols"
+    >
+      <div class="col sticky-row sticky-col" style="z-index: 10">
+        <div class="header">Imię Nazwisko</div>
       </div>
-      <div #last style="padding: 1rem;display: none;"></div>
+      @for (day of days; track day.day) {
+      <div class="col sticky-row">
+        <div class="header">
+          {{ day.date | date : "EE dd/MM" }}
+        </div>
+      </div>
+      } @for (row of rows; track row.workerName) {
+      <div class="col sticky-col">
+        <div
+          class="data nowrap"
+          [style.backgroundColor]="row.color"
+          [style.color]="getTextColor(row.color)"
+          (click)="goToWorker(row.id)"
+        >
+          {{ row.workerName }}
+        </div>
+      </div>
+      @for (day of days; track day.day) { @if(row.days[day.day]) {
+      <div class="col">
+        @for (item of row.days[day.day]; track $index) {
+        <div
+          [style.backgroundColor]="item.color"
+          [style.color]="getTextColor(item.color)"
+          (click)="onClick(item)"
+          class="data"
+        >
+          {{ item.eventName }}
+        </div>
+        }
+      </div>
+      } @else {
+      <div class="empty"></div>
+      } } }
+    </div>
+    <div #last style="padding: 1rem; display: none"></div>
   </div>
 </section>

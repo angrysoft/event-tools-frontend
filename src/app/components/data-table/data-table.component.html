@@ -8,7 +8,7 @@
     [filters]="filters()"
   />
   }
-  <div class="mat-elevation-z8 table-wrapper">
+  <div class="table-wrapper">
     <table mat-table aria-label="Elements">
       @for (col of tableColumns(); track col.def) {
       <ng-container matColumnDef="{{ col.def }}">
