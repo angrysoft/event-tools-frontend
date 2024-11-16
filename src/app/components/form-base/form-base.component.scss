@@ -1,0 +1,18 @@
+.form-base, .form-base-content {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.form-base { 
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.form-base-content {
+    border: 1px solid red;
+    padding-top: 1rem;
+    overflow: auto;
+    scrollbar-width: thin;
+}

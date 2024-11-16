@@ -231,7 +231,7 @@ mat-sidenav-content {
 
 .mat-drawer-content {
     display: grid !important;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto 0fr 1fr;
     overflow: hidden !important;
     height: 100dvh;
 }
@@ -243,16 +243,26 @@ mat-sidenav-content {
     height: 100%;
     position: relative;
     overflow: hidden;
-
 }
 
 app-workers,
 app-events,
 app-schedule,
-app-work-schedule {
+app-work-schedule,
+app-worker-form,
+app-form-base,
+app-rates,
+app-setting-list,
+app-groups,
+app-teams,
+app-addons,
+app-cars {
+    display: block;
+    box-sizing:border-box;
     height: 100%;
     overflow: hidden;
 }
+
 
 .delete-button {
     @include mat.button-color($dark-theme, $color-variant: error);
@@ -264,7 +274,6 @@ app-work-schedule {
     display: grid;
     gap: 1rem;
     padding: 1rem;
-    
 }
 
 .form-header {

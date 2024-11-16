@@ -1,6 +1,10 @@
-<section class="form-section">
+<div class="form-base">
   <header class="form-header">
-    <button mat-icon-button routerLink="{{ backTo() }}" [queryParams]="queryParams()">
+    <button
+      mat-icon-button
+      routerLink="{{ backTo() }}"
+      [queryParams]="queryParams()"
+    >
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>{{ formTitle() }}</h2>
@@ -13,7 +17,8 @@
       Zapisz
     </button>
   </header>
-  <mat-divider></mat-divider>
-  <ng-content />
-  
-</section>
+  <mat-divider />
+  <div class="form-base-content">
+    <ng-content />
+  </div>
+</div>

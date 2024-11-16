@@ -1,6 +1,8 @@
 .table-wrapper {
+    height: 100%;
     overflow: auto;
     scrollbar-width: thin;
+    border: 1px dashed rgba(255, 255, 0, 0.493);
 }
 
 .loader {

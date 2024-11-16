@@ -47,6 +47,9 @@ import { LoaderComponent } from "../loader/loader.component";
   styleUrl: "./schedule.component.scss",
 })
 export class ScheduleComponent implements OnDestroy, AfterViewInit {
+projectContentChanged() {
+throw new Error('Method not implemented.');
+}
   private readonly service = inject(WorkerDaysService);
 
   schedules = signal<Schedule>({
@@ -109,6 +112,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     };
 
     this.observer = new IntersectionObserver((entries, observer) => {
+      console.log(entries)
       if (entries.at(0)?.isIntersecting) {
         this.loadMore();
       }
@@ -143,7 +147,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
             });
           this.offset = resp.data.offset;
           this.loading.set(false);
-          // this.last.nativeElement.style.display = "block";
+          this.last.nativeElement.style.display = "block";
         }
       });
   }
