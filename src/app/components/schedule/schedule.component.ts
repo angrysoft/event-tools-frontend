@@ -46,7 +46,8 @@ import { LoaderComponent } from "../loader/loader.component";
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
 })
-export class ScheduleComponent implements OnDestroy, AfterViewInit {
+export class ScheduleComponent implements OnDestroy {
+
 projectContentChanged() {
 throw new Error('Method not implemented.');
 }
@@ -105,29 +106,13 @@ throw new Error('Method not implemented.');
         if (date) this.loadData();
       });
     });
-    const observerOptions: Object = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-
-    this.observer = new IntersectionObserver((entries, observer) => {
-      console.log(entries)
-      if (entries.at(0)?.isIntersecting) {
-        this.loadMore();
-      }
-    }, observerOptions);
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
-    this.observer.disconnect();
   }
 
-  ngAfterViewInit(): void {
-    this.observer.observe(this.last.nativeElement);
-  }
 
   loadData() {
     this.loading.set(true);
@@ -147,7 +132,6 @@ throw new Error('Method not implemented.');
             });
           this.offset = resp.data.offset;
           this.loading.set(false);
-          this.last.nativeElement.style.display = "block";
         }
       });
   }
@@ -207,6 +191,13 @@ throw new Error('Method not implemented.');
     this.offset = newOffset;
     this.loadData();
   }
+
+  onScroll(ev: Event) {
+    const el = ev.target as HTMLDivElement;
+    const scrollTarget = el.scrollHeight - el.clientHeight;
+    if (scrollTarget === el.scrollTop)
+      this.loadMore()
+    }
 }
 
 interface DateForm {

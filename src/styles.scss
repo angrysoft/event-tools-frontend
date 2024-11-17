@@ -263,6 +263,11 @@ app-cars {
     overflow: hidden;
 }
 
+app-schedule {
+    display: flex;
+    flex-direction: column;
+}
+
 
 .delete-button {
     @include mat.button-color($dark-theme, $color-variant: error);
