@@ -56,18 +56,7 @@
       {{ day.date | date : "EE dd/MM" }}
     </div>
   </div>
-  } @for (row of rows; track row.workerName) { @if ($last) {
-  <div class="col sticky-col" #last>
-    <div
-      class="data nowrap"
-      [style.backgroundColor]="row.color"
-      [style.color]="getTextColor(row.color)"
-      (click)="goToWorker(row.id)"
-    >
-      {{ row.workerName }}
-    </div>
-  </div>
-  } @else {
+  } @for (row of rows; track row.workerName) {
   <div class="col sticky-col">
     <div
       class="data nowrap"
@@ -78,7 +67,7 @@
       {{ row.workerName }}
     </div>
   </div>
-  } @for (day of days; track day.day) { @if(row.days[day.day]) {
+  @for (day of days; track day.day) { @if(row.days[day.day]) {
   <div class="col">
     @for (item of row.days[day.day]; track $index) {
     <div
@@ -93,11 +82,21 @@
     </div>
     }
   </div>
+  } @else if (row.dayOffs[day.day]) {
+  <div
+    [style.backgroundColor]="'var(--sys-on-background)'"
+    [style.color]="'var(--sys-background)'"
+    class="data"
+    [cdkContextMenuTriggerFor]="dayOffMenu"
+    [cdkContextMenuTriggerData]="{ data: row.dayOffs[day.day] }"
+  >
+    Wolne
+  </div>
   } @else {
   <div
     class="empty"
     [cdkContextMenuTriggerFor]="emptyMenu"
-    [cdkContextMenuTriggerData]="{ data: day }"
+    [cdkContextMenuTriggerData]="{ data: day, worker: row }"
   ></div>
   } } }
 </div>
@@ -107,19 +106,29 @@
     <button class="context-menu-item" cdkMenuItem (click)="removeDay(data)">
       Usuń
     </button>
-  </div>
-  } @else {
-  <!-- <div class="context-menu" cdkMenu>
-    <button class="context-menu-item" cdkMenuItem (click)="removeDay(data)">
-      Usuń
+    <button class="context-menu-item" cdkMenuItem (click)="duplicateDay(data)">
+      Duplikuj
     </button>
-  </div> -->
+  </div>
   }
 </ng-template>
-<ng-template #emptyMenu let-data="data">
+
+<ng-template #emptyMenu let-data="data" let-worker="worker">
   <div class="context-menu" cdkMenu>
-    <button class="context-menu-item" cdkMenuItem (click)="addDayOff(data)">
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="addDayOff(worker, data)"
+    >
       Dodaj Dzień wolny
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #dayOffMenu let-data="data">
+  <div class="context-menu" cdkMenu>
+    <button class="context-menu-item" cdkMenuItem (click)="removeDayOff(data)">
+      Usuń
     </button>
   </div>
 </ng-template>

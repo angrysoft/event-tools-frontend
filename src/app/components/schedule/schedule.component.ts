@@ -1,9 +1,4 @@
-import {
-  CdkContextMenuTrigger,
-  CdkMenu,
-  CdkMenuItem,
-  CdkMenuTrigger,
-} from "@angular/cdk/menu";
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
 import { DatePipe } from "@angular/common";
 import {
   Component,
@@ -14,7 +9,6 @@ import {
   output,
   signal,
   untracked,
-  ViewChild,
 } from "@angular/core";
 import {
   FormControl,
@@ -23,12 +17,14 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { debounceTime, Subject, takeUntil } from "rxjs";
+import { DuplicateDaysComponent } from "../../admin/events/event-days/duplicate-days/duplicate-days.component";
 import { WorkerDaysService } from "../../admin/services/worker-days.service";
 import {
   Schedule,
@@ -36,9 +32,9 @@ import {
   WorkerDaySchedule,
 } from "../../models/schedule";
 import { dateToString } from "../../utils/date";
-import { LoaderComponent } from "../loader/loader.component";
-import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
+import { LoaderComponent } from "../loader/loader.component";
+import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 
 @Component({
   selector: "app-schedule",
@@ -217,7 +213,7 @@ export class ScheduleComponent implements OnDestroy {
         this.loading.set(true);
 
         this.workerDayService
-          .removeWorkersDays(data.eventId, data.id, [data.worker])
+          .removeWorkersDays(data.eventId, data.eventDay, [data.id])
           .subscribe((resp) => {
             if (resp.ok) {
               this.loadData();
@@ -227,11 +223,67 @@ export class ScheduleComponent implements OnDestroy {
     });
   }
 
-  addDayOff(data: any) {
+  addDayOff(worker: any, data: any) {
+    console.log(worker, data);
+    const dayOffDialog = this.dialog.open(AddDayOffComponent, {
+      data: {
+        startDate: data.date,
+      },
+      maxWidth: "95vw",
+    });
+    dayOffDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
+      this.loading.set(true);
+
+      const payload = {
+        from: dateToString(result.start),
+        to: dateToString(result.end),
+        worker: worker.id,
+        workerName: worker.workerName,
+      };
+
+      this.workerDayService.addDaysOff(payload).subscribe((resp) => {
+        if (resp.ok) {
+          this.loadData();
+        } else this.workerDayService.showError(resp);
+        this.loading.set(false);
+      });
+    });
+  }
+
+  removeDayOff(data: any) {
     console.log(data);
   }
-}
 
+  duplicateDay(data: WorkerDaySchedule) {
+    const duplicateDialog = this.dialog.open(DuplicateDaysComponent, {
+      data: {
+        startTime: data.startDate,
+      },
+      maxWidth: "95vw",
+    });
+    duplicateDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
+      this.loading.set(true);
+
+      const payload = {
+        from: dateToString(result.start),
+        to: dateToString(result.end),
+        workerDays: [data.id],
+      };
+
+      this.workerDayService
+        .duplicateDays(data.eventId, data.eventDay, payload)
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.loadData();
+          } else this.workerDayService.showError(resp);
+          this.loading.set(false);
+        });
+    });
+  }
+}
+// FIXME  owlen pokrywa sie z praca !?!? usuwanie wolnego prze admina
 interface DateForm {
   month: FormControl<number | null>;
   year: FormControl<number | null>;

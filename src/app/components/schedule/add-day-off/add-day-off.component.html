@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Dodaj dni wolne {{ data.start }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="daysOffForm" class="form" id="duplicate-days-form">
+    <mat-form-field>
+      <mat-label>Wybierz dni</mat-label>
+      <mat-date-range-input [formGroup]="daysOffForm" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Początek" />
+        <input matEndDate formControlName="end" placeholder="Koniec" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+
+      @if (daysOffForm.controls.start.hasError('matStartDateInvalid')) {
+      <mat-error>Niepoprawna początkowa data</mat-error>
+      } @if (daysOffForm.controls.end.hasError('matEndDateInvalid')) {
+      <mat-error>Niepoprawna końcowa data</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="false" type="button">
+    Anuluj
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="daysOffForm.value"
+    [disabled]="!canSend()"
+    type="button"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>

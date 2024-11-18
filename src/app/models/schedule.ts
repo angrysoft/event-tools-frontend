@@ -14,11 +14,19 @@ interface WorkerSchedule {
   days: {
     [key: string]: WorkerDaySchedule[];
   };
+  dayOffs: DayOff[];
+}
+
+interface DayOff {
+  id: number;
+  worker: number;
+  accepted: boolean;
 }
 
 interface WorkerDaySchedule {
   id: number;
   eventId: number;
+  eventDay: number;
   eventName: string;
   startDate: string;
   worker: number;
@@ -36,4 +44,11 @@ interface ScheduleAction {
   data: WorkerDaySchedule | { workerId: number };
 }
 
-export { Schedule, WorkerSchedule, WorkerDaySchedule, Day, ScheduleAction };
+export {
+  Schedule,
+  WorkerSchedule,
+  WorkerDaySchedule,
+  Day,
+  ScheduleAction,
+  DayOff,
+};

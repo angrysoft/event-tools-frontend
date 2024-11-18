@@ -1,15 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from "@angular/core";
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from "@angular/forms";
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -19,7 +9,7 @@ import { MatInputModule } from "@angular/material/input";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-duplicate-days",
+  selector: "app-add-day-off",
   standalone: true,
   imports: [
     MatButtonModule,
@@ -30,37 +20,34 @@ import { Subject, takeUntil } from "rxjs";
     MatDatepickerModule,
     MatDatepickerModule,
   ],
-  templateUrl: "./duplicate-days.component.html",
-  styleUrl: "./duplicate-days.component.scss",
+  templateUrl: "./add-day-off.component.html",
+  styleUrl: "./add-day-off.component.scss",
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DuplicateDaysComponent {
-  duplicateDaysForm: FormGroup<DuplicateDaysForm>;
+export class AddDayOffComponent {
+  daysOffForm: FormGroup<DaysOffForm>;
   destroy = new Subject();
   canSend = signal<boolean>(false);
   data = inject(MAT_DIALOG_DATA);
 
   constructor() {
-    const startDate = new Date(this.data.startTime);
-    startDate.setDate(startDate.getDate() +1);
-    
+    const startDate = new Date(this.data.startDate);
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 1);
     
-    this.duplicateDaysForm = new FormGroup<DuplicateDaysForm>({
+    this.daysOffForm = new FormGroup<DaysOffForm>({
       start: new FormControl(startDate, Validators.required),
       end: new FormControl(endDate, Validators.required),
     });
   }
 
   ngOnInit(): void {
-    this.canSend.set(this.duplicateDaysForm.valid);
+    this.canSend.set(this.daysOffForm.valid);
 
-    this.duplicateDaysForm.statusChanges
+    this.daysOffForm.statusChanges
       .pipe(takeUntil(this.destroy))
       .subscribe((status) => {
-        this.canSend.set(status === "VALID" && this.duplicateDaysForm.dirty);
+        this.canSend.set(status === "VALID" && this.daysOffForm.dirty);
       });
   }
 
@@ -70,7 +57,7 @@ export class DuplicateDaysComponent {
   }
 }
 
-interface DuplicateDaysForm {
+interface DaysOffForm {
   start: FormControl<Date | null>;
   end: FormControl<Date | null>;
 }
