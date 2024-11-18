@@ -42,7 +42,11 @@
     </div>
   </form>
 </div>
-<div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols" (scroll)="onScroll($event)">
+<div
+  class="mat-elevation-z8 schedule"
+  [style.gridTemplateColumns]="cssCols"
+  (scroll)="onScroll($event)"
+>
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">Imię Nazwisko</div>
   </div>
@@ -52,33 +56,29 @@
       {{ day.date | date : "EE dd/MM" }}
     </div>
   </div>
-  } @for (row of rows; track row.workerName) {
-    @if ($last) {
-        <div class="col sticky-col" #last>
-            <div
-              class="data nowrap"
-              [style.backgroundColor]="row.color"
-              [style.color]="getTextColor(row.color)"
-              (click)="goToWorker(row.id)"
-            >
-              {{ row.workerName }}
-            </div>
-          </div>
-    } @else {
-        <div class="col sticky-col">
-            <div
-              class="data nowrap"
-              [style.backgroundColor]="row.color"
-              [style.color]="getTextColor(row.color)"
-              (click)="goToWorker(row.id)"
-            >
-              {{ row.workerName }}
-            </div>
-          </div>
-    }
-
-  
-  @for (day of days; track day.day) { @if(row.days[day.day]) {
+  } @for (row of rows; track row.workerName) { @if ($last) {
+  <div class="col sticky-col" #last>
+    <div
+      class="data nowrap"
+      [style.backgroundColor]="row.color"
+      [style.color]="getTextColor(row.color)"
+      (click)="goToWorker(row.id)"
+    >
+      {{ row.workerName }}
+    </div>
+  </div>
+  } @else {
+  <div class="col sticky-col">
+    <div
+      class="data nowrap"
+      [style.backgroundColor]="row.color"
+      [style.color]="getTextColor(row.color)"
+      (click)="goToWorker(row.id)"
+    >
+      {{ row.workerName }}
+    </div>
+  </div>
+  } @for (day of days; track day.day) { @if(row.days[day.day]) {
   <div class="col">
     @for (item of row.days[day.day]; track $index) {
     <div
@@ -86,12 +86,40 @@
       [style.color]="getTextColor(item.color)"
       (click)="onClick(item)"
       class="data"
+      [cdkContextMenuTriggerFor]="dayMenu"
+      [cdkContextMenuTriggerData]="{ data: item }"
     >
       {{ item.eventName }}
     </div>
     }
   </div>
   } @else {
-  <div class="empty"></div>
+  <div
+    class="empty"
+    [cdkContextMenuTriggerFor]="emptyMenu"
+    [cdkContextMenuTriggerData]="{ data: day }"
+  ></div>
   } } }
 </div>
+<ng-template #dayMenu let-data="data">
+  @if (admin()) {
+  <div class="context-menu" cdkMenu>
+    <button class="context-menu-item" cdkMenuItem (click)="removeDay(data)">
+      Usuń
+    </button>
+  </div>
+  } @else {
+  <!-- <div class="context-menu" cdkMenu>
+    <button class="context-menu-item" cdkMenuItem (click)="removeDay(data)">
+      Usuń
+    </button>
+  </div> -->
+  }
+</ng-template>
+<ng-template #emptyMenu let-data="data">
+  <div class="context-menu" cdkMenu>
+    <button class="context-menu-item" cdkMenuItem (click)="addDayOff(data)">
+      Dodaj Dzień wolny
+    </button>
+  </div>
+</ng-template>

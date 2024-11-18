@@ -256,7 +256,12 @@ app-setting-list,
 app-groups,
 app-teams,
 app-addons,
-app-cars {
+app-cars,
+app-event-days,
+app-show-event,
+app-event-form,
+app-add-workers,
+app-change-rates {
     display: block;
     box-sizing:border-box;
     height: 100%;
@@ -345,3 +350,6 @@ mat-card-content.form-group-col, .form-group-col {
     overflow-y: hidden !important;
     }
 
+* {
+    box-sizing: border-box;
+}

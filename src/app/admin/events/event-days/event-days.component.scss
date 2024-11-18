@@ -1,12 +1,18 @@
 .main-section, .header {
     display: flex;
     gap: 1rem;
-    
 }
 
 .main-section {
     padding: 1rem;
     flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+mat-tab-group {
+    height: 100%;
+    overflow: auto;
 }
 
 .header {

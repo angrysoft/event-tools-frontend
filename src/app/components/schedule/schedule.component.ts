@@ -1,10 +1,15 @@
+import {
+  CdkContextMenuTrigger,
+  CdkMenu,
+  CdkMenuItem,
+  CdkMenuTrigger,
+} from "@angular/cdk/menu";
 import { DatePipe } from "@angular/common";
 import {
-  AfterViewInit,
   Component,
   effect,
-  ElementRef,
   inject,
+  input,
   OnDestroy,
   output,
   signal,
@@ -25,9 +30,15 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { WorkerDaysService } from "../../admin/services/worker-days.service";
-import { Schedule, ScheduleAction } from "../../models/schedule";
+import {
+  Schedule,
+  ScheduleAction,
+  WorkerDaySchedule,
+} from "../../models/schedule";
 import { dateToString } from "../../utils/date";
 import { LoaderComponent } from "../loader/loader.component";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: "app-schedule",
@@ -42,12 +53,16 @@ import { LoaderComponent } from "../loader/loader.component";
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    CdkContextMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
   ],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
 })
 export class ScheduleComponent implements OnDestroy {
-  private readonly service = inject(WorkerDaysService);
+  private readonly workerDayService = inject(WorkerDaysService);
+  private readonly dialog = inject(MatDialog);
 
   schedules = signal<Schedule>({
     workerSchedules: [],
@@ -57,6 +72,7 @@ export class ScheduleComponent implements OnDestroy {
     days: [],
     total: 0,
   });
+  admin = input<boolean>(false);
   loading = signal<boolean>(true);
   action = output<ScheduleAction>();
   currentDate = signal<Date>(new Date());
@@ -109,7 +125,7 @@ export class ScheduleComponent implements OnDestroy {
 
   loadData() {
     this.loading.set(true);
-    this.service
+    this.workerDayService
       .getSchedule(this.size, this.offset, dateToString(this.currentDate()))
       .subscribe((resp) => {
         if (resp.ok) {
@@ -189,6 +205,30 @@ export class ScheduleComponent implements OnDestroy {
     const el = ev.target as HTMLDivElement;
     const scrollTarget = el.scrollHeight - el.clientHeight;
     if (scrollTarget === el.scrollTop) this.loadMore();
+  }
+
+  removeDay(data: WorkerDaySchedule) {
+    const delDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: { msg: "Czy na pewno chcesz usunąć" },
+    });
+
+    delDialog.afterClosed().subscribe((result) => {
+      if (result && result === true) {
+        this.loading.set(true);
+
+        this.workerDayService
+          .removeWorkersDays(data.eventId, data.id, [data.worker])
+          .subscribe((resp) => {
+            if (resp.ok) {
+              this.loadData();
+            }
+          });
+      }
+    });
+  }
+
+  addDayOff(data: any) {
+    console.log(data);
   }
 }
 
