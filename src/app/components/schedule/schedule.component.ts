@@ -47,10 +47,6 @@ import { LoaderComponent } from "../loader/loader.component";
   styleUrl: "./schedule.component.scss",
 })
 export class ScheduleComponent implements OnDestroy {
-
-projectContentChanged() {
-throw new Error('Method not implemented.');
-}
   private readonly service = inject(WorkerDaysService);
 
   schedules = signal<Schedule>({
@@ -68,8 +64,6 @@ throw new Error('Method not implemented.');
   offset: number;
   size: number;
   destroy = new Subject();
-  @ViewChild("last") last!: ElementRef<HTMLDivElement>;
-  observer: any;
 
   constructor() {
     this.offset = 0;
@@ -112,7 +106,6 @@ throw new Error('Method not implemented.');
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 
   loadData() {
     this.loading.set(true);
@@ -195,9 +188,8 @@ throw new Error('Method not implemented.');
   onScroll(ev: Event) {
     const el = ev.target as HTMLDivElement;
     const scrollTarget = el.scrollHeight - el.clientHeight;
-    if (scrollTarget === el.scrollTop)
-      this.loadMore()
-    }
+    if (scrollTarget === el.scrollTop) this.loadMore();
+  }
 }
 
 interface DateForm {
