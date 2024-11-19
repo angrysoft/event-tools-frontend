@@ -1,14 +1,12 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import {
-  AfterContentInit,
   AfterViewInit,
   Component,
-  effect,
   HostListener,
   inject,
   signal,
-  ViewChild,
+  ViewChild
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -22,6 +20,9 @@ import {
 } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { LoaderComponent } from "../../../components/loader/loader.component";
+import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { dateToString } from "../../../utils/date";
 import {
   ChangeWorkerPayload,
@@ -30,17 +31,14 @@ import {
   WorkerDay,
   WorkerDayStatusPayload,
 } from "../../models/events";
+import { WorkerBase } from "../../models/worker";
 import { EventDaysService } from "../../services/event-days.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
 import { AddDayComponent } from "./add-day/add-day.component";
-import { WorkerDayComponent } from "./worker-day/worker-day.component";
+import { ChangeStatusComponent } from "./change-status/change-status.component";
 import { ChangeTimeComponent } from "./change-time/change-time.component";
 import { DuplicateDaysComponent } from "./duplicate-days/duplicate-days.component";
-import { ChangeStatusComponent } from "./change-status/change-status.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
-import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
-import { WorkerBase } from "../../models/worker";
+import { WorkerDayComponent } from "./worker-day/worker-day.component";
 
 @Component({
   selector: "app-event-days",
@@ -153,6 +151,9 @@ export class EventDaysComponent implements AfterViewInit {
         .subscribe((resp) => {
           if (resp.ok) {
             this.lodaDays();
+          } else {
+            this.service.showError(resp);
+            this.loading.set(false);
           }
         });
     });
@@ -171,6 +172,9 @@ export class EventDaysComponent implements AfterViewInit {
         this.service.delDay(this.eventId, this.dayId).subscribe((resp) => {
           if (resp.ok) {
             this.lodaDays();
+          } else {
+            this.service.showError(resp);
+            this.loading.set(false);
           }
         });
       }
@@ -212,6 +216,7 @@ export class EventDaysComponent implements AfterViewInit {
             this.lodaDays();
             this.selection.clear();
           } else this.workerDayService.showError(resp);
+          this.loading.set(false);
         });
     });
   }
@@ -246,6 +251,7 @@ export class EventDaysComponent implements AfterViewInit {
             this.lodaDays();
             this.selection.clear();
           } else this.workerDayService.showError(resp);
+          this.loading.set(false);
         });
     });
   }
@@ -272,6 +278,7 @@ export class EventDaysComponent implements AfterViewInit {
               this.lodaDays();
               this.selection.clear();
             }
+            this.loading.set(false);
           });
       }
     });
@@ -289,6 +296,7 @@ export class EventDaysComponent implements AfterViewInit {
 
     changeWorkerDialog.afterClosed().subscribe((result) => {
       if (result && result.length > 0) {
+        this.loading.set(true);
         const worker: WorkerBase = result.at(0);
         const payload: ChangeWorkerPayload = {
           worker: worker.id ?? -1,
@@ -303,6 +311,7 @@ export class EventDaysComponent implements AfterViewInit {
               this.lodaDays();
               this.selection.clear();
             } else this.workerDayService.showError(resp);
+            this.loading.set(false);
           });
       }
     });
@@ -343,6 +352,7 @@ export class EventDaysComponent implements AfterViewInit {
             this.lodaDays();
             this.selection.clear();
           } else this.workerDayService.showError(resp);
+          this.loading.set(false);
         });
     });
   }
