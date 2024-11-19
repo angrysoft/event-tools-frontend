@@ -1,14 +1,18 @@
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
-import { DatePipe, JsonPipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import {
+  AfterRenderRef,
+  AfterViewInit,
   Component,
   effect,
+  ElementRef,
   inject,
   input,
   OnDestroy,
   output,
   signal,
   untracked,
+  ViewChild,
 } from "@angular/core";
 import {
   FormControl,
@@ -52,14 +56,14 @@ import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
     CdkContextMenuTrigger,
     CdkMenu,
     CdkMenuItem,
-    JsonPipe,
   ],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
 })
-export class ScheduleComponent implements OnDestroy {
+export class ScheduleComponent implements OnDestroy, AfterViewInit {
   private readonly workerDayService = inject(WorkerDaysService);
   private readonly dialog = inject(MatDialog);
+  observer!: IntersectionObserver;
 
   schedules = signal<Schedule>({
     workerSchedules: [],
@@ -77,6 +81,7 @@ export class ScheduleComponent implements OnDestroy {
   offset: number;
   size: number;
   destroy = new Subject();
+  @ViewChild("end") end!: ElementRef<HTMLDivElement>;
 
   constructor() {
     this.offset = 0;
@@ -115,22 +120,49 @@ export class ScheduleComponent implements OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0,
+    };
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log("Element is in viewport");
+          this.loadMore();
+        }
+      });
+    }, options);
+  }
+
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
+    this.observer.disconnect();
   }
 
   loadData() {
     this.loading.set(true);
+    let size = this.size;
+    let offset = this.offset;
+    // reload all data
+    if (offset > 0) {
+      size = offset;
+      offset = 0;
+    }
+
     this.workerDayService
-      .getSchedule(this.size, this.offset, dateToString(this.currentDate()))
+      .getSchedule(size, offset, dateToString(this.currentDate()))
       .subscribe((resp) => {
         if (resp.ok) {
+          this.observer.disconnect();
           if (this.offset === 0) this.schedules.set(resp.data);
           else
             this.schedules.update((s) => {
               s.offset = resp.data.offset;
-              s.size = resp.data.size;
+              s.size = this.size;
+              s.total = resp.data.total;
               s.workerSchedules = s.workerSchedules.concat(
                 resp.data.workerSchedules,
               );
@@ -138,6 +170,34 @@ export class ScheduleComponent implements OnDestroy {
             });
           this.offset = resp.data.offset;
           this.loading.set(false);
+          this.observer.observe(this.end.nativeElement);
+          this.end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
+        }
+      });
+  }
+
+  loadMore() {
+    const newOffset = this.offset + this.size;
+    if (newOffset > this.schedules().total) return;
+    this.offset = newOffset;
+    this.loading.set(true);
+    this.workerDayService
+      .getSchedule(this.size, this.offset, dateToString(this.currentDate()))
+      .subscribe((resp) => {
+        if (resp.ok) {
+          this.observer.disconnect();
+          this.schedules.update((s) => {
+            s.offset = resp.data.offset;
+            s.size = resp.data.size;
+            s.workerSchedules = s.workerSchedules.concat(
+              resp.data.workerSchedules,
+            );
+            return s;
+          });
+          this.offset = resp.data.offset;
+          this.loading.set(false);
+          this.observer.observe(this.end.nativeElement);
+          this.end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
         }
       });
   }
@@ -189,19 +249,6 @@ export class ScheduleComponent implements OnDestroy {
         ? "black"
         : "white";
     return "inherit";
-  }
-
-  loadMore() {
-    const newOffset = this.offset + this.size;
-    if (newOffset > this.schedules().total) return;
-    this.offset = newOffset;
-    this.loadData();
-  }
-
-  onScroll(ev: Event) {
-    const el = ev.target as HTMLDivElement;
-    const scrollTarget = el.scrollHeight - el.clientHeight;
-    if (scrollTarget === el.scrollTop) this.loadMore();
   }
 
   removeDay(data: WorkerDaySchedule) {
@@ -281,12 +328,20 @@ export class ScheduleComponent implements OnDestroy {
   }
 
   removeDayOff(data: any) {
-    this.loading.set(true);
-    this.workerDayService.removeDayOff(data.id).subscribe((resp) => {
-      if (resp.ok) {
-        this.loadData();
-      } else this.workerDayService.showError(resp);
-      this.loading.set(false);
+    const delDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: { msg: "Czy na pewno chcesz usunąć" },
+    });
+
+    delDialog.afterClosed().subscribe((result) => {
+      if (result && result === true) {
+        this.loading.set(true);
+        this.workerDayService.removeDayOff(data.id).subscribe((resp) => {
+          if (resp.ok) {
+            this.loadData();
+          } else this.workerDayService.showError(resp);
+          this.loading.set(false);
+        });
+      }
     });
   }
 

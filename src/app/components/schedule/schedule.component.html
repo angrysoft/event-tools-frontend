@@ -45,7 +45,6 @@
 <div
   class="mat-elevation-z8 schedule"
   [style.gridTemplateColumns]="cssCols"
-  (scroll)="onScroll($event)"
 >
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">Imię Nazwisko</div>
@@ -67,9 +66,9 @@
       {{ row.workerName }}
     </div>
   </div>
-  @for (day of days; track day.day) { @if(row.days[day.day]) {
+  @for (day of days; track $index) { @if(row.days[day.day]) {
   <div class="col">
-    @for (item of row.days[day.day]; track $index) {
+    @for (item of row.days[day.day]; track item.id) {
     <div
       [style.backgroundColor]="item.color"
       [style.color]="getTextColor(item.color)"
@@ -102,7 +101,9 @@
     [cdkContextMenuTriggerData]="{ data: day, worker: row }"
   ></div>
   } } }
+  <div class="end" [style.gridColumnEnd]="cssCols" #end></div>
 </div>
+
 <ng-template #dayMenu let-data="data">
   @if (admin()) {
   <div class="context-menu" cdkMenu>
