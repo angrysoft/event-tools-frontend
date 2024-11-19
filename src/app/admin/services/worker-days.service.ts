@@ -23,7 +23,6 @@ export class WorkerDaysService
   extends CrudService<WorkerDay>
   implements ScheduleService
 {
-  
   private readonly userApi = "/api/events";
   constructor() {
     super();
@@ -125,10 +124,17 @@ export class WorkerDaysService
     });
   }
 
-  addDaysOff(payload: { from: string; to: string; worker: number; }) {
-    return this._put(
-      `${this.userApi}/day-off`,
-      payload,
-    );
+  addDaysOff(payload: { from: string; to: string; worker: number }) {
+    return this._put(`${this.userApi}/day-off`, payload);
+  }
+
+  acceptDayOff(id: any) {
+    return this._put(`${this.api}/day-off/${id}/accept`);
+  }
+  rejectDayOff(id: any) {
+    return this._put(`${this.api}/day-off/${id}/reject`);
+  }
+  removeDayOff(id: any) {
+    return this._delete(`${this.userApi}/day-off/${id}`);
   }
 }

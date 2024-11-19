@@ -85,12 +85,15 @@
   } @else if (row.dayOffs[day.day]) {
   <div
     [style.backgroundColor]="'var(--sys-on-background)'"
-    [style.color]="'var(--sys-background)'"
     class="data"
     [cdkContextMenuTriggerFor]="dayOffMenu"
-    [cdkContextMenuTriggerData]="{ data: row.dayOffs[day.day] }"
+    [cdkContextMenuTriggerData]="{ data: row.dayOffs[day.day], worker: row }"
   >
-    Wolne
+    @if (row.dayOffs[day.day].accepted) {
+    <span [style.color]="'var(--sys-background)'">Wolne</span>
+    } @else {
+    <span [style.color]="'red'">Wolne - do potwierdzenia</span>
+    }
   </div>
   } @else {
   <div
@@ -130,5 +133,14 @@
     <button class="context-menu-item" cdkMenuItem (click)="removeDayOff(data)">
       Usuń
     </button>
+    @if (admin()) { @if (data.accepted) {
+    <button class="context-menu-item" cdkMenuItem (click)="rejectDayOff(data)">
+      Cofnij akceptacje
+    </button>
+    } @else {
+    <button class="context-menu-item" cdkMenuItem (click)="acceptDayOff(data)">
+      Zaakceptuj
+    </button>
+    }}
   </div>
 </ng-template>

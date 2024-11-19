@@ -130,6 +130,14 @@ export class CrudService<T> {
       .pipe(catchError(this.handleError));
   }
 
+  protected _delete(api: string): Observable<RestResponse<string | void>> {
+    return this.http
+      .delete<RestResponse<string | void>>(api, {
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   protected handleError(err: any) {
     switch (err.status) {
       case 401:

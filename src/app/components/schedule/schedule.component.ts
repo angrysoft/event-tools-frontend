@@ -1,5 +1,5 @@
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
-import { DatePipe } from "@angular/common";
+import { DatePipe, JsonPipe } from "@angular/common";
 import {
   Component,
   effect,
@@ -52,6 +52,7 @@ import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
     CdkContextMenuTrigger,
     CdkMenu,
     CdkMenuItem,
+    JsonPipe,
   ],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
@@ -251,10 +252,6 @@ export class ScheduleComponent implements OnDestroy {
     });
   }
 
-  removeDayOff(data: any) {
-    console.log(data);
-  }
-
   duplicateDay(data: WorkerDaySchedule) {
     const duplicateDialog = this.dialog.open(DuplicateDaysComponent, {
       data: {
@@ -282,8 +279,38 @@ export class ScheduleComponent implements OnDestroy {
         });
     });
   }
+
+  removeDayOff(data: any) {
+    this.loading.set(true);
+    this.workerDayService.removeDayOff(data.id).subscribe((resp) => {
+      if (resp.ok) {
+        this.loadData();
+      } else this.workerDayService.showError(resp);
+      this.loading.set(false);
+    });
+  }
+
+  rejectDayOff(data: any) {
+    this.loading.set(true);
+    this.workerDayService.rejectDayOff(data.id).subscribe((resp) => {
+      if (resp.ok) {
+        this.loadData();
+      } else this.workerDayService.showError(resp);
+      this.loading.set(false);
+    });
+  }
+
+  acceptDayOff(data: any) {
+    this.loading.set(true);
+    this.workerDayService.acceptDayOff(data.id).subscribe((resp) => {
+      if (resp.ok) {
+        this.loadData();
+      } else this.workerDayService.showError(resp);
+      this.loading.set(false);
+    });
+  }
 }
-// FIXME  owlen pokrywa sie z praca !?!? usuwanie wolnego prze admina
+
 interface DateForm {
   month: FormControl<number | null>;
   year: FormControl<number | null>;

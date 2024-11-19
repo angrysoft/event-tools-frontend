@@ -14,7 +14,9 @@ interface WorkerSchedule {
   days: {
     [key: string]: WorkerDaySchedule[];
   };
-  dayOffs: DayOff[];
+  dayOffs: {
+    [key: string]: DayOff;
+  };
 }
 
 interface DayOff {
