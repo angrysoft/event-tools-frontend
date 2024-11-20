@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, inject, signal } from "@angular/core";
 import { DataTableComponent } from "../../components/data-table/data-table.component";
 import { InputFilters } from "../../components/search/model";
-import { SearchComponent } from "../../components/search/search.component";
 import { WorkersService } from "../services/workers.service";
 
 @Component({
     selector: "app-workers",
     templateUrl: "./workers.component.html",
     styleUrl: "./workers.component.scss",
-    imports: [SearchComponent, DataTableComponent]
+    imports: [DataTableComponent]
 })
 export class WorkersComponent implements AfterViewInit {
   inputFilters = signal<InputFilters>({});

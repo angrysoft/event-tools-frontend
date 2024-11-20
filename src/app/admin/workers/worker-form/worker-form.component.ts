@@ -22,13 +22,13 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
+import { WorkerForm } from "../../models/worker";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
-import { WorkerForm } from "../../models/worker";
 
 @Component({
     selector: "app-worker-form",
@@ -42,7 +42,6 @@ import { WorkerForm } from "../../models/worker";
         ReactiveFormsModule,
         MatDividerModule,
         MatCardModule,
-        RouterLink,
         FormBaseComponent,
     ],
     templateUrl: "./worker-form.component.html",

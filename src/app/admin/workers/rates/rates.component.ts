@@ -2,14 +2,13 @@ import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
-import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { RateValueDto } from "../../models/rate";
 import { BasicPay } from "../../models/worker";
 import { RatesService } from "../../services/rates.service";
-import { MatDividerModule } from "@angular/material/divider";
 
 @Component({
     selector: "app-rates",
@@ -17,7 +16,6 @@ import { MatDividerModule } from "@angular/material/divider";
         MatCardModule,
         RouterLink,
         MatButtonModule,
-        AddButtonComponent,
         MatIcon,
         MatDividerModule,
     ],

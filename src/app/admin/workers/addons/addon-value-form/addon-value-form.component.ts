@@ -1,5 +1,4 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { AsyncPipe } from "@angular/common";
 import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import {
   FormControl,
@@ -12,7 +11,6 @@ import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -32,9 +30,7 @@ import { AddonsService } from "../../../services/addons.service";
         MatInputModule,
         MatInput,
         MatDatepickerModule,
-        MatIcon,
         MatButtonModule,
-        AsyncPipe,
         MatOptionModule,
         MatSelectModule,
     ],

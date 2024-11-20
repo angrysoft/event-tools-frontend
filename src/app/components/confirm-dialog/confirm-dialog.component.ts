@@ -4,7 +4,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
-  MatDialogContent,
   MatDialogTitle
 } from "@angular/material/dialog";
 
@@ -17,7 +16,6 @@ export interface DialogData {
     imports: [
         MatButtonModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
         MatDialogClose,
     ],

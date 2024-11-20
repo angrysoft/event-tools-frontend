@@ -11,7 +11,6 @@ import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -32,7 +31,6 @@ import { CarsService } from "../../../services/cars.service";
         MatInputModule,
         MatDialogModule,
         MatButtonModule,
-        MatIcon,
         MatOptionModule,
         MatSelectModule,
     ],

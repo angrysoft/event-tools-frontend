@@ -11,7 +11,6 @@ import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
-import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { WorkerDoc } from "../../models/worker-doc";
 import { DocsService } from "../../services/docs.service";
@@ -22,7 +21,6 @@ import { DocsService } from "../../services/docs.service";
         MatCardModule,
         RouterLink,
         MatButtonModule,
-        AddButtonComponent,
         MatIcon,
     ],
     templateUrl: "./docs.component.html",

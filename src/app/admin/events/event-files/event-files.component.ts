@@ -10,13 +10,11 @@ import {
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
-import { MatDivider } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { Subject } from "rxjs";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { SendDialogComponent } from "../../../components/send-dialog/send-dialog.component";
-import { FileSizePipe } from "../../../pipes/file-size.pipe";
 import { EventFile } from "../../models/events";
 import { EventsService } from "../../services/events.service";
 
@@ -24,11 +22,9 @@ import { EventsService } from "../../services/events.service";
     selector: "app-event-files",
     imports: [
         MatListModule,
-        FileSizePipe,
         MatIconModule,
         MatCardModule,
         MatButtonModule,
-        MatDivider,
     ],
     templateUrl: "./event-files.component.html",
     styleUrl: "./event-files.component.scss"
