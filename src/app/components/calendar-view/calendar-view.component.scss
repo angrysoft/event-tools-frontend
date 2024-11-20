@@ -1,0 +1,29 @@
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+    padding: 0.5rem;
+    scrollbar-width: thin;
+    position: relative;
+    overflow: auto;
+}
+
+.header, .day {
+    display: grid;
+    border-collapse: collapse;
+    border: 1px solid var(--mat-divider-color);
+}
+.header {
+    padding: 0.5rem;
+    align-items: center;
+    font-weight: bold;
+}
+
+.day {
+    display: grid;
+    min-height: 3rem;
+}
+.day-head {
+    font-weight: bold;
+    text-align: center;
+    padding: 0.1rem;
+}
