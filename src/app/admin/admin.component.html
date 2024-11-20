@@ -2,11 +2,10 @@
   <mat-sidenav
     #drawer
     class="sidenav"
-    fixedInViewport
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
-    [disableClose]="(isHandset$ | async) === false"
+    [fixedInViewport]="mobileQuery.matches"
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [opened]="!mobileQuery.matches"
+    [disableClose]="!mobileQuery.matches"
   >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
@@ -55,7 +54,6 @@
   <mat-sidenav-content>
     <mat-toolbar>
       <mat-toolbar-row>
-        <!-- @if (isHandset$ | async) { -->
         <button
           type="button"
           aria-label="Toggle sidenav"
@@ -64,7 +62,6 @@
         >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <!-- } -->
         <span>Event Tools</span>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">
