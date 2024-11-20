@@ -1,5 +1,4 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { AsyncPipe } from "@angular/common";
 import {
   Component,
   effect,
@@ -19,7 +18,6 @@ import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -29,25 +27,22 @@ import { Rate, RateValueForm } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
 
 @Component({
-  selector: "app-rate-value-form",
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormBaseComponent,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatInput,
-    MatDatepickerModule,
-    MatIcon,
-    MatButtonModule,
-    AsyncPipe,
-    MatOptionModule,
-    MatSelectModule,
-  ],
-  templateUrl: "./rate-value-form.component.html",
-  styleUrl: "./rate-value-form.component.scss",
+    selector: "app-rate-value-form",
+    imports: [
+        ReactiveFormsModule,
+        FormBaseComponent,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatInput,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatOptionModule,
+        MatSelectModule,
+    ],
+    templateUrl: "./rate-value-form.component.html",
+    styleUrl: "./rate-value-form.component.scss"
 })
 export class RateValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);

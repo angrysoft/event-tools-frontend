@@ -14,20 +14,19 @@ import { MatInputModule } from "@angular/material/input";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-add-day",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-  ],
-  templateUrl: "./add-day.component.html",
-  styleUrl: "./add-day.component.scss",
-  providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-add-day",
+    imports: [
+        MatButtonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+    ],
+    templateUrl: "./add-day.component.html",
+    styleUrl: "./add-day.component.scss",
+    providers: [provideNativeDateAdapter()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddDayComponent implements OnInit, OnDestroy{
   addDayForm: FormGroup<AddDayForm>;

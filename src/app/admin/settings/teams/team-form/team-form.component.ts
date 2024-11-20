@@ -28,21 +28,20 @@ import { Team, TeamForm } from "../../../models/teams";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-team-form",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIcon,
-  ],
-  templateUrl: "./team-form.component.html",
-  styleUrl: "./team-form.component.scss",
+    selector: "app-team-form",
+    imports: [
+        FormBaseComponent,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIcon,
+    ],
+    templateUrl: "./team-form.component.html",
+    styleUrl: "./team-form.component.scss"
 })
 export class TeamFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);

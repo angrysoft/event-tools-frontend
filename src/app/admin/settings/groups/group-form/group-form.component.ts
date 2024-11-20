@@ -27,21 +27,20 @@ import { CrudService } from "../../../../services/crud.service";
 import { Group, GroupForm } from "../../../models/group";
 
 @Component({
-  selector: "app-group-form",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIcon,
-  ],
-  templateUrl: "./group-form.component.html",
-  styleUrl: "./group-form.component.scss",
+    selector: "app-group-form",
+    imports: [
+        FormBaseComponent,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIcon,
+    ],
+    templateUrl: "./group-form.component.html",
+    styleUrl: "./group-form.component.scss"
 })
 export class GroupFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);

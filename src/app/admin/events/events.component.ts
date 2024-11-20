@@ -3,11 +3,10 @@ import { DataTableComponent } from "../../components/data-table/data-table.compo
 import { InputFilters } from "../../components/search/model";
 
 @Component({
-  selector: "app-events",
-  standalone: true,
-  imports: [DataTableComponent],
-  templateUrl: "./events.component.html",
-  styleUrl: "./events.component.scss",
+    selector: "app-events",
+    imports: [DataTableComponent],
+    templateUrl: "./events.component.html",
+    styleUrl: "./events.component.scss"
 })
 export class EventsComponent {
   inputFilters = signal<InputFilters>({});

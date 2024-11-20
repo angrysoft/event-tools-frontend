@@ -37,26 +37,24 @@ import { RatesService } from "../../../../services/rates.service";
 import { WorkerDaysService } from "../../../../services/worker-days.service";
 
 @Component({
-  selector: "app-add-workers",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatCardModule,
-    MatSelectModule,
-    MatIconModule,
-    WorkerRatesPipe,
-    MatChipsModule,
-    WorkTimeComponent,
-  ],
-  templateUrl: "./add-workers.component.html",
-  styleUrl: "./add-workers.component.scss",
-  providers: [provideNativeDateAdapter()],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-add-workers",
+    imports: [
+        FormBaseComponent,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatCardModule,
+        MatSelectModule,
+        MatIconModule,
+        WorkerRatesPipe,
+        MatChipsModule,
+        WorkTimeComponent,
+    ],
+    templateUrl: "./add-workers.component.html",
+    styleUrl: "./add-workers.component.scss",
+    providers: [provideNativeDateAdapter()]
 })
 export class AddWorkersComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);

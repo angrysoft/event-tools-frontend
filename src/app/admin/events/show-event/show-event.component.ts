@@ -13,20 +13,19 @@ import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
 import { EventFilesComponent } from "../event-files/event-files.component";
 
 @Component({
-  selector: "app-show-event",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatTabsModule,
-    LoaderComponent,
-    RouterLink,
-    SafeHtmlPipe,
-    EventFilesComponent
-],
-  templateUrl: "./show-event.component.html",
-  styleUrl: "./show-event.component.scss",
+    selector: "app-show-event",
+    imports: [
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        MatTabsModule,
+        LoaderComponent,
+        RouterLink,
+        SafeHtmlPipe,
+        EventFilesComponent
+    ],
+    templateUrl: "./show-event.component.html",
+    styleUrl: "./show-event.component.scss"
 })
 export class ShowEventComponent {
   readonly route = inject(ActivatedRoute);

@@ -15,11 +15,10 @@ import { CrudService } from "../../../services/crud.service";
 import { ListDataSource } from "./list-datasource";
 
 @Component({
-  selector: "app-setting-list",
-  standalone: true,
-  imports: [AddButtonComponent, MatTableModule, MatProgressSpinnerModule],
-  templateUrl: "./setting-list.component.html",
-  styleUrl: "./setting-list.component.scss",
+    selector: "app-setting-list",
+    imports: [AddButtonComponent, MatTableModule, MatProgressSpinnerModule],
+    templateUrl: "./setting-list.component.html",
+    styleUrl: "./setting-list.component.scss"
 })
 export class SettingListComponent<T> implements AfterViewInit, OnInit {
   readonly service = inject(CrudService<T>);

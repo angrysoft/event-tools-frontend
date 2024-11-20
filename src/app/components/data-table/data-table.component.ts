@@ -44,19 +44,18 @@ export class DataTablePaginatorIntl implements MatPaginatorIntl {
 }
 
 @Component({
-  selector: "app-data-table",
-  standalone: true,
-  imports: [
-    AddButtonComponent,
-    MatTableModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    LoaderComponent,
-    SearchComponent,
-  ],
-  templateUrl: "./data-table.component.html",
-  styleUrl: "./data-table.component.scss",
-  providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }],
+    selector: "app-data-table",
+    imports: [
+        AddButtonComponent,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatPaginatorModule,
+        LoaderComponent,
+        SearchComponent,
+    ],
+    templateUrl: "./data-table.component.html",
+    styleUrl: "./data-table.component.scss",
+    providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }]
 })
 export class DataTableComponent<T> implements AfterViewInit, OnInit {
   readonly service = inject(CrudService<T>);

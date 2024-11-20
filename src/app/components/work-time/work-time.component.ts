@@ -14,18 +14,16 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
 import { dateTimeToString } from "../../utils/date";
 
 @Component({
-  selector: "app-work-time",
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    DatePipe,
-  ],
-  templateUrl: "./work-time.component.html",
-  styleUrl: "./work-time.component.scss",
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-work-time",
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        DatePipe,
+    ],
+    templateUrl: "./work-time.component.html",
+    styleUrl: "./work-time.component.scss"
 })
 export class WorkTimeComponent implements AfterContentInit, OnDestroy {
   destroy = new Subject();

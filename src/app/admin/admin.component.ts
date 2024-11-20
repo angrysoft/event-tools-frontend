@@ -15,22 +15,21 @@ import { Router, RouterOutlet } from "@angular/router";
 import { MenuActionComponent } from "../components/menu-action/menu-action.component";
 
 @Component({
-  selector: "app-main",
-  templateUrl: "./admin.component.html",
-  styleUrl: "./admin.component.scss",
-  standalone: true,
-  imports: [
-    MatExpansionModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    AsyncPipe,
-    MatMenuModule,
-    RouterOutlet,
-    MenuActionComponent,
-  ],
+    selector: "app-main",
+    templateUrl: "./admin.component.html",
+    styleUrl: "./admin.component.scss",
+    imports: [
+        MatExpansionModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatListModule,
+        MatIconModule,
+        AsyncPipe,
+        MatMenuModule,
+        RouterOutlet,
+        MenuActionComponent,
+    ]
 })
 export class AdminComponent {
   private breakpointObserver = inject(BreakpointObserver);

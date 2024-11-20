@@ -43,20 +43,19 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
 import { WorkerBase } from "../../models/worker";
 
 @Component({
-  selector: "app-event-days",
-  standalone: true,
-  imports: [
-    MatTabsModule,
-    MatButtonModule,
-    MatIcon,
-    MatDividerModule,
-    RouterLink,
-    DatePipe,
-    WorkerDayComponent,
-    LoaderComponent,
-  ],
-  templateUrl: "./event-days.component.html",
-  styleUrl: "./event-days.component.scss",
+    selector: "app-event-days",
+    imports: [
+        MatTabsModule,
+        MatButtonModule,
+        MatIcon,
+        MatDividerModule,
+        RouterLink,
+        DatePipe,
+        WorkerDayComponent,
+        LoaderComponent,
+    ],
+    templateUrl: "./event-days.component.html",
+    styleUrl: "./event-days.component.scss"
 })
 export class EventDaysComponent implements AfterViewInit {
   dialog = inject(MatDialog);

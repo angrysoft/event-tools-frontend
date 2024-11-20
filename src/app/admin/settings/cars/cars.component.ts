@@ -2,11 +2,10 @@ import { Component } from "@angular/core";
 import { DataTableComponent } from "../../../components/data-table/data-table.component";
 
 @Component({
-  selector: "app-cars",
-  standalone: true,
-  imports: [DataTableComponent],
-  templateUrl: "./cars.component.html",
-  styleUrl: "./cars.component.scss",
+    selector: "app-cars",
+    imports: [DataTableComponent],
+    templateUrl: "./cars.component.html",
+    styleUrl: "./cars.component.scss"
 })
 export class CarsComponent {
   tableColumns = [

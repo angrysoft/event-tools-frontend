@@ -37,22 +37,21 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
 import { WorkersService } from "../../services/workers.service";
 
 @Component({
-  selector: "app-event-form",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatOptionModule,
-    MatSelectModule,
-  ],
-  templateUrl: "./event-form.component.html",
-  styleUrl: "./event-form.component.scss",
+    selector: "app-event-form",
+    imports: [
+        FormBaseComponent,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatOptionModule,
+        MatSelectModule,
+    ],
+    templateUrl: "./event-form.component.html",
+    styleUrl: "./event-form.component.scss"
 })
 export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly router = inject(Router);

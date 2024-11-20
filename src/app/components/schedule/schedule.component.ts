@@ -30,21 +30,20 @@ import { dateToString } from "../../utils/date";
 import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
-  selector: "app-schedule",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    LoaderComponent,
-    DatePipe,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-  ],
-  templateUrl: "./schedule.component.html",
-  styleUrl: "./schedule.component.scss",
+    selector: "app-schedule",
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        LoaderComponent,
+        DatePipe,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+    ],
+    templateUrl: "./schedule.component.html",
+    styleUrl: "./schedule.component.scss"
 })
 export class ScheduleComponent implements OnDestroy, AfterViewInit {
   private readonly service = inject(WorkerDaysService);

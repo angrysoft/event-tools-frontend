@@ -1,28 +1,25 @@
-import { Component, inject, signal, input } from "@angular/core";
+import { Component, inject, input, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
 import { MatIcon } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { RouterLink } from "@angular/router";
-import { AddButtonComponent } from "../../../components/add-button/add-button.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { Car } from "../../models/car";
 import { CarsService } from "../../services/cars.service";
 
 @Component({
-  selector: "app-cars",
-  standalone: true,
-  imports: [
-    MatCardModule,
-    RouterLink,
-    MatButtonModule,
-    AddButtonComponent,
-    MatIcon,
-    MatListModule,
-  ],
-  templateUrl: "./cars.component.html",
-  styleUrl: "./cars.component.scss",
+    selector: "app-cars",
+    imports: [
+        MatCardModule,
+        RouterLink,
+        MatButtonModule,
+        MatIcon,
+        MatListModule,
+    ],
+    templateUrl: "./cars.component.html",
+    styleUrl: "./cars.component.scss"
 })
 export class CarsComponent {
   readonly confirm = inject(MatDialog);
