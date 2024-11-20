@@ -1,29 +1,9 @@
-<mat-toolbar>
-    <mat-toolbar-row>
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-      >
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>Event Tools</span>
 
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>person</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="onLogout()">Wyloguj</button>
-      </mat-menu>
-    </mat-toolbar-row>
-  </mat-toolbar>
-<mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+<mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #drawer
     class="sidenav"
     [fixedInViewport]="mobileQuery.matches"
-    fixedTopGap="56"
     [mode]="mobileQuery.matches ? 'over' : 'side'"
     [opened]="!mobileQuery.matches"
     [disableClose]="!mobileQuery.matches"
@@ -73,7 +53,26 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+    <mat-toolbar>
+        <mat-toolbar-row>
+          <button
+            type="button"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            (click)="drawer.toggle()"
+          >
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+          <span>Event Tools</span>
     
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onLogout()">Wyloguj</button>
+          </mat-menu>
+        </mat-toolbar-row>
+      </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

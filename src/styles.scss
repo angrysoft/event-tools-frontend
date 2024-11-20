@@ -185,7 +185,10 @@ html {
     @include mat.system-level-colors($dark-theme);
     @include mat.system-level-typography($dark-theme);
 
-    
+    @include mat.sidenav-overrides((
+    container-width: 250px,
+  ));
+
     @media (prefers-color-scheme: light) {
         @include mat.system-level-colors($light-theme);
         @include mat.system-level-typography($light-theme);
@@ -212,6 +215,10 @@ $mat-xl: $mat-gt-xl;
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+* {
+    box-sizing: border-box;
+}
+
 .flex {
     display: flex;
 }
@@ -228,12 +235,56 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: grid;
 }
 
+mat-sidenav-content {
+    box-sizing:border-box;
+    padding: 0 !important;
+    position: relative;
+}
+
+.mat-drawer-content {
+    display: grid !important;
+    grid-template-rows: auto 0fr 1fr;
+    position: relative;
+    overflow: hidden !important;
+    height: 100dvh;
+    padding: 0 0.5rem;
+}
+
 .side-content {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        max-height: calc(100% - 4rem);
-        overflow: hidden;
+    box-sizing:border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+app-workers,
+app-events,
+app-schedule,
+app-work-schedule,
+app-worker-form,
+app-form-base,
+app-rates,
+app-setting-list,
+app-groups,
+app-teams,
+app-addons,
+app-cars,
+app-event-days,
+app-show-event,
+app-event-form,
+app-add-workers,
+app-change-rates {
+    display: block;
+    box-sizing:border-box;
+    height: 100%;
+    overflow: hidden;
+}
+
+app-schedule {
+    display: flex;
+    flex-direction: column;
 }
 
 .delete-button {

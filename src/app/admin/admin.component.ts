@@ -4,13 +4,13 @@ import {
   MediaMatcher,
 } from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import { ChangeDetectorRef, Component, inject, OnDestroy } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, ViewChild, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatMenuModule } from "@angular/material/menu";
-import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatDrawer, MatSidenavModule } from "@angular/material/sidenav";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterOutlet } from "@angular/router";
 import { Observable } from "rxjs";
@@ -38,6 +38,7 @@ export class AdminComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
   private auth = inject(AuthService);
   private readonly _mobileQueryListener: () => void;
+  @ViewChild("drawer") drawer !: ElementRef<MatDrawer>;
 
   constructor() {
     const changeDetectorRef = inject(ChangeDetectorRef);
