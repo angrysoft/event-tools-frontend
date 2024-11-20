@@ -21,21 +21,20 @@ import { WorkTimeComponent } from "../../../../components/work-time/work-time.co
 import { getTimeFromDataTimeString } from "../../../../utils/date";
 
 @Component({
-  selector: "app-change-time",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    WorkTimeComponent,
-  ],
-  templateUrl: "./change-time.component.html",
-  styleUrl: "./change-time.component.scss",
-  providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-change-time",
+    imports: [
+        MatButtonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        WorkTimeComponent,
+    ],
+    templateUrl: "./change-time.component.html",
+    styleUrl: "./change-time.component.scss",
+    providers: [provideNativeDateAdapter()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChangeTimeComponent {
   changeTimeForm: FormGroup<ChangeTimeForm>;

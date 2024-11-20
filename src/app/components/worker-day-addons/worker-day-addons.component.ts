@@ -28,20 +28,19 @@ import { MatButtonModule } from "@angular/material/button";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-worker-day-addons",
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-  ],
-  templateUrl: "./worker-day-addons.component.html",
-  styleUrl: "./worker-day-addons.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-worker-day-addons",
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+    ],
+    templateUrl: "./worker-day-addons.component.html",
+    styleUrl: "./worker-day-addons.component.scss",
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
   fb = inject(FormBuilder);

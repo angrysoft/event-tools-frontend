@@ -5,11 +5,10 @@ import { SearchComponent } from "../../components/search/search.component";
 import { WorkersService } from "../services/workers.service";
 
 @Component({
-  selector: "app-workers",
-  templateUrl: "./workers.component.html",
-  styleUrl: "./workers.component.scss",
-  standalone: true,
-  imports: [SearchComponent, DataTableComponent],
+    selector: "app-workers",
+    templateUrl: "./workers.component.html",
+    styleUrl: "./workers.component.scss",
+    imports: [SearchComponent, DataTableComponent]
 })
 export class WorkersComponent implements AfterViewInit {
   inputFilters = signal<InputFilters>({});

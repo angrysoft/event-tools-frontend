@@ -22,25 +22,24 @@ export interface DialogData {
 }
 
 @Component({
-  selector: "app-show-worker",
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatCardModule,
-    RouterLink,
-    MatDialogModule,
-    MatTabsModule,
-    MatListModule,
-    DocsComponent,
-    RatesComponent,
-    LoaderComponent,
-    AddonsComponent,
-    CarsComponent,
-  ],
-  templateUrl: "./show-worker.component.html",
-  styleUrl: "./show-worker.component.scss",
+    selector: "app-show-worker",
+    imports: [
+        MatIconModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatCardModule,
+        RouterLink,
+        MatDialogModule,
+        MatTabsModule,
+        MatListModule,
+        DocsComponent,
+        RatesComponent,
+        LoaderComponent,
+        AddonsComponent,
+        CarsComponent,
+    ],
+    templateUrl: "./show-worker.component.html",
+    styleUrl: "./show-worker.component.scss"
 })
 export class ShowWorkerComponent {
   readonly confirm = inject(MatDialog);

@@ -18,17 +18,16 @@ import { EventDay, WorkerDay } from "../../../models/events";
 import { WorkerDayDataSource } from "./worker-day-datasource";
 
 @Component({
-  selector: "app-worker-day",
-  standalone: true,
-  imports: [
-    MatTableModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatDivider,
-    DatePipe,
-  ],
-  templateUrl: "./worker-day.component.html",
-  styleUrl: "./worker-day.component.scss",
+    selector: "app-worker-day",
+    imports: [
+        MatTableModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatDivider,
+        DatePipe,
+    ],
+    templateUrl: "./worker-day.component.html",
+    styleUrl: "./worker-day.component.scss"
 })
 export class WorkerDayComponent implements AfterViewInit {
   dialog = inject(MatDialog);

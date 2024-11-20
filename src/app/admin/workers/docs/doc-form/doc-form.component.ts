@@ -28,24 +28,23 @@ import { WorkerDocForm } from "../../../models/worker-doc";
 import { DocsService } from "../../../services/docs.service";
 
 @Component({
-  selector: "app-doc-form",
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormBaseComponent,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatInput,
-    MatDatepickerModule,
-    MatIcon,
-    MatButtonModule,
-    AsyncPipe,
-  ],
-  providers: [provideNativeDateAdapter()],
-  templateUrl: "./doc-form.component.html",
-  styleUrl: "./doc-form.component.scss",
+    selector: "app-doc-form",
+    imports: [
+        ReactiveFormsModule,
+        FormBaseComponent,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatInput,
+        MatDatepickerModule,
+        MatIcon,
+        MatButtonModule,
+        AsyncPipe,
+    ],
+    providers: [provideNativeDateAdapter()],
+    templateUrl: "./doc-form.component.html",
+    styleUrl: "./doc-form.component.scss"
 })
 export class DocFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);

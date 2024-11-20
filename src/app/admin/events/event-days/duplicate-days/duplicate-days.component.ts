@@ -19,21 +19,20 @@ import { MatInputModule } from "@angular/material/input";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-duplicate-days",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatDatepickerModule,
-  ],
-  templateUrl: "./duplicate-days.component.html",
-  styleUrl: "./duplicate-days.component.scss",
-  providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-duplicate-days",
+    imports: [
+        MatButtonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatDatepickerModule,
+    ],
+    templateUrl: "./duplicate-days.component.html",
+    styleUrl: "./duplicate-days.component.scss",
+    providers: [provideNativeDateAdapter()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DuplicateDaysComponent {
   duplicateDaysForm: FormGroup<DuplicateDaysForm>;

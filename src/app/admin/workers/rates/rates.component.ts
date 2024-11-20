@@ -12,19 +12,17 @@ import { RatesService } from "../../services/rates.service";
 import { MatDividerModule } from "@angular/material/divider";
 
 @Component({
-  selector: "app-rates",
-  standalone: true,
-
-  imports: [
-    MatCardModule,
-    RouterLink,
-    MatButtonModule,
-    AddButtonComponent,
-    MatIcon,
-    MatDividerModule,
-  ],
-  templateUrl: "./rates.component.html",
-  styleUrl: "./rates.component.scss",
+    selector: "app-rates",
+    imports: [
+        MatCardModule,
+        RouterLink,
+        MatButtonModule,
+        AddButtonComponent,
+        MatIcon,
+        MatDividerModule,
+    ],
+    templateUrl: "./rates.component.html",
+    styleUrl: "./rates.component.scss"
 })
 export class RatesComponent implements OnInit {
   readonly confirm = inject(MatDialog);

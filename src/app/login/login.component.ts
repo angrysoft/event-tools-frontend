@@ -8,19 +8,18 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { AuthService } from "../services/auth.service";
 
 @Component({
-  selector: "app-login",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatLabel,
-    MatProgressBarModule,
-  ],
-  templateUrl: "./login.component.html",
-  styleUrl: "./login.component.scss",
+    selector: "app-login",
+    imports: [
+        MatButtonModule,
+        MatCardModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatLabel,
+        MatProgressBarModule,
+    ],
+    templateUrl: "./login.component.html",
+    styleUrl: "./login.component.scss"
 })
 export class LoginComponent implements OnInit {
   form: FormGroup = new FormGroup({

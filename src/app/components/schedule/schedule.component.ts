@@ -42,24 +42,23 @@ import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 
 @Component({
-  selector: "app-schedule",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    LoaderComponent,
-    DatePipe,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    CdkContextMenuTrigger,
-    CdkMenu,
-    CdkMenuItem,
-  ],
-  templateUrl: "./schedule.component.html",
-  styleUrl: "./schedule.component.scss",
+    selector: "app-schedule",
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        LoaderComponent,
+        DatePipe,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        CdkContextMenuTrigger,
+        CdkMenu,
+        CdkMenuItem,
+    ],
+    templateUrl: "./schedule.component.html",
+    styleUrl: "./schedule.component.scss"
 })
 export class ScheduleComponent implements OnDestroy, AfterViewInit {
   private readonly workerDayService = inject(WorkerDaysService);

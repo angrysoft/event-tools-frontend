@@ -9,21 +9,20 @@ import { MatInputModule } from "@angular/material/input";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-add-day-off",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatDatepickerModule,
-  ],
-  templateUrl: "./add-day-off.component.html",
-  styleUrl: "./add-day-off.component.scss",
-  providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "app-add-day-off",
+    imports: [
+        MatButtonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatDatepickerModule,
+    ],
+    templateUrl: "./add-day-off.component.html",
+    styleUrl: "./add-day-off.component.scss",
+    providers: [provideNativeDateAdapter()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddDayOffComponent {
   daysOffForm: FormGroup<DaysOffForm>;

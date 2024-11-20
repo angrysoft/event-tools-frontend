@@ -17,17 +17,16 @@ import { WorkerDoc } from "../../models/worker-doc";
 import { DocsService } from "../../services/docs.service";
 
 @Component({
-  selector: "app-docs",
-  standalone: true,
-  imports: [
-    MatCardModule,
-    RouterLink,
-    MatButtonModule,
-    AddButtonComponent,
-    MatIcon,
-  ],
-  templateUrl: "./docs.component.html",
-  styleUrl: "./docs.component.scss",
+    selector: "app-docs",
+    imports: [
+        MatCardModule,
+        RouterLink,
+        MatButtonModule,
+        AddButtonComponent,
+        MatIcon,
+    ],
+    templateUrl: "./docs.component.html",
+    styleUrl: "./docs.component.scss"
 })
 export class DocsComponent {
   readonly confirm = inject(MatDialog);

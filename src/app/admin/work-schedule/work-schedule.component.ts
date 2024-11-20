@@ -4,11 +4,10 @@ import { Router } from "@angular/router";
 import { ScheduleAction, WorkerDaySchedule } from "../../models/schedule";
 
 @Component({
-  selector: "app-work-schedule",
-  standalone: true,
-  imports: [ScheduleComponent],
-  templateUrl: "./work-schedule.component.html",
-  styleUrl: "./work-schedule.component.scss",
+    selector: "app-work-schedule",
+    imports: [ScheduleComponent],
+    templateUrl: "./work-schedule.component.html",
+    styleUrl: "./work-schedule.component.scss"
 })
 export class WorkScheduleComponent {
   private readonly router = inject(Router);

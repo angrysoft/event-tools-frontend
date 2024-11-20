@@ -22,25 +22,24 @@ import { Addon, AddonValueForm } from "../../../models/addon";
 import { AddonsService } from "../../../services/addons.service";
 
 @Component({
-  selector: "app-addon-value-form",
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormBaseComponent,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatInput,
-    MatDatepickerModule,
-    MatIcon,
-    MatButtonModule,
-    AsyncPipe,
-    MatOptionModule,
-    MatSelectModule,
-  ],
-  templateUrl: "./addon-value-form.component.html",
-  styleUrl: "./addon-value-form.component.scss",
+    selector: "app-addon-value-form",
+    imports: [
+        ReactiveFormsModule,
+        FormBaseComponent,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatInput,
+        MatDatepickerModule,
+        MatIcon,
+        MatButtonModule,
+        AsyncPipe,
+        MatOptionModule,
+        MatSelectModule,
+    ],
+    templateUrl: "./addon-value-form.component.html",
+    styleUrl: "./addon-value-form.component.scss"
 })
 export class AddonValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);

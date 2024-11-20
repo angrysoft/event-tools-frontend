@@ -31,23 +31,22 @@ import { passwordValidator } from "./passwordValidator";
 import { WorkerForm } from "../../models/worker";
 
 @Component({
-  selector: "app-worker-form",
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatDividerModule,
-    MatCardModule,
-    RouterLink,
-    FormBaseComponent,
-  ],
-  templateUrl: "./worker-form.component.html",
-  styleUrl: "./worker-form.component.scss",
+    selector: "app-worker-form",
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatDividerModule,
+        MatCardModule,
+        RouterLink,
+        FormBaseComponent,
+    ],
+    templateUrl: "./worker-form.component.html",
+    styleUrl: "./worker-form.component.scss"
 })
 export class WorkerFormComponent implements OnInit, OnDestroy {
   readonly route = inject(ActivatedRoute);

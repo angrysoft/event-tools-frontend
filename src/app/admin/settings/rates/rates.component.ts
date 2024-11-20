@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { SettingListComponent } from '../setting-list/setting-list.component';
 
 @Component({
-  selector: 'app-rates',
-  standalone: true,
-  imports: [SettingListComponent],
-  templateUrl: './rates.component.html',
-  styleUrl: './rates.component.scss'
+    selector: 'app-rates',
+    imports: [SettingListComponent],
+    templateUrl: './rates.component.html',
+    styleUrl: './rates.component.scss'
 })
 export class RatesComponent {
   tableColumns = [

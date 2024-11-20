@@ -9,18 +9,17 @@ import { MatProgressBar } from "@angular/material/progress-bar";
 import { catchError, of, Subject, takeUntil } from "rxjs";
 
 @Component({
-  selector: "app-send-dialog",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogModule,
-    MatProgressBar,
-    MatIconModule,
-    MatDivider,
-    MatListModule
-  ],
-  templateUrl: "./send-dialog.component.html",
-  styleUrl: "./send-dialog.component.scss",
+    selector: "app-send-dialog",
+    imports: [
+        MatButtonModule,
+        MatDialogModule,
+        MatProgressBar,
+        MatIconModule,
+        MatDivider,
+        MatListModule
+    ],
+    templateUrl: "./send-dialog.component.html",
+    styleUrl: "./send-dialog.component.scss"
 })
 export class SendDialogComponent implements AfterContentInit {
   readonly data = inject(MAT_DIALOG_DATA);

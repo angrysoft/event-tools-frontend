@@ -31,24 +31,23 @@ import { RatesService } from "../../../services/rates.service";
 import {AutofocusDirective} from "../../../../directives/autofocus.directive";
 
 @Component({
-  selector: "app-rate-form",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIcon,
-    MatOptionModule,
-    MatSelectModule,
-    AutofocusDirective
-  ],
-  templateUrl: "./rate-form.component.html",
-  styleUrl: "./rate-form.component.scss",
+    selector: "app-rate-form",
+    imports: [
+        FormBaseComponent,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIcon,
+        MatOptionModule,
+        MatSelectModule,
+        AutofocusDirective
+    ],
+    templateUrl: "./rate-form.component.html",
+    styleUrl: "./rate-form.component.scss"
 })
 export class RateFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);

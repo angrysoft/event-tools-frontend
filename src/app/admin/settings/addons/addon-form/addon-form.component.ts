@@ -31,24 +31,23 @@ import { AddonsService } from "../../../services/addons.service";
 import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
-  selector: "app-addon-form",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIcon,
-    MatOptionModule,
-    MatSelectModule,
-    AutofocusDirective
-  ],
-  templateUrl: "./addon-form.component.html",
-  styleUrl: "./addon-form.component.scss",
+    selector: "app-addon-form",
+    imports: [
+        FormBaseComponent,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIcon,
+        MatOptionModule,
+        MatSelectModule,
+        AutofocusDirective
+    ],
+    templateUrl: "./addon-form.component.html",
+    styleUrl: "./addon-form.component.scss"
 })
 export class AddonFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);

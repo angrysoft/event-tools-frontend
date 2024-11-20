@@ -29,25 +29,24 @@ import { Rate, RateValueForm } from "../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
 
 @Component({
-  selector: "app-rate-value-form",
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormBaseComponent,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatInput,
-    MatDatepickerModule,
-    MatIcon,
-    MatButtonModule,
-    AsyncPipe,
-    MatOptionModule,
-    MatSelectModule,
-  ],
-  templateUrl: "./rate-value-form.component.html",
-  styleUrl: "./rate-value-form.component.scss",
+    selector: "app-rate-value-form",
+    imports: [
+        ReactiveFormsModule,
+        FormBaseComponent,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatInput,
+        MatDatepickerModule,
+        MatIcon,
+        MatButtonModule,
+        AsyncPipe,
+        MatOptionModule,
+        MatSelectModule,
+    ],
+    templateUrl: "./rate-value-form.component.html",
+    styleUrl: "./rate-value-form.component.scss"
 })
 export class RateValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);

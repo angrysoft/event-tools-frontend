@@ -21,18 +21,17 @@ import { EventFile } from "../../models/events";
 import { EventsService } from "../../services/events.service";
 
 @Component({
-  selector: "app-event-files",
-  standalone: true,
-  imports: [
-    MatListModule,
-    FileSizePipe,
-    MatIconModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDivider,
-  ],
-  templateUrl: "./event-files.component.html",
-  styleUrl: "./event-files.component.scss",
+    selector: "app-event-files",
+    imports: [
+        MatListModule,
+        FileSizePipe,
+        MatIconModule,
+        MatCardModule,
+        MatButtonModule,
+        MatDivider,
+    ],
+    templateUrl: "./event-files.component.html",
+    styleUrl: "./event-files.component.scss"
 })
 export class EventFilesComponent {
   eventId = input.required<number>();

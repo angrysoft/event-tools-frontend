@@ -21,21 +21,20 @@ import { MatSelectModule } from "@angular/material/select";
 import { InputFilters, SearchQuery } from "./model";
 
 @Component({
-  selector: "app-search",
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInput,
-    MatLabel,
-    MatIconModule,
-    MatButtonModule,
-    MatOptionModule,
-    MatSelectModule,
-    CommonModule,
-  ],
-  templateUrl: "./search.component.html",
-  styleUrl: "./search.component.scss",
+    selector: "app-search",
+    imports: [
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInput,
+        MatLabel,
+        MatIconModule,
+        MatButtonModule,
+        MatOptionModule,
+        MatSelectModule,
+        CommonModule,
+    ],
+    templateUrl: "./search.component.html",
+    styleUrl: "./search.component.scss"
 })
 export class SearchComponent implements AfterViewInit {
   searchRequest = output<SearchQuery>();

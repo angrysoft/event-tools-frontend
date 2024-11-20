@@ -14,19 +14,18 @@ import { Subject, takeUntil } from "rxjs";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @Component({
-  selector: "app-change-status",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    KeyValuePipe,
-  ],
-  templateUrl: "./change-status.component.html",
-  styleUrl: "./change-status.component.scss",
+    selector: "app-change-status",
+    imports: [
+        MatButtonModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        KeyValuePipe,
+    ],
+    templateUrl: "./change-status.component.html",
+    styleUrl: "./change-status.component.scss"
 })
 export class ChangeStatusComponent {
   changeStatusForm: FormGroup<ChangeStatusForm>;

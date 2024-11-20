@@ -31,26 +31,25 @@ import { WorkerDaysService } from "../../../services/worker-days.service";
 import { WorkerDayAddonsComponent } from "../../../../components/worker-day-addons/worker-day-addons.component";
 
 @Component({
-  selector: "app-change-rates",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatCardModule,
-    MatSelectModule,
-    MatIconModule,
-    WorkerRatesPipe,
-    MatChipsModule,
-    MatDivider,
-    MatCheckboxModule,
-    WorkerDayAddonsComponent,
-  ],
-  templateUrl: "./change-rates.component.html",
-  styleUrl: "./change-rates.component.scss",
+    selector: "app-change-rates",
+    imports: [
+        FormBaseComponent,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatCardModule,
+        MatSelectModule,
+        MatIconModule,
+        WorkerRatesPipe,
+        MatChipsModule,
+        MatDivider,
+        MatCheckboxModule,
+        WorkerDayAddonsComponent,
+    ],
+    templateUrl: "./change-rates.component.html",
+    styleUrl: "./change-rates.component.scss"
 })
 export class ChangeRatesComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);

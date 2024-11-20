@@ -13,17 +13,16 @@ export interface DialogData {
 }
 
 @Component({
-  selector: "app-confirm-dialog",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-  ],
-  templateUrl: "./confirm-dialog.component.html",
-  styleUrl: "./confirm-dialog.component.scss",
+    selector: "app-confirm-dialog",
+    imports: [
+        MatButtonModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+    ],
+    templateUrl: "./confirm-dialog.component.html",
+    styleUrl: "./confirm-dialog.component.scss"
 })
 export class ConfirmDialogComponent {
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);

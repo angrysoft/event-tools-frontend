@@ -11,18 +11,17 @@ import { Car } from "../../models/car";
 import { CarsService } from "../../services/cars.service";
 
 @Component({
-  selector: "app-cars",
-  standalone: true,
-  imports: [
-    MatCardModule,
-    RouterLink,
-    MatButtonModule,
-    AddButtonComponent,
-    MatIcon,
-    MatListModule,
-  ],
-  templateUrl: "./cars.component.html",
-  styleUrl: "./cars.component.scss",
+    selector: "app-cars",
+    imports: [
+        MatCardModule,
+        RouterLink,
+        MatButtonModule,
+        AddButtonComponent,
+        MatIcon,
+        MatListModule,
+    ],
+    templateUrl: "./cars.component.html",
+    styleUrl: "./cars.component.scss"
 })
 export class CarsComponent {
   readonly confirm = inject(MatDialog);

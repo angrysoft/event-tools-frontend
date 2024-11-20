@@ -22,23 +22,22 @@ import { Car, CarForm } from "../../../models/car";
 import { CarsService } from "../../../services/cars.service";
 
 @Component({
-  selector: "app-car-form",
-  standalone: true,
-  imports: [
-    FormBaseComponent,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatLabel,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIcon,
-    MatOptionModule,
-    MatSelectModule,
-  ],
-  templateUrl: "./car-form.component.html",
-  styleUrl: "./car-form.component.scss",
+    selector: "app-car-form",
+    imports: [
+        FormBaseComponent,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIcon,
+        MatOptionModule,
+        MatSelectModule,
+    ],
+    templateUrl: "./car-form.component.html",
+    styleUrl: "./car-form.component.scss"
 })
 export class CarFormComponent {
   readonly router = inject(Router);

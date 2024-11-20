@@ -25,22 +25,21 @@ import { WorkerChooserConfig } from "./worker-chooser-config";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @Component({
-  selector: "app-worker-chooser",
-  standalone: true,
-  imports: [
-    MatTableModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    LoaderComponent,
-    SearchComponent,
-    MatDialogActions,
-    MatDialogClose,
-    MatCheckboxModule,
-  ],
-  templateUrl: "./worker-chooser.component.html",
-  styleUrl: "./worker-chooser.component.scss",
-  providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }],
+    selector: "app-worker-chooser",
+    imports: [
+        MatTableModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatPaginatorModule,
+        LoaderComponent,
+        SearchComponent,
+        MatDialogActions,
+        MatDialogClose,
+        MatCheckboxModule,
+    ],
+    templateUrl: "./worker-chooser.component.html",
+    styleUrl: "./worker-chooser.component.scss",
+    providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }]
 })
 export class WorkerChooserComponent<T> {
   readonly service = inject(WorkersService);

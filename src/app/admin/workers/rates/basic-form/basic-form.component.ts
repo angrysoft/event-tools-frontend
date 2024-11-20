@@ -14,16 +14,15 @@ import { BasicPayForm } from "../../../models/rate";
 import { WorkersService } from "../../../services/workers.service";
 
 @Component({
-  selector: "app-basic-form",
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormBaseComponent,
-    MatInputModule,
-    MatCardModule,
-  ],
-  templateUrl: "./basic-form.component.html",
-  styleUrl: "./basic-form.component.scss",
+    selector: "app-basic-form",
+    imports: [
+        ReactiveFormsModule,
+        FormBaseComponent,
+        MatInputModule,
+        MatCardModule,
+    ],
+    templateUrl: "./basic-form.component.html",
+    styleUrl: "./basic-form.component.scss"
 })
 export class BasicFormComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
