@@ -1,12 +1,4 @@
-.actions, .action-buttons {
-    display: flex;
-    gap: 1rem;
-    padding: 0.1rem;
-}
 
-.actions {
-    flex-wrap: wrap;
-}
 
 .schedule {
     display: grid;
@@ -50,9 +42,6 @@
 
 .header {
     padding: 0.5rem;
-}
-
-.header {
     font-weight: bold;
     text-align: center;
 }
@@ -80,13 +69,7 @@
     left: 0;
 }
 
-#month.mat-mdc-form-field {
-    max-width: 9rem;
-}
 
-#year.mat-mdc-form-field {
-    max-width: 6rem !important;
-}
 
 @media only screen and (min-width: 960px) {
     .schedule {

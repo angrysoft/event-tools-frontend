@@ -1,24 +1,19 @@
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
-import { DatePipe, JsonPipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import {
-  AfterRenderRef,
   AfterViewInit,
   Component,
-  effect,
   ElementRef,
   inject,
   input,
   OnDestroy,
   output,
   signal,
-  untracked,
-  ViewChild,
+  ViewChild
 } from "@angular/core";
 import {
   FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
+  ReactiveFormsModule
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -27,40 +22,42 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { debounceTime, Subject, takeUntil } from "rxjs";
+import { Subject } from "rxjs";
 import { DuplicateDaysComponent } from "../../admin/events/event-days/duplicate-days/duplicate-days.component";
 import { WorkerDaysService } from "../../admin/services/worker-days.service";
 import {
   Schedule,
   ScheduleAction,
-  WorkerDaySchedule,
-  WorkerSchedule,
+  WorkerDaySchedule
 } from "../../models/schedule";
 import { dateToString } from "../../utils/date";
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
+import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 
 @Component({
     selector: "app-schedule",
     imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatDividerModule,
-        LoaderComponent,
-        DatePipe,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        CdkContextMenuTrigger,
-        CdkMenu,
-        CdkMenuItem,
-    ],
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    LoaderComponent,
+    DatePipe,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    CdkContextMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
+    DateChangerComponent
+],
     templateUrl: "./schedule.component.html",
     styleUrl: "./schedule.component.scss"
 })
 export class ScheduleComponent implements OnDestroy, AfterViewInit {
+
   private readonly workerDayService = inject(WorkerDaysService);
   private readonly dialog = inject(MatDialog);
   observer!: IntersectionObserver;
@@ -75,49 +72,10 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   admin = input<boolean>(false);
   loading = signal<boolean>(true);
   action = output<ScheduleAction>();
-  currentDate = signal<Date>(new Date());
-  dateFrom: FormGroup<DateForm>;
-  offset: number;
-  size: number;
-  destroy = new Subject();
+  offset: number = 0;
+  size: number = 30;
   @ViewChild("end") end!: ElementRef<HTMLDivElement>;
-
-  constructor() {
-    this.offset = 0;
-    this.size = 30;
-    this.currentDate().setDate(1);
-    this.dateFrom = new FormGroup<DateForm>({
-      month: new FormControl(
-        this.currentDate().getMonth(),
-        Validators.required,
-      ),
-      year: new FormControl(this.currentDate().getFullYear(), [
-        Validators.required,
-        Validators.min(2024),
-        Validators.minLength(4),
-      ]),
-    });
-
-    this.dateFrom.statusChanges
-      .pipe(debounceTime(500), takeUntil(this.destroy))
-      .subscribe((status) => {
-        if (status === "VALID") {
-          const date = new Date();
-          date.setDate(1);
-          date.setFullYear(this.dateFrom.controls.year.value ?? 0);
-          date.setMonth(this.dateFrom.controls.month.value ?? 0);
-          this.offset = 0;
-          this.currentDate.set(date);
-        }
-      });
-
-    effect(() => {
-      const date = this.currentDate();
-      untracked(() => {
-        if (date) this.initialData();
-      });
-    });
-  }
+  currentDate: string = "";
 
   ngAfterViewInit(): void {
     const options = {
@@ -135,15 +93,9 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
     this.observer.disconnect();
   }
 
-  initialData() {
-    this.offset = 0;
-    this.loadData(this.size, this.offset);
-  }
 
   reloadData() {
     let size = this.size;
@@ -158,7 +110,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.loading.set(true);
 
     this.workerDayService
-      .getSchedule(size, offset, dateToString(this.currentDate()))
+      .getSchedule(size, offset, this.currentDate)
       .subscribe((resp) => {
         if (resp.ok) {
           this.observer.disconnect();
@@ -177,7 +129,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     if (newOffset > this.schedules().total) return;
     this.offset = newOffset;
     this.workerDayService
-      .getSchedule(this.size, this.offset, dateToString(this.currentDate()))
+      .getSchedule(this.size, this.offset, this.currentDate)
       .subscribe((resp) => {
         if (resp.ok) {
           this.schedules().workerSchedules.push(...resp.data.workerSchedules);
@@ -206,18 +158,11 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     return this.schedules().workerSchedules;
   }
 
-  prevMonth() {
-    const newDate = new Date(this.currentDate());
-    newDate.setMonth(newDate.getMonth() - 1);
-    this.dateFrom.controls.month.setValue(newDate.getMonth());
-    this.dateFrom.controls.year.setValue(newDate.getFullYear());
-  }
 
-  nextMonth() {
-    const newDate = new Date(this.currentDate());
-    newDate.setMonth(newDate.getMonth() + 1);
-    this.dateFrom.controls.month.setValue(newDate.getMonth());
-    this.dateFrom.controls.year.setValue(newDate.getFullYear());
+  dateChange(date:string) {
+    this.currentDate = date;
+    this.offset = 0;
+    this.loadData(this.size, this.offset);
   }
 
   onClick(data: any) {
@@ -347,6 +292,10 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
       } else this.workerDayService.showError(resp);
       this.loading.set(false);
     });
+  }
+
+  checkDayOff(data: WorkerDaySchedule) {
+    return `${data.id}.${data.startDate}.${data.accepted}`;
   }
 }
 

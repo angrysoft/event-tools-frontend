@@ -1,0 +1,42 @@
+<div class="actions">
+  <form [formGroup]="dateFrom" class="actions">
+    <div class="action-buttons">
+      <button mat-icon-button (click)="prevMonth()" type="button">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+      <button mat-icon-button (click)="nextMonth()" type="button">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+    <div class="action-buttons">
+      <mat-form-field appearance="outline" id="month">
+        <mat-label>Miesiące</mat-label>
+        <mat-select formControlName="month">
+          <mat-option [value]="0">Styczeń</mat-option>
+          <mat-option [value]="1">Luty</mat-option>
+          <mat-option [value]="2">Marzec</mat-option>
+          <mat-option [value]="3">Kwiecień</mat-option>
+          <mat-option [value]="4">Maj</mat-option>
+          <mat-option [value]="5">Czerwiec</mat-option>
+          <mat-option [value]="6">Lipiec</mat-option>
+          <mat-option [value]="7">Sierpień</mat-option>
+          <mat-option [value]="8">Wrzesień</mat-option>
+          <mat-option [value]="9">Październik</mat-option>
+          <mat-option [value]="10">Listopad</mat-option>
+          <mat-option [value]="11">Grudzień</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" id="year">
+        <mat-label>Rok</mat-label>
+        <input
+          matInput
+          type="number"
+          min="2024"
+          formControlName="year"
+          size="4"
+          maxlength="4"
+        />
+      </mat-form-field>
+    </div>
+  </form>
+</div>
