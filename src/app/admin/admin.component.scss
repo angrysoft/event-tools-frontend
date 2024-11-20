@@ -1,11 +1,17 @@
 
 .sidenav-container {
   height: 100%;
+  border: 1px solid green;
+  overflow: hidden;
 }
 
 .sidenav {
-  width: 200px;
+//   width: 200px;
+padding: 0.5rem;
+height: 100%;
+//   width: max-content;
   border-right: 1px solid var(--mdc-outlined-card-outline-color);
+  border: 1px solid red;
 }
 
 .sidenav .mat-toolbar {
@@ -25,6 +31,6 @@
 
 :host .mat-drawer-content {
     position: relative;
-    height: 100dvh;
+    // height: 100dvh;
     padding: 0 0.5rem;
 }

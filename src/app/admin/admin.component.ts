@@ -1,49 +1,58 @@
-import { Component, inject } from "@angular/core";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import {
+  BreakpointObserver,
+  Breakpoints,
+  MediaMatcher,
+} from "@angular/cdk/layout";
 import { AsyncPipe } from "@angular/common";
-import { MatToolbarModule } from "@angular/material/toolbar";
+import { ChangeDetectorRef, Component, inject, OnDestroy } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatListModule } from "@angular/material/list";
-import { MatIconModule } from "@angular/material/icon";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatIconModule } from "@angular/material/icon";
+import { MatListModule } from "@angular/material/list";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { RouterOutlet } from "@angular/router";
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
-import { AuthService } from "../services/auth.service";
-import { MatMenuModule } from "@angular/material/menu";
-import { Router, RouterOutlet } from "@angular/router";
 import { MenuActionComponent } from "../components/menu-action/menu-action.component";
+import { AuthService } from "../services/auth.service";
 
 @Component({
-    selector: "app-main",
-    templateUrl: "./admin.component.html",
-    styleUrl: "./admin.component.scss",
-    imports: [
-        MatExpansionModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatListModule,
-        MatIconModule,
-        AsyncPipe,
-        MatMenuModule,
-        RouterOutlet,
-        MenuActionComponent,
-    ]
+  selector: "app-main",
+  templateUrl: "./admin.component.html",
+  styleUrl: "./admin.component.scss",
+  imports: [
+    MatExpansionModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatMenuModule,
+    RouterOutlet,
+    MenuActionComponent,
+  ],
 })
-export class AdminComponent {
-  private breakpointObserver = inject(BreakpointObserver);
+export class AdminComponent implements OnDestroy {
+  mobileQuery: MediaQueryList;
   private auth = inject(AuthService);
+  private readonly _mobileQueryListener: () => void;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay(),
-    );
+  constructor() {
+    const changeDetectorRef = inject(ChangeDetectorRef);
+    const media = inject(MediaMatcher);
+
+    this.mobileQuery = media.matchMedia("(max-width: 600px)");
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeEventListener("change", this._mobileQueryListener);
+  }
 
   onLogout() {
     this.auth.logout();
   }
-
 }
