@@ -42,33 +42,43 @@
     </div>
   </form>
 </div>
-<div
-  class="mat-elevation-z8 schedule"
-  [style.gridTemplateColumns]="cssCols"
->
+<div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">Imię Nazwisko</div>
   </div>
-  @for (day of days; track day.day) {
+  @for (day of days; track day.date) {
   <div class="col sticky-row">
     <div class="header">
       {{ day.date | date : "EE dd/MM" }}
     </div>
   </div>
-  } @for (row of rows; track row.workerName) {
+  } @for (row of schedules().workerSchedules; track row.workerName) {
   <div class="col sticky-col">
     <div
-      class="data nowrap"
+      class="name nowrap"
       [style.backgroundColor]="row.color"
       [style.color]="getTextColor(row.color)"
       (click)="goToWorker(row.id)"
     >
-      {{ row.workerName }}
+      {{$index+1}} {{ row.workerName }}
     </div>
   </div>
-  @for (day of days; track $index) { @if(row.days[day.day]) {
+  @for (day of days; track day.day) { @if(row.days[day.day]) {
   <div class="col">
-    @for (item of row.days[day.day]; track item.id) {
+    @for (item of row.days[day.day]; track $index) { @if (item.dayOff) {
+    <div
+      [style.backgroundColor]="'var(--sys-on-background)'"
+      class="data"
+      [cdkContextMenuTriggerFor]="dayOffMenu"
+      [cdkContextMenuTriggerData]="{ data: item, worker: row }"
+    >
+      @if (item.accepted) {
+      <span [style.color]="'var(--sys-background)'">Wolne</span>
+      } @else {
+      <span [style.color]="'red'">Wolne - do potwierdzenia</span>
+      }
+    </div>
+    } @else {
     <div
       [style.backgroundColor]="item.color"
       [style.color]="getTextColor(item.color)"
@@ -79,20 +89,7 @@
     >
       {{ item.eventName }}
     </div>
-    }
-  </div>
-  } @else if (row.dayOffs[day.day]) {
-  <div
-    [style.backgroundColor]="'var(--sys-on-background)'"
-    class="data"
-    [cdkContextMenuTriggerFor]="dayOffMenu"
-    [cdkContextMenuTriggerData]="{ data: row.dayOffs[day.day], worker: row }"
-  >
-    @if (row.dayOffs[day.day].accepted) {
-    <span [style.color]="'var(--sys-background)'">Wolne</span>
-    } @else {
-    <span [style.color]="'red'">Wolne - do potwierdzenia</span>
-    }
+    } }
   </div>
   } @else {
   <div

@@ -1,6 +1,5 @@
 interface Schedule {
   workerSchedules: WorkerSchedule[];
-  count: number;
   offset: number;
   size: number;
   total: number;
@@ -13,9 +12,6 @@ interface WorkerSchedule {
   color: string;
   days: {
     [key: string]: WorkerDaySchedule[];
-  };
-  dayOffs: {
-    [key: string]: DayOff;
   };
 }
 
@@ -33,6 +29,8 @@ interface WorkerDaySchedule {
   startDate: string;
   worker: number;
   color: string;
+  dayOff: boolean;
+  accepted: boolean;
 }
 
 interface Day {

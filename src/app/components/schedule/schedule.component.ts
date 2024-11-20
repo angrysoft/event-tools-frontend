@@ -1,5 +1,5 @@
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
-import { DatePipe } from "@angular/common";
+import { DatePipe, JsonPipe } from "@angular/common";
 import {
   AfterRenderRef,
   AfterViewInit,
@@ -34,6 +34,7 @@ import {
   Schedule,
   ScheduleAction,
   WorkerDaySchedule,
+  WorkerSchedule,
 } from "../../models/schedule";
 import { dateToString } from "../../utils/date";
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
@@ -67,7 +68,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
   schedules = signal<Schedule>({
     workerSchedules: [],
-    count: 0,
     offset: 0,
     size: 0,
     days: [],
@@ -115,7 +115,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     effect(() => {
       const date = this.currentDate();
       untracked(() => {
-        if (date) this.loadData();
+        if (date) this.initialData();
       });
     });
   }
@@ -129,7 +129,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log("Element is in viewport");
           this.loadMore();
         }
       });
@@ -142,33 +141,30 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.observer.disconnect();
   }
 
-  loadData() {
-    this.loading.set(true);
+  initialData() {
+    this.offset = 0;
+    this.loadData(this.size, this.offset);
+  }
+
+  reloadData() {
     let size = this.size;
-    let offset = this.offset;
-    // reload all data
-    if (offset > 0) {
-      size = offset;
-      offset = 0;
+    if (this.offset > 0) {
+      size = this.schedules().workerSchedules.length;
+      this.offset = size - this.size;
     }
+    this.loadData(size, 0);
+  }
+
+  loadData(size: number, offset: number) {
+    this.loading.set(true);
 
     this.workerDayService
       .getSchedule(size, offset, dateToString(this.currentDate()))
       .subscribe((resp) => {
         if (resp.ok) {
           this.observer.disconnect();
-          if (this.offset === 0) this.schedules.set(resp.data);
-          else
-            this.schedules.update((s) => {
-              s.offset = resp.data.offset;
-              s.size = this.size;
-              s.total = resp.data.total;
-              s.workerSchedules = s.workerSchedules.concat(
-                resp.data.workerSchedules,
-              );
-              return s;
-            });
-          this.offset = resp.data.offset;
+          this.schedules.set(resp.data);
+          this.schedules().size = this.size;
           this.loading.set(false);
           this.observer.observe(this.end.nativeElement);
           this.end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
@@ -177,27 +173,17 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   loadMore() {
+    
     const newOffset = this.offset + this.size;
     if (newOffset > this.schedules().total) return;
     this.offset = newOffset;
-    this.loading.set(true);
     this.workerDayService
       .getSchedule(this.size, this.offset, dateToString(this.currentDate()))
       .subscribe((resp) => {
         if (resp.ok) {
-          this.observer.disconnect();
-          this.schedules.update((s) => {
-            s.offset = resp.data.offset;
-            s.size = resp.data.size;
-            s.workerSchedules = s.workerSchedules.concat(
-              resp.data.workerSchedules,
-            );
-            return s;
-          });
-          this.offset = resp.data.offset;
+          this.schedules().workerSchedules.push(...resp.data.workerSchedules);
+          this.schedules().total = resp.data.total;
           this.loading.set(false);
-          this.observer.observe(this.end.nativeElement);
-          this.end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
         }
       });
   }
@@ -218,7 +204,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   get rows() {
-    return this.schedules()?.workerSchedules ?? [];
+    return this.schedules().workerSchedules;
   }
 
   prevMonth() {
@@ -264,7 +250,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           .removeWorkersDays(data.eventId, data.eventDay, [data.id])
           .subscribe((resp) => {
             if (resp.ok) {
-              this.loadData();
+              this.reloadData();
             }
           });
       }
@@ -272,7 +258,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   addDayOff(worker: any, data: any) {
-    console.log(worker, data);
     const dayOffDialog = this.dialog.open(AddDayOffComponent, {
       data: {
         startDate: data.date,
@@ -292,7 +277,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
       this.workerDayService.addDaysOff(payload).subscribe((resp) => {
         if (resp.ok) {
-          this.loadData();
+          this.reloadData();
         } else this.workerDayService.showError(resp);
         this.loading.set(false);
       });
@@ -320,7 +305,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
         .duplicateDays(data.eventId, data.eventDay, payload)
         .subscribe((resp) => {
           if (resp.ok) {
-            this.loadData();
+            this.reloadData();
           } else this.workerDayService.showError(resp);
           this.loading.set(false);
         });
@@ -337,7 +322,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
         this.loading.set(true);
         this.workerDayService.removeDayOff(data.id).subscribe((resp) => {
           if (resp.ok) {
-            this.loadData();
+            this.reloadData();
           } else this.workerDayService.showError(resp);
           this.loading.set(false);
         });
@@ -349,7 +334,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.loading.set(true);
     this.workerDayService.rejectDayOff(data.id).subscribe((resp) => {
       if (resp.ok) {
-        this.loadData();
+        this.reloadData();
       } else this.workerDayService.showError(resp);
       this.loading.set(false);
     });
@@ -359,7 +344,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.loading.set(true);
     this.workerDayService.acceptDayOff(data.id).subscribe((resp) => {
       if (resp.ok) {
-        this.loadData();
+        this.reloadData();
       } else this.workerDayService.showError(resp);
       this.loading.set(false);
     });

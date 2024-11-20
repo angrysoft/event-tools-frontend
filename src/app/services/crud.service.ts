@@ -79,7 +79,6 @@ export class CrudService<T> {
   searchPaged(
     opts: { [key: string]: string } | null = null,
   ): Observable<RestResponse<Page<T>>> {
-    console.log(opts);
     return this._get<RestResponse<Page<T>>>(`${this.apiUrl}/search`, opts);
   }
 
