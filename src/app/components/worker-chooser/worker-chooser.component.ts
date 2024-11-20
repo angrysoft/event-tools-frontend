@@ -25,21 +25,21 @@ import { WorkerChooserConfig } from "./worker-chooser-config";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @Component({
-    selector: "app-worker-chooser",
-    imports: [
-        MatTableModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MatPaginatorModule,
-        LoaderComponent,
-        SearchComponent,
-        MatDialogActions,
-        MatDialogClose,
-        MatCheckboxModule,
-    ],
-    templateUrl: "./worker-chooser.component.html",
-    styleUrl: "./worker-chooser.component.scss",
-    providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }]
+  selector: "app-worker-chooser",
+  imports: [
+    MatTableModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
+    LoaderComponent,
+    SearchComponent,
+    MatDialogActions,
+    MatDialogClose,
+    MatCheckboxModule,
+  ],
+  templateUrl: "./worker-chooser.component.html",
+  styleUrl: "./worker-chooser.component.scss",
+  providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }],
 })
 export class WorkerChooserComponent<T> {
   readonly service = inject(WorkersService);
@@ -88,10 +88,14 @@ export class WorkerChooserComponent<T> {
 
     this.service.getWorkersHints().subscribe((resp) => {
       if (resp.ok) {
-        this.filters.set({
-          team: { name: "Ekipa", values: resp.data.teams.map((t) => t.name) },
-          group: { name: "Grupa", values: resp.data.groups.map((t) => t.name) },
-        });
+        this.filters()['team'] = { name: "Ekipa", values: resp.data.teams.map((t) => t.name) };
+        this.filters()['group'] = { name: "Grupa", values: resp.data.groups.map((t) => t.name) };
+
+        //TODO check ??
+        // this.filters.set({
+        //   team: { name: "Ekipa", values: resp.data.teams.map((t) => t.name) },
+        //   group: { name: "Grupa", values: resp.data.groups.map((t) => t.name) },
+        // });
       }
     });
   }
