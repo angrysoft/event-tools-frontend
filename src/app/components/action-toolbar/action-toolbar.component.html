@@ -1,0 +1,9 @@
+<header class="header">
+  <button mat-icon-button [routerLink]="backTo()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h2>{{ title() }}</h2>
+  <div class="actions">
+    <ng-content />
+  </div>
+</header>

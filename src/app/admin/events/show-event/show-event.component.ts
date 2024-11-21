@@ -11,6 +11,7 @@ import { LoaderComponent } from "../../../components/loader/loader.component";
 import { EventItemDto } from "../../../models/events";
 import { EventsService } from "../../../services/events.service";
 import { EventFilesComponent } from "../../../components/events/event-files/event-files.component";
+import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 
 @Component({
   selector: "app-show-event",
@@ -22,7 +23,8 @@ import { EventFilesComponent } from "../../../components/events/event-files/even
     LoaderComponent,
     RouterLink,
     EventInfoComponent,
-    EventFilesComponent
+    EventFilesComponent,
+    ActionToolbarComponent
 ],
   templateUrl: "./show-event.component.html",
   styleUrl: "./show-event.component.scss",

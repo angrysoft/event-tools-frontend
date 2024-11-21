@@ -15,6 +15,7 @@ import { AddonsComponent } from "../addons/addons.component";
 import { CarsComponent } from "../cars/cars.component";
 import { DocsComponent } from "../docs/docs.component";
 import { RatesComponent } from "../rates/rates.component";
+import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 
 export interface DialogData {
   workerId: number;
@@ -24,20 +25,21 @@ export interface DialogData {
 @Component({
     selector: "app-show-worker",
     imports: [
-        MatIconModule,
-        MatDividerModule,
-        MatButtonModule,
-        MatCardModule,
-        RouterLink,
-        MatDialogModule,
-        MatTabsModule,
-        MatListModule,
-        DocsComponent,
-        RatesComponent,
-        LoaderComponent,
-        AddonsComponent,
-        CarsComponent,
-    ],
+    MatIconModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatCardModule,
+    RouterLink,
+    MatDialogModule,
+    MatTabsModule,
+    MatListModule,
+    DocsComponent,
+    RatesComponent,
+    LoaderComponent,
+    AddonsComponent,
+    CarsComponent,
+    ActionToolbarComponent
+],
     templateUrl: "./show-worker.component.html",
     styleUrl: "./show-worker.component.scss"
 })

@@ -1,0 +1,20 @@
+.report {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+:host {
+    display: block;
+    box-sizing:border-box;
+    height: 100%;
+    overflow: hidden;
+    padding: 1rem;
+}

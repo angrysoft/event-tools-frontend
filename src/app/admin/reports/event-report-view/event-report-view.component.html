@@ -1,0 +1,48 @@
+<app-loader [loading]="loading()" />
+
+<app-action-toolbar title="Raport Imprezy" backTo="/admin/reports/event" />
+<mat-card appearance="outlined" class="side-section">
+  <section class="report">
+    <header>
+      <p>
+        <span class="label">Nazwa: </span>
+        <span>{{ eventInfo().name }} </span>
+      </p>
+      <p>
+        <span class="label">Numer: </span>
+        <span>{{ eventInfo().number }} </span>
+      </p>
+      <p>
+        <span class="label">Koordynator: </span>
+        <span>{{ eventInfo().coordinator }} </span>
+      </p>
+      <p>
+        <span class="label">Opiekun Klienta: </span>
+        <span>{{ eventInfo().accountManager }} </span>
+      </p>
+      <p>
+        <span class="label">Kierownik:</span>
+        <span>{{ eventInfo().chief }} </span>
+      </p>
+    </header>
+    <div class="report-data">
+      <table mat-table aria-label="Elements">
+        @for (col of tableColumns; track col.def) {
+        <ng-container matColumnDef="{{ col.def }}">
+          <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
+          @if (col.def.endsWith("Time")) {
+          <td mat-cell *matCellDef="let row">
+            {{ row[col.def] | date : "short" }}
+          </td>
+          } @else {
+          <td mat-cell *matCellDef="let row">{{ row[col.def] }}</td>
+          }
+        </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+      </table>
+    </div>
+  </section>
+</mat-card>

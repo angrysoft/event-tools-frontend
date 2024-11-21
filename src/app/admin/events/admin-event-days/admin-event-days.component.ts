@@ -92,7 +92,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });
-    this.lodaDays();
+    this.loadDays();
   }
 
   ngAfterViewInit(): void {
@@ -100,7 +100,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
     this.tabs.selectedIndex = 2;
   }
 
-  private lodaDays() {
+  private loadDays() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
@@ -158,7 +158,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
         })
         .subscribe((resp) => {
           if (resp.ok) {
-            this.lodaDays();
+            this.loadDays();
           } else {
             this.service.showError(resp);
             this.loading.set(false);
@@ -179,7 +179,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
         this.loading.set(true);
         this.service.delDay(this.eventId, this.dayId).subscribe((resp) => {
           if (resp.ok) {
-            this.lodaDays();
+            this.loadDays();
           } else {
             this.service.showError(resp);
             this.loading.set(false);
@@ -221,7 +221,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
         .duplicateDays(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
           if (resp.ok) {
-            this.lodaDays();
+            this.loadDays();
             this.selection.clear();
           } else this.workerDayService.showError(resp);
           this.loading.set(false);
@@ -256,7 +256,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
         })
         .subscribe((resp) => {
           if (resp.ok) {
-            this.lodaDays();
+            this.loadDays();
             this.selection.clear();
           } else this.workerDayService.showError(resp);
           this.loading.set(false);
@@ -283,7 +283,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
           )
           .subscribe((resp) => {
             if (resp.ok) {
-              this.lodaDays();
+              this.loadDays();
               this.selection.clear();
             }
             this.loading.set(false);
@@ -316,7 +316,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
           .changeWorker(this.eventId, this.dayId, payload)
           .subscribe((resp) => {
             if (resp.ok) {
-              this.lodaDays();
+              this.loadDays();
               this.selection.clear();
             } else this.workerDayService.showError(resp);
             this.loading.set(false);
@@ -357,7 +357,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
         .changeStatus(this.eventId, payload)
         .subscribe((resp) => {
           if (resp.ok) {
-            this.lodaDays();
+            this.loadDays();
             this.selection.clear();
           } else this.workerDayService.showError(resp);
           this.loading.set(false);

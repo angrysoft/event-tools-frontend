@@ -23,8 +23,20 @@ export const adminRoutes: Routes = [
   },
   {
     path: "work-schedule",
-    title: "Kalendarz Imprez",
+    title: "Grafik",
     loadComponent: () =>
       import("./work-schedule/work-schedule.component").then((m) => m.WorkScheduleComponent),
+  },
+  {
+    path: "reports/event",
+    title: "Raporty",
+    loadComponent: () =>
+      import("./reports/event-report/event-report.component").then((m) => m.EventReportComponent),
+  },
+  {
+    path: "reports/event/:eventId",
+    title: "Raporty Imprezy",
+    loadComponent: () =>
+      import("./reports/event-report-view/event-report-view.component").then((m) => m.EventReportViewComponent),
   },
 ];

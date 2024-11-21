@@ -2,10 +2,10 @@
     display: grid;
     grid-template-columns: repeat(7, auto);
     padding: 0.5rem;
-    scrollbar-width: thin;
     position: relative;
     height: 100%;
     overflow: auto;
+    scrollbar-width: thin;
 }
 
 .header, .day {
@@ -23,7 +23,9 @@
     display: flex;
     flex-direction: column;
     min-height: 3rem;
+    overflow: auto;
 }
+
 .day-head {
     font-weight: bold;
     text-align: center;
@@ -31,9 +33,15 @@
 }
 
 .event {
-    padding: 0.5rem;
-    font-size: 0.8rem;
+    padding: 0.3rem;
+    font-size: 0.6rem;
     word-break: break-all;
     cursor: pointer;
-    border-radius: 0.5rem;
+    border-radius: 0.4rem;
+}
+
+@media only screen and (min-width: 960px) {
+    .event {
+        font-size: 0.8rem;
+    }
 }

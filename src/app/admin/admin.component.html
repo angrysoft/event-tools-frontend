@@ -21,12 +21,37 @@
       <app-menu-action href="/admin/events" icon="event"
         >Imprezy</app-menu-action
       >
-      <mat-divider></mat-divider>
-
       <app-menu-action href="/admin/workers" icon="person"
         >Pracownicy</app-menu-action
       >
-      <mat-divider />
+
+      <mat-divider></mat-divider>
+
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Raporty</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-menu-action href="/admin/reports/event" icon="docs"
+            >Raport Imprezy</app-menu-action
+          >
+          <app-menu-action href="/admin/settings/teams" icon="dosc"
+            >Ekipa</app-menu-action
+          >
+          <app-menu-action href="/admin/settings/rates" icon="dosc"
+            >Stawki</app-menu-action
+          >
+          <app-menu-action href="/admin/settings/addons" icon="dosc"
+            >Dodatki</app-menu-action
+          >
+          <app-menu-action href="/admin/settings/cars" icon="docs"
+            >Auta</app-menu-action
+          >
+        </mat-expansion-panel>
+      </mat-accordion>
+      
+      <mat-divider></mat-divider>
+
       <mat-accordion>
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>

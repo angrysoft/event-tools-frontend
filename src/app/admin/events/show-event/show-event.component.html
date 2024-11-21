@@ -1,30 +1,25 @@
 <app-loader [loading]="loading()" />
 
 <section class="event-details-section">
-  <header class="event-details-header">
-    <button mat-icon-button routerLink="/admin/events">
-      <mat-icon>arrow_back</mat-icon>
+  <app-action-toolbar title="Dane Imprezy" backTo="/admin/events">
+    <button
+      mat-flat-button
+      routerLink="/admin/events/edit/{{ eventData().id }}"
+    >
+      Edytuj
     </button>
-    <h2>Dane Imprezy</h2>
-    <div class="details-actions">
-      <button
-        mat-flat-button
-        routerLink="/admin/events/edit/{{ eventData().id }}"
-      >
-        Edytuj
-      </button>
-      <button
-        mat-flat-button
-        routerLink="/admin/events/{{ eventData().id }}/day"
-        [queryParams]="{ name: eventData().name }"
-      >
-        Harmonogram
-      </button>
-      <button mat-flat-button class="delete-button" (click)="removeEvent()">
-        Usuń
-      </button>
-    </div>
-  </header>
+    <button
+      mat-flat-button
+      routerLink="/admin/events/{{ eventData().id }}/day"
+      [queryParams]="{ name: eventData().name }"
+    >
+      Harmonogram
+    </button>
+    <button mat-flat-button class="delete-button" (click)="removeEvent()">
+      Usuń
+    </button>
+  </app-action-toolbar>
+  
   <app-event-info [eventData]="eventData()" [tabIndex]="tabIndex">
     <app-event-files [eventId]="eventData().id" />
   </app-event-info>
