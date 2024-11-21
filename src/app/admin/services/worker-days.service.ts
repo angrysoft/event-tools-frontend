@@ -15,6 +15,7 @@ import { DataListResponse } from "../../models/data-list-response";
 import { Addon } from "../models/addon";
 import { ScheduleService } from "../../services/schedule.service";
 import { Schedule } from "../../models/schedule";
+import { CalendarDay } from "../../models/calendar";
 
 @Injectable({
   providedIn: "root",
@@ -120,6 +121,12 @@ export class WorkerDaysService
     return this._get<RestResponse<Schedule>>(`${this.userApi}/schedule`, {
       limit: limit,
       offset: offset,
+      date: date,
+    });
+  }
+
+  getCalendar(date: string): Observable<RestResponse<CalendarDay[]>> {
+    return this._get<RestResponse<CalendarDay[]>>(`${this.userApi}/calendar`, {
       date: date,
     });
   }

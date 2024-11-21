@@ -9,12 +9,9 @@ import {
   OnDestroy,
   output,
   signal,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
-import {
-  FormControl,
-  ReactiveFormsModule
-} from "@angular/forms";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
@@ -22,23 +19,23 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { Subject } from "rxjs";
 import { DuplicateDaysComponent } from "../../admin/events/event-days/duplicate-days/duplicate-days.component";
 import { WorkerDaysService } from "../../admin/services/worker-days.service";
 import {
   Schedule,
   ScheduleAction,
-  WorkerDaySchedule
+  WorkerDaySchedule,
 } from "../../models/schedule";
 import { dateToString } from "../../utils/date";
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
+import { getTextColor } from "../../utils/colors";
 
 @Component({
-    selector: "app-schedule",
-    imports: [
+  selector: "app-schedule",
+  imports: [
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
@@ -51,13 +48,12 @@ import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
     CdkContextMenuTrigger,
     CdkMenu,
     CdkMenuItem,
-    DateChangerComponent
-],
-    templateUrl: "./schedule.component.html",
-    styleUrl: "./schedule.component.scss"
+    DateChangerComponent,
+  ],
+  templateUrl: "./schedule.component.html",
+  styleUrl: "./schedule.component.scss",
 })
 export class ScheduleComponent implements OnDestroy, AfterViewInit {
-
   private readonly workerDayService = inject(WorkerDaysService);
   private readonly dialog = inject(MatDialog);
   observer!: IntersectionObserver;
@@ -96,7 +92,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.observer.disconnect();
   }
 
-
   reloadData() {
     let size = this.size;
     if (this.offset > 0) {
@@ -124,7 +119,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   loadMore() {
-    
     const newOffset = this.offset + this.size;
     if (newOffset > this.schedules().total) return;
     this.offset = newOffset;
@@ -158,8 +152,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     return this.schedules().workerSchedules;
   }
 
-
-  dateChange(date:string) {
+  dateChange(date: string) {
     this.currentDate = date;
     this.offset = 0;
     this.loadData(this.size, this.offset);
@@ -171,14 +164,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
   goToWorker(id: number) {
     this.action.emit({ action: "worker", data: { workerId: id } });
-  }
-
-  getTextColor(hexcolor: string) {
-    if (hexcolor)
-      return parseInt(hexcolor.replace("#", ""), 16) > 0xffffff / 2
-        ? "black"
-        : "white";
-    return "inherit";
   }
 
   removeDay(data: WorkerDaySchedule) {
@@ -296,6 +281,10 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
   checkDayOff(data: WorkerDaySchedule) {
     return `${data.id}.${data.startDate}.${data.accepted}`;
+  }
+
+  getTextColor(color: string) {
+    return getTextColor(color);
   }
 }
 

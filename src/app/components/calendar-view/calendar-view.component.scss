@@ -4,6 +4,7 @@
     padding: 0.5rem;
     scrollbar-width: thin;
     position: relative;
+    height: 100%;
     overflow: auto;
 }
 
@@ -19,11 +20,20 @@
 }
 
 .day {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     min-height: 3rem;
 }
 .day-head {
     font-weight: bold;
     text-align: center;
     padding: 0.1rem;
+}
+
+.event {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    word-break: break-all;
+    cursor: pointer;
+    border-radius: 0.5rem;
 }

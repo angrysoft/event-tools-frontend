@@ -1,19 +1,31 @@
 <app-loader [loading]="loading()" />
 
-<app-date-changer (dateChanged)="dateChange($event)" />
-<div class="mat-elevation-z8 calendar">
-  <div class="header">PON.</div>
-  <div class="header">WT.</div>
-  <div class="header">ŚR.</div>
-  <div class="header">CZW.</div>
-  <div class="header">PT.</div>
-  <div class="header">SOB.</div>
-  <div class="header">NIEDZ.</div>
-  @for (day of days().days; track day.day) { @if (day.day < 1) {
-  <div class="day"><div class="day-head">x</div></div>
-  } @else {
-  <div class="day">
-    <div class="day-head">{{ day.day }}</div>
-</div>
-  } }
+<div class="side-content">
+  <app-date-changer (dateChanged)="dateChange($event)" />
+  <div class="mat-elevation-z8 calendar">
+    <div class="header">PON.</div>
+    <div class="header">WT.</div>
+    <div class="header">ŚR.</div>
+    <div class="header">CZW.</div>
+    <div class="header">PT.</div>
+    <div class="header">SOB.</div>
+    <div class="header">NIEDZ.</div>
+    @for (day of days(); track day.day) { @if (day.day < 1) {
+    <div class="day"><div class="day-head">x</div></div>
+    } @else {
+    <div class="day">
+      <div class="day-head">{{ day.day }}</div>
+      @for (event of day.events; track event.id) {
+      <div
+        class="event"
+        [style.background]="event.color"
+        [style.color]="getTextColor(event.color)"
+        (click)="goToEvent(event.event)"
+      >
+        {{ event.eventNumber }} - {{ event.eventName }}
+      </div>
+      }
+    </div>
+    } }
+  </div>
 </div>

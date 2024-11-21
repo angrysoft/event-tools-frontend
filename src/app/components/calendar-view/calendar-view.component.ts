@@ -1,9 +1,10 @@
-import { Component, inject, signal } from "@angular/core";
-import { LoaderComponent } from "../loader/loader.component";
-import { DateChangerComponent } from "../date-changer/date-changer.component";
+import { Component, inject, input, signal } from "@angular/core";
 import { WorkerDaysService } from "../../admin/services/worker-days.service";
 import { CalendarDay } from "../../models/calendar";
-import { Day } from "../../models/schedule";
+import { DateChangerComponent } from "../date-changer/date-changer.component";
+import { LoaderComponent } from "../loader/loader.component";
+import { getTextColor } from "../../utils/colors";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-calendar-view",
@@ -12,12 +13,12 @@ import { Day } from "../../models/schedule";
   styleUrl: "./calendar-view.component.scss",
 })
 export class CalendarViewComponent {
+  private readonly router = inject(Router);
   private readonly workerDayService = inject(WorkerDaysService);
   loading = signal<boolean>(true);
+  days = signal<CalendarDay[]>([]);
+  eventUrl = input<string>("/admin/events");
   currentDate: string = "";
-  days = signal<CalendarDay>({
-    days: [],
-  });
   schedules: any;
   size: any;
 
@@ -31,28 +32,24 @@ export class CalendarViewComponent {
       "SATURDAY",
       "SUNDAY",
     ];
-    this.workerDayService
-      .getSchedule(0, 0, this.currentDate)
-      .subscribe((resp) => {
-        if (resp.ok) {
-          const newDays: Day[] = [];
-          const dayOffset = weekDays.indexOf(
-            resp.data.days.at(0)?.weekName ?? "",
-          );
-          if (dayOffset < 0) return;
-          for (let i = 0; i < dayOffset; i++) {
-            newDays.push({
-              date: "",
-              day: i*-1,
-              weekName: "",
-            });
-          }
-
-          newDays.push(...resp.data.days);
-          this.days.set({ days: newDays });
-          this.loading.set(false);
+    this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {
+      if (resp.ok) {
+        const newDays: CalendarDay[] = [];
+        const dayOffset = weekDays.indexOf(resp.data.at(0)?.weekName ?? "");
+        if (dayOffset < 0) return;
+        for (let i = 0; i < dayOffset; i++) {
+          newDays.push({
+            day: i * -1,
+            weekName: "",
+            events: [],
+          });
         }
-      });
+
+        newDays.push(...resp.data);
+        this.days.set(newDays);
+        this.loading.set(false);
+      }
+    });
   }
 
   dateChange(date: string) {
@@ -72,5 +69,14 @@ export class CalendarViewComponent {
       "SUNDAY",
     ];
     return weekDays.indexOf(weekName) === _index;
+  }
+
+  getTextColor(color: string) {
+    return getTextColor(color);
+  }
+
+  goToEvent(event: number) {
+    console.log(`${this.eventUrl()}/${event}`);
+    this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
   }
 }
