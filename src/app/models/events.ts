@@ -77,6 +77,11 @@ interface WorkerAddons {
   type: string;
 }
 
+interface EventDaysInfo {
+  info: EventItemDto;
+  eventDays: EventDay[];
+}
+
 interface EventDay {
   id?: number;
   event: number;
@@ -124,5 +129,6 @@ export {
   WorkerDayStatusPayload,
   DuplicateDaysPayload,
   WorkersRateDay,
-  ChangeWorkerPayload
+  ChangeWorkerPayload,
+  EventDaysInfo,
 };

@@ -18,23 +18,18 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
-import { FormBaseComponent } from "../../../../../components/form-base/form-base.component";
-import { WorkTimeComponent } from "../../../../../components/work-time/work-time.component";
-import { WorkerChooserConfig } from "../../../../../components/worker-chooser/worker-chooser-config";
-import { WorkerChooserComponent } from "../../../../../components/worker-chooser/worker-chooser.component";
-import { WorkerRatesPipe } from "../../../../../pipes/worker-rates.pipe";
-import { dateTimeToString } from "../../../../../utils/date";
-import { Addon, AddonGroup } from "../../../../models/addon";
-import {
-  EventDay,
-  WorkerAddons,
-  WorkerDay,
-  WorkerDayForm,
-} from "../../../../models/events";
-import { Rate } from "../../../../models/rate";
-import { WorkerBase } from "../../../../models/worker";
-import { RatesService } from "../../../../services/rates.service";
-import { WorkerDaysService } from "../../../../services/worker-days.service";
+import { AddonGroup, Addon } from "../../../admin/models/addon";
+import { Rate } from "../../../admin/models/rate";
+import { WorkerBase } from "../../../admin/models/worker";
+import { RatesService } from "../../../admin/services/rates.service";
+import { WorkerDaysService } from "../../../admin/services/worker-days.service";
+import { WorkerDayForm, EventDay, WorkerDay, WorkerAddons } from "../../../models/events";
+import { WorkerRatesPipe } from "../../../pipes/worker-rates.pipe";
+import { dateTimeToString } from "../../../utils/date";
+import { FormBaseComponent } from "../../form-base/form-base.component";
+import { WorkTimeComponent } from "../../work-time/work-time.component";
+import { WorkerChooserConfig } from "../../worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../../worker-chooser/worker-chooser.component";
 
 @Component({
     selector: "app-add-workers",

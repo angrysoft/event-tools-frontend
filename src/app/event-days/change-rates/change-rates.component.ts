@@ -21,14 +21,14 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
-import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { WorkerRatesPipe } from "../../../../pipes/worker-rates.pipe";
-import { Addon, AddonGroup } from "../../../models/addon";
-import { EventDay, WorkersRateDay } from "../../../models/events";
-import { Rate } from "../../../models/rate";
-import { RatesService } from "../../../services/rates.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
-import { WorkerDayAddonsComponent } from "../../../../components/worker-day-addons/worker-day-addons.component";
+import { Addon, AddonGroup } from "../../admin/models/addon";
+import { Rate } from "../../admin/models/rate";
+import { RatesService } from "../../admin/services/rates.service";
+import { WorkerDaysService } from "../../admin/services/worker-days.service";
+import { FormBaseComponent } from "../../components/form-base/form-base.component";
+import { WorkerDayAddonsComponent } from "../../components/worker-day-addons/worker-day-addons.component";
+import { EventDay, WorkersRateDay } from "../../models/events";
+import { WorkerRatesPipe } from "../../pipes/worker-rates.pipe";
 
 @Component({
     selector: "app-change-rates",

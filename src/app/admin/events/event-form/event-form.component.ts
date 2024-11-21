@@ -30,28 +30,28 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, fromEvent, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { EventItemForm, EventItem } from "../../models/events";
+import { EventItemForm, EventItem } from "../../../models/events";
 import { OfficeWorkers, WorkerBase } from "../../models/worker";
-import { EventsService } from "../../services/events.service";
+import { EventsService } from "../../../services/events.service";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 import { WorkersService } from "../../services/workers.service";
 
 @Component({
-    selector: "app-event-form",
-    imports: [
-        FormBaseComponent,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatOptionModule,
-        MatSelectModule,
-    ],
-    templateUrl: "./event-form.component.html",
-    styleUrl: "./event-form.component.scss"
+  selector: "app-event-form",
+  imports: [
+    FormBaseComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
+  ],
+  templateUrl: "./event-form.component.html",
+  styleUrl: "./event-form.component.scss",
 })
 export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly router = inject(Router);

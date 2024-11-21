@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Zmień status</h2>
+<mat-dialog-content>
+  <form [formGroup]="changeStatusForm" class="form" id="change-status-form">
+    <div class="field">
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          @for (status of data.statuses | keyvalue; track status.key) {
+          <mat-option [value]="status.key">{{ status.value }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="field">
+      <mat-slide-toggle formControlName="changeAll"
+        >Zmień we wszystkich dniach</mat-slide-toggle
+      >
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="false" type="button">
+    Anuluj
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="changeStatusForm.value"
+    [disabled]="!canSend()"
+    type="button"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>

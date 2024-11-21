@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { RestResponse } from "../../models/rest-response";
-import { CrudService } from "../../services/crud.service";
+import { RestResponse } from "../models/rest-response";
+import { CrudService } from "./crud.service";
 import { EventFile, EventItem, EventItemDto } from "../models/events";
 
 @Injectable({
@@ -31,13 +31,9 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
     formData.append("eventId", eventId.toString());
     formData.append("file", file);
 
-    return this.http.post(
-      `${this.api}/${eventId}/file`,
-      formData,
-      {
-        reportProgress: true,
-        observe: "events",
-      },
-    );
+    return this.http.post(`${this.api}/${eventId}/file`, formData, {
+      reportProgress: true,
+      observe: "events",
+    });
   }
 }

@@ -7,7 +7,7 @@ import {
   WorkerDay,
   WorkerDayStatusPayload,
   WorkersRateDay,
-} from "../models/events";
+} from "../../models/events";
 import { Rate } from "../models/rate";
 import { Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";

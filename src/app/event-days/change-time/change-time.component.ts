@@ -17,8 +17,8 @@ import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { Subject, takeUntil } from "rxjs";
-import { WorkTimeComponent } from "../../../../components/work-time/work-time.component";
-import { getTimeFromDataTimeString } from "../../../../utils/date";
+import { WorkTimeComponent } from "../../components/work-time/work-time.component";
+import { getTimeFromDataTimeString } from "../../utils/date";
 
 @Component({
     selector: "app-change-time",

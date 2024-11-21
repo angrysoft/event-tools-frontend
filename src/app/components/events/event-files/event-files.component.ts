@@ -15,19 +15,14 @@ import { MatListModule } from "@angular/material/list";
 import { Subject } from "rxjs";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { SendDialogComponent } from "../../../components/send-dialog/send-dialog.component";
-import { EventFile } from "../../models/events";
-import { EventsService } from "../../services/events.service";
+import { EventFile } from "../../../models/events";
+import { EventsService } from "../../../services/events.service";
 
 @Component({
-    selector: "app-event-files",
-    imports: [
-        MatListModule,
-        MatIconModule,
-        MatCardModule,
-        MatButtonModule,
-    ],
-    templateUrl: "./event-files.component.html",
-    styleUrl: "./event-files.component.scss"
+  selector: "app-event-files",
+  imports: [MatListModule, MatIconModule, MatCardModule, MatButtonModule],
+  templateUrl: "./event-files.component.html",
+  styleUrl: "./event-files.component.scss",
 })
 export class EventFilesComponent {
   eventId = input.required<number>();

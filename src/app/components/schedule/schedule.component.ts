@@ -19,7 +19,6 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { DuplicateDaysComponent } from "../../admin/events/event-days/duplicate-days/duplicate-days.component";
 import { WorkerDaysService } from "../../admin/services/worker-days.service";
 import {
   Schedule,
@@ -32,6 +31,7 @@ import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 import { getTextColor } from "../../utils/colors";
+import { DuplicateDaysComponent } from "../../event-days/duplicate-days/duplicate-days.component";
 
 @Component({
   selector: "app-schedule",

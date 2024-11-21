@@ -6,26 +6,26 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { EventInfoComponent } from "../../../components/events/event-info/event-info.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
-import { EventItemDto } from "../../models/events";
-import { EventsService } from "../../services/events.service";
-import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
-import { EventFilesComponent } from "../event-files/event-files.component";
+import { EventItemDto } from "../../../models/events";
+import { EventsService } from "../../../services/events.service";
+import { EventFilesComponent } from "../../../components/events/event-files/event-files.component";
 
 @Component({
-    selector: "app-show-event",
-    imports: [
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        MatTabsModule,
-        LoaderComponent,
-        RouterLink,
-        SafeHtmlPipe,
-        EventFilesComponent
-    ],
-    templateUrl: "./show-event.component.html",
-    styleUrl: "./show-event.component.scss"
+  selector: "app-show-event",
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatTabsModule,
+    LoaderComponent,
+    RouterLink,
+    EventInfoComponent,
+    EventFilesComponent
+],
+  templateUrl: "./show-event.component.html",
+  styleUrl: "./show-event.component.scss",
 })
 export class ShowEventComponent {
   readonly route = inject(ActivatedRoute);
@@ -40,7 +40,7 @@ export class ShowEventComponent {
     coordinator: "",
     accountManager: "",
     chief: "",
-    editors: []
+    editors: [],
   });
 
   loading = signal<boolean>(true);

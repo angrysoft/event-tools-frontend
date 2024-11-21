@@ -1,0 +1,50 @@
+<mat-tab-group [selectedIndex]="tabIndex()">
+    <mat-tab label="Dane Personalne">
+      @defer () {
+      <div class="event-data">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Dane Imprezy</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              <span class="label">Nazwa: </span>
+              <span>{{ eventData().name }} </span>
+            </p>
+            <p>
+              <span class="label">Numer: </span>
+              <span>{{ eventData().number }} </span>
+            </p>
+            <p>
+              <span class="label">Koordynator: </span>
+              <span>{{ eventData().coordinator }} </span>
+            </p>
+            <p>
+              <span class="label">Opiekun Klienta: </span>
+              <span>{{ eventData().accountManager }} </span>
+            </p>
+            <p>
+              <span class="label">Kierownik:</span>
+              <span>{{ eventData().chief }} </span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Opis</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="description">
+            <section [innerHTML]="eventData().description | safeHtml"></section>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      }
+    </mat-tab>
+
+    <mat-tab label="Pliki">
+      @defer () {
+      <ng-content />
+      }
+    </mat-tab>
+  </mat-tab-group>

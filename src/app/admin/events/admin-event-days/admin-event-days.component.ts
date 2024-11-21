@@ -6,7 +6,7 @@ import {
   HostListener,
   inject,
   signal,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -24,38 +24,40 @@ import { LoaderComponent } from "../../../components/loader/loader.component";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { dateToString } from "../../../utils/date";
-import {
-  ChangeWorkerPayload,
-  DuplicateDaysPayload,
-  EventDay,
-  WorkerDay,
-  WorkerDayStatusPayload,
-} from "../../models/events";
+
 import { WorkerBase } from "../../models/worker";
 import { EventDaysService } from "../../services/event-days.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
-import { AddDayComponent } from "./add-day/add-day.component";
+import { AddDayComponent } from "../../../components/events/add-day/add-day.component";
 import { ChangeStatusComponent } from "./change-status/change-status.component";
-import { ChangeTimeComponent } from "./change-time/change-time.component";
-import { DuplicateDaysComponent } from "./duplicate-days/duplicate-days.component";
+import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
 import { WorkerDayComponent } from "./worker-day/worker-day.component";
+import {
+  EventDay,
+  WorkerDay,
+  DuplicateDaysPayload,
+  ChangeWorkerPayload,
+  WorkerDayStatusPayload,
+  EventItemDto,
+} from "../../../models/events";
+import { ChangeTimeComponent } from "../../../event-days/change-time/change-time.component";
 
 @Component({
-    selector: "app-event-days",
-    imports: [
-        MatTabsModule,
-        MatButtonModule,
-        MatIcon,
-        MatDividerModule,
-        RouterLink,
-        DatePipe,
-        WorkerDayComponent,
-        LoaderComponent,
-    ],
-    templateUrl: "./event-days.component.html",
-    styleUrl: "./event-days.component.scss"
+  selector: "app-admin-event-days",
+  imports: [
+    MatTabsModule,
+    MatButtonModule,
+    MatIcon,
+    MatDividerModule,
+    RouterLink,
+    DatePipe,
+    WorkerDayComponent,
+    LoaderComponent,
+  ],
+  templateUrl: "./admin-event-days.component.html",
+  styleUrl: "./admin-event-days.component.scss",
 })
-export class EventDaysComponent implements AfterViewInit {
+export class AdminEventDaysComponent implements AfterViewInit {
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -63,17 +65,26 @@ export class EventDaysComponent implements AfterViewInit {
   workerDayService = inject(WorkerDaysService);
 
   statuses = signal<{ [key: string]: string }>({});
+  eventInfo = signal<EventItemDto>({
+    id: 0,
+    name: "",
+    number: "",
+    description: "",
+    coordinator: "",
+    accountManager: "",
+    chief: "",
+    editors: [],
+  });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);
   tabIdx = new FormControl(1);
-  name = this.route.snapshot.queryParamMap.get("name");
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = `/admin/events/${this.eventId}`;
   selection = new SelectionModel<WorkerDay>(true, []);
   dayId = -1;
   tabLabel = signal<string>("");
   dayStatus = signal<string>("");
-  stateCls="";
+  stateCls = "";
 
   @ViewChild(MatTabGroup) tabs!: MatTabGroup;
 
@@ -86,15 +97,14 @@ export class EventDaysComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.tabIdx.setValue(2);
-
     this.tabs.selectedIndex = 2;
-    console.log("tab", this.tabIdx.value, this.tabs.selectedIndex);
   }
 
   private lodaDays() {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
-        this.eventDays.set(resp.data);
+        this.eventInfo.set(resp.data.info);
+        this.eventDays.set(resp.data.eventDays);
 
         this.setStatus();
       }
@@ -112,9 +122,8 @@ export class EventDaysComponent implements AfterViewInit {
   }
 
   setStatus() {
-    const state = this.eventDays().at(this.tabIdx.value ?? -1)?.state ?? ""
-    const status =
-      this.statuses()[state];
+    const state = this.eventDays().at(this.tabIdx.value ?? -1)?.state ?? "";
+    const status = this.statuses()[state];
     if (status) {
       this.dayStatus.set(status);
       this.stateCls = state;

@@ -36,15 +36,15 @@ export const eventsRoutes: Routes = [
     path: "events/:eventId/day",
     title: "Harmonogram",
     loadComponent: () =>
-      import("./event-days/event-days.component").then(
-        (m) => m.EventDaysComponent,
+      import("./admin-event-days/admin-event-days.component").then(
+        (m) => m.AdminEventDaysComponent,
       ),
   },
   {
     path: "events/:eventId/day/:dayId",
     title: "Dodaj Pracowników",
     loadComponent: () =>
-      import("./event-days/worker-day/add-workers/add-workers.component").then(
+      import("../../components/events/add-workers/add-workers.component").then(
         (m) => m.AddWorkersComponent,
       ),
   },
@@ -52,7 +52,7 @@ export const eventsRoutes: Routes = [
     path: "events/:eventId/day/:dayId/change",
     title: "Zmień stawki",
     loadComponent: () =>
-      import("./event-days/change-rates/change-rates.component").then(
+      import("../../components/events/change-rates/change-rates.component").then(
         (m) => m.ChangeRatesComponent,
       ),
   },
