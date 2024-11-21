@@ -63,6 +63,7 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   itemIdName = input<string>("id");
   search = input<boolean>(false);
   filters = input<InputFilters>();
+  showAddButton = input<boolean>(true);
   api = input.required<string>();
 
   actionsUrl = input.required<string>();

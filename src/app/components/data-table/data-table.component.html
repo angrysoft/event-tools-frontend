@@ -34,5 +34,7 @@
     >
     </mat-paginator>
   </div>
-  <app-add-button url="{{ actionsUrl() }}/add" />
+  @if (showAddButton()) {
+      <app-add-button url="{{ actionsUrl() }}/add" />
+  }
 </div>
