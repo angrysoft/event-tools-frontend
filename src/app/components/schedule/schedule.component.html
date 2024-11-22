@@ -1,6 +1,6 @@
 <app-loader [loading]="loading()" />
 
-<app-date-changer (dateChanged)="dateChange($event)"/>
+<app-date-changer (dateChanged)="dateChange($event)" [showRefresh]="true" (refresh)="reloadData()"/>
 <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">Imię Nazwisko</div>

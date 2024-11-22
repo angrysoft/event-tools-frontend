@@ -4,6 +4,11 @@
       <button mat-icon-button (click)="prevMonth()" type="button">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
+      @if (showRefresh()) {
+      <button mat-icon-button (click)="refresh.emit()" type="button">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      }
       <button mat-icon-button (click)="nextMonth()" type="button">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>

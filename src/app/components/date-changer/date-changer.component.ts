@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, output } from "@angular/core";
+import { AfterViewInit, Component, input, OnDestroy, output } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -30,7 +30,9 @@ import { dateToString } from "../../utils/date";
 })
 export class DateChangerComponent implements OnDestroy {
   dateFrom: FormGroup<DateForm>;
+  showRefresh = input<boolean>(false);
   dateChanged = output<string>();
+  refresh = output();
   destroy = new Subject();
 
   constructor() {
