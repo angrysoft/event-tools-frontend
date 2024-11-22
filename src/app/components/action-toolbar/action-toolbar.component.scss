@@ -1,13 +1,39 @@
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
     align-items: center;
-    justify-content: space-between;
+    
     gap: 1rem;
+}
+
+.title {
+    text-align: left;
+    grid-column: 2 / span 3;
 }
 
 .actions {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
     padding: 1rem;
+    grid-column: 1 / span 2;
+}
+
+
+@media only screen and (min-width: 960px) {
+    .header {
+        grid-template-columns: 1fr 1fr 1fr;
+        justify-content: space-between;
+    }
+
+    .title {
+        text-align: center;
+        grid-column: unset;
+    }
+
+    .actions {
+        justify-content: right;
+        grid-column: unset;
+    }
 }
