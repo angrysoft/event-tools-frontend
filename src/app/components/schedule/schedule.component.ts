@@ -31,7 +31,7 @@ import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 import { getTextColor } from "../../utils/colors";
-import { DuplicateDaysComponent } from "../../event-days/duplicate-days/duplicate-days.component";
+import { DuplicateDaysComponent } from "../events/duplicate-days/duplicate-days.component";
 
 @Component({
   selector: "app-schedule",

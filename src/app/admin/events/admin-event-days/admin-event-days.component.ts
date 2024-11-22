@@ -40,7 +40,7 @@ import {
   WorkerDayStatusPayload,
   EventItemDto,
 } from "../../../models/events";
-import { ChangeTimeComponent } from "../../../event-days/change-time/change-time.component";
+import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
 
 @Component({
   selector: "app-admin-event-days",
