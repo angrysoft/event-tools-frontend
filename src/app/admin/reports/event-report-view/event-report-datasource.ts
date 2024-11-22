@@ -24,7 +24,7 @@ export class EventReportDataSource extends DataSource<WorkerDay> {
     const workerDays:WorkerDay[] = [];
 
     for (const eventDay of eventDays) {
-      workerDays.push(...eventDay.workerDays);
+      workerDays.push(...eventDay.workerDays.map(wd=>{wd.state = eventDay.state; return wd}));
     }
 
     const days = workerDays.map((d) => {

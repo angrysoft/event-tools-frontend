@@ -49,24 +49,34 @@
           }
 
           <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columnNames"
+            [class]="row.state"
+          ></tr>
         </table>
+        <div class="legend">
+            <span class="label">Statusy dni: </span>
+          @for (item of statuses()| keyvalue; track $index) {
+          <span [class]="item.key">{{ item.value }}</span>
+          }
+        </div>
         @if (!hideMoney()) {
-            <div class="summary">
-                <p><span class="label">Podsumowanie: </span></p>
-              <p>
-                <span class="label">Łacznie stawki</span>
-                <span>{{ totals().totalRates }} </span>
-              </p>
-              <p>
-                <span class="label">Łacznie dodatki</span>
-                <span>{{ totals().totalAddons }}</span>
-              </p>
-              <p>
-                <span class="label">Łacznie</span>
-                <span>{{ totals().total }}</span>
-              </p>
-            </div>
+        <div class="summary">
+          <p><span class="label">Podsumowanie: </span></p>
+          <p>
+            <span class="label">Łacznie stawki</span>
+            <span>{{ totals().totalRates }} </span>
+          </p>
+          <p>
+            <span class="label">Łacznie dodatki</span>
+            <span>{{ totals().totalAddons }}</span>
+          </p>
+          <p>
+            <span class="label">Łacznie</span>
+            <span>{{ totals().total }}</span>
+          </p>
+        </div>
         }
       </div>
     </section>

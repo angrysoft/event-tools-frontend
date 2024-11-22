@@ -54,6 +54,7 @@ interface WorkerDay {
   total?: string;
   addons?: string;
   workerDayAddons: WorkerAddons[];
+  state?:string;
 }
 
 interface WorkerDayForm {

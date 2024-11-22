@@ -46,7 +46,8 @@
     white-space: pre-wrap;
 }
 
-.summary {
+.summary,
+.legend {
     border-top: 1px solid var(--sys-outline);
 }
 
@@ -55,6 +56,27 @@
     box-sizing:border-box;
     height: 100%;
     overflow: hidden;
+    padding: 1rem;
+}
+
+
+.CHIEF {
+    color: red;
+}
+
+.TEMPLATE {
+    color: blue;
+}
+.COORDINATOR {
+    color:darkorange;
+}
+.APPROVED {
+    color:inherit;
+}
+
+.legend {
+    display: flex;
+    gap: 1rem;
     padding: 1rem;
 }
 

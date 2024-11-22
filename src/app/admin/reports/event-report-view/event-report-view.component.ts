@@ -1,4 +1,4 @@
-import { DatePipe } from "@angular/common";
+import { DatePipe, KeyValuePipe } from "@angular/common";
 import { Component, inject, signal, ViewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -26,6 +26,7 @@ import { Totals } from "../../../models/reports";
     MatCardModule,
     MatTableModule,
     DatePipe,
+    KeyValuePipe,
     MatSlideToggleModule,
   ],
   templateUrl: "./event-report-view.component.html",
