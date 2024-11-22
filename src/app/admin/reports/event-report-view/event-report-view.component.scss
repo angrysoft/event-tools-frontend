@@ -46,6 +46,10 @@
     white-space: pre-wrap;
 }
 
+.summary {
+    border-top: 1px solid var(--sys-outline);
+}
+
 :host {
     display: block;
     box-sizing:border-box;

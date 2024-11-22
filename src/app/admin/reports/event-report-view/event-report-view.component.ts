@@ -15,6 +15,7 @@ import { EventDaysService } from "../../services/event-days.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
 import { EventReportDataSource } from "./event-report-datasource";
 import { ReportsService } from "../../../services/reports.service";
+import { Totals } from "../../../models/reports";
 
 @Component({
   selector: "app-event-report-view",
@@ -48,6 +49,12 @@ export class EventReportViewComponent {
     chief: "",
     editors: [],
   });
+  totals = signal<Totals>({
+    totalHours: 0,
+    totalAddons: "",
+    totalRates: "",
+    total: ""
+  })
   hideMoney = signal<boolean>(false);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   @ViewChild(MatTable) table!: MatTable<WorkerDay>;
@@ -60,7 +67,7 @@ export class EventReportViewComponent {
     { name: "Godziny", def: "workHours" },
     { name: "Pracownik", def: "workerName" },
     { name: "Stawka", def: "rateName" },
-    { name: "Kwota", def: "rateMoney" },
+    { name: "Kwota", def: "rateValue" },
     { name: "Dodatki", def: "addons" },
     { name: "Suma", def: "total" },
   ];
@@ -102,6 +109,7 @@ export class EventReportViewComponent {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
         this.eventDays.set(resp.data.eventDays);
+        this.totals.set(resp.data.totals);
         this.dataSource.loadData(resp.data.eventDays);
       }
       this.loading.set(false);

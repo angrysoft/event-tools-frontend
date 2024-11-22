@@ -2,7 +2,8 @@
 
 <div class="side-content">
   <app-action-toolbar title="Raport Imprezy" backTo="/admin/reports/event">
-    <button mat-button>Pobierz</button>
+    <button mat-button>Pobierz PDF</button>
+    <button mat-button>Pobierz CSV</button>
     <mat-slide-toggle (change)="onHide($event)">Ukryj kwoty</mat-slide-toggle>
   </app-action-toolbar>
   <mat-card appearance="outlined">
@@ -50,6 +51,23 @@
           <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
           <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
         </table>
+        @if (!hideMoney()) {
+            <div class="summary">
+                <p><span class="label">Podsumowanie: </span></p>
+              <p>
+                <span class="label">Łacznie stawki</span>
+                <span>{{ totals().totalRates }} </span>
+              </p>
+              <p>
+                <span class="label">Łacznie dodatki</span>
+                <span>{{ totals().totalAddons }}</span>
+              </p>
+              <p>
+                <span class="label">Łacznie</span>
+                <span>{{ totals().total }}</span>
+              </p>
+            </div>
+        }
       </div>
     </section>
   </mat-card>
