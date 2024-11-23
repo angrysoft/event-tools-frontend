@@ -2,8 +2,8 @@
 
 <div class="side-content">
   <app-action-toolbar title="Raport Imprezy" backTo="/admin/reports/event">
-    <a mat-button href="/api/admin/reports/event/{{eventId}}/pdf?hideAmount={{hideAmount()}}">Pobierz PDF</a>
-    <a mat-button href="/api/admin/reports/event/{{eventId}}/csv?hideAmount={{hideAmount()}}">Pobierz CSV</a>
+    <a mat-button href="/api/admin/reports/event/{{eventId}}/pdf?hideAmount={{hideAmount()}}" target="_blank">Pobierz PDF</a>
+    <a mat-button href="/api/admin/reports/event/{{eventId}}/csv?hideAmount={{hideAmount()}}" target="_blank">Pobierz CSV</a>
     <mat-slide-toggle (change)="onHide($event)">Ukryj kwoty</mat-slide-toggle>
   </app-action-toolbar>
   <mat-card appearance="outlined">
