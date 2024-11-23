@@ -7,7 +7,7 @@ import {
   MatSlideToggleModule,
 } from "@angular/material/slide-toggle";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { EventDay, EventItemDto, WorkerDay } from "../../../models/events";
@@ -28,6 +28,7 @@ import { Totals } from "../../../models/reports";
     DatePipe,
     KeyValuePipe,
     MatSlideToggleModule,
+    RouterLink,
   ],
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",
@@ -56,7 +57,7 @@ export class EventReportViewComponent {
     totalRates: "",
     total: ""
   })
-  hideMoney = signal<boolean>(false);
+  hideAmount = signal<boolean>(false);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   @ViewChild(MatTable) table!: MatTable<WorkerDay>;
   dataSource!: EventReportDataSource;
@@ -123,6 +124,6 @@ export class EventReportViewComponent {
     } else {
       this.tableColumns = this.tableColumnsFull;
     }
-    this.hideMoney.set(ev.checked);
+    this.hideAmount.set(ev.checked);
   }
 }
