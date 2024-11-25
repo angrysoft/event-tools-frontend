@@ -7,7 +7,7 @@ import {
   inject,
   input,
   untracked,
-  ViewChild,
+  viewChild
 } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -34,7 +34,7 @@ export class WorkerDayComponent implements AfterViewInit {
   day = input.required<EventDay>();
   selection = input.required<SelectionModel<WorkerDay>>();
 
-  @ViewChild(MatTable) table!: MatTable<WorkerDay>;
+  readonly table = viewChild.required(MatTable);
   dataSource!: WorkerDayDataSource;
 
   tableColumns: { name: string; def: string }[] = [
@@ -60,7 +60,7 @@ export class WorkerDayComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.table.dataSource = this.dataSource;
+    this.table().dataSource = this.dataSource;
   }
 
   get columnNames() {

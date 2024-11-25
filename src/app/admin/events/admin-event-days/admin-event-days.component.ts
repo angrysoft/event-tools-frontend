@@ -6,7 +6,7 @@ import {
   HostListener,
   inject,
   signal,
-  ViewChild,
+  viewChild
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -86,7 +86,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
   dayStatus = signal<string>("");
   stateCls = "";
 
-  @ViewChild(MatTabGroup) tabs!: MatTabGroup;
+  readonly tabs = viewChild.required(MatTabGroup);
 
   constructor() {
     this.workerDayService.getStatuses().subscribe((resp) => {
@@ -97,7 +97,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.tabIdx.setValue(2);
-    this.tabs.selectedIndex = 2;
+    this.tabs().selectedIndex = 2;
   }
 
   private loadDays() {

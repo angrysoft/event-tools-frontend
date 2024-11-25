@@ -9,7 +9,7 @@ import {
   OnDestroy,
   output,
   signal,
-  ViewChild,
+  viewChild
 } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -70,7 +70,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   action = output<ScheduleAction>();
   offset: number = 0;
   size: number = 30;
-  @ViewChild("end") end!: ElementRef<HTMLDivElement>;
+  readonly end = viewChild.required<ElementRef<HTMLDivElement>>("end");
   currentDate: string = "";
 
   ngAfterViewInit(): void {
@@ -112,8 +112,9 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           this.schedules.set(resp.data);
           this.schedules().size = this.size;
           this.loading.set(false);
-          this.observer.observe(this.end.nativeElement);
-          this.end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
+          const end = this.end();
+          this.observer.observe(end.nativeElement);
+          end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
         }
       });
   }

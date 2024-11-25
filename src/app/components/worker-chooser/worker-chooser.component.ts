@@ -1,5 +1,5 @@
 import { SelectionModel } from "@angular/cdk/collections";
-import { Component, inject, signal, ViewChild } from "@angular/core";
+import { Component, inject, signal, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
   MAT_DIALOG_DATA,
@@ -66,8 +66,8 @@ export class WorkerChooserComponent<T> {
     { name: "Grupa", def: "groupName" },
   ];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatTable) table!: MatTable<WorkerBase>;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly table = viewChild.required(MatTable);
   dataSource!: DataTableDataSource<WorkerBase>;
 
   get columnNames() {
@@ -83,8 +83,8 @@ export class WorkerChooserComponent<T> {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+    this.dataSource.paginator = this.paginator();
+    this.table().dataSource = this.dataSource;
 
     this.service.getWorkersHints().subscribe((resp) => {
       if (resp.ok) {
@@ -102,13 +102,13 @@ export class WorkerChooserComponent<T> {
 
   searchQuery(q: SearchQuery) {
     this.dataSource.query = q;
-    this.paginator.firstPage();
+    this.paginator().firstPage();
     this.dataSource.loadData();
   }
 
   resetSearch() {
     this.dataSource.query = {};
-    this.paginator.firstPage();
+    this.paginator().firstPage();
     this.dataSource.loadData();
   }
 

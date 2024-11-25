@@ -8,7 +8,7 @@ import {
   OnInit,
   signal,
   untracked,
-  ViewChild,
+  viewChild
 } from "@angular/core";
 import {
   FormArray,
@@ -72,8 +72,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
   backTo = "/admin/events";
   private readonly destroy = new Subject();
   chiefName = signal<string>("");
-  @ViewChild("editor")
-  editor!: ElementRef;
+  readonly editor = viewChild.required<ElementRef>("editor");
 
   constructor() {
     const paramEventId = this.route.snapshot.paramMap.get("eventId");
@@ -110,7 +109,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
               const data: EventItem = resp.data as EventItem;
               console.log(data);
               this.eventForm.patchValue(data);
-              this.editor.nativeElement.innerHTML = data.description;
+              this.editor().nativeElement.innerHTML = data.description;
 
               this.getChiefs(data);
             }
@@ -149,11 +148,11 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.editor.nativeElement, "input")
+    fromEvent(this.editor().nativeElement, "input")
       .pipe(takeUntil(this.destroy), debounceTime(500))
       .subscribe(() => {
         this.eventForm.controls.description.setValue(
-          this.editor.nativeElement.innerHTML,
+          this.editor().nativeElement.innerHTML,
         );
         this.eventForm.controls.description.markAsDirty();
         this.eventForm.controls.description.updateValueAndValidity();

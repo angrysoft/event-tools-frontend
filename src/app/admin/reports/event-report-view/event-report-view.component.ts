@@ -1,5 +1,5 @@
 import { DatePipe, KeyValuePipe } from "@angular/common";
-import { Component, inject, signal, ViewChild } from "@angular/core";
+import { Component, inject, signal, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import {
@@ -58,7 +58,7 @@ export class EventReportViewComponent {
   })
   hideAmount = signal<boolean>(false);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
-  @ViewChild(MatTable) table!: MatTable<WorkerDay>;
+  readonly table = viewChild.required(MatTable);
   dataSource!: EventReportDataSource;
 
   
@@ -94,7 +94,7 @@ export class EventReportViewComponent {
   }
 
   ngAfterViewInit(): void {
-    this.table.dataSource = this.dataSource;
+    this.table().dataSource = this.dataSource;
   }
 
   get columnNames() {

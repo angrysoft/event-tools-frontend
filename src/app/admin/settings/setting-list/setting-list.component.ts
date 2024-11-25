@@ -4,7 +4,7 @@ import {
   inject,
   input,
   OnInit,
-  ViewChild
+  viewChild
 } from "@angular/core";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
@@ -28,7 +28,7 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
 
   tableColumns = input.required<{name:string, def:string}[]>()
 
-  @ViewChild(MatTable) table!: MatTable<T>;
+  readonly table = viewChild.required(MatTable);
   dataSource!: ListDataSource<T>;
 
 
@@ -45,7 +45,7 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.table.dataSource = this.dataSource;
+    this.table().dataSource = this.dataSource;
     this.dataSource.loadData();
   }
 

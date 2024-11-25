@@ -5,7 +5,7 @@ import {
   input,
   signal,
   untracked,
-  ViewChild,
+  viewChild
 } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -30,7 +30,7 @@ export class EventFilesComponent {
   files = signal<EventFile[]>([]);
   confirm = inject(MatDialog);
   dropZoneClasses = signal<string[]>(["drop-zone"]);
-  @ViewChild("file") inputFile: any;
+  readonly inputFile = viewChild<any>("file");
   private readonly cancel = new Subject();
 
   constructor() {
@@ -81,7 +81,7 @@ export class EventFilesComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.inputFile.nativeElement.value = "";
+      this.inputFile().nativeElement.value = "";
       if (result === true) {
         this.service.getEventFiles(this.eventId()).subscribe((resp) => {
           if (resp.ok) this.files.set(resp.data);

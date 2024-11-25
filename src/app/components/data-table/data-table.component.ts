@@ -5,7 +5,7 @@ import {
   Injectable,
   input,
   OnInit,
-  ViewChild,
+  viewChild
 } from "@angular/core";
 import {
   MatPaginator,
@@ -70,8 +70,8 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
 
   tableColumns = input.required<{ name: string; def: string }[]>();
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatTable) table!: MatTable<T>;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly table = viewChild.required(MatTable);
   dataSource!: DataTableDataSource<T>;
 
   get columnNames() {
@@ -87,8 +87,8 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+    this.dataSource.paginator = this.paginator();
+    this.table().dataSource = this.dataSource;
   }
 
   onClick(row: any) {
@@ -97,13 +97,13 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
 
   searchQuery(q: SearchQuery) {
     this.dataSource.query = q;
-    this.paginator.firstPage();
+    this.paginator().firstPage();
     this.dataSource.loadData();
   }
 
   resetSearch() {
     this.dataSource.query = {};
-    this.paginator.firstPage();
+    this.paginator().firstPage();
     this.dataSource.loadData();
   }
 }
