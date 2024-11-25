@@ -1,22 +1,65 @@
 <app-loader [loading]="loading()" />
 
 <section class="side-content">
-  <app-action-toolbar
-    title="Raport Pracownika / Ekipy"
-    backTo="/admin/reports/event"
-  />
+  <h2>Raport Pracowników</h2>
   <mat-accordion>
     <mat-expansion-panel
       (opened)="panelOpenState.set(true)"
       (closed)="panelOpenState.set(false)"
     >
       <mat-expansion-panel-header>
-        <mat-panel-title> Self aware panel </mat-panel-title>
-        <mat-panel-description>
-          Currently I am {{ panelOpenState() ? "open" : "closed" }}
-        </mat-panel-description>
+        <mat-panel-title>Ustawienia Raportu</mat-panel-title>
       </mat-expansion-panel-header>
-      <p>I'm visible because I am open</p>
+      <mat-card appearance="outlined">
+        <mat-card-header
+          ><mat-card-title>Ustawienia Raportu</mat-card-title></mat-card-header
+        >
+        <mat-card-content class="form-group">
+          <form
+            [formGroup]="reportSettingFrom"
+            class="form"
+            (submit)="handelSubmit()"
+          >
+            <div class="form-group">
+              <mat-form-field appearance="outline">
+                <mat-label>Generuj dla: </mat-label>
+                <mat-select
+                  formArrayName="reportType"
+                  (valueChange)="onTypeChange($event)"
+                >
+                  <mat-option value="team">Ekipy</mat-option>
+                  <mat-option value="workers">Wybranych Pracowników</mat-option>
+                </mat-select>
+              </mat-form-field>
+              @if (reportSettingFrom.controls.teamId.enabled) {
+              <mat-form-field appearance="outline">
+                <mat-label>Ekipa</mat-label>
+                <mat-select formControlName="teamId" name="teamId" required>
+                  @for (team of hints.teams; track team) {
+                  <mat-option [value]="team.id">{{ team.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              } 
+              <!-- @if (reportSettingFrom.controls.workers.enabled) {
+              <mat-form-field appearance="outline" style="flex-grow: 1">
+                <mat-label>Kierownik</mat-label>
+              </mat-form-field>
+              <button
+                mat-fab
+                extended
+                (click)="chooseWorkers()"
+                type="button"
+                style="flex-grow: 1"
+              >
+                Ustaw
+              </button>
+              } -->
+            </div>
+            <div></div>
+          </form>
+        </mat-card-content>
+      </mat-card>
     </mat-expansion-panel>
   </mat-accordion>
 </section>
