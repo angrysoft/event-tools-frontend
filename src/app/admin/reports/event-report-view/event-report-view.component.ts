@@ -7,15 +7,15 @@ import {
   MatSlideToggleModule,
 } from "@angular/material/slide-toggle";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { EventDay, EventItemDto, WorkerDay } from "../../../models/events";
+import { Totals } from "../../../models/reports";
+import { ReportsService } from "../../../services/reports.service";
 import { EventDaysService } from "../../services/event-days.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
 import { EventReportDataSource } from "./event-report-datasource";
-import { ReportsService } from "../../../services/reports.service";
-import { Totals } from "../../../models/reports";
 
 @Component({
   selector: "app-event-report-view",
@@ -28,7 +28,6 @@ import { Totals } from "../../../models/reports";
     DatePipe,
     KeyValuePipe,
     MatSlideToggleModule,
-    RouterLink,
   ],
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",

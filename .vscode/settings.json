@@ -3,5 +3,9 @@
         "Choser",
         "datasource",
         "devkit"
-    ]
+    ],
+    "cSpell.customDictionaries": {
+
+    },
+    "cSpell.language": "en,pl"
 }

@@ -39,4 +39,10 @@ export const adminRoutes: Routes = [
     loadComponent: () =>
       import("./reports/event-report-view/event-report-view.component").then((m) => m.EventReportViewComponent),
   },
+  {
+    path: "reports/workers",
+    title: "Raporty Imprezy",
+    loadComponent: () =>
+      import("./reports/workers-report/workers-report.component").then((m) => m.WorkersReportComponent),
+  },
 ];
