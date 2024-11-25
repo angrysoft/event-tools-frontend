@@ -1,7 +1,10 @@
+import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe, KeyValuePipe } from "@angular/common";
 import { Component, inject, signal, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatDialog } from "@angular/material/dialog";
+import { MatListOption } from "@angular/material/list";
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
@@ -10,10 +13,10 @@ import { MatTable, MatTableModule } from "@angular/material/table";
 import { ActivatedRoute } from "@angular/router";
 import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
-import { EventDay, EventItemDto, WorkerDay } from "../../../models/events";
+import { WorkerFilterComponent } from "../../../components/reports/worker-filter/worker-filter.component";
+import { EventItemDto } from "../../../models/events";
 import { Totals } from "../../../models/reports";
 import { ReportsService } from "../../../services/reports.service";
-import { EventDaysService } from "../../services/event-days.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
 import { EventReportDataSource } from "./event-report-datasource";
 
@@ -34,12 +37,12 @@ import { EventReportDataSource } from "./event-report-datasource";
 })
 export class EventReportViewComponent {
   reportService = inject(ReportsService);
-  service = inject(EventDaysService);
   workerDayService = inject(WorkerDaysService);
   route = inject(ActivatedRoute);
+  dialog = inject(MatDialog);
+
   loading = signal<boolean>(true);
   statuses = signal<{ [key: string]: string }>({});
-  eventDays = signal<EventDay[]>([]);
   eventInfo = signal<EventItemDto>({
     id: 0,
     name: "",
@@ -57,6 +60,8 @@ export class EventReportViewComponent {
     total: ""
   })
   hideAmount = signal<boolean>(false);
+  workerSelection = new SelectionModel<number>();
+  workerList = signal<WorkerSelection[]>([]);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   readonly table = viewChild.required(MatTable);
   dataSource!: EventReportDataSource;
@@ -106,12 +111,25 @@ export class EventReportViewComponent {
   }
 
   private loadDays() {
-    this.reportService.getEventRaport(this.eventId).subscribe((resp) => {
+    this.reportService.getEventRaportForWorkers(this.eventId, this.workerSelection.selected).subscribe((resp) => {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
-        this.eventDays.set(resp.data.eventDays);
         this.totals.set(resp.data.totals);
-        this.dataSource.loadData(resp.data.eventDays);
+        const workers:any = {};
+        const workerDays = [];
+        for (const eventDay of resp.data.eventDays) {
+          workerDays.push(...eventDay.workerDays.map(wd=>{
+            wd.state = eventDay.state;
+            if (wd.worker && wd.workerName && this.workerSelection.isEmpty()) {
+              workers[wd.worker] = {id: wd.worker, workerName: wd.workerName};
+            }
+            return wd;
+          }));
+        }
+        if (this.workerSelection.isEmpty())
+          this.workerList.set(Object.values(workers));
+
+        this.dataSource.loadData(workerDays);
       }
       this.loading.set(false);
     });
@@ -125,4 +143,22 @@ export class EventReportViewComponent {
     }
     this.hideAmount.set(ev.checked);
   }
+
+  filterWorkers() {
+    const filterWorkersDialog = this.dialog.open(WorkerFilterComponent, {
+      data: {workers: this.workerList()}
+    });
+
+    filterWorkersDialog.afterClosed().subscribe((result)=> {
+      if (result) {
+        this.workerSelection.select(result.map((v:MatListOption)=>v.value));
+        this.loadDays();
+      }
+    });
+  }
+}
+
+interface WorkerSelection {
+  id: number;
+  workerName: string;
 }

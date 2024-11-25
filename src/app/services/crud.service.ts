@@ -84,7 +84,7 @@ export class CrudService<T> {
 
   protected _get<GT>(
     api: string,
-    params: { [key: string]: string | number | boolean } | null = null,
+    params: { [key: string]: string | number | boolean | number[] } | null = null,
   ): Observable<GT> {
     let reqParams: HttpParams | undefined = undefined;
     if (params && Object.keys(params).length > 0) {

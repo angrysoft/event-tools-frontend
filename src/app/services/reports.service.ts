@@ -8,6 +8,7 @@ import { EventReport } from "../models/reports";
   providedIn: "root",
 })
 export class ReportsService extends CrudService<any> {
+  
   constructor() {
     super();
     this.api = "/api/admin/reports";
@@ -15,5 +16,10 @@ export class ReportsService extends CrudService<any> {
 
   getEventRaport(eventId: number): Observable<RestResponse<EventReport>> {
     return this._get<RestResponse<EventReport>>(`${this.api}/event/${eventId}`);
+  }
+  
+  getEventRaportForWorkers(eventId: number, workers: number[]) {
+    console.log("worker", workers)
+    return this._get<RestResponse<EventReport>>(`${this.api}/event/${eventId}`, {workers: workers});
   }
 }
