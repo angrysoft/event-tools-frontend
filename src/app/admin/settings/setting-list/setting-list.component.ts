@@ -3,9 +3,8 @@ import {
   Component,
   inject,
   input,
-  Input,
   OnInit,
-  ViewChild,
+  ViewChild
 } from "@angular/core";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
@@ -23,11 +22,9 @@ import { ListDataSource } from "./list-datasource";
 export class SettingListComponent<T> implements AfterViewInit, OnInit {
   readonly service = inject(CrudService<T>);
   readonly router = inject(Router);
-  @Input({ required: true })
-  api = "";
+  readonly api = input.required<string>();
 
-  @Input({ required: true })
-  actionsUrl = "";
+  readonly actionsUrl = input.required<string>();
 
   tableColumns = input.required<{name:string, def:string}[]>()
 
@@ -44,7 +41,7 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.service.api = this.api;
+    this.service.api = this.api();
   }
 
   ngAfterViewInit(): void {
@@ -53,6 +50,6 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
   }
 
   onClick(row: any) {
-    this.router.navigateByUrl(`${this.actionsUrl}/${row.id}`);
+    this.router.navigateByUrl(`${this.actionsUrl()}/${row.id}`);
   }
 }
