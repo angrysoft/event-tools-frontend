@@ -10,7 +10,13 @@ import { MonthReportDataComponent } from "../../../components/reports/month-repo
 
 @Component({
   selector: "app-workers-report-view",
-  imports: [LoaderComponent, ActionToolbarComponent, MatCardModule, MonthReportWorkerInfoComponent, MonthReportDataComponent],
+  imports: [
+    LoaderComponent,
+    ActionToolbarComponent,
+    MatCardModule,
+    MonthReportWorkerInfoComponent,
+    MonthReportDataComponent,
+  ],
   templateUrl: "./workers-report-view.component.html",
   styleUrl: "./workers-report-view.component.scss",
 })
@@ -33,7 +39,7 @@ export class WorkersReportViewComponent {
   report = signal<MonthReport>({
     info: {
       name: "",
-      date: ""
+      date: "",
     },
     eventDays: [],
     totals: {
@@ -41,8 +47,8 @@ export class WorkersReportViewComponent {
       totalHours: 0,
       totalAddons: "",
       totalRates: "",
-      total: ""
-    }
+      total: "",
+    },
   });
 
   constructor() {
@@ -57,21 +63,21 @@ export class WorkersReportViewComponent {
     this.year = reportConfig["year"];
 
     if (reportConfig["reportType"] == "team")
-      this.service.getMonthRaportForTeam(
-        reportConfig["teamId"],
-        this.month,
-        this.year
-      ).subscribe(resp=> {
-        if (resp.ok) {
-          this.report.set(resp.data);
-        }
-      })
+      this.service
+        .getMonthRaportForTeam(reportConfig["teamId"], this.month, this.year)
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.report.set(resp.data);
+          } else this.service.showError(resp);
+        });
     else if (reportConfig["reportType"] == "workers") {
-      this.service.getMonthRaportForWorkers(
-        reportConfig["worker"],
-        this.month,
-        this.year
-      );
+      this.service
+        .getMonthRaportForWorkers(reportConfig["worker"], this.month, this.year)
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.report.set(resp.data);
+          } else this.service.showError(resp);
+        });
     }
   }
 }

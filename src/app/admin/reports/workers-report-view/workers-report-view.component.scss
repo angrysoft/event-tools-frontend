@@ -1,0 +1,35 @@
+.header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--sys-outline);
+}
+
+.report-data {
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+.logo {
+    display: flex;
+    height: 5rem;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+@media only screen and (min-width: 960px) {
+    .logo {
+        height: 10rem;
+    }
+
+    .header {
+        grid-template-columns: auto 1fr;
+    }
+}
