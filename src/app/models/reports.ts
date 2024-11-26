@@ -28,5 +28,17 @@ interface EventWorkerDay {
   workerDay: WorkerDay;
 }
 
-export { EventReport, MonthReport, Totals, EventWorkerDay};
+interface DataWorkerDay {
+  eventName: string;
+  eventNumber: string;
+  startTime: string | Date;
+  endTime: string | Date;
+  workHours: number;
+  rateName: string;
+  rateValue: string;
+  addons: string;
+  total: string;
+  state:string;
+}
 
+export { EventReport, MonthReport, Totals, EventWorkerDay, DataWorkerDay, MonthTotal };

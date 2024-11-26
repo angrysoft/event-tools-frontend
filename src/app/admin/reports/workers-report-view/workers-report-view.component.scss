@@ -1,11 +1,3 @@
-.header {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid var(--sys-outline);
-}
 .report {
     display: flex;
     flex-direction: column;
@@ -15,16 +7,20 @@
     overflow: hidden;
 }
 
+.header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--sys-outline);
+}
+
 .report-data {
     box-sizing: border-box;
     height: 100%;
     overflow: auto;
     scrollbar-width: thin;
-}
-
-.mat-mdc-card {
-    height: 100%;
-    overflow: hidden;
 }
 
 .logo {
@@ -37,6 +33,24 @@
     margin-right: 0.5rem;
 }
 
+.mat-mdc-card {
+    height: 100%;
+    overflow: hidden;
+}
+
+.mat-column-total {
+    font-weight: bold;
+}
+
+.mat-column-addons {
+    white-space: pre-wrap;
+}
+
+.summary,
+.legend {
+    border-top: 1px solid var(--sys-outline);
+}
+
 :host {
     display: block;
     box-sizing: border-box;
@@ -44,6 +58,30 @@
     overflow: hidden;
     padding: 1rem;
 }
+
+
+.CHIEF {
+    color: red;
+}
+
+.TEMPLATE {
+    color: blue;
+}
+
+.COORDINATOR {
+    color: darkorange;
+}
+
+.APPROVED {
+    color: inherit;
+}
+
+.legend {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
 
 @media only screen and (min-width: 960px) {
     .logo {

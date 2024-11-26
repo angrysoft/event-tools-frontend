@@ -1,5 +1,5 @@
 <table mat-table aria-label="Elements">
-  @for (col of tableColumns; track col.def) {
+  @for (col of tableColumns(); track col.def) {
   <ng-container matColumnDef="{{ col.def }}">
     <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
     @if (col.def.endsWith("Time")) {

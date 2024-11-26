@@ -2,9 +2,7 @@ import { DatePipe, KeyValuePipe } from "@angular/common";
 import { Component, inject, input, signal, viewChild } from "@angular/core";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { WorkerDaysService } from "../../../admin/services/worker-days.service";
-import { EventDay } from "../../../models/events";
 import { MonthReportDataSource } from "./month-report-datasource";
-import { EventWorkerDay } from "../../../models/reports";
 
 @Component({
   selector: "app-month-report-data",
@@ -12,34 +10,13 @@ import { EventWorkerDay } from "../../../models/reports";
   templateUrl: "./month-report-data.component.html",
   styleUrl: "./month-report-data.component.scss",
 })
-export class MonthReportDataComponent {
+export class MonthReportDataComponent<T> {
   workerDayService = inject(WorkerDaysService);
   readonly table = viewChild.required(MatTable);
   statuses = signal<{ [key: string]: string }>({});
-  dataSource!: MonthReportDataSource;
-  data = input.required <EventWorkerDay[]>()
-
-  tableColumnsFull: { name: string; def: string }[] = [
-    { name: "Numer", def: "eventNumber" },
-    { name: "Nazwa", def: "eventName" },
-    { name: "Start", def: "startTime" },
-    { name: "Koniec", def: "endTime" },
-    { name: "Godziny", def: "workHours" },
-    { name: "Stawka", def: "rateName" },
-    { name: "Kwota", def: "rateValue" },
-    { name: "Dodatki", def: "addons" },
-    { name: "Suma", def: "total" },
-  ];
-
-  tableColumnsHided: { name: string; def: string }[] = [
-    { name: "Start", def: "startTime" },
-    { name: "Koniec", def: "endTime" },
-    { name: "Godziny", def: "workHours" },
-    { name: "Pracownik", def: "workerName" },
-    { name: "Stawka", def: "rateName" },
-  ];
-
-  tableColumns: { name: string; def: string }[] = this.tableColumnsFull;
+  dataSource!: MonthReportDataSource<T>;
+  data = input.required<T[]>();
+  tableColumns = input.required<{ name: string; def: string }[]>();
 
   constructor() {
     this.workerDayService.getStatuses().subscribe((resp) => {
@@ -54,7 +31,7 @@ export class MonthReportDataComponent {
   }
 
   get columnNames() {
-    return this.tableColumns.map((el) => el.def);
+    return this.tableColumns().map((el) => el.def);
   }
 
   getStatus(state: string) {
