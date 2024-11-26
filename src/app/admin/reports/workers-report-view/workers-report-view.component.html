@@ -1,7 +1,7 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Raport Imprezy" backTo="/admin/reports/event">
+  <app-action-toolbar title="Raport Miesieczny" backTo="/admin/reports/workers">
     @if (canGetReport()) {
     <a
       mat-button
@@ -17,12 +17,18 @@
 
   <mat-card appearance="outlined">
     <section class="report">
+      @if (report().workerDays.length === 0) {
+      <h3>Brak Pracy w danym miesiącu</h3>
+      } @else {
       <header class="header">
         <div class="logo"><img src="assets/logo_ves_sq.png" alt="Logo" /></div>
-        <app-month-report-worker-info [info]="report().info" />
+        <app-month-report-worker-info
+          [name]="report().name"
+          [reportDate]="report().reportDate"
+        />
       </header>
       <div class="report-data">
-        <app-month-report-data [data]="report().eventDays" />
+        <app-month-report-data [data]="report().workerDays" />
 
         <div class="summary">
           <p><span class="label">Podsumowanie: </span></p>
@@ -44,6 +50,7 @@
           </p>
         </div>
       </div>
+      }
     </section>
   </mat-card>
 </div>

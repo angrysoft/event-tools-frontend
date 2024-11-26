@@ -37,11 +37,6 @@ export class WorkersReportViewComponent {
     );
   });
   report = signal<MonthReport>({
-    info: {
-      name: "",
-      date: "",
-    },
-    eventDays: [],
     totals: {
       basicPay: 0,
       totalHours: 0,
@@ -49,6 +44,9 @@ export class WorkersReportViewComponent {
       totalRates: "",
       total: "",
     },
+    name: "",
+    reportDate: "",
+    workerDays: [],
   });
 
   constructor() {
@@ -57,7 +55,7 @@ export class WorkersReportViewComponent {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
-
+    console.log(reportConfig);
     this.reportType.set(reportConfig["reportType"]);
     this.month = reportConfig["month"];
     this.year = reportConfig["year"];
@@ -67,16 +65,24 @@ export class WorkersReportViewComponent {
         .getMonthRaportForTeam(reportConfig["teamId"], this.month, this.year)
         .subscribe((resp) => {
           if (resp.ok) {
+            console.log(resp.data);
             this.report.set(resp.data);
           } else this.service.showError(resp);
+          this.loading.set(false);
         });
     else if (reportConfig["reportType"] == "workers") {
       this.service
-        .getMonthRaportForWorkers(reportConfig["worker"], this.month, this.year)
+        .getMonthRaportForWorkers(
+          reportConfig["worker"],
+          Number(this.month) + 1,
+          this.year
+        )
         .subscribe((resp) => {
           if (resp.ok) {
+            console.log(resp.data);
             this.report.set(resp.data);
           } else this.service.showError(resp);
+          this.loading.set(false);
         });
     }
   }

@@ -1,4 +1,4 @@
-import { EventDay, EventDaysInfo } from "./events";
+import { EventDaysInfo, WorkerDay } from "./events";
 
 interface EventReport extends EventDaysInfo {
   totals: Totals;
@@ -16,14 +16,17 @@ interface MonthTotal extends Totals {
 }
 
 interface MonthReport {
-  info: Info;
-  eventDays: EventDay[];
+  name: string;
+  reportDate: string;
+  workerDays: EventWorkerDay[];
   totals: MonthTotal;
 }
 
-interface Info {
-  name: string;
-  date: string;
+interface EventWorkerDay {
+  eventName: string;
+  eventNumber: string;
+  workerDay: WorkerDay;
 }
 
-export { EventReport, Totals, MonthReport, Info };
+export { EventReport, MonthReport, Totals, EventWorkerDay};
+

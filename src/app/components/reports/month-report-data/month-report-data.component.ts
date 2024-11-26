@@ -4,6 +4,7 @@ import { MatTable, MatTableModule } from "@angular/material/table";
 import { WorkerDaysService } from "../../../admin/services/worker-days.service";
 import { EventDay } from "../../../models/events";
 import { MonthReportDataSource } from "./month-report-datasource";
+import { EventWorkerDay } from "../../../models/reports";
 
 @Component({
   selector: "app-month-report-data",
@@ -16,13 +17,14 @@ export class MonthReportDataComponent {
   readonly table = viewChild.required(MatTable);
   statuses = signal<{ [key: string]: string }>({});
   dataSource!: MonthReportDataSource;
-  data = input.required <EventDay[]>()
+  data = input.required <EventWorkerDay[]>()
 
   tableColumnsFull: { name: string; def: string }[] = [
+    { name: "Numer", def: "eventNumber" },
+    { name: "Nazwa", def: "eventName" },
     { name: "Start", def: "startTime" },
     { name: "Koniec", def: "endTime" },
     { name: "Godziny", def: "workHours" },
-    { name: "Pracownik", def: "workerName" },
     { name: "Stawka", def: "rateName" },
     { name: "Kwota", def: "rateValue" },
     { name: "Dodatki", def: "addons" },

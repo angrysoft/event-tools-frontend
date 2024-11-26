@@ -51,6 +51,8 @@ interface WorkerDay {
   workerName?: string;
   rateName?: string;
   rateMoney?: string;
+  rateValue?: string;
+  workHours?: number;
   total?: string;
   addons?: string;
   workerDayAddons: WorkerAddons[];

@@ -3,17 +3,18 @@ import { signal } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { EventDay, WorkerDay } from "../../../models/events";
 import { MatTableModule } from "@angular/material/table";
+import { EventWorkerDay } from "../../../models/reports";
 
-export class MonthReportDataSource extends DataSource<WorkerDay> {
-  private readonly dataSubject = new BehaviorSubject<WorkerDay[]>([]);
+export class MonthReportDataSource extends DataSource<DataWorkerDay> {
+  private readonly dataSubject = new BehaviorSubject<DataWorkerDay[]>([]);
   public loading = signal<boolean>(false);
   length: number = 0;
-  selected = [MatTableModule]
+  selected = [MatTableModule];
   constructor() {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<WorkerDay[]> {
+  connect(collectionViewer: CollectionViewer): Observable<DataWorkerDay[]> {
     return this.dataSubject.asObservable();
   }
 
@@ -21,22 +22,41 @@ export class MonthReportDataSource extends DataSource<WorkerDay> {
     this.dataSubject.complete();
   }
 
-  loadData(eventDays: EventDay[]) {
-    const workerDays:WorkerDay[] = [];
+  loadData(eventWorkerDays: EventWorkerDay[]) {
 
-    for (const eventDay of eventDays) {
-      workerDays.push(...eventDay.workerDays.map(wd=>{wd.state = eventDay.state; return wd}));
+    const workerDays: DataWorkerDay[] = [];
+
+    for (const day of eventWorkerDays) {
+      workerDays.push({
+        eventName: day.eventName,
+        eventNumber: day.eventNumber,
+        startTime: day.workerDay.startTime,
+        endTime: day.workerDay.endTime,
+        workHours: day.workerDay.workHours ?? 0,
+        rateName: day.workerDay.rateName ?? "",
+        rateValue: day.workerDay.rateValue ?? "",
+        addons: day.workerDay.workerDayAddons
+          .map((addon) => `${addon.name}:${addon.money}`)
+          .join("\n"),
+        total: day.workerDay.total ?? "",
+      });
     }
-
-    const days = workerDays.map((d) => {
-      d.addons = d.workerDayAddons
-        .map((addon) => `${addon.name}:${addon.money}`)
-        .join("\n");
-      return d;
-    });
+    console.log()
     this.loading.set(true);
-    this.dataSubject.next(days);
+    this.dataSubject.next(workerDays);
     this.length = workerDays.length;
     this.loading.set(false);
   }
+}
+
+interface DataWorkerDay {
+  eventName: string;
+  eventNumber: string;
+  startTime: string | Date;
+  endTime: string | Date;
+  workHours: number;
+  rateName: string;
+  rateValue: string;
+  addons: string;
+  total: string;
 }
