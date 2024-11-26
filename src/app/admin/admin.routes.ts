@@ -45,4 +45,10 @@ export const adminRoutes: Routes = [
     loadComponent: () =>
       import("./reports/workers-report/workers-report.component").then((m) => m.WorkersReportComponent),
   },
+  {
+    path: "reports/workers/view",
+    title: "Raporty Miesięczny",
+    loadComponent: () =>
+      import("./reports/workers-report-view/workers-report-view.component").then((m) => m.WorkersReportViewComponent),
+  },
 ];

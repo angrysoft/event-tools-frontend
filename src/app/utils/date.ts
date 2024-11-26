@@ -1,6 +1,6 @@
 function dateToString(date: Date) {
   return `${date.getFullYear()}-${addPad(date.getMonth() + 1)}-${addPad(
-    date.getDate(),
+    date.getDate()
   )}`;
 }
 
@@ -20,4 +20,14 @@ function getTimeFromDataTimeString(dateIn: string): string {
   return date.toLocaleTimeString();
 }
 
-export { dateToString, dateTimeToString, getTimeFromDataTimeString };
+function dateStringFromMonthYear(month: number, year: number) {
+  if (!year || !month) return null;
+  return `${year}-${addPad(month)}-01`;
+}
+
+export {
+  dateToString,
+  dateTimeToString,
+  getTimeFromDataTimeString,
+  dateStringFromMonthYear,
+};

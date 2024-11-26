@@ -23,17 +23,16 @@ import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, fromEvent, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
-import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { EventItemForm, EventItem } from "../../../models/events";
-import { OfficeWorkers, WorkerBase } from "../../models/worker";
-import { EventsService } from "../../../services/events.service";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
+import { EventItem, EventItemForm } from "../../../models/events";
+import { EventsService } from "../../../services/events.service";
+import { OfficeWorkers, WorkerBase } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
 
 @Component({

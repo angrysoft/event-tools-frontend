@@ -1,25 +1,44 @@
 import { Injectable } from "@angular/core";
-import { CrudService } from "./crud.service";
-import { Observable } from "rxjs";
+import { EventReport, MonthReport } from "../models/reports";
 import { RestResponse } from "../models/rest-response";
-import { EventReport } from "../models/reports";
+import { CrudService } from "./crud.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class ReportsService extends CrudService<any> {
-  
   constructor() {
     super();
     this.api = "/api/admin/reports";
   }
 
-  getEventRaport(eventId: number): Observable<RestResponse<EventReport>> {
-    return this._get<RestResponse<EventReport>>(`${this.api}/event/${eventId}`);
-  }
-  
+  // getEventRaport(eventId: number): Observable<RestResponse<EventReport>> {
+  //   return this._get<RestResponse<EventReport>>(`${this.api}/event/${eventId}`);
+  // }
+
   getEventRaportForWorkers(eventId: number, workers: number[]) {
-    console.log("worker", workers)
-    return this._get<RestResponse<EventReport>>(`${this.api}/event/${eventId}`, {workers: workers});
+    return this._get<RestResponse<EventReport>>(
+      `${this.api}/event/${eventId}`,
+      { workers: workers }
+    );
+  }
+
+  getMonthRaportForWorkers(
+    worker: number,
+    month: number | string,
+    year: number | string
+  ) {
+    return this._get<RestResponse<MonthReport>>(
+      `${this.api}/month/worker/${worker}/${month}/${year}`
+    );
+  }
+  getMonthRaportForTeam(
+    team: number,
+    month: number | string,
+    year: number | string
+  ) {
+    return this._get<RestResponse<MonthReport>>(
+      `${this.api}/month/team/${team}/${month}/${year}`
+    );
   }
 }
