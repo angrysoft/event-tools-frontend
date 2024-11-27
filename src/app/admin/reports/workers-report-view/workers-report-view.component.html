@@ -5,7 +5,7 @@
     @if (reportData().length > 0) {
     <a
       mat-button
-      href="/api/admin/reports/month/{{ reportType() }}/{{ month }}/{{
+      href="/api/admin/reports/month/{{ reportType() }}/{{reportMemberId}}/{{ month }}/{{
         year
       }}/pdf"
       target="_blank"
@@ -32,22 +32,24 @@
 
         <div class="summary">
           <p><span class="label">Podsumowanie: </span></p>
-          <p>
-            <span class="label">Podstawa</span>
-            <span>{{ totals().basicPay }} </span>
-          </p>
-          <p>
-            <span class="label">Łacznie stawki</span>
-            <span>{{ totals().totalRates }} </span>
-          </p>
-          <p>
-            <span class="label">Łacznie dodatki</span>
-            <span>{{ totals().totalAddons }}</span>
-          </p>
-          <p>
-            <span class="label">Łacznie</span>
-            <span>{{ totals().total }}</span>
-          </p>
+          <div class="summary-items">
+            <p>
+              <span class="label">Podstawa</span>
+              <span>{{ totals().basicPay }} </span>
+            </p>
+            <p>
+              <span class="label">Łacznie stawki</span>
+              <span>{{ totals().totalRates }} </span>
+            </p>
+            <p>
+              <span class="label">Łacznie dodatki</span>
+              <span>{{ totals().totalAddons }}</span>
+            </p>
+            <p>
+              <span class="label">Łacznie</span>
+              <span>{{ totals().total }}</span>
+            </p>
+          </div>
         </div>
       </div>
       }

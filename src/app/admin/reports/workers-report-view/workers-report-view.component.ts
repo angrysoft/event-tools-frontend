@@ -5,6 +5,7 @@ import { ActionToolbarComponent } from "../../../components/action-toolbar/actio
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { ReportsService } from "../../../services/reports.service";
 import {
+  DataTeamDay,
   DataWorkerDay,
   EventWorkerDay,
   MonthReport,
@@ -32,6 +33,7 @@ export class WorkersReportViewComponent {
   loading = signal<boolean>(true);
   service = inject(ReportsService);
   reportType = signal<"team" | "workers" | null>(null);
+  reportMemberId: number = 0;
   month: string = "";
   year: string = "";
   canGetReport = computed(() => {
@@ -81,6 +83,7 @@ export class WorkersReportViewComponent {
     { name: "Nazwa", def: "eventName" },
     { name: "Start", def: "startTime" },
     { name: "Koniec", def: "endTime" },
+    { name: "Pracownik", def: "workerName" },
     { name: "Godziny", def: "workHours" },
     { name: "Stawka", def: "rateName" },
     { name: "Kwota", def: "rateValue" },
@@ -109,9 +112,14 @@ export class WorkersReportViewComponent {
     this.month = reportConfig["month"];
     this.year = reportConfig["year"];
 
-    if (reportConfig["reportType"] == "team")
+    if (reportConfig["reportType"] == "team") {
+      this.reportMemberId = reportConfig["teamId"];
       this.service
-        .getMonthRaportForTeam(reportConfig["teamId"], this.month, this.year)
+        .getMonthRaportForTeam(
+          reportConfig["teamId"],
+          Number(this.month) + 1,
+          this.year
+        )
         .subscribe((resp) => {
           if (resp.ok) {
             this.name = resp.data.name;
@@ -119,10 +127,11 @@ export class WorkersReportViewComponent {
             this.totals.set(resp.data.totals);
             this.setReportTeam(resp.data.workerDays);
           } else this.service.showError(resp);
-          console.log("......")
           this.loading.set(false);
         });
+    }
     else if (reportConfig["reportType"] == "workers") {
+      this.reportMemberId = reportConfig["worker"];
       this.service
         .getMonthRaportForWorkers(
           reportConfig["worker"],
@@ -131,7 +140,6 @@ export class WorkersReportViewComponent {
         )
         .subscribe((resp) => {
           if (resp.ok) {
-            // this.report.set(resp.data);
             this.name = resp.data.name;
             this.reportDate = resp.data.reportDate;
             this.totals.set(resp.data.totals);
@@ -144,7 +152,6 @@ export class WorkersReportViewComponent {
 
   setReportWorker(data: EventWorkerDay[]) {
     const workerDays: DataWorkerDay[] = [];
-    console.log(data);
     for (const day of data) {
       workerDays.push({
         eventName: day.eventName,
@@ -165,6 +172,24 @@ export class WorkersReportViewComponent {
   }
 
   setReportTeam(data: EventWorkerDay[]) {
-    console.log("taam", data)
+    const workerDays: DataTeamDay[] = [];
+    for (const day of data) {
+      workerDays.push({
+        workerName: day.workerDay.workerName ?? "",
+        eventName: day.eventName,
+        eventNumber: day.eventNumber,
+        startTime: day.workerDay.startTime,
+        endTime: day.workerDay.endTime,
+        workHours: day.workerDay.workHours ?? 0,
+        rateName: day.workerDay.rateName ?? "",
+        rateValue: day.workerDay.rateValue ?? "",
+        addons: day.workerDay.workerDayAddons
+          .map((addon) => `${addon.name}:${addon.money}`)
+          .join("\n"),
+        total: day.workerDay.total ?? "",
+        state: day.state ?? "",
+      });
+    }
+    this.reportData.set(workerDays);
   }
 }

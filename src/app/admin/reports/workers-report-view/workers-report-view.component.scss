@@ -9,11 +9,12 @@
 
 .header {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: auto 1fr;
     gap: 1rem;
     align-items: center;
-    padding: 1rem;
+    padding: 0 1rem;
     border-bottom: 1px solid var(--sys-outline);
+    font-size: 0.7rem;
 }
 
 .report-data {
@@ -25,7 +26,7 @@
 
 .logo {
     display: flex;
-    height: 5rem;
+    height: 4rem;
 }
 
 .label {
@@ -82,13 +83,18 @@
     padding: 1rem;
 }
 
+.summary-items {
+    padding-left: 1rem;
+}
+
 
 @media only screen and (min-width: 960px) {
     .logo {
-        height: 10rem;
+        height: 5rem;
     }
 
     .header {
         grid-template-columns: auto 1fr;
+        font-size: 1rem;
     }
 }

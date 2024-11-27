@@ -42,4 +42,8 @@ interface DataWorkerDay {
   state:string;
 }
 
-export { EventReport, MonthReport, Totals, EventWorkerDay, DataWorkerDay, MonthTotal };
+interface DataTeamDay extends DataWorkerDay {
+  workerName:string;
+}
+
+export { EventReport, MonthReport, Totals, EventWorkerDay, DataWorkerDay, MonthTotal, DataTeamDay };
