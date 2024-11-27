@@ -2,12 +2,19 @@
 
 <div class="side-content">
   <app-action-toolbar title="Raport Imprezy" backTo="/admin/reports/event">
-    <a mat-button href="/api/admin/reports/event/{{eventId}}/pdf?hideAmount={{hideAmount()}}&workers={{workerSelection.selected.join(',')}}" target="_blank">Pobierz PDF</a>
+    <a
+      mat-button
+      href="/api/admin/reports/event/{{ eventId }}/pdf?hideAmount={{
+        hideAmount()
+      }}&workers={{ workerSelection.selected.join(',') }}"
+      target="_blank"
+      >Pobierz PDF</a
+    >
     <!-- <a mat-button href="/api/admin/reports/event/{{eventId}}/csv?hideAmount={{hideAmount()}}" target="_blank">Pobierz CSV</a> -->
     <button mat-button (click)="filterWorkers()">Wybierz Pracowników</button>
     <mat-slide-toggle (change)="onHide($event)">Ukryj kwoty</mat-slide-toggle>
   </app-action-toolbar>
-  
+
   <mat-card appearance="outlined">
     <section class="report">
       <header class="header">
@@ -44,6 +51,11 @@
             <td mat-cell *matCellDef="let row">
               {{ row[col.def] | date : "short" }}
             </td>
+            } @else if (col.def === "addons") {
+            <td mat-cell *matCellDef="let row">
+              {{ row[col.def] | amount : hideAmount() }}
+            </td>
+
             } @else {
             <td mat-cell *matCellDef="let row">{{ row[col.def] }}</td>
             }
@@ -58,7 +70,7 @@
           ></tr>
         </table>
         <div class="legend">
-            <span class="label">Statusy dni: </span>
+          <span class="label">Statusy dni: </span>
           @for (item of statuses()| keyvalue; track $index) {
           <span [class]="item.key">{{ item.value }}</span>
           }
