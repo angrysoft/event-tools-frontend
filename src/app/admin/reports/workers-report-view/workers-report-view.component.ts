@@ -34,17 +34,8 @@ export class WorkersReportViewComponent {
   service = inject(ReportsService);
   reportType = signal<"team" | "workers" | null>(null);
   reportMemberId: number = 0;
-  month: string = "";
-  year: string = "";
-  canGetReport = computed(() => {
-    return (
-      !this.reportType() &&
-      !this.month &&
-      this.month.length > 0 &&
-      !this.year &&
-      this.year.length > 0
-    );
-  });
+  month: number = 0;
+  year: number = 2024;
   report = signal<MonthReport>({
     totals: {
       basicPay: 0,
@@ -103,13 +94,13 @@ export class WorkersReportViewComponent {
       return;
     }
 
-    if (reportConfig["reportType"] === "workers")
+    if (reportConfig["reportType"] === "worker")
       this.tableColumns = this.tableColumnsWorker;
     else if (reportConfig["reportType"] == "team")
       this.tableColumns = this.tableColumnsTeam;
 
     this.reportType.set(reportConfig["reportType"]);
-    this.month = reportConfig["month"];
+    this.month = Number(reportConfig["month"]) +1;
     this.year = reportConfig["year"];
 
     if (reportConfig["reportType"] == "team") {
@@ -117,7 +108,7 @@ export class WorkersReportViewComponent {
       this.service
         .getMonthRaportForTeam(
           reportConfig["teamId"],
-          Number(this.month) + 1,
+          this.month,
           this.year
         )
         .subscribe((resp) => {
@@ -130,12 +121,12 @@ export class WorkersReportViewComponent {
           this.loading.set(false);
         });
     }
-    else if (reportConfig["reportType"] == "workers") {
+    else if (reportConfig["reportType"] == "worker") {
       this.reportMemberId = reportConfig["worker"];
       this.service
         .getMonthRaportForWorkers(
           reportConfig["worker"],
-          Number(this.month) + 1,
+          this.month,
           this.year
         )
         .subscribe((resp) => {

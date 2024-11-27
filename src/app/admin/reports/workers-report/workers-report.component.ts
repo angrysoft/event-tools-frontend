@@ -109,13 +109,13 @@ export class WorkersReportComponent {
     });
   }
 
-  onTypeChange(reportType: "team" | "workers") {
+  onTypeChange(reportType: "team" | "worker") {
     console.log(reportType);
 
     if (reportType == "team") {
       this.reportSettingFrom.controls.teamId.enable();
       this.reportSettingFrom.controls.worker.disable();
-    } else if (reportType == "workers") {
+    } else if (reportType == "worker") {
       this.reportSettingFrom.controls.teamId.disable();
       this.reportSettingFrom.controls.worker.enable();
     }
@@ -124,7 +124,7 @@ export class WorkersReportComponent {
 }
 
 interface ReportSettingForm {
-  reportType: FormControl<"team" | "workers" | null>;
+  reportType: FormControl<"team" | "worker" | null>;
   teamId: FormControl<number | null>;
   worker: FormControl<number | null>;
   month: FormControl<number | null>;
