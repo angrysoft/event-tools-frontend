@@ -12,6 +12,7 @@ import {
 } from "../../../models/reports";
 import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
 import { MonthReportDataComponent } from "../../../components/reports/month-report-data/month-report-data.component";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-workers-report-view",
@@ -21,6 +22,7 @@ import { MonthReportDataComponent } from "../../../components/reports/month-repo
     MatCardModule,
     MonthReportWorkerInfoComponent,
     MonthReportDataComponent,
+    MatButtonModule,
   ],
   templateUrl: "./workers-report-view.component.html",
   styleUrl: "./workers-report-view.component.scss",
@@ -62,7 +64,7 @@ export class WorkersReportViewComponent {
   });
   reportData = signal<DataWorkerDay[]>([]);
 
-  tableColumns: { name: string; def: string }[] = [
+  tableColumnsWorker: { name: string; def: string }[] = [
     { name: "Numer", def: "eventNumber" },
     { name: "Nazwa", def: "eventName" },
     { name: "Start", def: "startTime" },
@@ -73,6 +75,21 @@ export class WorkersReportViewComponent {
     { name: "Dodatki", def: "addons" },
     { name: "Suma", def: "total" },
   ];
+
+  tableColumnsTeam: { name: string; def: string }[] = [
+    { name: "Numer", def: "eventNumber" },
+    { name: "Nazwa", def: "eventName" },
+    { name: "Start", def: "startTime" },
+    { name: "Koniec", def: "endTime" },
+    { name: "Godziny", def: "workHours" },
+    { name: "Stawka", def: "rateName" },
+    { name: "Kwota", def: "rateValue" },
+    { name: "Dodatki", def: "addons" },
+    { name: "Suma", def: "total" },
+  ];
+
+  tableColumns: { name: string; def: string }[] = [];
+
   name: string = "";
   reportDate: string = "";
 
@@ -82,7 +99,12 @@ export class WorkersReportViewComponent {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
-    console.log(reportConfig);
+
+    if (reportConfig["reportType"] === "workers")
+      this.tableColumns = this.tableColumnsWorker;
+    else if (reportConfig["reportType"] == "team")
+      this.tableColumns = this.tableColumnsTeam;
+
     this.reportType.set(reportConfig["reportType"]);
     this.month = reportConfig["month"];
     this.year = reportConfig["year"];
@@ -92,9 +114,12 @@ export class WorkersReportViewComponent {
         .getMonthRaportForTeam(reportConfig["teamId"], this.month, this.year)
         .subscribe((resp) => {
           if (resp.ok) {
-            console.log(resp.data);
-            this.report.set(resp.data);
+            this.name = resp.data.name;
+            this.reportDate = resp.data.reportDate;
+            this.totals.set(resp.data.totals);
+            this.setReportTeam(resp.data.workerDays);
           } else this.service.showError(resp);
+          console.log("......")
           this.loading.set(false);
         });
     else if (reportConfig["reportType"] == "workers") {
@@ -110,16 +135,16 @@ export class WorkersReportViewComponent {
             this.name = resp.data.name;
             this.reportDate = resp.data.reportDate;
             this.totals.set(resp.data.totals);
-            this.setReport(resp.data.workerDays);
+            this.setReportWorker(resp.data.workerDays);
           } else this.service.showError(resp);
           this.loading.set(false);
         });
     }
   }
 
-  setReport(data: EventWorkerDay[]) {
+  setReportWorker(data: EventWorkerDay[]) {
     const workerDays: DataWorkerDay[] = [];
-
+    console.log(data);
     for (const day of data) {
       workerDays.push({
         eventName: day.eventName,
@@ -133,9 +158,13 @@ export class WorkersReportViewComponent {
           .map((addon) => `${addon.name}:${addon.money}`)
           .join("\n"),
         total: day.workerDay.total ?? "",
-        state: day.workerDay.state ?? "",
+        state: day.state ?? "",
       });
     }
     this.reportData.set(workerDays);
+  }
+
+  setReportTeam(data: EventWorkerDay[]) {
+    console.log("taam", data)
   }
 }

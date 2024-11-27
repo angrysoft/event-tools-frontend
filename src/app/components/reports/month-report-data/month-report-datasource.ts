@@ -21,7 +21,7 @@ export class MonthReportDataSource<T> extends DataSource<T> {
   }
 
   loadData(data: T[]) {
-    console.log(data);
+    console.log("datasource", data);
     
     this.loading.set(true);
     this.dataSubject.next(data);

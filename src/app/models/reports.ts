@@ -26,6 +26,7 @@ interface EventWorkerDay {
   eventName: string;
   eventNumber: string;
   workerDay: WorkerDay;
+  state: string;
 }
 
 interface DataWorkerDay {
