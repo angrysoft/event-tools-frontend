@@ -48,14 +48,9 @@
           <ng-container matColumnDef="{{ col.def }}">
             <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
             @if (col.def.endsWith("Time")) {
-            <td mat-cell *matCellDef="let row">
-              {{ row[col.def] | date : "short" }}
-            </td>
+            <td mat-cell *matCellDef="let row">{{ row[col.def] | date : "short" }}</td>
             } @else if (col.def === "addons") {
-            <td mat-cell *matCellDef="let row">
-              {{ row[col.def] | amount : hideAmount() }}
-            </td>
-
+            <td mat-cell *matCellDef="let row">{{ row[col.def] | amount : hideAmount() }}</td>
             } @else {
             <td mat-cell *matCellDef="let row">{{ row[col.def] }}</td>
             }
