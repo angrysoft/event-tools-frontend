@@ -22,6 +22,14 @@ interface MonthReport {
   totals: MonthTotal;
 }
 
+interface FromDatesReport {
+  name: string;
+  fromDate: string;
+  toDate: string;
+  workerDays: EventWorkerDay[];
+  totals: Totals;
+}
+
 interface EventWorkerDay {
   eventName: string;
   eventNumber: string;
@@ -39,11 +47,20 @@ interface DataWorkerDay {
   rateValue: string;
   addons: string;
   total: string;
-  state:string;
+  state: string;
 }
 
 interface DataTeamDay extends DataWorkerDay {
-  workerName:string;
+  workerName: string;
 }
 
-export { EventReport, MonthReport, Totals, EventWorkerDay, DataWorkerDay, MonthTotal, DataTeamDay };
+export {
+  EventReport,
+  MonthReport,
+  Totals,
+  EventWorkerDay,
+  DataWorkerDay,
+  MonthTotal,
+  DataTeamDay,
+  FromDatesReport,
+};

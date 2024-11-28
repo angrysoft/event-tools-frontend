@@ -1,50 +1,40 @@
 import { Component, inject, signal } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
 import { Router } from "@angular/router";
-import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
-import { MonthReportDataComponent } from "../../../components/reports/month-report-data/month-report-data.component";
-import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
+import { ReportsService } from "../../../services/reports.service";
 import {
   DataTeamDay,
   DataWorkerDay,
   EventWorkerDay,
-  MonthReport,
-  MonthTotal,
+  Totals,
 } from "../../../models/reports";
-import { ReportsService } from "../../../services/reports.service";
+import { MonthReportDataComponent } from "../../../components/reports/month-report-data/month-report-data.component";
+import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
+import { MatCardModule } from "@angular/material/card";
+import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
+import { LoaderComponent } from "../../../components/loader/loader.component";
 
 @Component({
-  selector: "app-workers-report-view",
-  imports: [
-    LoaderComponent,
-    ActionToolbarComponent,
-    MatCardModule,
-    MonthReportWorkerInfoComponent,
-    MonthReportDataComponent,
-    MatButtonModule,
-  ],
-  templateUrl: "./workers-report-view.component.html",
-  styleUrl: "./workers-report-view.component.scss",
+  selector: "app-from-dates-report-view",
+  imports: [MonthReportDataComponent, MonthReportWorkerInfoComponent, MatCardModule, ActionToolbarComponent, LoaderComponent],
+  templateUrl: "./from-dates-report-view.component.html",
+  styleUrl: "./from-dates-report-view.component.scss",
 })
-export class WorkersReportViewComponent {
+export class FromDatesReportViewComponent {
   router = inject(Router);
   loading = signal<boolean>(true);
   service = inject(ReportsService);
+  reportData = signal<DataWorkerDay[]>([]);
   reportType = signal<"team" | "workers" | null>(null);
-  reportMemberId: number = 0;
-  month: number = 0;
-  year: number = 2024;
-  
-  totals = signal<MonthTotal>({
-    basicPay: 0,
+  totals = signal<Totals>({
     totalHours: 0,
     totalAddons: "",
     totalRates: "",
     total: "",
   });
-  reportData = signal<DataWorkerDay[]>([]);
+  reportFrom: string = "";
+  reportTo: string = "";
+  name: string = "";
+  reportMembers: string = "";
 
   tableColumnsWorker: { name: string; def: string }[] = [
     { name: "Numer", def: "eventNumber" },
@@ -73,12 +63,9 @@ export class WorkersReportViewComponent {
 
   tableColumns: { name: string; def: string }[] = [];
 
-  name: string = "";
-  reportDate: string = "";
-
   constructor() {
     const reportConfig = this.router.getCurrentNavigation()?.extras.state;
-    if (!reportConfig || !reportConfig["month"] || !reportConfig["year"]) {
+    if (!reportConfig || !reportConfig["from"] || !reportConfig["to"]) {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
@@ -89,39 +76,43 @@ export class WorkersReportViewComponent {
       this.tableColumns = this.tableColumnsTeam;
 
     this.reportType.set(reportConfig["reportType"]);
-    this.month = Number(reportConfig["month"]) +1;
-    this.year = reportConfig["year"];
 
-    if (reportConfig["reportType"] == "team") {
-      this.reportMemberId = reportConfig["teamId"];
+    this.reportMembers = reportConfig["members"].join(",");
+
+    if (
+      reportConfig["reportType"] == "team" &&
+      reportConfig["members"].length === 1
+    ) {
       this.service
-        .getMonthRaportForTeam(
-          reportConfig["teamId"],
-          this.month,
-          this.year
+        .getTeamRaportForBetween(
+          reportConfig["from"],
+          reportConfig["to"],
+          this.reportMembers
         )
         .subscribe((resp) => {
           if (resp.ok) {
             this.name = resp.data.name;
-            this.reportDate = resp.data.reportDate;
+            this.reportFrom = resp.data.fromDate;
+            this.reportTo = resp.data.toDate;
             this.totals.set(resp.data.totals);
             this.setReportTeam(resp.data.workerDays);
           } else this.service.showError(resp);
           this.loading.set(false);
         });
-    }
-    else if (reportConfig["reportType"] == "worker") {
-      this.reportMemberId = reportConfig["worker"];
+    } else if (
+      reportConfig["reportType"] == "worker" &&
+      this.reportMembers.length > 0
+    ) {
       this.service
-        .getMonthRaportForWorkers(
-          reportConfig["worker"],
-          this.month,
-          this.year
+        .getWorkersRaportForBetween(
+          reportConfig["from"],
+          reportConfig["to"],
+          this.reportMembers
         )
         .subscribe((resp) => {
           if (resp.ok) {
             this.name = resp.data.name;
-            this.reportDate = resp.data.reportDate;
+
             this.totals.set(resp.data.totals);
             this.setReportWorker(resp.data.workerDays);
           } else this.service.showError(resp);
@@ -129,6 +120,7 @@ export class WorkersReportViewComponent {
         });
     }
   }
+
 
   setReportWorker(data: EventWorkerDay[]) {
     const workerDays: DataWorkerDay[] = [];

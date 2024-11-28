@@ -1,0 +1,58 @@
+<app-loader [loading]="loading()" />
+
+<div class="side-content">
+  <app-action-toolbar title="Raport Miesieczny" backTo="/admin/reports/workers">
+    @if (reportData().length > 0) {
+    <a
+      mat-button
+      href="/api/admin/reports/from-dates/{{ reportType() }}/pdf?from={{
+        reportFrom
+      }}&to={{ reportTo }}&{{ reportType() }}={{ reportMembers }}"
+      target="_blank"
+      >Pobierz PDF</a
+    >
+    <!-- <a mat-button href="/api/admin/reports/event/{{eventId}}/csv?hideAmount={{hideAmount()}}" target="_blank">Pobierz CSV</a> -->
+    }
+  </app-action-toolbar>
+
+  <mat-card appearance="outlined">
+    <section class="report">
+      @if (reportData().length === 0) {
+      <h3>Brak Pracy w danym miesiącu</h3>
+      } @else {
+      <header class="header">
+        <div class="logo"><img src="assets/logo_ves_sq.png" alt="Logo" /></div>
+        <app-month-report-worker-info
+          [name]="name"
+          [fromDate]="reportFrom"
+          [toDate]="reportTo"
+        />
+      </header>
+      <div class="report-data">
+        <app-month-report-data
+          [data]="reportData()"
+          [tableColumns]="tableColumns"
+        />
+
+        <div class="summary">
+          <p><span class="label">Podsumowanie: </span></p>
+          <div class="summary-items">
+            <p>
+              <span class="label">Łacznie stawki</span>
+              <span>{{ totals().totalRates }} </span>
+            </p>
+            <p>
+              <span class="label">Łacznie dodatki</span>
+              <span>{{ totals().totalAddons }}</span>
+            </p>
+            <p>
+              <span class="label">Łacznie</span>
+              <span>{{ totals().total }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      }
+    </section>
+  </mat-card>
+</div>

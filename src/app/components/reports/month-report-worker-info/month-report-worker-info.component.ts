@@ -8,5 +8,7 @@ import { Component, input } from '@angular/core';
 })
 export class MonthReportWorkerInfoComponent {
   name = input.required<string>();
-  reportDate = input.required<string>();
+  reportDate = input<string | null>();
+  fromDate = input<string | null>();
+  toDate = input<string | null>();
 }
