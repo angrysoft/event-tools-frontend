@@ -66,7 +66,7 @@ export class SearchComponent implements AfterViewInit {
     Object.keys(filters ?? {}).forEach((f) =>
       this.searchForm.setControl(
         f,
-        new FormControl("none") as FormControl<string>,
+        new FormControl(null) as FormControl<string | null>,
       ),
     );
   }
