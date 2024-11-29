@@ -4,7 +4,7 @@ import { MatCardModule } from "@angular/material/card";
 import { Router } from "@angular/router";
 import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
-import { MonthReportDataComponent } from "../../../components/reports/month-report-data/month-report-data.component";
+import { ReportDataComponent } from "../../../components/reports/report-data/month-report-data.component";
 import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
 import {
   DataTeamDay,
@@ -22,7 +22,7 @@ import { ReportsService } from "../../../services/reports.service";
     ActionToolbarComponent,
     MatCardModule,
     MonthReportWorkerInfoComponent,
-    MonthReportDataComponent,
+    ReportDataComponent,
     MatButtonModule,
   ],
   templateUrl: "./workers-report-view.component.html",
@@ -36,7 +36,7 @@ export class WorkersReportViewComponent {
   reportMemberId: number = 0;
   month: number = 0;
   year: number = 2024;
-  
+
   totals = signal<MonthTotal>({
     basicPay: 0,
     totalHours: 0,
@@ -89,17 +89,13 @@ export class WorkersReportViewComponent {
       this.tableColumns = this.tableColumnsTeam;
 
     this.reportType.set(reportConfig["reportType"]);
-    this.month = Number(reportConfig["month"]) +1;
+    this.month = Number(reportConfig["month"]) + 1;
     this.year = reportConfig["year"];
 
     if (reportConfig["reportType"] == "team") {
       this.reportMemberId = reportConfig["teamId"];
       this.service
-        .getMonthRaportForTeam(
-          reportConfig["teamId"],
-          this.month,
-          this.year
-        )
+        .getMonthRaportForTeam(reportConfig["teamId"], this.month, this.year)
         .subscribe((resp) => {
           if (resp.ok) {
             this.name = resp.data.name;
@@ -109,15 +105,10 @@ export class WorkersReportViewComponent {
           } else this.service.showError(resp);
           this.loading.set(false);
         });
-    }
-    else if (reportConfig["reportType"] == "worker") {
+    } else if (reportConfig["reportType"] == "worker") {
       this.reportMemberId = reportConfig["worker"];
       this.service
-        .getMonthRaportForWorkers(
-          reportConfig["worker"],
-          this.month,
-          this.year
-        )
+        .getMonthRaportForWorkers(reportConfig["worker"], this.month, this.year)
         .subscribe((resp) => {
           if (resp.ok) {
             this.name = resp.data.name;

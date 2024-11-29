@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MonthReportDataComponent } from './month-report-data.component';
+import { ReportViewComponent } from './report-view.component';
 
-describe('MonthReportDataComponent', () => {
-  let component: MonthReportDataComponent;
-  let fixture: ComponentFixture<MonthReportDataComponent>;
+describe('ReportViewComponent', () => {
+  let component: ReportViewComponent;
+  let fixture: ComponentFixture<ReportViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MonthReportDataComponent]
+      imports: [ReportViewComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MonthReportDataComponent);
+    fixture = TestBed.createComponent(ReportViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

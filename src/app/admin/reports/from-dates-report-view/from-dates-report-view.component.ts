@@ -7,15 +7,23 @@ import {
   EventWorkerDay,
   Totals,
 } from "../../../models/reports";
-import { MonthReportDataComponent } from "../../../components/reports/month-report-data/month-report-data.component";
+import { ReportDataComponent } from "../../../components/reports/report-data/month-report-data.component";
 import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
 import { MatCardModule } from "@angular/material/card";
 import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-from-dates-report-view",
-  imports: [MonthReportDataComponent, MonthReportWorkerInfoComponent, MatCardModule, ActionToolbarComponent, LoaderComponent],
+  imports: [
+    ReportDataComponent,
+    MonthReportWorkerInfoComponent,
+    MatCardModule,
+    ActionToolbarComponent,
+    LoaderComponent,
+    MatButtonModule,
+  ],
   templateUrl: "./from-dates-report-view.component.html",
   styleUrl: "./from-dates-report-view.component.scss",
 })
@@ -120,7 +128,6 @@ export class FromDatesReportViewComponent {
         });
     }
   }
-
 
   setReportWorker(data: EventWorkerDay[]) {
     const workerDays: DataWorkerDay[] = [];
