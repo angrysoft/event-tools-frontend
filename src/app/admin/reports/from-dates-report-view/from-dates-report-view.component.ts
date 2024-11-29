@@ -86,7 +86,7 @@ export class FromDatesReportViewComponent {
         this.reportMembers
       );
     } else if (
-      reportConfig["reportType"] == "worker" &&
+      reportConfig["reportType"] == "workers" &&
       this.reportMembers.length > 0
     ) {
       req = this.service.getWorkersRaportForBetween(

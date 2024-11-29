@@ -114,13 +114,13 @@ export class FromDatesReportComponent {
     this.reportSettingsFrom.controls.workers.removeAt(idx);
   }
 
-  onTypeChange(reportType: "team" | "worker") {
+  onTypeChange(reportType: "team" | "workers") {
     console.log(reportType);
 
     if (reportType == "team") {
       this.reportSettingsFrom.controls.teamId.enable();
       this.reportSettingsFrom.controls.workers.disable();
-    } else if (reportType == "worker") {
+    } else if (reportType == "workers") {
       this.reportSettingsFrom.controls.teamId.disable();
       this.reportSettingsFrom.controls.workers.enable();
     }
@@ -138,7 +138,7 @@ export class FromDatesReportComponent {
       payload["to"] = dateToString(data.to);
     }
     if (data.reportType == "team") payload["members"] = [data.teamId];
-    else if (data.reportType == "worker")
+    else if (data.reportType == "workers")
       payload["members"] = data.workers.map((w: { id: any }) => w.id);
     console.log(payload);
     this.router.navigateByUrl("/admin/reports/from-dates/view", {
@@ -148,7 +148,7 @@ export class FromDatesReportComponent {
 }
 
 interface FromDatesReportSettings {
-  reportType: FormControl<"team" | "worker" | null>;
+  reportType: FormControl<"team" | "workers" | null>;
   teamId: FormControl<number | null>;
   workers: FormArray;
   from: FormControl<Date | null>;
