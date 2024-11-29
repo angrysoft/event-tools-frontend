@@ -8,12 +8,18 @@
 }
 
 .header {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
     gap: 1rem;
     align-items: center;
-    padding: 0 1rem;
     border-bottom: 1px solid var(--sys-outline);
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 1rem 0;
+    font-size: 0.8rem;
 }
 
 .report-data {
@@ -88,6 +94,11 @@
 
     .header {
         grid-template-columns: auto 1fr;
+    }
+
+    .header-info {
+        gap: 1rem;
+        font-size: 1rem;
     }
 }
 

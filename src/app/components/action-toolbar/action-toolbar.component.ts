@@ -5,7 +5,11 @@ import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-action-toolbar",
-  imports: [MatButtonModule, MatIconModule, RouterLink],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+  ],
   templateUrl: "./action-toolbar.component.html",
   styleUrl: "./action-toolbar.component.scss",
 })

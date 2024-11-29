@@ -25,6 +25,7 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #datepickerFrom> </mat-datepicker>
         </mat-form-field>
+
         <mat-form-field appearance="outline">
           <mat-label>Wybierz datę</mat-label>
           <input matInput [matDatepicker]="datepickerTo" formControlName="to" />
@@ -35,10 +36,13 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #datepickerTo> </mat-datepicker>
         </mat-form-field>
+        
+      </mat-card-content>
+      <mat-card-footer>
         <span [style.color]="'red'">
             {{reportSettingsFrom.controls.to.getError("matchError")}}
         </span>
-      </mat-card-content>
+      </mat-card-footer>
     </mat-card>
 
     <mat-card appearance="outlined">

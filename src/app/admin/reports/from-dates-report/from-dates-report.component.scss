@@ -6,6 +6,7 @@
 
 .report-form {
     padding: 1rem;
+    height: 100%;
 }
 
 .worker,
@@ -24,7 +25,6 @@
 }
 
 .form-group {
-    align-items: start;
-    grid-template-columns: auto auto;
+    align-items: center;
     justify-content: start;
 }

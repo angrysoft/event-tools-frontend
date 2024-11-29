@@ -1,7 +1,7 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Raport z zakresu dat" backTo="/admin/reports/workers">
+  <app-action-toolbar title="Raport z zakresu dat" backTo="/admin/reports/from-dates">
     @if (reportData().length > 0) {
     <a
       mat-button
@@ -26,6 +26,7 @@
           [name]="name"
           [fromDate]="reportFrom"
           [toDate]="reportTo"
+          title="Raport za okres:"
         />
       </header>
       <div class="report-data">
