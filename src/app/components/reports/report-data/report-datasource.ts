@@ -21,8 +21,6 @@ export class ReportDataSource<T> extends DataSource<T> {
   }
 
   loadData(data: T[]) {
-    console.log("datasource", data);
-
     this.loading.set(true);
     this.dataSubject.next(data);
     this.length = data.length;

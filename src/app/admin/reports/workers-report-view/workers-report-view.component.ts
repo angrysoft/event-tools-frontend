@@ -4,14 +4,13 @@ import { MatCardModule } from "@angular/material/card";
 import { Router } from "@angular/router";
 import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
-import { ReportDataComponent } from "../../../components/reports/report-data/month-report-data.component";
 import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
+import { ReportDataComponent } from "../../../components/reports/report-data/report-data.component";
 import {
   DataTeamDay,
   DataWorkerDay,
   EventWorkerDay,
-  MonthReport,
-  MonthTotal,
+  MonthTotal
 } from "../../../models/reports";
 import { ReportsService } from "../../../services/reports.service";
 
