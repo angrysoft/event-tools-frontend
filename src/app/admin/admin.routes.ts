@@ -73,8 +73,24 @@ export const adminRoutes: Routes = [
     path: "reports/from-dates/view",
     title: "Raporty z okresu",
     loadComponent: () =>
-      import("./reports/from-dates-report-view/from-dates-report-view.component").then(
-        (m) => m.FromDatesReportViewComponent
-      ),
+      import(
+        "./reports/from-dates-report-view/from-dates-report-view.component"
+      ).then((m) => m.FromDatesReportViewComponent),
+  },
+  {
+    path: "reports/plan-execution",
+    title: "Raport Plan/Realizacja",
+    loadComponent: () =>
+      import(
+        "./reports/plan-execution-report/plan-execution-report.component"
+      ).then((m) => m.PlanExecutionReportComponent),
+  },
+  {
+    path: "reports/plan-execution/:eventId",
+    title: "Raport Plan/Realizacja",
+    loadComponent: () =>
+      import(
+        "./reports/plan-execution-report-view/plan-execution-report-view.component"
+      ).then((m) => m.PlanExecutionReportViewComponent),
   },
 ];
