@@ -34,7 +34,6 @@ export class ChangeStatusComponent {
   data = inject(MAT_DIALOG_DATA);
 
   constructor() {
-    console.log(this.data);
     this.changeStatusForm = new FormGroup<ChangeStatusForm>({
       status: new FormControl(null, Validators.required),
       changeAll: new FormControl(false),

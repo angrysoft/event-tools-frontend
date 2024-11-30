@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Usuń</h2>
+<mat-dialog-content>
+    <div class="content">
+        <p>Czy Jesteś pewien że chcesz usunąć ?</p>
+        
+        <mat-slide-toggle #removeAll>Usuń z całego event-u</mat-slide-toggle>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    cdkFocusInitial
+    [mat-dialog-close]="{ result: false }"
+    type="button"
+  >
+    Anuluj
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="{ result: true, removeAll: removeAll.checked }"
+    type="button"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>
