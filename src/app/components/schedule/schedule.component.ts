@@ -32,6 +32,11 @@ import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 import { getTextColor } from "../../utils/colors";
 import { DuplicateDaysComponent } from "../events/duplicate-days/duplicate-days.component";
+import { WorkerChooserConfig } from "../worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../worker-chooser/worker-chooser.component";
+import { WorkerBase } from "../../admin/models/worker";
+import { ChangeWorkerComponent } from "../events/change-worker/change-worker.component";
+import { ChangeWorkerPayload } from "../../models/events";
 
 @Component({
   selector: "app-schedule",
@@ -239,6 +244,72 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           } else this.workerDayService.showError(resp);
           this.loading.set(false);
         });
+    });
+  }
+
+  changeWorker(data: WorkerDaySchedule) {
+    const config: WorkerChooserConfig = {
+      single: true,
+      search: true,
+    };
+    const chooseNewWorkerDialog = this.dialog.open(WorkerChooserComponent, {
+      data: config,
+      maxWidth: "95vw",
+    });
+
+    let newWorker: WorkerBase | null = null;
+
+    chooseNewWorkerDialog.afterClosed().subscribe((result) => {
+      if (result && result.length > 0) {
+        newWorker = result.at(0);
+        if (newWorker?.id === data.worker) {
+          this.workerDayService.showMsg(
+            "Nie można zmienić na tego samego pracownika"
+          );
+          return;
+        }
+        const changeWorkerDialog = this.dialog.open(ChangeWorkerComponent, {
+          data: { startDate: data.startDate },
+        });
+
+        changeWorkerDialog.afterClosed().subscribe((result) => {
+          if (!result.state) return;
+
+          this.loading.set(true);
+          if (result.inRange && newWorker) {
+            const payload = {
+              newWorker: newWorker.id,
+              newWorkerName: `${newWorker.firstName} ${newWorker.lastName}`,
+              oldWorker: data.worker,
+              from: result.from,
+              to: result.to,
+            };
+            this.workerDayService
+              .changeWorkerInDates(data.eventId, payload)
+              .subscribe((resp) => {
+                if (resp.ok) {
+                  this.reloadData();
+                } else this.workerDayService.showError(resp);
+                this.loading.set(false);
+              });
+          } else if (newWorker) {
+            const payload: ChangeWorkerPayload = {
+              worker: newWorker.id ?? -1,
+              workerName: `${newWorker.firstName} ${newWorker.lastName}`,
+              workerDay: data.id,
+            };
+
+            this.workerDayService
+              .changeWorker(data.eventId, data.eventDay, payload)
+              .subscribe((resp) => {
+                if (resp.ok) {
+                  this.reloadData();
+                } else this.workerDayService.showError(resp);
+                this.loading.set(false);
+              });
+          }
+        });
+      }
     });
   }
 
