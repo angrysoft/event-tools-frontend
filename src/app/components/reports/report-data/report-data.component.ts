@@ -1,7 +1,7 @@
 import { DatePipe, KeyValuePipe } from "@angular/common";
 import { Component, inject, input, signal, viewChild } from "@angular/core";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { WorkerDaysService } from "../../../admin/services/worker-days.service";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { ReportDataSource } from "./report-datasource";
 
 @Component({

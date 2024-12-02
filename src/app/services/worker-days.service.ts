@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CrudService } from "../../services/crud.service";
+import { CrudService } from "./crud.service";
 import {
   ChangeWorkerPayload,
   DuplicateDaysPayload,
@@ -7,15 +7,15 @@ import {
   WorkerDay,
   WorkerDayStatusPayload,
   WorkersRateDay,
-} from "../../models/events";
-import { Rate } from "../models/rate";
+} from "../models/events";
+import { Rate } from "../admin/models/rate";
 import { Observable } from "rxjs";
-import { RestResponse } from "../../models/rest-response";
-import { DataListResponse } from "../../models/data-list-response";
-import { Addon } from "../models/addon";
-import { ScheduleService } from "../../services/schedule.service";
-import { Schedule } from "../../models/schedule";
-import { CalendarDay } from "../../models/calendar";
+import { RestResponse } from "../models/rest-response";
+import { DataListResponse } from "../models/data-list-response";
+import { Addon } from "../admin/models/addon";
+import { ScheduleService } from "./schedule.service";
+import { Schedule } from "../models/schedule";
+import { CalendarDay } from "../models/calendar";
 
 @Injectable({
   providedIn: "root",
@@ -95,6 +95,13 @@ export class WorkerDaysService
 
   changeStatus(eventId: number, payload: WorkerDayStatusPayload) {
     return this._put<WorkerDayStatusPayload>(
+      `${this.api}/${eventId}/day/status`,
+      payload
+    );
+  }
+
+  stateChiefToCoor(eventId: number, payload: number[]) {
+    return this._put<number[]>(
       `${this.userApi}/${eventId}/day/status`,
       payload
     );
@@ -118,6 +125,10 @@ export class WorkerDaysService
       `${this.userApi}/${eventId}/day/${dayId}/worker`,
       payload
     );
+  }
+
+  changeWorkerInDates(eventId: number, payload: any) {
+    return this._put<any>(`${this.api}/${eventId}/worker/change`, payload);
   }
 
   getSchedule(

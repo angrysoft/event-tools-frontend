@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Zmień pracownika</h2>
+<mat-dialog-content>
+  <form class="content form" [formGroup]="changeWorkerForm">
+    <p>Czy Jesteś pewien że chcesz Zmienić pracownika ?</p>
+
+    <mat-slide-toggle #inRange (change)="inRangeChange($event)"
+      >Zmień w okresie</mat-slide-toggle
+    >
+    @if(inRange.checked) {
+    <mat-form-field>
+      <mat-label>Wybierz dni</mat-label>
+      <mat-date-range-input
+        [rangePicker]="picker"
+      >
+        <input matStartDate formControlName="from" placeholder="Początek" />
+        <input matEndDate formControlName="to" placeholder="Koniec" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+
+      @if (changeWorkerForm.controls.from.hasError('matStartDateInvalid')) {
+      <mat-error>Niepoprawna początkowa data</mat-error>
+      } @if (changeWorkerForm.controls.to.hasError('matEndDateInvalid')) {
+      <mat-error>Niepoprawna końcowa data</mat-error>
+      }
+    </mat-form-field>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    cdkFocusInitial
+    [mat-dialog-close]="{ state: false }"
+    type="button"
+  >
+    Anuluj
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="{
+      state: true,
+      inRange: inRange.checked,
+      from: from,
+      to: to
+    }"
+    type="button"
+    [disabled]="changeWorkerForm.enabled && !changeWorkerForm.valid"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>

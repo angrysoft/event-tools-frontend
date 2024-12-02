@@ -27,7 +27,7 @@ import { dateToString } from "../../../utils/date";
 
 import { WorkerBase } from "../../models/worker";
 import { EventDaysService } from "../../services/event-days.service";
-import { WorkerDaysService } from "../../services/worker-days.service";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { AddDayComponent } from "../../../components/events/add-day/add-day.component";
 import { ChangeStatusComponent } from "./change-status/change-status.component";
 import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
@@ -42,6 +42,7 @@ import {
 } from "../../../models/events";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
 import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
+import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
 
 @Component({
   selector: "app-admin-event-days",
@@ -312,30 +313,65 @@ export class AdminEventDaysComponent implements AfterViewInit {
       single: true,
       search: true,
     };
-    const changeWorkerDialog = this.dialog.open(WorkerChooserComponent, {
+    const chooseNewWorkerDialog = this.dialog.open(WorkerChooserComponent, {
       data: config,
       maxWidth: "95vw",
     });
 
-    changeWorkerDialog.afterClosed().subscribe((result) => {
-      if (result && result.length > 0) {
-        this.loading.set(true);
-        const worker: WorkerBase = result.at(0);
-        const payload: ChangeWorkerPayload = {
-          worker: worker.id ?? -1,
-          workerName: `${worker.firstName} ${worker.lastName}`,
-          workerDay: this.selection.selected.at(0)?.id ?? -1,
-        };
+    let newWorker: WorkerBase | null = null;
 
-        this.workerDayService
-          .changeWorker(this.eventId, this.dayId, payload)
-          .subscribe((resp) => {
-            if (resp.ok) {
-              this.loadDays();
-              this.selection.clear();
-            } else this.workerDayService.showError(resp);
-            this.loading.set(false);
-          });
+    chooseNewWorkerDialog.afterClosed().subscribe((result) => {
+      if (result && result.length > 0) {
+        newWorker = result.at(0);
+        if (newWorker?.id === this.selection.selected.at(0)?.worker) {
+          this.workerDayService.showMsg(
+            "Nie można zmienić na tego samego pracownika"
+          );
+          return;
+        }
+        const changeWorkerDialog = this.dialog.open(ChangeWorkerComponent, {
+          data: { startDate: this.selection.selected.at(0)?.startTime },
+        });
+
+        changeWorkerDialog.afterClosed().subscribe((result) => {
+          if (!result.state) return;
+
+          this.loading.set(true);
+          if (result.inRange && newWorker) {
+            const payload = {
+              newWorker: newWorker.id,
+              newWorkerName: `${newWorker.firstName} ${newWorker.lastName}`,
+              oldWorker: this.selection.selected.at(0)?.worker ?? -1,
+              from: result.from,
+              to: result.to,
+            };
+            this.workerDayService
+              .changeWorkerInDates(this.eventId, payload)
+              .subscribe((resp) => {
+                if (resp.ok) {
+                  this.loadDays();
+                  this.selection.clear();
+                } else this.workerDayService.showError(resp);
+                this.loading.set(false);
+              });
+          } else if (newWorker) {
+            const payload: ChangeWorkerPayload = {
+              worker: newWorker.id ?? -1,
+              workerName: `${newWorker.firstName} ${newWorker.lastName}`,
+              workerDay: this.selection.selected.at(0)?.id ?? -1,
+            };
+
+            this.workerDayService
+              .changeWorker(this.eventId, this.dayId, payload)
+              .subscribe((resp) => {
+                if (resp.ok) {
+                  this.loadDays();
+                  this.selection.clear();
+                } else this.workerDayService.showError(resp);
+                this.loading.set(false);
+              });
+          }
+        });
       }
     });
   }

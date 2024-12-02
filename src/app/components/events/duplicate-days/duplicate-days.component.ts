@@ -27,7 +27,6 @@ import { Subject, takeUntil } from "rxjs";
         MatFormFieldModule,
         MatInputModule,
         MatDatepickerModule,
-        MatDatepickerModule,
     ],
     templateUrl: "./duplicate-days.component.html",
     styleUrl: "./duplicate-days.component.scss",
