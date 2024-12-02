@@ -2,19 +2,19 @@ import { DatePipe, KeyValuePipe } from "@angular/common";
 import { Component, inject, input, signal, viewChild } from "@angular/core";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { WorkerDaysService } from "../../../admin/services/worker-days.service";
-import { MonthReportDataSource } from "./month-report-datasource";
+import { ReportDataSource } from "./report-datasource";
 
 @Component({
   selector: "app-month-report-data",
   imports: [DatePipe, KeyValuePipe, MatTableModule],
-  templateUrl: "./month-report-data.component.html",
-  styleUrl: "./month-report-data.component.scss",
+  templateUrl: "./report-data.component.html",
+  styleUrl: "./report-data.component.scss",
 })
-export class MonthReportDataComponent<T> {
+export class ReportDataComponent<T> {
   workerDayService = inject(WorkerDaysService);
   readonly table = viewChild.required(MatTable);
   statuses = signal<{ [key: string]: string }>({});
-  dataSource!: MonthReportDataSource<T>;
+  dataSource!: ReportDataSource<T>;
   data = input.required<T[]>();
   tableColumns = input.required<{ name: string; def: string }[]>();
 
@@ -22,7 +22,7 @@ export class MonthReportDataComponent<T> {
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });
-    this.dataSource = new MonthReportDataSource();
+    this.dataSource = new ReportDataSource();
   }
 
   ngAfterViewInit(): void {

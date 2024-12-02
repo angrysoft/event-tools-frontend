@@ -1,0 +1,30 @@
+.card-header-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.report-form {
+    padding: 1rem;
+    height: 100%;
+}
+
+.worker,
+.date {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.worker-list {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.form-group {
+    align-items: center;
+    justify-content: start;
+}

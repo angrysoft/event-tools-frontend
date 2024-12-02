@@ -1,0 +1,104 @@
+<app-loader [loading]="loading()" />
+
+<section class="side-content">
+  <form
+    [formGroup]="reportSettingsFrom"
+    class="form report-form"
+    (submit)="handelSubmit()"
+  >
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Z zakresu dat: </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Wybierz datę</mat-label>
+          <input
+            matInput
+            [matDatepicker]="datepickerFrom"
+            formControlName="from"
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="datepickerFrom"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #datepickerFrom> </mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Wybierz datę</mat-label>
+          <input matInput [matDatepicker]="datepickerTo" formControlName="to" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="datepickerTo"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #datepickerTo> </mat-datepicker>
+        </mat-form-field>
+        
+      </mat-card-content>
+      <mat-card-footer>
+        <span [style.color]="'red'">
+            {{reportSettingsFrom.controls.to.getError("matchError")}}
+        </span>
+      </mat-card-footer>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Raport dla: </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>wybierz: </mat-label>
+            <mat-select
+              formControlName="reportType"
+              (valueChange)="onTypeChange($event)"
+            >
+              <mat-option value="team">Ekipy</mat-option>
+              <mat-option value="workers">Wybranych pracowników</mat-option>
+            </mat-select>
+          </mat-form-field>
+          @if (reportSettingsFrom.controls.teamId.enabled) {
+          <mat-form-field appearance="outline">
+            <mat-label>Ekipa</mat-label>
+            <mat-select formControlName="teamId" name="teamId" required>
+              @for (team of hints.teams; track team) {
+              <mat-option [value]="team.id">{{ team.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          } @if (reportSettingsFrom.controls.workers.enabled) {
+          <div class="worker">
+            <button mat-flat-button type="button" (click)="chooseWorkers()">
+              Wybierz
+            </button>
+            <div class="worker-list" formArrayName="workers">
+              <mat-chip-listbox>
+                @for (worker of reportSettingsFrom.controls.workers.controls;
+                track $index) {
+                <mat-chip-option (removed)="removeWorker($index)" [selectable]="false">
+                  {{ worker.value.firstName }} {{ worker.value.lastName }}
+                  <button
+                    matChipRemove
+                    aria-label="'remove reactive form' + keyword"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+                } @empty { Dodaj pracowników }
+              </mat-chip-listbox>
+            </div>
+          </div>
+          }
+      </mat-card-content>
+    </mat-card>
+
+    <div class="form-action">
+      <button mat-flat-button [disabled]="reportSettingsFrom.status != 'VALID'">
+        Generuj Raport
+      </button>
+    </div>
+  </form>
+</section>

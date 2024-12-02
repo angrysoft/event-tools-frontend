@@ -1,13 +1,13 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Raport Miesieczny" backTo="/admin/reports/workers">
+  <app-action-toolbar title="Raport z zakresu dat" backTo="/admin/reports/from-dates">
     @if (reportData().length > 0) {
     <a
       mat-button
-      href="/api/admin/reports/month/{{ reportType() }}/{{reportMemberId}}/{{ month }}/{{
-        year
-      }}/pdf"
+      href="/api/admin/reports/from-dates/{{ reportType() }}/pdf?from={{
+        from
+      }}&to={{ to }}&{{ reportType() }}={{ reportMembers }}"
       target="_blank"
       >Pobierz PDF</a
     >
@@ -24,20 +24,20 @@
         <div class="logo"><img src="assets/logo_ves_sq.png" alt="Logo" /></div>
         <app-month-report-worker-info
           [name]="name"
-          [reportDate]="reportDate"
-          title="Raport miesieczny:"
+          [fromDate]="reportFrom"
+          [toDate]="reportTo"
+          title="Raport za okres:"
         />
       </header>
       <div class="report-data">
-        <app-month-report-data [data]="reportData()" [tableColumns]="tableColumns"/>
+        <app-month-report-data
+          [data]="reportData()"
+          [tableColumns]="tableColumns"
+        />
 
         <div class="summary">
           <p><span class="label">Podsumowanie: </span></p>
           <div class="summary-items">
-            <p>
-              <span class="label">Podstawa</span>
-              <span>{{ totals().basicPay }} </span>
-            </p>
             <p>
               <span class="label">Łacznie stawki</span>
               <span>{{ totals().totalRates }} </span>

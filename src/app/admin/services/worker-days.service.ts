@@ -42,24 +42,31 @@ export class WorkerDaysService
 
   getEventDay(
     eventId: number,
-    dayId: number,
+    dayId: number
   ): Observable<RestResponse<EventDay>> {
     return this._get<RestResponse<EventDay>>(
-      `${this.api}/${eventId}/day/${dayId}`,
+      `${this.api}/${eventId}/day/${dayId}`
     );
   }
 
   storeEventDay(eventId: number, dayId: number, workerDays: WorkerDay[]) {
     return this._put<WorkerDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/add`,
-      workerDays,
+      workerDays
     );
   }
 
   removeWorkersDays(eventId: number, dayId: number, workerDays: number[]) {
     return this._put<number[]>(
       `${this.userApi}/${eventId}/day/${dayId}/remove`,
-      workerDays,
+      workerDays
+    );
+  }
+
+  removeWorkersFromEvent(eventId: number, workers: number[]) {
+    return this._put<number[]>(
+      `${this.userApi}/${eventId}/remove/workers`,
+      workers
     );
   }
 
@@ -70,7 +77,7 @@ export class WorkerDaysService
       workerDays: { [key: number]: string };
       startTime: any;
       endTime: any;
-    },
+    }
   ) {
     return this._put<{
       workerDays: { [key: number]: string };
@@ -82,41 +89,41 @@ export class WorkerDaysService
   duplicateDays(eventId: number, dayId: number, payload: DuplicateDaysPayload) {
     return this._put<DuplicateDaysPayload>(
       `${this.userApi}/${eventId}/day/${dayId}/duplicate`,
-      payload,
+      payload
     );
   }
 
   changeStatus(eventId: number, payload: WorkerDayStatusPayload) {
     return this._put<WorkerDayStatusPayload>(
       `${this.userApi}/${eventId}/day/status`,
-      payload,
+      payload
     );
   }
 
   getStatuses() {
     return this._get<RestResponse<{ [key: string]: string }>>(
-      `${this.userApi}/day/statuses`,
+      `${this.userApi}/day/statuses`
     );
   }
 
   changeRates(eventId: number, dayId: number, payload: WorkersRateDay[]) {
     return this._put<WorkersRateDay[]>(
       `${this.userApi}/${eventId}/day/${dayId}/rates`,
-      payload,
+      payload
     );
   }
 
   changeWorker(eventId: number, dayId: number, payload: ChangeWorkerPayload) {
     return this._put<ChangeWorkerPayload>(
       `${this.userApi}/${eventId}/day/${dayId}/worker`,
-      payload,
+      payload
     );
   }
 
   getSchedule(
     limit: number,
     offset: number,
-    date: string,
+    date: string
   ): Observable<RestResponse<Schedule>> {
     return this._get<RestResponse<Schedule>>(`${this.userApi}/schedule`, {
       limit: limit,

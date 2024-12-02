@@ -45,7 +45,7 @@ export class DuplicateDaysComponent {
     startDate.setDate(startDate.getDate() +1);
     
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 1);
+    // endDate.setDate(endDate.getDate() + 1);
     
     this.duplicateDaysForm = new FormGroup<DuplicateDaysForm>({
       start: new FormControl(startDate, Validators.required),

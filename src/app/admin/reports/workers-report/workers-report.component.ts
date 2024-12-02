@@ -1,26 +1,23 @@
-import { Component, inject, OnDestroy, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import {
-  FormArray,
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { MatFormField, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
+import { Router } from "@angular/router";
 import { LoaderComponent } from "../../../components/loader/loader.component";
+import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
+import { WorkerBase } from "../../models/worker";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
-import { WorkerBase } from "../../models/worker";
-import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
-import { MatDialog } from "@angular/material/dialog";
-import { Subject, takeUntil } from "rxjs";
-import { Router } from "@angular/router";
 
 @Component({
   selector: "app-workers-report",
@@ -41,7 +38,6 @@ export class WorkersReportComponent {
   readonly workerService: WorkersService = inject(WorkersService);
   readonly dialog = inject(MatDialog);
   readonly router = inject(Router);
-  fb = inject(FormBuilder);
   loading = signal<boolean>(false);
   step = signal(0);
   panelOpenState = signal<boolean>(true);

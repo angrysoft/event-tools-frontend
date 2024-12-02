@@ -20,6 +20,7 @@ import { ReportsService } from "../../../services/reports.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
 import { EventReportDataSource } from "./event-report-datasource";
 import { AmountPipe } from "../../../pipes/amount.pipe";
+import { MatMenuModule } from "@angular/material/menu";
 
 @Component({
   selector: "app-event-report-view",
@@ -32,7 +33,8 @@ import { AmountPipe } from "../../../pipes/amount.pipe";
     DatePipe,
     KeyValuePipe,
     MatSlideToggleModule,
-    AmountPipe
+    AmountPipe,
+    MatMenuModule
 ],
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",

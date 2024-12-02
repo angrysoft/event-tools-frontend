@@ -3,7 +3,7 @@ import { signal } from "@angular/core";
 import { MatTableModule } from "@angular/material/table";
 import { BehaviorSubject, Observable } from "rxjs";
 
-export class MonthReportDataSource<T> extends DataSource<T> {
+export class ReportDataSource<T> extends DataSource<T> {
   private readonly dataSubject = new BehaviorSubject<T[]>([]);
   public loading = signal<boolean>(false);
   length: number = 0;
@@ -21,13 +21,9 @@ export class MonthReportDataSource<T> extends DataSource<T> {
   }
 
   loadData(data: T[]) {
-    console.log("datasource", data);
-    
     this.loading.set(true);
     this.dataSubject.next(data);
     this.length = data.length;
     this.loading.set(false);
   }
 }
-
-

@@ -8,18 +8,13 @@
 }
 
 .header {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: 1rem;
     align-items: center;
+    padding: 0 1rem;
     border-bottom: 1px solid var(--sys-outline);
-}
-
-.header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    padding: 1rem 0;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
 }
 
 .report-data {
@@ -31,7 +26,7 @@
 
 .logo {
     display: flex;
-    height: 5rem;
+    height: 4rem;
 }
 
 .label {
@@ -59,7 +54,7 @@
 
 :host {
     display: block;
-    box-sizing:border-box;
+    box-sizing: border-box;
     height: 100%;
     overflow: hidden;
     padding: 1rem;
@@ -73,11 +68,13 @@
 .TEMPLATE {
     color: blue;
 }
+
 .COORDINATOR {
-    color:darkorange;
+    color: darkorange;
 }
+
 .APPROVED {
-    color:inherit;
+    color: inherit;
 }
 
 .legend {
@@ -86,19 +83,18 @@
     padding: 1rem;
 }
 
+.summary-items {
+    padding-left: 1rem;
+}
+
 
 @media only screen and (min-width: 960px) {
     .logo {
-        height: 10rem;
+        height: 5rem;
     }
 
     .header {
         grid-template-columns: auto 1fr;
-    }
-
-    .header-info {
-        gap: 1rem;
         font-size: 1rem;
     }
 }
-

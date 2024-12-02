@@ -6,7 +6,7 @@ import {
   HostListener,
   inject,
   signal,
-  viewChild
+  viewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -41,6 +41,7 @@ import {
   EventItemDto,
 } from "../../../models/events";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
+import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
 
 @Component({
   selector: "app-admin-event-days",
@@ -191,7 +192,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
 
   addWorkers() {
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx.value}`,
+      `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx.value}`
     );
   }
 
@@ -265,21 +266,35 @@ export class AdminEventDaysComponent implements AfterViewInit {
   }
 
   removeWorkersDays() {
-    const delDialog = this.dialog.open(ConfirmDialogComponent, {
-      data: { msg: "Czy na pewno chcesz usunąć" },
-    });
+    const delDialog = this.dialog.open(RemoveWorkerDayComponent);
 
     delDialog.afterClosed().subscribe((result) => {
-      if (result && result === true) {
-        this.loading.set(true);
+      if (!result.result) return;
+      this.loading.set(true);
 
+      if (result.removeAll === true) {
+        this.workerDayService
+          .removeWorkersFromEvent(
+            this.eventId,
+            this.selection.selected
+              .map((wd) => wd.worker)
+              .filter((w) => typeof w === "number")
+          )
+          .subscribe((resp) => {
+            if (resp.ok) {
+              this.loadDays();
+              this.selection.clear();
+            }
+            this.loading.set(false);
+          });
+      } else {
         this.workerDayService
           .removeWorkersDays(
             this.eventId,
             this.dayId,
             this.selection.selected
               .map((wd) => wd.id)
-              .filter((w) => typeof w === "number"),
+              .filter((w) => typeof w === "number")
           )
           .subscribe((resp) => {
             if (resp.ok) {
@@ -372,7 +387,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
         state: {
           selected: this.selection.selected.slice(),
         },
-      },
+      }
     );
   }
 

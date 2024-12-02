@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MonthReportDataComponent } from './month-report-data.component';
+import { RemoveWorkerDayComponent } from './remove-worker-day.component';
 
-describe('MonthReportDataComponent', () => {
-  let component: MonthReportDataComponent;
-  let fixture: ComponentFixture<MonthReportDataComponent>;
+describe('RemoveWorkerDayComponent', () => {
+  let component: RemoveWorkerDayComponent;
+  let fixture: ComponentFixture<RemoveWorkerDayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MonthReportDataComponent]
+      imports: [RemoveWorkerDayComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MonthReportDataComponent);
+    fixture = TestBed.createComponent(RemoveWorkerDayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
