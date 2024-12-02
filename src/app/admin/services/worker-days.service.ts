@@ -95,6 +95,13 @@ export class WorkerDaysService
 
   changeStatus(eventId: number, payload: WorkerDayStatusPayload) {
     return this._put<WorkerDayStatusPayload>(
+      `${this.api}/${eventId}/day/status`,
+      payload
+    );
+  }
+
+  stateChiefToCoor(eventId: number, payload: number[]) {
+    return this._put<number[]>(
       `${this.userApi}/${eventId}/day/status`,
       payload
     );
