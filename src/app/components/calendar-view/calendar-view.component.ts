@@ -1,5 +1,5 @@
 import { Component, inject, input, signal } from "@angular/core";
-import { WorkerDaysService } from "../../admin/services/worker-days.service";
+import { WorkerDaysService } from "../../services/worker-days.service";
 import { CalendarDay } from "../../models/calendar";
 import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";

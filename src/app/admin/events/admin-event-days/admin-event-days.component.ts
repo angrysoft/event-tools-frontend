@@ -27,7 +27,7 @@ import { dateToString } from "../../../utils/date";
 
 import { WorkerBase } from "../../models/worker";
 import { EventDaysService } from "../../services/event-days.service";
-import { WorkerDaysService } from "../../services/worker-days.service";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { AddDayComponent } from "../../../components/events/add-day/add-day.component";
 import { ChangeStatusComponent } from "./change-status/change-status.component";
 import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";

@@ -22,8 +22,13 @@ import { AddonGroup, Addon } from "../../../admin/models/addon";
 import { Rate } from "../../../admin/models/rate";
 import { WorkerBase } from "../../../admin/models/worker";
 import { RatesService } from "../../../admin/services/rates.service";
-import { WorkerDaysService } from "../../../admin/services/worker-days.service";
-import { WorkerDayForm, EventDay, WorkerDay, WorkerAddons } from "../../../models/events";
+import { WorkerDaysService } from "../../../services/worker-days.service";
+import {
+  WorkerDayForm,
+  EventDay,
+  WorkerDay,
+  WorkerAddons,
+} from "../../../models/events";
 import { WorkerRatesPipe } from "../../../pipes/worker-rates.pipe";
 import { dateTimeToString } from "../../../utils/date";
 import { FormBaseComponent } from "../../form-base/form-base.component";
@@ -32,24 +37,24 @@ import { WorkerChooserConfig } from "../../worker-chooser/worker-chooser-config"
 import { WorkerChooserComponent } from "../../worker-chooser/worker-chooser.component";
 
 @Component({
-    selector: "app-add-workers",
-    imports: [
-        FormBaseComponent,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatCardModule,
-        MatSelectModule,
-        MatIconModule,
-        WorkerRatesPipe,
-        MatChipsModule,
-        WorkTimeComponent,
-    ],
-    templateUrl: "./add-workers.component.html",
-    styleUrl: "./add-workers.component.scss",
-    providers: [provideNativeDateAdapter()]
+  selector: "app-add-workers",
+  imports: [
+    FormBaseComponent,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatSelectModule,
+    MatIconModule,
+    WorkerRatesPipe,
+    MatChipsModule,
+    WorkTimeComponent,
+  ],
+  templateUrl: "./add-workers.component.html",
+  styleUrl: "./add-workers.component.scss",
+  providers: [provideNativeDateAdapter()],
 })
 export class AddWorkersComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
@@ -179,7 +184,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         });
         if (
           !this.addWorkersForm.controls.workers.controls.some(
-            (wg) => wg.value.id === worker.id,
+            (wg) => wg.value.id === worker.id
           )
         ) {
           this.addWorkersForm.controls.workers.push(workerGroup);
@@ -203,7 +208,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
     if (
       this.addWorkersForm.controls.workerDayAddons.value.find(
-        (a: any) => a.addon === addon.id,
+        (a: any) => a.addon === addon.id
       )
     )
       return;

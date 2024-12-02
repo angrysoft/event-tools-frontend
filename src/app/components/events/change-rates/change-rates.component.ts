@@ -24,32 +24,32 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
 import { Addon, AddonGroup } from "../../../admin/models/addon";
 import { Rate } from "../../../admin/models/rate";
 import { RatesService } from "../../../admin/services/rates.service";
-import { WorkerDaysService } from "../../../admin/services/worker-days.service";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { EventDay, WorkersRateDay } from "../../../models/events";
 import { WorkerRatesPipe } from "../../../pipes/worker-rates.pipe";
 import { FormBaseComponent } from "../../form-base/form-base.component";
 import { WorkerDayAddonsComponent } from "../../worker-day-addons/worker-day-addons.component";
 
 @Component({
-    selector: "app-change-rates",
-    imports: [
-        FormBaseComponent,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatCardModule,
-        MatSelectModule,
-        MatIconModule,
-        WorkerRatesPipe,
-        MatChipsModule,
-        MatDivider,
-        MatCheckboxModule,
-        WorkerDayAddonsComponent,
-    ],
-    templateUrl: "./change-rates.component.html",
-    styleUrl: "./change-rates.component.scss"
+  selector: "app-change-rates",
+  imports: [
+    FormBaseComponent,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatSelectModule,
+    MatIconModule,
+    WorkerRatesPipe,
+    MatChipsModule,
+    MatDivider,
+    MatCheckboxModule,
+    WorkerDayAddonsComponent,
+  ],
+  templateUrl: "./change-rates.component.html",
+  styleUrl: "./change-rates.component.scss",
 })
 export class ChangeRatesComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
@@ -166,7 +166,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
         });
         if (
           !this.changeRateForm.controls.workers.controls.some(
-            (wg) => wg.value.id === workerDay.id,
+            (wg) => wg.value.id === workerDay.id
           )
         ) {
           this.changeRateForm.controls.workers.push(workerGroup);
@@ -183,7 +183,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
   handleSubmit() {
     if (this.changeRateForm.valid && this.changeRateForm.dirty) {
       const payload: WorkersRateDay[] = [];
-      this.changeRateForm.value.workers.forEach((w:any) => {
+      this.changeRateForm.value.workers.forEach((w: any) => {
         payload.push({
           worker: w.worker,
           workerDay: w.workerDay,
@@ -192,13 +192,9 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
           rate: w.rate,
           rates: w.rates,
         });
-      })
+      });
       this.service
-        .changeRates(
-          this.eventId,
-          this.dayId,
-          payload,
-        )
+        .changeRates(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
           if (resp.ok) this.router.navigateByUrl(this.backTo);
           else {

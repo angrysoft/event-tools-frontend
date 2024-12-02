@@ -17,7 +17,7 @@ import { WorkerFilterComponent } from "../../../components/reports/worker-filter
 import { EventItemDto } from "../../../models/events";
 import { Totals } from "../../../models/reports";
 import { ReportsService } from "../../../services/reports.service";
-import { WorkerDaysService } from "../../services/worker-days.service";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { EventReportDataSource } from "./event-report-datasource";
 import { AmountPipe } from "../../../pipes/amount.pipe";
 import { MatMenuModule } from "@angular/material/menu";
@@ -34,8 +34,8 @@ import { MatMenuModule } from "@angular/material/menu";
     KeyValuePipe,
     MatSlideToggleModule,
     AmountPipe,
-    MatMenuModule
-],
+    MatMenuModule,
+  ],
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",
 })
