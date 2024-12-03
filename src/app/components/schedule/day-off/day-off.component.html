@@ -1,0 +1,53 @@
+@if (showMenu()) {
+<div
+  [style.backgroundColor]="'var(--sys-on-background)'"
+  class="data"
+  [cdkContextMenuTriggerFor]="dayOffMenu"
+>
+  @if (accepted()) {
+  <span [style.color]="'var(--sys-background)'">Wolne</span>
+  } @else {
+  <span [style.color]="'red'">Wolne - do potwierdzenia</span>
+  }
+</div>
+
+<ng-template #dayOffMenu>
+  <div class="context-menu" cdkMenu>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('remove')"
+    >
+      Usuń
+    </button>
+    @if (accepted()) {
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('reject')"
+    >
+      Cofnij akceptacje
+    </button>
+    } @else {
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('accept')"
+    >
+      Zaakceptuj
+    </button>
+    }
+  </div>
+</ng-template>
+} @else {
+    <div
+  [style.backgroundColor]="'var(--sys-on-background)'"
+  class="data"
+>
+  @if (accepted()) {
+  <span [style.color]="'var(--sys-background)'">Wolne</span>
+  } @else {
+  <span [style.color]="'red'">Wolne - do potwierdzenia</span>
+  }
+</div>
+}

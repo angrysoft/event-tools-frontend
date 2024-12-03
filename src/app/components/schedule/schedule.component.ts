@@ -37,6 +37,11 @@ import { WorkerChooserComponent } from "../worker-chooser/worker-chooser.compone
 import { WorkerBase } from "../../admin/models/worker";
 import { ChangeWorkerComponent } from "../events/change-worker/change-worker.component";
 import { ChangeWorkerPayload } from "../../models/events";
+import { DayOffComponent } from "./day-off/day-off.component";
+import { MenuAction } from "../../models/menu";
+import { EventDayComponent } from "./event-day/event-day.component";
+import { EventFormComponent } from "../../admin/events/event-form/event-form.component";
+import { EmptyDayComponent } from "./empty-day/empty-day.component";
 
 @Component({
   selector: "app-schedule",
@@ -54,6 +59,10 @@ import { ChangeWorkerPayload } from "../../models/events";
     CdkMenu,
     CdkMenuItem,
     DateChangerComponent,
+    DayOffComponent,
+    EventDayComponent,
+    EventFormComponent,
+    EmptyDayComponent,
   ],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
@@ -358,9 +367,37 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   getTextColor(color: string) {
     return getTextColor(color);
   }
-}
 
-interface DateForm {
-  month: FormControl<number | null>;
-  year: FormControl<number | null>;
+  dayOffAction(menuData: MenuAction) {
+    switch (menuData.action) {
+      case "accept":
+        this.acceptDayOff(menuData.data);
+        break;
+      case "remove":
+        this.removeDayOff(menuData.data);
+        break;
+      case "reject":
+        this.rejectDayOff(menuData.data);
+        break;
+    }
+  }
+
+  eventDayAction(menuData: MenuAction) {
+    switch (menuData.action) {
+      case "duplicate":
+        this.duplicateDay(menuData.data);
+        break;
+      case "remove":
+        this.removeDay(menuData.data);
+        break;
+      case "changeWorker":
+        this.changeWorker(menuData.data);
+        break;
+    }
+  }
+
+  emptyDayAction(menuData: MenuAction) {
+    if (menuData.action === "addDayOff")
+      this.addDayOff(menuData.data.worker, menuData.data.data);
+  }
 }

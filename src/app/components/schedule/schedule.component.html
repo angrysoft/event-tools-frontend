@@ -1,6 +1,10 @@
 <app-loader [loading]="loading()" />
 
-<app-date-changer (dateChanged)="dateChange($event)" [showRefresh]="true" (refresh)="reloadData()"/>
+<app-date-changer
+  (dateChanged)="dateChange($event)"
+  [showRefresh]="true"
+  (refresh)="reloadData()"
+/>
 <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">Imię Nazwisko</div>
@@ -19,88 +23,30 @@
       [style.color]="getTextColor(row.color)"
       (click)="goToWorker(row.id)"
     >
-      {{$index+1}} {{ row.workerName }}
+      {{ $index + 1 }} {{ row.workerName }}
     </div>
   </div>
   @for (day of days; track day.day) { @if(row.days[day.day]) {
   <div class="col">
-    @for (item of row.days[day.day]; track checkDayOff(item)) { @if (item.dayOff) {
-    <div
-      [style.backgroundColor]="'var(--sys-on-background)'"
-      class="data"
-      [cdkContextMenuTriggerFor]="dayOffMenu"
-      [cdkContextMenuTriggerData]="{ data: item, worker: row }"
-    >
-      @if (item.accepted) {
-      <span [style.color]="'var(--sys-background)'">Wolne</span>
-      } @else {
-      <span [style.color]="'red'">Wolne - do potwierdzenia</span>
-      }
-    </div>
+    @for (item of row.days[day.day]; track checkDayOff(item)) { @if
+    (item.dayOff) {
+    <app-day-off
+      [data]="{ id: item.id }"
+      [accepted]="item.accepted"
+      [showMenu]="admin()"
+      (actionTrigger)="dayOffAction($event)"
+    />
     } @else {
-    <div
-      [style.backgroundColor]="item.color"
-      [style.color]="getTextColor(item.color)"
-      (click)="onClick(item)"
-      class="data"
-      [cdkContextMenuTriggerFor]="dayMenu"
-      [cdkContextMenuTriggerData]="{ data: item }"
-    >
-      {{ item.eventName }}
-    </div>
+    <app-event-day
+      [showMenu]="admin()"
+      [data]="item"
+      (actionTrigger)="eventDayAction($event)"
+    />
     } }
   </div>
   } @else {
-  <div
-    class="empty"
-    [cdkContextMenuTriggerFor]="emptyMenu"
-    [cdkContextMenuTriggerData]="{ data: day, worker: row }"
-  ></div>
+    <app-empty-day [showMenu]="admin()" [data]="{data:day, worker:row}" (actionTrigger)="emptyDayAction($event)"/>
   } } }
   <div class="end" [style.gridColumnEnd]="cssCols" #end></div>
 </div>
 
-<ng-template #dayMenu let-data="data">
-  @if (admin()) {
-  <div class="context-menu" cdkMenu>
-    <button class="context-menu-item" cdkMenuItem (click)="removeDay(data)">
-      Usuń
-    </button>
-    <button class="context-menu-item" cdkMenuItem (click)="duplicateDay(data)">
-      Duplikuj
-    </button>
-    <button class="context-menu-item" cdkMenuItem (click)="changeWorker(data)">
-      Zmień pracownika
-    </button>
-  </div>
-  }
-</ng-template>
-
-<ng-template #emptyMenu let-data="data" let-worker="worker">
-  <div class="context-menu" cdkMenu>
-    <button
-      class="context-menu-item"
-      cdkMenuItem
-      (click)="addDayOff(worker, data)"
-    >
-      Dodaj Dzień wolny
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #dayOffMenu let-data="data">
-  <div class="context-menu" cdkMenu>
-    <button class="context-menu-item" cdkMenuItem (click)="removeDayOff(data)">
-      Usuń
-    </button>
-    @if (admin()) { @if (data.accepted) {
-    <button class="context-menu-item" cdkMenuItem (click)="rejectDayOff(data)">
-      Cofnij akceptacje
-    </button>
-    } @else {
-    <button class="context-menu-item" cdkMenuItem (click)="acceptDayOff(data)">
-      Zaakceptuj
-    </button>
-    }}
-  </div>
-</ng-template>
