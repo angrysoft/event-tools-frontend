@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CalendarViewComponent } from "../../components/calendar-view/calendar-view.component";
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'app-worker-calendar',
   imports: [CalendarViewComponent],
-  templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.scss'
+  templateUrl: './worker-calendar.component.html',
+  styleUrl: './worker-calendar.component.scss'
 })
-export class CalendarComponent {
+export class WorkerCalendarComponent {
 
 }

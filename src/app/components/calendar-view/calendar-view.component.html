@@ -23,14 +23,7 @@
         </div>
       </div>
       @for (event of day.events; track event.id) {
-      <div
-        class="event"
-        [style.background]="event.color"
-        [style.color]="getTextColor(event.color)"
-        (click)="goToEvent(event.event)"
-      >
-        {{ event.eventNumber }} - {{ event.eventName }}
-      </div>
+        <app-calendar-item [data]="event" (actionTrigger)="handleActions($event)"/>
       }
     </div>
     } }

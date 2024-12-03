@@ -1,4 +1,3 @@
-import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
 import { DatePipe } from "@angular/common";
 import {
   AfterViewInit,
@@ -11,7 +10,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
@@ -19,29 +18,28 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { WorkerDaysService } from "../../services/worker-days.service";
+import { WorkerBase } from "../../admin/models/worker";
+import { ChangeWorkerPayload } from "../../models/events";
+import { MenuAction } from "../../models/menu";
 import {
   Schedule,
   ScheduleAction,
   WorkerDaySchedule,
 } from "../../models/schedule";
+import { WorkerDaysService } from "../../services/worker-days.service";
+import { getTextColor } from "../../utils/colors";
 import { dateToString } from "../../utils/date";
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 import { DateChangerComponent } from "../date-changer/date-changer.component";
-import { LoaderComponent } from "../loader/loader.component";
-import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
-import { getTextColor } from "../../utils/colors";
+import { ChangeWorkerComponent } from "../events/change-worker/change-worker.component";
 import { DuplicateDaysComponent } from "../events/duplicate-days/duplicate-days.component";
+import { LoaderComponent } from "../loader/loader.component";
 import { WorkerChooserConfig } from "../worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../worker-chooser/worker-chooser.component";
-import { WorkerBase } from "../../admin/models/worker";
-import { ChangeWorkerComponent } from "../events/change-worker/change-worker.component";
-import { ChangeWorkerPayload } from "../../models/events";
+import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 import { DayOffComponent } from "./day-off/day-off.component";
-import { MenuAction } from "../../models/menu";
-import { EventDayComponent } from "./event-day/event-day.component";
-import { EventFormComponent } from "../../admin/events/event-form/event-form.component";
 import { EmptyDayComponent } from "./empty-day/empty-day.component";
+import { EventDayComponent } from "./event-day/event-day.component";
 
 @Component({
   selector: "app-schedule",
@@ -55,13 +53,9 @@ import { EmptyDayComponent } from "./empty-day/empty-day.component";
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    CdkContextMenuTrigger,
-    CdkMenu,
-    CdkMenuItem,
     DateChangerComponent,
     DayOffComponent,
     EventDayComponent,
-    EventFormComponent,
     EmptyDayComponent,
   ],
   templateUrl: "./schedule.component.html",

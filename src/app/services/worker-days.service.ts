@@ -153,6 +153,10 @@ export class WorkerDaysService
     return this._put(`${this.userApi}/day-off`, payload);
   }
 
+  workerDaysOffRequest(payload: { from: any; to: any }) {
+    return this._put(`${this.userApi}/day-off/request`, payload);
+  }
+
   acceptDayOff(id: any) {
     return this._put(`${this.api}/day-off/${id}/accept`);
   }

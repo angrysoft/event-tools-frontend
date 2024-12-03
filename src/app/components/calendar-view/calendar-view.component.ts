@@ -1,28 +1,55 @@
-import { Component, inject, input, signal } from "@angular/core";
-import { WorkerDaysService } from "../../services/worker-days.service";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from "@angular/core";
+import { Router } from "@angular/router";
 import { CalendarDay } from "../../models/calendar";
+import { WorkerDaysService } from "../../services/worker-days.service";
 import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
-import { getTextColor } from "../../utils/colors";
-import { Router } from "@angular/router";
+import { CalendarItemComponent } from "./calendar-item/calendar-item.component";
+import { dateToString } from "../../utils/date";
+import { AddDayOffComponent } from "../schedule/add-day-off/add-day-off.component";
+import { MatDialog } from "@angular/material/dialog";
+import { MenuAction } from "../../models/menu";
+import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: "app-calendar-view",
-  imports: [LoaderComponent, DateChangerComponent],
+  imports: [LoaderComponent, DateChangerComponent, CalendarItemComponent],
   templateUrl: "./calendar-view.component.html",
   styleUrl: "./calendar-view.component.scss",
 })
 export class CalendarViewComponent {
   private readonly router = inject(Router);
   private readonly workerDayService = inject(WorkerDaysService);
+  private readonly dialog = inject(MatDialog);
+
   loading = signal<boolean>(true);
   days = signal<CalendarDay[]>([]);
   eventUrl = input<string>("/admin/events");
+  needRefresh = input<boolean>(false);
+
   currentDate: string = "";
   schedules: any;
   size: any;
 
   weekDayNames = ["PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "NIEDZ."];
+
+  constructor() {
+    effect(() => {
+      const refresh = this.needRefresh();
+      untracked(() => {
+        if (refresh) {
+          this.loadData();
+        }
+      });
+    });
+  }
 
   loadData() {
     const weekDays = [
@@ -72,15 +99,60 @@ export class CalendarViewComponent {
     return weekDays.indexOf(weekName) === _index;
   }
 
-  getTextColor(color: string) {
-    return getTextColor(color);
-  }
-
-  goToEvent(event: number) {
-    this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
-  }
-
   getDay(idx: number) {
     return this.weekDayNames.at(idx);
+  }
+
+  addDayOff(data:any) {
+    const dayOffDialog = this.dialog.open(AddDayOffComponent, {
+      data: {
+        startDate: new Date(),
+      },
+      maxWidth: "95vw",
+    });
+    dayOffDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
+      this.loading.set(true);
+      const payload = {
+        from: dateToString(result.start),
+        to: dateToString(result.end),
+      };
+
+      this.workerDayService.workerDaysOffRequest(payload).subscribe((resp) => {
+        if (resp.ok) {
+          this.loadData();
+        } else this.workerDayService.showError(resp);
+        this.loading.set(false);
+      });
+    });
+  }
+
+  removeDayOff(data: number) {
+    const delDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: { msg: "Czy na pewno chcesz usunąć" },
+    });
+
+    delDialog.afterClosed().subscribe((result) => {
+      if (result && result === true) {
+        this.loading.set(true);
+        this.workerDayService.removeDayOff(data).subscribe((resp) => {
+          if (resp.ok) {
+            this.loadData();
+          } else this.workerDayService.showError(resp);
+          this.loading.set(false);
+        });
+      }
+    });
+  }
+
+  handleActions(menuData: MenuAction) {
+    switch (menuData.action) {
+      case "remove":
+        this.removeDayOff(menuData.data);
+        break;
+      case "addDayOff":
+        this.addDayOff(menuData.data);
+        break;
+    }
   }
 }

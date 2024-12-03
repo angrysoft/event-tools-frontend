@@ -5,7 +5,7 @@ export const workerRoutes: Routes = [
     path: "calendar",
     title: "Mój Kalendarz",
     loadComponent: () =>
-      import("./calendar/calendar.component").then((m) => m.CalendarComponent),
+      import("./worker-calendar/worker-calendar.component").then((m) => m.WorkerCalendarComponent),
   },
   {
     path: "work-schedule",
