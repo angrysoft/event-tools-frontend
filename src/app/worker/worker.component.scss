@@ -1,0 +1,29 @@
+.sidenav-container {
+    height: 100%;
+}
+
+.sidenav {
+    border-right: 1px solid var(--mdc-outlined-card-outline-color);
+}
+
+.sidenav .mat-toolbar {
+    background: inherit;
+
+}
+
+.mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.mat-toolbar-row {
+    justify-content: space-between;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}

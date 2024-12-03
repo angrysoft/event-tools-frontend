@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { authGuard, isAdmin } from "./auth.guard";
 import { adminRoutes } from "./admin/admin.routes";
+import { workerRoutes } from "./worker/worker.routes";
 
 export const routes: Routes = [
   {
@@ -23,13 +24,14 @@ export const routes: Routes = [
     title: "Event Tools",
     loadComponent: () =>
       import("./worker/worker.component").then((m) => m.WorkerComponent),
+    children: workerRoutes,
   },
   {
     path: "accessDenied",
     title: "Zabroniono",
     loadComponent: () =>
       import("./access-denied/access-denied.component").then(
-        (m) => m.AccessDeniedComponent,
+        (m) => m.AccessDeniedComponent
       ),
   },
   {

@@ -1,10 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import {
-  EventEmitter,
-  inject,
-  Injectable,
-  Output
-} from "@angular/core";
+import { EventEmitter, inject, Injectable, Output } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { catchError, Observable, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
@@ -28,7 +23,6 @@ export class AuthService {
   constructor() {
     this.authenticated.subscribe((auth) => {
       let url: string = "/login";
-
       if (auth) {
         switch (this.user?.authority) {
           case "ROLE_ADMIN":
@@ -43,7 +37,7 @@ export class AuthService {
             break;
         }
       }
-      this.router.navigateByUrl(url);
+      this.router.navigateByUrl(url, { replaceUrl: true });
     });
   }
 
@@ -84,6 +78,12 @@ export class AuthService {
           this.authenticated.emit(true);
         }
       });
+  }
+
+  checkAuth() {
+    if (this.isAuthenticated()) {
+      this.authenticated.emit(true);
+    }
   }
 
   login(username: string, password: string) {

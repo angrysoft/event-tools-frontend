@@ -3,18 +3,25 @@
 <div class="side-content">
   <app-date-changer (dateChanged)="dateChange($event)" />
   <div class="mat-elevation-z8 calendar">
-    <div class="header">PON.</div>
-    <div class="header">WT.</div>
-    <div class="header">ŚR.</div>
-    <div class="header">CZW.</div>
-    <div class="header">PT.</div>
-    <div class="header">SOB.</div>
-    <div class="header">NIEDZ.</div>
     @for (day of days(); track day.day) { @if (day.day < 1) {
-    <div class="day"><div class="day-head">x</div></div>
+    <div class="day">
+      <div class="day-head">
+        @if($index < 7) {
+        <div>{{ getDay($index) }}</div>
+        }
+        <div>x</div>
+      </div>
+    </div>
     } @else {
     <div class="day">
-      <div class="day-head">{{ day.day }}</div>
+      <div class="day-head">
+        @if($index < 7) {
+        <div>{{ getDay($index) }}</div>
+        }
+        <div>
+          {{ day.day }}
+        </div>
+      </div>
       @for (event of day.events; track event.id) {
       <div
         class="event"

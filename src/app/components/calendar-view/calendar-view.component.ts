@@ -22,6 +22,8 @@ export class CalendarViewComponent {
   schedules: any;
   size: any;
 
+  weekDayNames = ["PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "NIEDZ."];
+
   loadData() {
     const weekDays = [
       "MONDAY",
@@ -53,7 +55,6 @@ export class CalendarViewComponent {
   }
 
   dateChange(date: string) {
-    console.log(date);
     this.currentDate = date;
     this.loadData();
   }
@@ -76,7 +77,10 @@ export class CalendarViewComponent {
   }
 
   goToEvent(event: number) {
-    console.log(`${this.eventUrl()}/${event}`);
     this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
+  }
+
+  getDay(idx: number) {
+    return this.weekDayNames.at(idx);
   }
 }
