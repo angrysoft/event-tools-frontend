@@ -1,1 +1,68 @@
-<p>worker-report works!</p>
+<app-loader [loading]="loading()" />
+
+<div class="side-content">
+  <app-action-toolbar title="Raport Miesieczny" backTo="/admin/reports/workers">
+    @if (reportData().length > 0) {
+    <a
+      mat-button
+      href="/api/reports/month/worker/{{
+        month
+      }}/{{ year }}/pdf"
+      target="_blank"
+      [disabled]="!canDownloadReport()"
+      >Pobierz PDF</a
+    >
+    }
+  </app-action-toolbar>
+  <app-date-changer
+    (dateChanged)="dateChange($event)"
+    [showRefresh]="true"
+    (refresh)="loadData()"
+  />
+
+  <mat-card appearance="outlined">
+    <section class="report">
+      @if (reportData().length === 0) {
+      <h3>Brak Pracy w danym miesiącu</h3>
+      } @else {
+      <header class="header">
+        <div class="logo"><img src="assets/logo_ves_sq.png" alt="Logo" /></div>
+        <app-month-report-worker-info
+          [name]="name"
+          [reportDate]="reportDate"
+          title="Raport miesieczny:"
+        />
+      </header>
+      <div class="report-data">
+        <app-month-report-data
+          [data]="reportData()"
+          [tableColumns]="tableColumns"
+        />
+
+        <div class="summary">
+          <h2>Zliczane sa tylko dni ze statusem Zatwierdzony.</h2>
+          <p><span class="label">Podsumowanie: </span></p>
+          <div class="summary-items">
+            <p>
+              <span class="label">Podstawa</span>
+              <span>{{ totals().basicPay }} </span>
+            </p>
+            <p>
+              <span class="label">Łacznie stawki</span>
+              <span>{{ totals().totalRates }} </span>
+            </p>
+            <p>
+              <span class="label">Łacznie dodatki</span>
+              <span>{{ totals().totalAddons }}</span>
+            </p>
+            <p>
+              <span class="label">Łacznie</span>
+              <span>{{ totals().total }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      }
+    </section>
+  </mat-card>
+</div>

@@ -19,10 +19,18 @@ export const workerRoutes: Routes = [
   },
   {
     path: "event/:eventId",
-    title: "Imprezy",
+    title: "Dane Imprezy",
     loadComponent: () =>
       import("./worker-show-event/worker-show-event.component").then(
         (m) => m.WorkerShowEventComponent
+      ),
+  },
+  {
+    path: "report",
+    title: "Raport",
+    loadComponent: () =>
+      import("./worker-report/worker-report.component").then(
+        (m) => m.WorkerReportComponent
       ),
   },
 ];

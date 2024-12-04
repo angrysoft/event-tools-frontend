@@ -32,6 +32,16 @@ export class ReportsService extends CrudService<any> {
       `${this.api}/month/worker/${worker}/${month}/${year}`
     );
   }
+
+  getOwnMonthRaportForWorker(
+    month: number | string,
+    year: number | string
+  ) {
+    return this._get<RestResponse<MonthReport>>(
+      `/api/reports/month/worker/${month}/${year}`
+    );
+  }
+
   getMonthRaportForTeam(
     team: number,
     month: number | string,

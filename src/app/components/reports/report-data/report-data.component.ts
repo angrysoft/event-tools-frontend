@@ -1,5 +1,5 @@
 import { DatePipe, KeyValuePipe } from "@angular/common";
-import { Component, inject, input, signal, viewChild } from "@angular/core";
+import { Component, effect, inject, input, signal, viewChild } from "@angular/core";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { ReportDataSource } from "./report-datasource";
@@ -23,11 +23,15 @@ export class ReportDataComponent<T> {
       if (resp.ok) this.statuses.set(resp.data);
     });
     this.dataSource = new ReportDataSource();
+
+    effect(() => {
+      this.dataSource.loadData(this.data());
+    })
   }
 
   ngAfterViewInit(): void {
     this.table().dataSource = this.dataSource;
-    this.dataSource.loadData(this.data());
+    // this.dataSource.loadData(this.data());
   }
 
   get columnNames() {
