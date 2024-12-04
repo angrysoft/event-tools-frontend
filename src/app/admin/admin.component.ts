@@ -32,14 +32,21 @@ export class AdminComponent {
   mobileQuery: MediaQueryList;
 
   private readonly _mobileQueryListener: () => void;
+  username = "";
 
   constructor() {
+     this.username = `${this.auth.user?.firstName} ${this.auth.user?.lastName}`;
     const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
 
     this.mobileQuery = media.matchMedia("(max-width: 600px)");
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+    if (this.mobileQuery.matches) {
+      this.username = `${this.auth.user?.firstName.at(
+        0
+      )} ${this.auth.user?.lastName.at(0)}`;
+    }
   }
 
   ngOnDestroy(): void {

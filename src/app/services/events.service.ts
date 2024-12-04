@@ -7,6 +7,8 @@ import { EventFile, EventItem, EventItemDto } from "../models/events";
   providedIn: "root",
 })
 export class EventsService extends CrudService<EventItem | EventItemDto> {
+  userApi = "/api/events"
+
   constructor() {
     super();
     this.api = "/api/admin/events";
@@ -16,8 +18,16 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
     return this._get<RestResponse<EventItemDto>>(`${this.api}/info/${eventId}`);
   }
 
+  geEventInfoForWorker(event: number) {
+    return this._get<RestResponse<EventItemDto>>(`${this.userApi}/info/${event}`);
+  }
+
   getEventFiles(eventId: number) {
     return this._get<RestResponse<EventFile[]>>(`${this.api}/${eventId}/file`);
+  }
+
+  getEventFilesForWorker(event:number) {
+    return this._get<RestResponse<EventFile[]>>(`${this.userApi}/${event}/file`);
   }
 
   deleteFile(eventId: number, fileName: string) {

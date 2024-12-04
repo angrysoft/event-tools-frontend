@@ -1,0 +1,25 @@
+<div class="file-section">
+  <mat-card appearance="outlined">
+    <mat-card-content
+      class="file-list mat-elevation-z4"
+      style="pointer-events: none"
+    >
+      @for (file of files(); track file.fileName) {
+      <section class="file-item">
+        <div class="file">
+          <mat-icon color="primary">docs</mat-icon>
+          <a
+            mat-button
+            href="/api/events/{{ eventId() }}/file/{{ file.fileName }}"
+            style="pointer-events: all"
+          >
+            {{ file.fileName }}
+          </a>
+        </div>
+      </section>
+      } @empty {
+        <div class="file"> Brak Plików</div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

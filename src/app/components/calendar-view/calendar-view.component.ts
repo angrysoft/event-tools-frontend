@@ -1,26 +1,25 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  signal,
-  untracked,
-} from "@angular/core";
+import { Component, inject, input, signal } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CalendarDay } from "../../models/calendar";
+import { MenuAction } from "../../models/menu";
 import { WorkerDaysService } from "../../services/worker-days.service";
+import { dateToString } from "../../utils/date";
+import { AddButtonComponent } from "../add-button/add-button.component";
+import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
-import { CalendarItemComponent } from "./calendar-item/calendar-item.component";
-import { dateToString } from "../../utils/date";
 import { AddDayOffComponent } from "../schedule/add-day-off/add-day-off.component";
-import { MatDialog } from "@angular/material/dialog";
-import { MenuAction } from "../../models/menu";
-import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
+import { CalendarItemComponent } from "./calendar-item/calendar-item.component";
 
 @Component({
   selector: "app-calendar-view",
-  imports: [LoaderComponent, DateChangerComponent, CalendarItemComponent],
+  imports: [
+    LoaderComponent,
+    DateChangerComponent,
+    CalendarItemComponent,
+    AddButtonComponent,
+  ],
   templateUrl: "./calendar-view.component.html",
   styleUrl: "./calendar-view.component.scss",
 })
@@ -32,24 +31,13 @@ export class CalendarViewComponent {
   loading = signal<boolean>(true);
   days = signal<CalendarDay[]>([]);
   eventUrl = input<string>("/admin/events");
-  needRefresh = input<boolean>(false);
+  showAdd = input<boolean>(false);
 
   currentDate: string = "";
   schedules: any;
   size: any;
 
   weekDayNames = ["PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "NIEDZ."];
-
-  constructor() {
-    effect(() => {
-      const refresh = this.needRefresh();
-      untracked(() => {
-        if (refresh) {
-          this.loadData();
-        }
-      });
-    });
-  }
 
   loadData() {
     const weekDays = [
@@ -103,7 +91,7 @@ export class CalendarViewComponent {
     return this.weekDayNames.at(idx);
   }
 
-  addDayOff(data:any) {
+  addDayOff() {
     const dayOffDialog = this.dialog.open(AddDayOffComponent, {
       data: {
         startDate: new Date(),
@@ -145,14 +133,17 @@ export class CalendarViewComponent {
     });
   }
 
+  goToEvent(event: number) {
+    this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
+  }
+
   handleActions(menuData: MenuAction) {
     switch (menuData.action) {
       case "remove":
         this.removeDayOff(menuData.data);
         break;
-      case "addDayOff":
-        this.addDayOff(menuData.data);
-        break;
+      case "goTo":
+        this.goToEvent(menuData.data);
     }
   }
 }

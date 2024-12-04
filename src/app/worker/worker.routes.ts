@@ -5,7 +5,9 @@ export const workerRoutes: Routes = [
     path: "calendar",
     title: "Mój Kalendarz",
     loadComponent: () =>
-      import("./worker-calendar/worker-calendar.component").then((m) => m.WorkerCalendarComponent),
+      import("./worker-calendar/worker-calendar.component").then(
+        (m) => m.WorkerCalendarComponent
+      ),
   },
   {
     path: "work-schedule",
@@ -13,6 +15,14 @@ export const workerRoutes: Routes = [
     loadComponent: () =>
       import("./work-schedule/work-schedule.component").then(
         (m) => m.WorkScheduleComponent
+      ),
+  },
+  {
+    path: "event/:eventId",
+    title: "Imprezy",
+    loadComponent: () =>
+      import("./worker-show-event/worker-show-event.component").then(
+        (m) => m.WorkerShowEventComponent
       ),
   },
 ];

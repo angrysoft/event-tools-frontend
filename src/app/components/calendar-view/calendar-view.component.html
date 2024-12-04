@@ -29,3 +29,6 @@
     } }
   </div>
 </div>
+@if (showAdd()) {
+  <app-add-button (action)="addDayOff()" />
+}

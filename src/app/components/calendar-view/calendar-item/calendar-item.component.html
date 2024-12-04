@@ -11,7 +11,7 @@
     <button
       class="context-menu-item"
       cdkMenuItem
-      (click)="triggerAction('remove')"
+      (click)="removeAction()"
     >
       Usuń
     </button>
@@ -22,7 +22,7 @@
   class="event"
   [style.background]="data().color"
   [style.color]="getTextColor(data().color)"
-  (click)="goToEvent(data().event)"
+  (click)="goToAction()"
   [style.cursor] = "'pointer'"
 >
   {{ data().eventNumber }} - {{ data().eventName }}

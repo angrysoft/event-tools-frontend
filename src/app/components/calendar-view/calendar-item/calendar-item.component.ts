@@ -14,20 +14,22 @@ import { MenuAction } from "../../../models/menu";
 export class CalendarItemComponent {
   private readonly router = inject(Router);
   data = input.required<CalendarEvent>();
-  eventUrl = input<string>("/admin/events");
   actionTrigger = output<MenuAction>();
 
   getTextColor(color: string) {
     return getTextColor(color);
   }
 
-  goToEvent(event: number) {
-    this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
+  goToAction() {
+    this.actionTrigger.emit({
+      action: "goTo",
+      data: this.data().event
+    })
   }
 
-  triggerAction(action: string) {
+  removeAction() {
     this.actionTrigger.emit({
-      action: action,
+      action: "remove",
       data: this.data().id,
     });
   }
