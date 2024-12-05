@@ -26,6 +26,30 @@ export const workerRoutes: Routes = [
       ),
   },
   {
+    path: "settlements/chief",
+    title: "Kierownika",
+    loadComponent: () =>
+      import(
+        "./settlements/chief-settlements/chief-settlements.component"
+      ).then((m) => m.ChiefSettlementsComponent),
+  },
+  {
+    path: "settlements/common",
+    title: "Wspólne",
+    loadComponent: () =>
+      import(
+        "./settlements/common-settlements/common-settlements.component"
+      ).then((m) => m.CommonSettlementsComponent),
+  },
+  {
+    path: "settlements/manage/:event",
+    title: "Rozliczenia",
+    loadComponent: () =>
+      import(
+        "./settlements/manage-settlements/manage-settlements.component"
+      ).then((m) => m.ManageSettlementsComponent),
+  },
+  {
     path: "report",
     title: "Raport",
     loadComponent: () =>
