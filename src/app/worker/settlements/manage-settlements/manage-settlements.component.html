@@ -12,26 +12,12 @@
   </header>
   <div class="actions">
     <div class="action-buttons">
-      <button mat-flat-button (click)="addDay()" title="alt+a">
-        <mat-icon>add</mat-icon>Dodaj Dzień
-      </button>
-     
-      <button
-        mat-flat-button
-        (click)="delDay()"
-        title="alt-x"
-        [disabled]="eventDays().length === 0"
-        class="delete-button"
-      >
-        <mat-icon>delete</mat-icon>Usuń Dzień
-      </button>
-
       <button
         mat-flat-button
         (click)="changeStatus()"
-        [disabled]="eventDays().length === 0"
+        [disabled]="eventDays().length === 0 || readOnly"
       >
-        <mat-icon>content_copy</mat-icon>Zmień status
+        <mat-icon>content_copy</mat-icon>Zatwierdź
       </button>
       <mat-divider vertical="true" />
     </div>
@@ -40,7 +26,7 @@
       <button
         mat-flat-button
         (click)="addWorkers()"
-        [disabled]="eventDays().length === 0"
+        [disabled]="eventDays().length === 0 || readOnly"
       >
         <mat-icon>person_add</mat-icon>Dodaj
       </button>
@@ -48,14 +34,14 @@
       <button
         mat-flat-button
         (click)="duplicateDay()"
-        [disabled]="selection.isEmpty()"
+        [disabled]="selection.isEmpty() || readOnly"
       >
         <mat-icon>content_copy</mat-icon>Duplikuj
       </button>
 
       <button
         mat-flat-button
-        [disabled]="selection.isEmpty()"
+        [disabled]="selection.isEmpty() || readOnly"
         (click)="editTime()"
       >
         <mat-icon>schedule</mat-icon>Godziny
@@ -63,7 +49,7 @@
 
       <button
         mat-flat-button
-        [disabled]="selection.isEmpty()"
+        [disabled]="selection.isEmpty() || readOnly"
         (click)="editRatesAndAddons()"
       >
         <mat-icon>money</mat-icon>Stawki/Dodatki
@@ -71,7 +57,7 @@
 
       <button
         mat-flat-button
-        [disabled]="isMultipleSelected"
+        [disabled]="isMultipleSelected || readOnly"
         (click)="changeWorker()"
       >
         <mat-icon>change_circle</mat-icon>Zmień Pracownika
@@ -79,7 +65,7 @@
 
       <button
         mat-flat-button
-        [disabled]="selection.isEmpty()"
+        [disabled]="selection.isEmpty() || readOnly"
         (click)="removeWorkersDays()"
         class="delete-button"
       >
@@ -89,13 +75,18 @@
   </div>
   <mat-divider />
   <mat-tab-group
-    [(selectedIndex)]="tabIdx"
+    [(selectedIndex)]="tabIdx.value"
+    (selectedIndexChange)="tabIdx.setValue($event)"
     (selectedTabChange)="tabChange($event)"
-    (animationDone)="setTab($event)"
+    #tabs
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
-      <app-worker-day [day]="day" [selection]="selection" [tableColumns]="tableColumns"/>
+      <app-worker-day
+        [day]="day"
+        [selection]="selection"
+        [tableColumns]="tableColumns"
+      />
     </mat-tab>
     } @empty {
     <h2>Nic tu jeszcze nie ma</h2>

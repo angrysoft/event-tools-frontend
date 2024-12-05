@@ -80,48 +80,5 @@
       [workerSelection]="workerSelection"
       (update)="addonsChanged()"
     />
-    <!-- <mat-card appearance="outlined">
-      <mat-card-header class="addons-header">
-        <mat-card-title>Dodatki</mat-card-title>
-        <mat-card-subtitle
-          >Jeżeli pracownik nie ma przypisanej wartości dodatku zostanie on
-          pominięty przy zapisie.</mat-card-subtitle
-        >
-      </mat-card-header>
-      <mat-card-content class="addons">
-        <div class="field">
-          <mat-form-field appearance="outline">
-            <mat-label>Dodatki</mat-label>
-            <mat-select [formControl]="addonGroup.controls.id">
-              @for (addon of addons(); track addon.id) {
-              <mat-option [value]="addon.id">
-                {{ addon.name }}
-              </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Wartość</mat-label>
-            <input
-              matInput
-              type="number"
-              [formControl]="addonGroup.controls.value"
-            />
-            <mat-error>Podaj wartość</mat-error>
-          </mat-form-field>
-
-          <button
-            mat-fab
-            extended
-            type="button"
-            (click)="addAddon()"
-            [disabled]="workerSelection.isEmpty()"
-          >
-            <mat-icon>add</mat-icon>
-            Dodaj
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card> -->
   </form>
 </app-form-base>

@@ -25,18 +25,19 @@ export class WorkerDaysService
   implements ScheduleService
 {
   private readonly userApi = "/api/events";
+
   constructor() {
     super();
     this.api = "/api/admin/events";
   }
 
   getRates(): Observable<RestResponse<DataListResponse<Rate>>> {
-    const url = "/api/admin/workers/rates";
+    const url = "/api/workers/rates";
     return this._get<RestResponse<DataListResponse<Rate>>>(url);
   }
 
   getAddons(): Observable<RestResponse<DataListResponse<Addon>>> {
-    const url = "/api/admin/workers/addons";
+    const url = "/api/workers/addons";
     return this._get<RestResponse<DataListResponse<Addon>>>(url);
   }
 

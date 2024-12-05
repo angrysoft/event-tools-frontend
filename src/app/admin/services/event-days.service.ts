@@ -8,6 +8,7 @@ import { RestResponse } from "../../models/rest-response";
   providedIn: "root",
 })
 export class EventDaysService extends CrudService<EventDay> {
+  userApi = "/api/events";
   constructor() {
     super();
     this.api = "/api/admin/events";
@@ -15,6 +16,12 @@ export class EventDaysService extends CrudService<EventDay> {
 
   getDays(eventId: number): Observable<RestResponse<EventDaysInfo>> {
     return this._get<RestResponse<EventDaysInfo>>(`${this.api}/${eventId}/day`);
+  }
+
+  getDaysChief(eventId: number): Observable<RestResponse<EventDaysInfo>> {
+    return this._get<RestResponse<EventDaysInfo>>(
+      `${this.userApi}/${eventId}/day`
+    );
   }
 
   addDay(eventId: number, day: EventDay) {

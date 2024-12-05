@@ -102,23 +102,23 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       value: new FormControl(),
     });
 
-    this.service.getEventDay(this.eventId, this.dayId).subscribe((resp) => {
-      if (resp.ok) {
-        this.addWorkersForm.patchValue(resp.data);
-        const startTime = new Date(resp.data.startDate);
-        startTime.setHours(9);
-        startTime.setMinutes(0);
-        const endTime = new Date(resp.data.startDate);
-        endTime.setHours(21);
-        endTime.setMinutes(0);
+    const state: any = this.router.getCurrentNavigation()?.extras.state;
+    let startTime = new Date();
+    if (state) {
+      startTime = new Date(state.startDate);
+    }
 
-        this.addWorkersForm.controls.startTime.setValue(startTime);
-        this.addWorkersForm.controls.endTime.setValue(endTime, {
-          emitEvent: false,
-        });
-        this.eventDay.set(resp.data);
-      }
+    startTime.setHours(9);
+    startTime.setMinutes(0);
+
+    const endTime = new Date(startTime);
+    endTime.setHours(21);
+    endTime.setMinutes(0);
+    this.addWorkersForm.controls.startTime.setValue(startTime);
+    this.addWorkersForm.controls.endTime.setValue(endTime, {
+      emitEvent: false,
     });
+
 
     this.service.getRates().subscribe((resp) => {
       if (resp.ok) this.rates.set(resp.data.items);
@@ -244,7 +244,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         });
 
         const workerDay: WorkerDay = {
-          eventDay: formValues.eventDay,
+          eventDay: this.dayId,
           worker: w.id,
           rate: w.rate,
           workerName: w.name,
@@ -254,6 +254,9 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         };
         workersDays.push(workerDay);
       }
+
+      console.log(workersDays);
+      return;
 
       this.service
         .storeEventDay(this.eventId, this.dayId, workersDays)

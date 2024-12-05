@@ -42,12 +42,20 @@ export const workerRoutes: Routes = [
       ).then((m) => m.CommonSettlementsComponent),
   },
   {
-    path: "settlements/manage/:event",
+    path: "settlements/manage/:eventId",
     title: "Rozliczenia",
     loadComponent: () =>
       import(
         "./settlements/manage-settlements/manage-settlements.component"
       ).then((m) => m.ManageSettlementsComponent),
+  },
+  {
+    path: "settlements/manage/addWorkers/:eventId/day/:dayId",
+    title: "Dodaj Pracowników",
+    loadComponent: () =>
+      import(
+        "../components/events/add-workers/add-workers.component"
+      ).then((m) => m.AddWorkersComponent),
   },
   {
     path: "report",

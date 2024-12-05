@@ -9,6 +9,8 @@ import { RestResponse } from "../../models/rest-response";
   providedIn: "root",
 })
 export class RatesService extends CrudService<Rate> {
+  userApi = "/api/workers/rates";
+
   constructor() {
     super();
     this.api = "/api/admin/workers/rates";
@@ -16,27 +18,27 @@ export class RatesService extends CrudService<Rate> {
 
   getRateTypes(): Observable<RestResponse<DataListResponse<RateType>>> {
     return this._get<RestResponse<DataListResponse<RateType>>>(
-      `${this.api}/types`,
+      `${this.api}/types`
     );
   }
 
   getWorkerRates(
-    workerId: number,
+    workerId: number
   ): Observable<RestResponse<DataListResponse<RateValueDto>>> {
     return this._get<RestResponse<DataListResponse<RateValueDto>>>(
       `${this.api}/values`,
-      { workerId: workerId },
+      { workerId: workerId }
     );
   }
 
   getRateValue(rateValueId: number): Observable<RestResponse<RateValueDto>> {
     return this._get<RestResponse<RateValueDto>>(
-      `${this.api}/values/${rateValueId}`,
+      `${this.api}/values/${rateValueId}`
     );
   }
 
   createRateValue(
-    rateValue: Partial<RateValue>,
+    rateValue: Partial<RateValue>
   ): Observable<RestResponse<string>> {
     return this.http
       .post<RestResponse<string>>(`${this.api}/values`, rateValue)
@@ -45,7 +47,7 @@ export class RatesService extends CrudService<Rate> {
 
   updateRateValue(
     rateValueId: number,
-    rateValue: Partial<RateValue>,
+    rateValue: Partial<RateValue>
   ): Observable<RestResponse<string>> {
     return this.http
       .put<RestResponse<string>>(`${this.api}/values/${rateValueId}`, rateValue)

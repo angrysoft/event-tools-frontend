@@ -1,0 +1,56 @@
+.main-section,
+.header {
+    display: flex;
+    gap: 1rem;
+}
+
+.main-section {
+    padding: 1rem;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+mat-tab-group {
+    height: 100%;
+    overflow: auto;
+}
+
+.header {
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.actions,
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.actions {
+    padding: 0.5rem;
+}
+
+.CHIEF {
+    color: red;
+}
+
+.TEMPLATE {
+    color: aqua;
+}
+
+.COORDINATOR {
+    color: darkorange;
+}
+
+.APPROVED {
+    color: green;
+}
+
+:host {
+    display: block;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+}
