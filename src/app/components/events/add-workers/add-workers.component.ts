@@ -112,7 +112,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     const state: any = this.router.getCurrentNavigation()?.extras.state;
     let startTime = new Date();
 
-    if (state.startTime) startTime = new Date(state.startDate);
+    if (state.startDate) startTime = new Date(state.startDate);
     if (state.backTo) this.backTo = state.backTo;
 
     startTime.setHours(9);
