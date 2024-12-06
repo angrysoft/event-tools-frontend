@@ -1,18 +1,44 @@
 <div class="form-group-col">
   <mat-form-field appearance="outline">
-    <mat-label>Czas startu {{ startTime().value | date : "short" }}</mat-label>
-    <input matInput type="time" [formControl]="startHour()" />
+    <mat-label>Czas startu</mat-label>
+    <input
+      matInput
+      [formControl]="startTime()"
+      [matTimepicker]="startTimePicker"
+    />
+    <mat-timepicker-toggle matIconSuffix [for]="startTimePicker" />
+    <mat-timepicker #startTimePicker />
+    <mat-hint>{{ startTime().value?.toLocaleString() }}</mat-hint>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Data Zakonczenia</mat-label>
-    <input matInput [matDatepicker]="picker" [formControl]="endTime()" />
-    <mat-hint>Zmień jeżeli powyżej 24h lub po godzi 00</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+    <mat-label>Czas Zakończenia</mat-label>
+    <input matInput [formControl]="endTime()" [matTimepicker]="endTimePicker" />
+    <mat-timepicker-toggle matIconSuffix [for]="endTimePicker" />
+    <mat-timepicker #endTimePicker />
+    <mat-hint>{{ endTime().value?.toLocaleString() }}</mat-hint>
   </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Czas zakończenia</mat-label>
-    <input matInput type="time" [formControl]="endHour()" />
-  </mat-form-field>
+  <div class="day-change">
+    <div class="day-change-info">
+      dodaj / usuń dzień jeżeli praca powyżej 24h
+    </div>
+    <div class="day-change-btn">
+      <button
+        mat-mini-fab
+        [disabled]="cantRemove"
+        (click)="onRmDay()"
+        type="button"
+      >
+        <mat-icon>remove</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        (click)="onAddDay()"
+        [disabled]="cantAdd"
+        type="button"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
 </div>

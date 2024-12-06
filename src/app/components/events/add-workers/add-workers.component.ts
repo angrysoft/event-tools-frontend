@@ -97,9 +97,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       eventDay: new FormControl(this.dayId, Validators.required),
       rate: new FormControl(),
       startTime: new FormControl(null, Validators.required),
-      startHour: new FormControl("09:00"),
       endTime: new FormControl(null, Validators.required),
-      endHour: new FormControl("21:00"),
       workers: this.fb.array([], Validators.required),
       workerDayAddons: this.fb.array([]),
     });
@@ -136,11 +134,11 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.addWorkersForm.statusChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((status) => {
-        this.canSend.set(status === "VALID" && this.addWorkersForm.dirty);
-      });
+    // this.addWorkersForm.statusChanges
+    //   .pipe(takeUntil(this.destroy), debounceTime(500))
+    //   .subscribe((status) => {
+    //     this.canSend.set(status === "VALID" && this.addWorkersForm.dirty);
+    //   });
   }
 
   ngOnDestroy(): void {

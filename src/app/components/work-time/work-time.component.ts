@@ -1,74 +1,61 @@
-import { DatePipe } from "@angular/common";
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  OnDestroy,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatButtonModule } from "@angular/material/button";
+import { provideNativeDateAdapter } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { debounceTime, Subject, takeUntil } from "rxjs";
-import { dateTimeToString } from "../../utils/date";
+import { MatTimepickerModule } from "@angular/material/timepicker";
+import { Subject } from "rxjs";
 
 @Component({
-    selector: "app-work-time",
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDatepickerModule,
-        DatePipe,
-    ],
-    templateUrl: "./work-time.component.html",
-    styleUrl: "./work-time.component.scss"
+  selector: "app-work-time",
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTimepickerModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
+  templateUrl: "./work-time.component.html",
+  styleUrl: "./work-time.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideNativeDateAdapter()],
 })
-export class WorkTimeComponent implements AfterContentInit, OnDestroy {
+export class WorkTimeComponent {
   destroy = new Subject();
-  startTime = input.required<FormControl<Date | null | string>>();
-  endTime = input.required<FormControl<Date | null | string>>();
-  startHour = input.required<FormControl<string | null>>();
-  endHour = input.required<FormControl<string | null>>();
+  startTime = input.required<FormControl<Date | null>>();
+  endTime = input.required<FormControl<Date | null>>();
 
-  ngAfterContentInit(): void {
-    this.startHour()
-      .valueChanges.pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((value) => {
-        this.setDateTimeForControl(this.startTime(), value ?? "");
-      });
-
-    this.endHour()
-      .valueChanges.pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((value) => {
-        this.setDateTimeForControl(this.endTime(), value ?? "");
-      });
-
-    this.endTime()
-      .valueChanges.pipe(takeUntil(this.destroy))
-      .subscribe(() => {
-        this.setDateTimeForControl(this.endTime(), this.endHour().value ?? "");
-      });
+  get cantRemove() {
+    return (
+      this.startTime().value?.getDate() === this.endTime().value?.getDate()
+    );
   }
 
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
+  get cantAdd() {
+    const startDate = this.startTime().value?.getDate();
+    const endDate = this.endTime().value?.getDate();
+    if (endDate && startDate) return (endDate - startDate) > 6;
+    return true;
   }
 
-  private setDateTimeForControl(control: FormControl, value: string) {
-    const t = RegExp(/^(\d+):(\d+)/).exec(value ?? "");
+  onAddDay() {
+    let newTime = this.endTime().value;
+    newTime?.setDate(newTime.getDate() + 1);
+    this.setEndTimeValue(newTime);
+  }
 
-    if (t?.length === 3) {
-      let controlValue = control.value;
-      if (typeof controlValue === "string") {
-        controlValue = new Date(control.value?.toString() as string);
-      }
-      controlValue.setHours(Number(t.at(1)));
-      controlValue.setMinutes(Number(t.at(2)));
+  onRmDay() {
+    let newTime = this.endTime().value;
+    newTime?.setDate(newTime.getDate() - 1);
+    this.setEndTimeValue(newTime);
+  }
 
-      control.setValue(dateTimeToString(controlValue), { emitEvent: false });
-    }
+  setEndTimeValue(newTime: Date | null) {
+    this.endTime().setValue(newTime);
+    this.endTime().updateValueAndValidity();
+    this.endTime().markAsDirty();
   }
 }
