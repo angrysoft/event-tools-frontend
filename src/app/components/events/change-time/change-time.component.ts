@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -15,7 +11,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { getDateTime } from "../../../utils/date";
+import { dateTimeToString, getDateTime } from "../../../utils/date";
 import { WorkTimeComponent } from "../../work-time/work-time.component";
 
 @Component({
@@ -49,6 +45,14 @@ export class ChangeTimeComponent {
         Validators.required
       ),
     });
+  }
+
+  get timeResult() {
+    const value = this.changeTimeForm.value;
+    return {
+      startTime: dateTimeToString(value.startTime),
+      endTime: dateTimeToString(value.endTime),
+    };
   }
 }
 
