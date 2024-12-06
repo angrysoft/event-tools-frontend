@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -104,9 +111,9 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
     const state: any = this.router.getCurrentNavigation()?.extras.state;
     let startTime = new Date();
-    if (state) {
-      startTime = new Date(state.startDate);
-    }
+
+    if (state.startTime) startTime = new Date(state.startDate);
+    if (state.backTo) this.backTo = state.backTo;
 
     startTime.setHours(9);
     startTime.setMinutes(0);
@@ -118,7 +125,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     this.addWorkersForm.controls.endTime.setValue(endTime, {
       emitEvent: false,
     });
-
 
     this.service.getRates().subscribe((resp) => {
       if (resp.ok) this.rates.set(resp.data.items);
@@ -169,27 +175,29 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
   private updateWorkerList(workers: WorkerBase[]) {
     workers.forEach((worker) => {
-      this.rateSrv.getWorkerRates(worker.id ?? -1).subscribe((resp) => {
-        const ratesId: number[] = [];
-        if (resp.ok)
-          resp.data.items.forEach((r) => {
-            ratesId.push(r.rateId);
-          });
+      this.rateSrv
+        .getWorkerAssignedRateValues(worker.id ?? -1)
+        .subscribe((resp) => {
+          const ratesId: number[] = [];
+          if (resp.ok)
+            resp.data.forEach((r) => {
+              ratesId.push(r.rateId);
+            });
 
-        const workerGroup = this.fb.group({
-          id: new FormControl(worker.id, Validators.required),
-          name: new FormControl(`${worker.firstName} ${worker.lastName}`),
-          rate: new FormControl(null, Validators.required),
-          rates: new FormControl(ratesId),
+          const workerGroup = this.fb.group({
+            id: new FormControl(worker.id, Validators.required),
+            name: new FormControl(`${worker.firstName} ${worker.lastName}`),
+            rate: new FormControl(null, Validators.required),
+            rates: new FormControl(ratesId),
+          });
+          if (
+            !this.addWorkersForm.controls.workers.controls.some(
+              (wg) => wg.value.id === worker.id
+            )
+          ) {
+            this.addWorkersForm.controls.workers.push(workerGroup);
+          }
         });
-        if (
-          !this.addWorkersForm.controls.workers.controls.some(
-            (wg) => wg.value.id === worker.id
-          )
-        ) {
-          this.addWorkersForm.controls.workers.push(workerGroup);
-        }
-      });
     });
   }
 
@@ -254,9 +262,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         };
         workersDays.push(workerDay);
       }
-
-      console.log(workersDays);
-      return;
 
       this.service
         .storeEventDay(this.eventId, this.dayId, workersDays)

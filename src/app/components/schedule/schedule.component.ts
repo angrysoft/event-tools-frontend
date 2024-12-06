@@ -167,9 +167,9 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.loadData(this.size, this.offset);
   }
 
-  onClick(data: any) {
-    this.action.emit({ action: "event", data: data });
-  }
+  // onClick(data: any) {
+  //   this.action.emit({ action: "event", data: data });
+  // }
 
   goToWorker(id: number) {
     this.action.emit({ action: "worker", data: { workerId: id } });
@@ -387,6 +387,8 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
       case "changeWorker":
         this.changeWorker(menuData.data);
         break;
+      case "goto":
+        this.action.emit({ action: "event", data: menuData.data });
     }
   }
 

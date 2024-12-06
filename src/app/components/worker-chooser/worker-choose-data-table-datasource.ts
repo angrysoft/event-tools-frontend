@@ -1,26 +1,26 @@
-import { CollectionViewer, DataSource, SelectionModel } from "@angular/cdk/collections";
+import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Page } from "../../models/page";
 import { RestResponse } from "../../models/rest-response";
-import { CrudService } from "../../services/crud.service";
+import { WorkersService } from "../../services/workers.service";
 import { SearchQuery } from "../search/model";
+import { WorkerBase } from "../../admin/models/worker";
 
-export class DataTableDataSource<T> extends DataSource<T> {
-  private readonly dataSubject = new BehaviorSubject<T[]>([]);
+export class WorkerChooseTableDataSource extends DataSource<WorkerBase> {
+  private readonly dataSubject = new BehaviorSubject<WorkerBase[]>([]);
   public loading = signal<boolean>(false);
   paginator: MatPaginator | undefined;
   totalElements: number = 0;
   defaultPageSize: number = 15;
   query: SearchQuery = {};
-  
 
-  constructor(private readonly crudService: CrudService<T>) {
+  constructor(private readonly workerService: WorkersService) {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  connect(collectionViewer: CollectionViewer): Observable<WorkerBase[]> {
     this.paginator?.page.subscribe(() => {
       this.loadData();
     });
@@ -39,16 +39,19 @@ export class DataTableDataSource<T> extends DataSource<T> {
   loadData() {
     this.loading.set(true);
 
-    let action: Observable<RestResponse<Page<T>>>;
+    let action: Observable<RestResponse<Page<WorkerBase>>>;
     let params: { [key: string]: string | number } = {
       pageNumber: this.paginator?.pageIndex ?? 0,
       pageSize: this.paginator?.pageSize ?? this.defaultPageSize,
     };
 
     if (this.query && Object.keys(this.query).length > 0) {
-      action = this.crudService.searchPaged({ ...params, ...this.query });
+      action = this.workerService.searchWorkerPaged({
+        ...params,
+        ...this.query,
+      });
     } else {
-      action = this.crudService.getAllPaged(params);
+      action = this.workerService.getAllWorkerPaged(params);
     }
 
     action.subscribe((result) => {

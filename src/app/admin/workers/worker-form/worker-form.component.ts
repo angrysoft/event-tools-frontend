@@ -27,25 +27,25 @@ import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
 import { WorkerForm } from "../../models/worker";
 import { WorkerHints } from "../../models/worker-hints";
-import { WorkersService } from "../../services/workers.service";
+import { WorkersService } from "../../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
 
 @Component({
-    selector: "app-worker-form",
-    imports: [
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatDividerModule,
-        MatCardModule,
-        FormBaseComponent,
-    ],
-    templateUrl: "./worker-form.component.html",
-    styleUrl: "./worker-form.component.scss"
+  selector: "app-worker-form",
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatDividerModule,
+    MatCardModule,
+    FormBaseComponent,
+  ],
+  templateUrl: "./worker-form.component.html",
+  styleUrl: "./worker-form.component.scss",
 })
 export class WorkerFormComponent implements OnInit, OnDestroy {
   readonly route = inject(ActivatedRoute);
@@ -166,7 +166,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
         if (typeof val === "string") {
           this.workerForm.controls.phone.setValue(
             val?.replace(/[\W_a-zA-Z]+/g, ""),
-            { emitEvent: false },
+            { emitEvent: false }
           );
         }
       });
@@ -176,7 +176,7 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
         if (typeof val === "string") {
           this.workerForm.controls.phoneIce.setValue(
             val?.replace(/[\W_a-zA-Z]+/g, ""),
-            { emitEvent: false },
+            { emitEvent: false }
           );
         }
       });

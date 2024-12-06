@@ -40,7 +40,7 @@ interface Day {
 }
 
 interface ScheduleAction {
-  action: "worker" | "event";
+  action: "worker" | "event" | "goto";
   data: WorkerDaySchedule | { workerId: number };
 }
 

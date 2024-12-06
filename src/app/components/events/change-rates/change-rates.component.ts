@@ -57,7 +57,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
   router = inject(Router);
   service = inject(WorkerDaysService);
   rateSrv = inject(RatesService);
-
+  showAmount = true;
   canSend = signal<boolean>(false);
   rates = signal<Rate[]>([]);
   addons = signal<Addon[]>([]);
@@ -102,6 +102,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
       (this.router.getCurrentNavigation()?.extras.state![
         "selected"
       ] as WorkerSelect[]) ?? [];
+      console.log(selected);
     if (selected) this.updateWorkerList(selected);
   }
 
@@ -149,29 +150,31 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
   private updateWorkerList(selection: WorkerSelect[]) {
     selection.forEach((workerDay) => {
-      this.rateSrv.getWorkerRates(workerDay.worker ?? -1).subscribe((resp) => {
-        const ratesId: number[] = [];
-        if (resp.ok)
-          resp.data.items.forEach((r) => {
-            ratesId.push(r.rateId);
-          });
+      this.rateSrv
+        .getWorkerAssignedRateValues(workerDay.worker ?? -1)
+        .subscribe((resp) => {
+          const ratesId: number[] = [];
+          if (resp.ok)
+            resp.data.forEach((r) => {
+              ratesId.push(r.rateId);
+            });
 
-        const workerGroup: FormGroup<WorkersRateDay> = this.fb.group({
-          workerDay: new FormControl(workerDay.id, Validators.required),
-          workerName: new FormControl(workerDay.workerName),
-          worker: new FormControl(workerDay.worker, Validators.required),
-          rate: new FormControl(workerDay.rate, Validators.required),
-          rates: new FormControl(ratesId),
-          workerDayAddons: this.fb.array(workerDay.workerDayAddons),
+          const workerGroup: FormGroup<WorkersRateDay> = this.fb.group({
+            workerDay: new FormControl(workerDay.id, Validators.required),
+            workerName: new FormControl(workerDay.workerName),
+            worker: new FormControl(workerDay.worker, Validators.required),
+            rate: new FormControl(workerDay.rate, Validators.required),
+            rates: new FormControl(ratesId),
+            workerDayAddons: this.fb.array(workerDay.workerDayAddons),
+          });
+          if (
+            !this.changeRateForm.controls.workers.controls.some(
+              (wg) => wg.value.id === workerDay.id
+            )
+          ) {
+            this.changeRateForm.controls.workers.push(workerGroup);
+          }
         });
-        if (
-          !this.changeRateForm.controls.workers.controls.some(
-            (wg) => wg.value.id === workerDay.id
-          )
-        ) {
-          this.changeRateForm.controls.workers.push(workerGroup);
-        }
-      });
     });
   }
 

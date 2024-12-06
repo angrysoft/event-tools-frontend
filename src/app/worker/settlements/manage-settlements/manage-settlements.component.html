@@ -75,9 +75,9 @@
   </div>
   <mat-divider />
   <mat-tab-group
-    [(selectedIndex)]="tabIdx.value"
-    (selectedIndexChange)="tabIdx.setValue($event)"
+    [(selectedIndex)]="tabIdx"
     (selectedTabChange)="tabChange($event)"
+    (animationDone)="setTab($event)"
     #tabs
   >
     @for (day of eventDays(); track day.startDate) {

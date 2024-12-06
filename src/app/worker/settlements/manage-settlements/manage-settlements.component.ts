@@ -1,29 +1,37 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, HostListener, inject, signal, viewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTabGroup, MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ChangeStatusComponent } from '../../../admin/events/admin-event-days/change-status/change-status.component';
-import { WorkerBase } from '../../../admin/models/worker';
-import { EventDaysService } from '../../../admin/services/event-days.service';
-import { ConfirmDialogComponent } from '../../../components/confirm-dialog/confirm-dialog.component';
-import { AddDayComponent } from '../../../components/events/add-day/add-day.component';
-import { ChangeTimeComponent } from '../../../components/events/change-time/change-time.component';
-import { ChangeWorkerComponent } from '../../../components/events/change-worker/change-worker.component';
-import { DuplicateDaysComponent } from '../../../components/events/duplicate-days/duplicate-days.component';
-import { RemoveWorkerDayComponent } from '../../../components/events/remove-worker-day/remove-worker-day.component';
-import { WorkerChooserConfig } from '../../../components/worker-chooser/worker-chooser-config';
-import { WorkerChooserComponent } from '../../../components/worker-chooser/worker-chooser.component';
-import { EventItemDto, EventDay, WorkerDay, DuplicateDaysPayload, ChangeWorkerPayload, WorkerDayStatusPayload } from '../../../models/events';
-import { WorkerDaysService } from '../../../services/worker-days.service';
-import { dateToString } from '../../../utils/date';
-import { DatePipe } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
-import { WorkerDayComponent } from '../../../components/events/worker-day/worker-day.component';
-import { LoaderComponent } from '../../../components/loader/loader.component';
+import { SelectionModel } from "@angular/cdk/collections";
+import { DatePipe } from "@angular/common";
+import { Component, inject, signal, viewChild } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIcon } from "@angular/material/icon";
+import {
+  MatTabChangeEvent,
+  MatTabGroup,
+  MatTabsModule,
+} from "@angular/material/tabs";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ChangeStatusComponent } from "../../../admin/events/admin-event-days/change-status/change-status.component";
+import { WorkerBase } from "../../../admin/models/worker";
+import { EventDaysService } from "../../../admin/services/event-days.service";
+import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
+import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
+import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
+import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
+import { WorkerDayComponent } from "../../../components/events/worker-day/worker-day.component";
+import { LoaderComponent } from "../../../components/loader/loader.component";
+import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
+import {
+  ChangeWorkerPayload,
+  DuplicateDaysPayload,
+  EventDay,
+  EventItemDto,
+  WorkerDay,
+  WorkerDayStatusPayload,
+} from "../../../models/events";
+import { WorkerDaysService } from "../../../services/worker-days.service";
+import { dateToString } from "../../../utils/date";
 
 @Component({
   selector: "app-manage-settlements",
@@ -60,7 +68,8 @@ export class ManageSettlementsComponent {
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);
-  tabIdx = new FormControl(1);
+  firstTime = true;
+  tabIdx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = "/worker/settlements/chief";
   selection = new SelectionModel<WorkerDay>(true, []);
@@ -89,11 +98,6 @@ export class ManageSettlementsComponent {
     this.loadDays();
   }
 
-  ngAfterViewInit(): void {
-    this.tabIdx.setValue(2);
-    this.tabs().selectedIndex = 2;
-  }
-
   private loadDays() {
     this.service.getDaysChief(this.eventId).subscribe((resp) => {
       if (resp.ok) {
@@ -106,17 +110,24 @@ export class ManageSettlementsComponent {
     });
   }
 
+  setTab(idx: any) {
+    if (this.firstTime) {
+      const tab = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
+      this.tabIdx = tab;
+      this.firstTime = false;
+    }
+  }
+
   tabChange(tab: MatTabChangeEvent) {
     if (!tab) return;
     this.dayId = this.eventDays().at(tab.index)?.id ?? -1;
     this.selection.clear();
-    // this.tabIdx.setValue(tab.index);
     this.tabLabel.set(tab.tab.textLabel);
     this.setStatus();
   }
 
   setStatus() {
-    const state = this.eventDays().at(this.tabIdx.value ?? -1)?.state ?? "";
+    const state = this.eventDays().at(this.tabIdx)?.state ?? "";
     const status = this.statuses()[state];
     if (state !== "CHIEF") this.readOnly = true;
     else this.readOnly = false;
@@ -133,15 +144,22 @@ export class ManageSettlementsComponent {
   }
 
   addWorkers() {
+    const day = this.eventDays().at(this.tabIdx);
     this.router.navigateByUrl(
-      `/worker/settlements/manage/addWorkers/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx.value}`
+      `/worker/settlements/manage/addWorkers/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx}`,
+      {
+        state: {
+          startDate: day?.startDate,
+          backTo: `/worker/settlements/manage/${this.eventId}`,
+        },
+      }
     );
   }
 
   duplicateDay() {
     const duplicateDialog = this.dialog.open(DuplicateDaysComponent, {
       data: {
-        startTime: this.eventDays().at(this.tabIdx.value ?? 0)?.startDate,
+        startTime: this.eventDays().at(this.tabIdx)?.startDate,
       },
       maxWidth: "95vw",
     });
@@ -359,7 +377,7 @@ export class ManageSettlementsComponent {
 
   editRatesAndAddons() {
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx.value}`,
+      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
       {
         state: {
           selected: this.selection.selected.slice(),
@@ -367,5 +385,4 @@ export class ManageSettlementsComponent {
       }
     );
   }
-
 }

@@ -1,6 +1,12 @@
 import { Injectable } from "@angular/core";
 import { CrudService } from "../../services/crud.service";
-import { Rate, RateType, RateValue, RateValueDto } from "../models/rate";
+import {
+  Rate,
+  RateType,
+  RateValue,
+  RateValueDto,
+  RateValueNamesDto,
+} from "../models/rate";
 import { DataListResponse } from "../../models/data-list-response";
 import { catchError, Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";
@@ -28,6 +34,17 @@ export class RatesService extends CrudService<Rate> {
     return this._get<RestResponse<DataListResponse<RateValueDto>>>(
       `${this.api}/values`,
       { workerId: workerId }
+    );
+  }
+
+  getWorkerAssignedRateValues(
+    workerId: number
+  ): Observable<RestResponse<RateValueNamesDto[]>> {
+    return this._get<RestResponse<RateValueNamesDto[]>>(
+      `${this.userApi}/assigned`,
+      {
+        workerId: workerId,
+      }
     );
   }
 

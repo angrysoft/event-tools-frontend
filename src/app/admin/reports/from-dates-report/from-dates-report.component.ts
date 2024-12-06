@@ -18,7 +18,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { Router } from "@angular/router";
-import { WorkersService } from "../../services/workers.service";
+import { WorkersService } from "../../../services/workers.service";
 import { WorkerHints } from "../../models/worker-hints";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
@@ -131,8 +131,8 @@ export class FromDatesReportComponent {
 
     const data = this.reportSettingsFrom.value;
     const payload: { [key: string]: any } = {};
-    
-    payload["reportType"] = data.reportType
+
+    payload["reportType"] = data.reportType;
     if (data.from && data.to) {
       payload["from"] = dateToString(data.from);
       payload["to"] = dateToString(data.to);

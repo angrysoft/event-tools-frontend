@@ -19,11 +19,15 @@ interface RateType {
   value: string;
 }
 
-interface RateValueDto {
+interface RateId {
+  rateId: number;
+  workerId: number;
+}
+
+interface RateValueDto extends RateId {
   id: number;
   rateName: string;
   rateType: string;
-  rateId: number;
   overtimeAfter?: number;
   value: number;
   perHourOvertimeValue: number;
@@ -68,4 +72,5 @@ export {
   RateValue,
   RateValueDto,
   RateValueForm,
+  RateId as RateValueNamesDto,
 };

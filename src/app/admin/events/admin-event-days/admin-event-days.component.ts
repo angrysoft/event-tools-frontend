@@ -1,9 +1,7 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import {
-  AfterViewInit,
   Component,
-  effect,
   HostListener,
   inject,
   signal,
@@ -25,24 +23,24 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { dateToString } from "../../../utils/date";
 
-import { WorkerBase } from "../../models/worker";
-import { EventDaysService } from "../../services/event-days.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
 import { AddDayComponent } from "../../../components/events/add-day/add-day.component";
-import { ChangeStatusComponent } from "./change-status/change-status.component";
+import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
+import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
 import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
+import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
 import { WorkerDayComponent } from "../../../components/events/worker-day/worker-day.component";
 import {
-  EventDay,
-  WorkerDay,
-  DuplicateDaysPayload,
   ChangeWorkerPayload,
-  WorkerDayStatusPayload,
+  DuplicateDaysPayload,
+  EventDay,
   EventItemDto,
+  WorkerDay,
+  WorkerDayStatusPayload,
 } from "../../../models/events";
-import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
-import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
-import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
+import { WorkerDaysService } from "../../../services/worker-days.service";
+import { WorkerBase } from "../../models/worker";
+import { EventDaysService } from "../../services/event-days.service";
+import { ChangeStatusComponent } from "./change-status/change-status.component";
 
 @Component({
   selector: "app-admin-event-days",
@@ -109,13 +107,10 @@ export class AdminEventDaysComponent {
     });
     this.loadDays();
   }
-  
 
-  setTab(idx:any) {
-    console.log("setTab")
+  setTab(idx: any) {
     if (this.firstTime) {
       const tab = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
-      console.log("firstTime", tab)
       this.tabIdx = tab;
       this.firstTime = false;
     }
@@ -135,7 +130,6 @@ export class AdminEventDaysComponent {
 
   tabChange(tab: MatTabChangeEvent) {
     if (!tab) return;
-    console.log(this.tabIdx);
     this.dayId = this.eventDays().at(tab.index)?.id ?? -1;
     this.selection.clear();
     this.tabLabel.set(tab.tab.textLabel);
@@ -207,7 +201,12 @@ export class AdminEventDaysComponent {
     const day = this.eventDays().at(this.tabIdx);
     this.router.navigateByUrl(
       `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx}`,
-      { state: { startDate: day?.startDate } }
+      {
+        state: {
+          startDate: day?.startDate,
+          backTo: `/admin/events/${this.eventId}/day`,
+        },
+      }
     );
   }
 

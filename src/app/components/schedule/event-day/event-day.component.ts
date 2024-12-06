@@ -15,6 +15,7 @@ export class EventDayComponent {
   data = input<any>();
 
   triggerAction(action: string) {
+    console.log("trigger", action);
     this.actionTrigger.emit({
       action: action,
       data: this.data(),

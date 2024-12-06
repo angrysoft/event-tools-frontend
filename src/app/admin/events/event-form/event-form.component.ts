@@ -8,7 +8,7 @@ import {
   OnInit,
   signal,
   untracked,
-  viewChild
+  viewChild,
 } from "@angular/core";
 import {
   FormArray,
@@ -33,7 +33,7 @@ import { WorkerChooserComponent } from "../../../components/worker-chooser/worke
 import { EventItem, EventItemForm } from "../../../models/events";
 import { EventsService } from "../../../services/events.service";
 import { OfficeWorkers, WorkerBase } from "../../models/worker";
-import { WorkersService } from "../../services/workers.service";
+import { WorkersService } from "../../../services/workers.service";
 
 @Component({
   selector: "app-event-form",
@@ -127,7 +127,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
             .filter((el) => el.id == data.chiefId)
             .at(0);
           this.eventChiefs.set(
-            resp.data.filter((el) => data.eventChiefs.includes(el.id ?? -1)),
+            resp.data.filter((el) => data.eventChiefs.includes(el.id ?? -1))
           );
           this.chiefName.set(`${mainChief?.firstName} ${mainChief?.lastName}`);
         }
@@ -140,7 +140,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((formEvents) => {
         if (formEvents instanceof StatusChangeEvent) {
           this.canSend.set(
-            formEvents.status === "VALID" && this.eventForm.dirty,
+            formEvents.status === "VALID" && this.eventForm.dirty
           );
         }
       });
@@ -151,7 +151,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy), debounceTime(500))
       .subscribe(() => {
         this.eventForm.controls.description.setValue(
-          this.editor().nativeElement.innerHTML,
+          this.editor().nativeElement.innerHTML
         );
         this.eventForm.controls.description.markAsDirty();
         this.eventForm.controls.description.updateValueAndValidity();

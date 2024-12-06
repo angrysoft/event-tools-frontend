@@ -3,7 +3,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -17,7 +17,7 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { WorkerBase } from "../../models/worker";
 import { WorkerHints } from "../../models/worker-hints";
-import { WorkersService } from "../../services/workers.service";
+import { WorkersService } from "../../../services/workers.service";
 
 @Component({
   selector: "app-workers-report",
