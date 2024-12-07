@@ -11,9 +11,9 @@ import {
   MatTabsModule,
 } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ChangeStatusComponent } from "../../../admin/events/admin-event-days/change-status/change-status.component";
 import { WorkerBase } from "../../../admin/models/worker";
 import { EventDaysService } from "../../../admin/services/event-days.service";
+import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
 import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
 import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
@@ -27,8 +27,7 @@ import {
   DuplicateDaysPayload,
   EventDay,
   EventItemDto,
-  WorkerDay,
-  WorkerDayStatusPayload,
+  WorkerDay
 } from "../../../models/events";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateToString } from "../../../utils/date";
@@ -184,7 +183,13 @@ export class ManageSettlementsComponent {
           if (resp.ok) {
             this.loadDays();
             this.selection.clear();
-          } else this.workerDayService.showError(resp);
+          } else if (resp.error === "Forbidden") {
+            this.workerDayService.showMsg(
+              "Nie możesz edytować dni ze statusem innym niż kierownik"
+            );
+          } else {
+            this.workerDayService.showError(resp);
+          }
           this.loading.set(false);
         });
     });
@@ -219,7 +224,13 @@ export class ManageSettlementsComponent {
           if (resp.ok) {
             this.loadDays();
             this.selection.clear();
-          } else this.workerDayService.showError(resp);
+          } else if (resp.error === "Forbidden") {
+            this.workerDayService.showMsg(
+              "Nie możesz edytować dni ze statusem innym niż kierownik"
+            );
+          } else {
+            this.workerDayService.showError(resp);
+          }
           this.loading.set(false);
         });
     });
@@ -244,6 +255,12 @@ export class ManageSettlementsComponent {
             if (resp.ok) {
               this.loadDays();
               this.selection.clear();
+            } else if (resp.error === "Forbidden") {
+              this.workerDayService.showMsg(
+                "Nie możesz edytować dni ze statusem innym niż kierownik"
+              );
+            } else {
+              this.workerDayService.showError(resp);
             }
             this.loading.set(false);
           });
@@ -260,7 +277,13 @@ export class ManageSettlementsComponent {
             if (resp.ok) {
               this.loadDays();
               this.selection.clear();
-            }
+            } else if (resp.error === "Forbidden") {
+              this.workerDayService.showMsg(
+                "Nie możesz edytować dni ze statusem innym niż kierownik"
+              );
+            } else {
+              this.workerDayService.showError(resp);
+            } 
             this.loading.set(false);
           });
       }
@@ -310,7 +333,13 @@ export class ManageSettlementsComponent {
                 if (resp.ok) {
                   this.loadDays();
                   this.selection.clear();
-                } else this.workerDayService.showError(resp);
+                } else if (resp.error === "Forbidden") {
+                  this.workerDayService.showMsg(
+                    "Nie możesz edytować dni ze statusem innym niż kierownik"
+                  );
+                } else {
+                  this.workerDayService.showError(resp);
+                }
                 this.loading.set(false);
               });
           } else if (newWorker) {
@@ -326,7 +355,13 @@ export class ManageSettlementsComponent {
                 if (resp.ok) {
                   this.loadDays();
                   this.selection.clear();
-                } else this.workerDayService.showError(resp);
+                } else if (resp.error === "Forbidden") {
+                  this.workerDayService.showMsg(
+                    "Nie możesz edytować dni ze statusem innym niż kierownik"
+                  );
+                } else {
+                  this.workerDayService.showError(resp);
+                }
                 this.loading.set(false);
               });
           }
@@ -336,21 +371,16 @@ export class ManageSettlementsComponent {
   }
 
   changeStatus() {
-    const changeStatusDialog = this.dialog.open(ChangeStatusComponent, {
+    const changeStatusDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        statuses: this.statuses(),
+        msg: "Po zatwierdzeniu nie bedzie możliwości edycji danego dnia. Kontynuować ?",
       },
-      maxWidth: "95vw",
+      
     });
 
     changeStatusDialog.afterClosed().subscribe((result) => {
       if (!result) return;
       this.loading.set(true);
-
-      const payload: WorkerDayStatusPayload = {
-        status: result.status,
-        eventDays: [],
-      };
 
       const workerDaysToChangeStatus: number[] = [];
       if (result.changeAll) {
@@ -361,10 +391,8 @@ export class ManageSettlementsComponent {
         workerDaysToChangeStatus.push(this.dayId);
       }
 
-      payload.eventDays = workerDaysToChangeStatus;
-
       this.workerDayService
-        .changeStatus(this.eventId, payload)
+        .stateChiefToCoor(this.eventId, workerDaysToChangeStatus)
         .subscribe((resp) => {
           if (resp.ok) {
             this.loadDays();
@@ -377,7 +405,7 @@ export class ManageSettlementsComponent {
 
   editRatesAndAddons() {
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
+      `/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
       {
         state: {
           selected: this.selection.selected.slice(),
