@@ -15,7 +15,7 @@
     display: grid;
     align-items: center;
     border-collapse: collapse;
-    border: 1px solid var(--mat-divider-color);
+    border: 1px solid var(--mat-sys-outline);
 }
 
 .end {
@@ -55,8 +55,8 @@
 
 .sticky-row, .sticky-col {
     position: sticky;
-    background-color: var(--mat-app-background-color, var(--mat-app-background));
-    color: var(--mat-app-text-color, var(--mat-app-on-background));
+    background-color: var(--mat-sys-background-color, var(--mat-sys-background));
+    color: var(--mat-sys-text-color, var(--mat-sys-on-background));
 }
 
 .sticky-row {
