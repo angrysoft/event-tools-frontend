@@ -1,7 +1,7 @@
 @if (data().dayOff) {
-<div class="event" [style.backgroundColor]="'var(--sys-on-background)'" [cdkContextMenuTriggerFor]="dayOffMenu">
+<div class="event" [style.backgroundColor]="'var(--mat-sys-on-background)'" [cdkContextMenuTriggerFor]="dayOffMenu">
   @if (data().accepted) {
-  <span [style.color]="'var(--sys-background)'">Wolne</span>
+  <span [style.color]="'var(--mat-sys-background)'">Wolne</span>
   } @else {
   <span [style.color]="'red'">Wolne - do potwierdzenia</span>
   }

@@ -17,7 +17,7 @@
     flex-direction: column;
     min-width: 180px;
     max-width: 280px;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--mat-sys-on-background);
     padding: 6px 0;
 }
 
@@ -25,6 +25,7 @@
     background-color: transparent;
     cursor: pointer;
     border: none;
+    color: var(--mat-sys-background);
 
     user-select: none;
     min-width: 64px;

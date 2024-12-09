@@ -27,7 +27,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { AddonGroup, Addon } from "../../../admin/models/addon";
 import { Rate } from "../../../admin/models/rate";
-import { WorkerBase } from "../../../admin/models/worker";
+import { WorkerBase } from "../../../models/worker";
 import { RatesService } from "../../../admin/services/rates.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import {

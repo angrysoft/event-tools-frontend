@@ -98,12 +98,18 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
       value: new FormControl(),
     });
 
-    let selected: WorkerSelect[] =
+    const selected: WorkerSelect[] =
       (this.router.getCurrentNavigation()?.extras.state![
         "selected"
       ] as WorkerSelect[]) ?? [];
-      console.log(selected);
     if (selected) this.updateWorkerList(selected);
+
+    const backTo = this.router.getCurrentNavigation()?.extras.state!["backTo"];
+    if (backTo) this.backTo = backTo;
+
+    const showAmount =
+      this.router.getCurrentNavigation()?.extras.state!["showAmount"];
+    if (showAmount !== undefined) this.showAmount = showAmount;
   }
 
   ngOnInit(): void {
@@ -199,7 +205,8 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
       this.service
         .changeRates(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
-          if (resp.ok) this.router.navigateByUrl(this.backTo);
+          if (resp.ok)
+            this.router.navigateByUrl(`${this.backTo}?tab=${this.tab}`);
           else {
             this.service.showError(resp);
           }

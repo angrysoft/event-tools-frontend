@@ -5,15 +5,15 @@ import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-action-toolbar",
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    RouterLink,
-  ],
+  imports: [MatButtonModule, MatIconModule, RouterLink],
   templateUrl: "./action-toolbar.component.html",
   styleUrl: "./action-toolbar.component.scss",
 })
 export class ActionToolbarComponent {
-  backTo = input.required<string>();
+  backTo = input<string>("");
   title = input.required<string>();
+
+  get showBackTo() {
+    return this.backTo().length > 0;
+  }
 }

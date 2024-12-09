@@ -1,7 +1,11 @@
 <header class="header">
-  <button mat-icon-button [routerLink]="backTo()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
+  @if (showBackTo) {
+    <button mat-icon-button [routerLink]="backTo()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  } @else {
+    <div></div>
+  } 
 
   <h2 class="title">{{ title() }}</h2>
 

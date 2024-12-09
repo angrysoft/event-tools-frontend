@@ -11,7 +11,7 @@ import {
   MatTabsModule,
 } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { WorkerBase } from "../../../admin/models/worker";
+import { WorkerBase } from "../../../models/worker";
 import { EventDaysService } from "../../../admin/services/event-days.service";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
@@ -27,7 +27,7 @@ import {
   DuplicateDaysPayload,
   EventDay,
   EventItemDto,
-  WorkerDay
+  WorkerDay,
 } from "../../../models/events";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateToString } from "../../../utils/date";
@@ -283,7 +283,7 @@ export class ManageSettlementsComponent {
               );
             } else {
               this.workerDayService.showError(resp);
-            } 
+            }
             this.loading.set(false);
           });
       }
@@ -375,7 +375,6 @@ export class ManageSettlementsComponent {
       data: {
         msg: "Po zatwierdzeniu nie bedzie możliwości edycji danego dnia. Kontynuować ?",
       },
-      
     });
 
     changeStatusDialog.afterClosed().subscribe((result) => {
@@ -397,7 +396,13 @@ export class ManageSettlementsComponent {
           if (resp.ok) {
             this.loadDays();
             this.selection.clear();
-          } else this.workerDayService.showError(resp);
+          } else if (resp.error === "Forbidden") {
+            this.workerDayService.showMsg(
+              "Nie możesz edytować dni ze statusem innym niż kierownik"
+            );
+          } else {
+            this.workerDayService.showError(resp);
+          }
           this.loading.set(false);
         });
     });
@@ -405,10 +410,12 @@ export class ManageSettlementsComponent {
 
   editRatesAndAddons() {
     this.router.navigateByUrl(
-      `/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
+      `/worker/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
       {
         state: {
           selected: this.selection.selected.slice(),
+          backTo: `/worker/settlements/manage/${this.eventId}`,
+          showAmount: false,
         },
       }
     );

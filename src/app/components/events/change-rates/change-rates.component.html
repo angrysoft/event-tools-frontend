@@ -57,6 +57,7 @@
               <mat-chip-option (removed)="removeWorkerAddon(worker, $index)" [selectable]="false">
                 {{ addon.name }}
                 @if (getAddonType(addon.addon) === "VARIABLE_ADDON" && showAmount) { -
+                  {{showAmount}}
                 {{ addon.value }}
                 }
                 <button

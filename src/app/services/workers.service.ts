@@ -9,8 +9,8 @@ import {
   Worker,
   WorkerBase,
   WorkersItem,
-} from "../admin/models/worker";
-import { WorkerHints } from "../admin/models/worker-hints";
+} from "../models/worker";
+import { WorkerHints } from "../models/worker-hints";
 import { Page } from "../models/page";
 
 @Injectable({
@@ -93,5 +93,13 @@ export class WorkersService extends CrudService<Worker> {
 
   getOfficeWorkers(): Observable<RestResponse<OfficeWorkers>> {
     return this._get<RestResponse<OfficeWorkers>>("/api/admin/workers/office");
+  }
+
+  getWorkerContact(workerId: number) {
+    return this._get<RestResponse<WorkerBase>>(`${this.userApi}/${workerId}`);
+  }
+
+  getAboutMe() {
+    return this._get<RestResponse<Worker>>(`${this.userApi}/about-me`);
   }
 }

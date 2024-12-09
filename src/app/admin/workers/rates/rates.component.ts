@@ -7,20 +7,20 @@ import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { RateValueDto } from "../../models/rate";
-import { BasicPay } from "../../models/worker";
+import { BasicPay } from "../../../models/worker";
 import { RatesService } from "../../services/rates.service";
 
 @Component({
-    selector: "app-rates",
-    imports: [
-        MatCardModule,
-        RouterLink,
-        MatButtonModule,
-        MatIcon,
-        MatDividerModule,
-    ],
-    templateUrl: "./rates.component.html",
-    styleUrl: "./rates.component.scss"
+  selector: "app-rates",
+  imports: [
+    MatCardModule,
+    RouterLink,
+    MatButtonModule,
+    MatIcon,
+    MatDividerModule,
+  ],
+  templateUrl: "./rates.component.html",
+  styleUrl: "./rates.component.scss",
 })
 export class RatesComponent implements OnInit {
   readonly confirm = inject(MatDialog);
@@ -58,7 +58,7 @@ export class RatesComponent implements OnInit {
         this.service.deleteRateValue(rateValueId).subscribe((response) => {
           if (response.ok) {
             this.workerRates.set(
-              this.workerRates().filter((rate) => rate.id !== rateValueId),
+              this.workerRates().filter((rate) => rate.id !== rateValueId)
             );
           } else this.service.showError(response);
         });

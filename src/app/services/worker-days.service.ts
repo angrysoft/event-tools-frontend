@@ -129,7 +129,7 @@ export class WorkerDaysService
   }
 
   changeWorkerInDates(eventId: number, payload: any) {
-    return this._put<any>(`${this.api}/${eventId}/worker/change`, payload);
+    return this._put<any>(`${this.userApi}/${eventId}/worker/change`, payload);
   }
 
   getSchedule(

@@ -9,6 +9,7 @@ interface WorkerBase {
   id: number | null;
   firstName: string | null;
   lastName: string | null;
+  phone?: string | null;
 }
 
 interface BasicPay {

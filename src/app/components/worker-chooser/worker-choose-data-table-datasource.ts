@@ -6,7 +6,7 @@ import { Page } from "../../models/page";
 import { RestResponse } from "../../models/rest-response";
 import { WorkersService } from "../../services/workers.service";
 import { SearchQuery } from "../search/model";
-import { WorkerBase } from "../../admin/models/worker";
+import { WorkerBase } from "../../models/worker";
 
 export class WorkerChooseTableDataSource extends DataSource<WorkerBase> {
   private readonly dataSubject = new BehaviorSubject<WorkerBase[]>([]);

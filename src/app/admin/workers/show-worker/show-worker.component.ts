@@ -9,7 +9,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
-import { Worker } from "../../models/worker";
+import { Worker } from "../../../models/worker";
 import { WorkersService } from "../../../services/workers.service";
 import { AddonsComponent } from "../addons/addons.component";
 import { CarsComponent } from "../cars/cars.component";

@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { ScheduleComponent } from "../../components/schedule/schedule.component";
-import { ScheduleAction } from "../../models/schedule";
-import { Router } from "@angular/router";
+import { ContactComponent } from "../contact/contact.component";
 
 @Component({
   selector: "app-work-schedule",
@@ -10,9 +10,14 @@ import { Router } from "@angular/router";
   styleUrl: "./work-schedule.component.scss",
 })
 export class WorkScheduleComponent {
-  private readonly router = inject(Router);
-  
-  onAction(action: ScheduleAction) {
+  dialog = inject(MatDialog);
+
+  onAction(action: any) {
     console.log(action);
+    if (action.action === "worker") {
+      this.dialog.open(ContactComponent, {
+        data: { worker: action.data.workerId },
+      });
+    }
   }
 }

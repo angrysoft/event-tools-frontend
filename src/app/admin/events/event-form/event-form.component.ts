@@ -32,7 +32,7 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { EventItem, EventItemForm } from "../../../models/events";
 import { EventsService } from "../../../services/events.service";
-import { OfficeWorkers, WorkerBase } from "../../models/worker";
+import { OfficeWorkers, WorkerBase } from "../../../models/worker";
 import { WorkersService } from "../../../services/workers.service";
 
 @Component({

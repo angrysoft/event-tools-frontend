@@ -53,9 +53,17 @@ export const workerRoutes: Routes = [
     path: "settlements/manage/addWorkers/:eventId/day/:dayId",
     title: "Dodaj Pracowników",
     loadComponent: () =>
-      import(
-        "../components/events/add-workers/add-workers.component"
-      ).then((m) => m.AddWorkersComponent),
+      import("../components/events/add-workers/add-workers.component").then(
+        (m) => m.AddWorkersComponent
+      ),
+  },
+  {
+    path: "events/:eventId/day/:dayId/change",
+    title: "Stawki/Dodatki",
+    loadComponent: () =>
+      import("../components/events/change-rates/change-rates.component").then(
+        (m) => m.ChangeRatesComponent
+      ),
   },
   {
     path: "report",
@@ -63,6 +71,14 @@ export const workerRoutes: Routes = [
     loadComponent: () =>
       import("./worker-report/worker-report.component").then(
         (m) => m.WorkerReportComponent
+      ),
+  },
+  {
+    path: "info",
+    title: "Informacje",
+    loadComponent: () =>
+      import("./about-me/about-me.component").then(
+        (m) => m.AboutMeComponent
       ),
   },
 ];

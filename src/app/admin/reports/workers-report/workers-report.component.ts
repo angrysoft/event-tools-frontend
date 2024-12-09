@@ -15,8 +15,8 @@ import { Router } from "@angular/router";
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { WorkerBase } from "../../models/worker";
-import { WorkerHints } from "../../models/worker-hints";
+import { WorkerBase } from "../../../models/worker";
+import { WorkerHints } from "../../../models/worker-hints";
 import { WorkersService } from "../../../services/workers.service";
 
 @Component({

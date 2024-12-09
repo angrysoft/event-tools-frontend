@@ -25,8 +25,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
-import { WorkerForm } from "../../models/worker";
-import { WorkerHints } from "../../models/worker-hints";
+import { WorkerForm } from "../../../models/worker";
+import { WorkerHints } from "../../../models/worker-hints";
 import { WorkersService } from "../../../services/workers.service";
 import { passwordValidator } from "./passwordValidator";
 

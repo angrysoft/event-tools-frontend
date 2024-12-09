@@ -19,7 +19,7 @@
       <app-menu-action href="/worker/work-schedule" icon="perm_contact_calendar"
         >Grafik</app-menu-action
       >
-      <mat-accordion>
+      <!-- <mat-accordion>
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Rozliczenia</mat-panel-title>
@@ -31,7 +31,10 @@
             >Wspólne</app-menu-action
           >
         </mat-expansion-panel>
-      </mat-accordion>
+      </mat-accordion> -->
+      <app-menu-action href="/worker/settlements/chief" icon="docs"
+            >Rozliczenia</app-menu-action
+          >
       <mat-divider />
       <app-menu-action href="/worker/report" icon="docs"
         >Raport</app-menu-action
@@ -60,6 +63,8 @@
           </button>
         </div>
         <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="changeTheme()">Zmień wygląd</button>
+          <button mat-menu-item (click)="changePassword()">Zmień hasło</button>
           <button mat-menu-item (click)="onLogout()">Wyloguj</button>
         </mat-menu>
       </mat-toolbar-row>

@@ -55,4 +55,11 @@ export class WorkerComponent {
   onLogout() {
     this.auth.logout();
   }
+
+  changePassword() {
+    throw new Error("Method not implemented.");
+  }
+  changeTheme() {
+    throw new Error("Method not implemented.");
+  }
 }

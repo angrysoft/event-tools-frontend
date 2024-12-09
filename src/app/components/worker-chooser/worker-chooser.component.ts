@@ -14,7 +14,7 @@ import {
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { Router } from "@angular/router";
-import { WorkerBase } from "../../admin/models/worker";
+import { WorkerBase } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
 import { DataTablePaginatorIntl } from "../data-table/data-table.component";
 import { LoaderComponent } from "../loader/loader.component";

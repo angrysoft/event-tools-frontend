@@ -86,6 +86,8 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
         this.addonGroup.value.value === null)
     )
       return;
+    
+    let changed = false
 
     for (const worker of this.workerSelection().selected) {
       const workerDayAddons = worker.get("workerDayAddons") as FormArray;
@@ -103,8 +105,10 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
         name: new FormControl(addon.name),
       });
       workerDayAddons.push(workerAddonGroup);
+      changed = true;
     }
-    this.update.emit();
+    if (changed)
+      this.update.emit();
     this.addonGroup.reset();
   }
 
