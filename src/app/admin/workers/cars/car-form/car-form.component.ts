@@ -17,25 +17,25 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { Car, CarForm } from "../../../models/car";
+import { Car, CarForm } from "../../../../models/car";
 import { CarsService } from "../../../services/cars.service";
 
 @Component({
-    selector: "app-car-form",
-    imports: [
-        FormBaseComponent,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatOptionModule,
-        MatSelectModule,
-    ],
-    templateUrl: "./car-form.component.html",
-    styleUrl: "./car-form.component.scss"
+  selector: "app-car-form",
+  imports: [
+    FormBaseComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
+  ],
+  templateUrl: "./car-form.component.html",
+  styleUrl: "./car-form.component.scss",
 })
 export class CarFormComponent {
   readonly router = inject(Router);

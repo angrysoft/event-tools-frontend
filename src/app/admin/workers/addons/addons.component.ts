@@ -1,9 +1,4 @@
-import {
-  Component,
-  inject,
-  input,
-  signal
-} from "@angular/core";
+import { Component, inject, input, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -11,20 +6,20 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
-import { AddonValueDto } from "../../models/addon";
+import { AddonValueDto } from "../../../models/addon";
 import { AddonsService } from "../../services/addons.service";
 
 @Component({
-    selector: "app-addons",
-    imports: [
-        MatCardModule,
-        RouterLink,
-        MatButtonModule,
-        MatIcon,
-        MatDividerModule
-    ],
-    templateUrl: "./addons.component.html",
-    styleUrl: "./addons.component.scss"
+  selector: "app-addons",
+  imports: [
+    MatCardModule,
+    RouterLink,
+    MatButtonModule,
+    MatIcon,
+    MatDividerModule,
+  ],
+  templateUrl: "./addons.component.html",
+  styleUrl: "./addons.component.scss",
 })
 export class AddonsComponent {
   readonly confirm = inject(MatDialog);
@@ -55,7 +50,7 @@ export class AddonsComponent {
         this.service.deleteAddonValue(rateValueId).subscribe((response) => {
           if (response.ok) {
             this.workerAddons.set(
-              this.workerAddons().filter((rate) => rate.id !== rateValueId),
+              this.workerAddons().filter((rate) => rate.id !== rateValueId)
             );
           } else this.service.showError(response);
         });

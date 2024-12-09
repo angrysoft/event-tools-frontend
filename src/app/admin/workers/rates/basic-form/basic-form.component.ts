@@ -10,7 +10,7 @@ import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { BasicPayForm } from "../../../models/rate";
+import { BasicPayForm } from "../../../../models/rate";
 import { WorkersService } from "../../../../services/workers.service";
 
 @Component({

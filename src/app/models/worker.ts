@@ -1,5 +1,6 @@
 import { FormControl } from "@angular/forms";
 import { WorkerDoc } from "./worker-doc";
+import { Car } from "./car";
 
 interface WorkerId {
   id: number | null;
@@ -37,6 +38,7 @@ interface Worker extends WorkerBase {
   authority: string | null;
   workerDoc: WorkerDoc[];
   basicPay: BasicPay;
+  cars?: Car[]
 }
 
 interface WorkersItem {

@@ -24,24 +24,24 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { CrudService } from "../../../../services/crud.service";
-import { Team, TeamForm } from "../../../models/teams";
+import { Team, TeamForm } from "../../../../models/teams";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-    selector: "app-team-form",
-    imports: [
-        FormBaseComponent,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatIcon,
-    ],
-    templateUrl: "./team-form.component.html",
-    styleUrl: "./team-form.component.scss"
+  selector: "app-team-form",
+  imports: [
+    FormBaseComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIcon,
+  ],
+  templateUrl: "./team-form.component.html",
+  styleUrl: "./team-form.component.scss",
 })
 export class TeamFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
@@ -89,7 +89,7 @@ export class TeamFormComponent implements OnInit, OnDestroy {
       .subscribe((formEvents) => {
         if (formEvents instanceof StatusChangeEvent) {
           this.canSend.set(
-            formEvents.status === "VALID" && this.teamForm.dirty,
+            formEvents.status === "VALID" && this.teamForm.dirty
           );
         }
       });

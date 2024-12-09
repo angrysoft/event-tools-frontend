@@ -4,7 +4,7 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  signal
+  signal,
 } from "@angular/core";
 import {
   FormControl,
@@ -25,29 +25,29 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { AddonForm, AddonType } from "../../../models/addon";
-import { Rate } from "../../../models/rate";
+import { AddonForm, AddonType } from "../../../../models/addon";
+import { Rate } from "../../../../models/rate";
 import { AddonsService } from "../../../services/addons.service";
 import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
-    selector: "app-addon-form",
-    imports: [
-        FormBaseComponent,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatIcon,
-        MatOptionModule,
-        MatSelectModule,
-        AutofocusDirective
-    ],
-    templateUrl: "./addon-form.component.html",
-    styleUrl: "./addon-form.component.scss"
+  selector: "app-addon-form",
+  imports: [
+    FormBaseComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIcon,
+    MatOptionModule,
+    MatSelectModule,
+    AutofocusDirective,
+  ],
+  templateUrl: "./addon-form.component.html",
+  styleUrl: "./addon-form.component.scss",
 })
 export class AddonFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
@@ -100,7 +100,7 @@ export class AddonFormComponent implements OnInit, OnDestroy {
       .subscribe((formEvents) => {
         if (formEvents instanceof StatusChangeEvent) {
           this.canSend.set(
-            formEvents.status === "VALID" && this.addonForm.dirty,
+            formEvents.status === "VALID" && this.addonForm.dirty
           );
         }
       });

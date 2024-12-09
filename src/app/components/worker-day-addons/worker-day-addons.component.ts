@@ -22,25 +22,25 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { Addon, AddonGroup } from "../../admin/models/addon";
+import { Addon, AddonGroup } from "../../models/addon";
 import { SelectionModel } from "@angular/cdk/collections";
 import { MatButtonModule } from "@angular/material/button";
 import { Subject, takeUntil } from "rxjs";
 
 @Component({
-    selector: "app-worker-day-addons",
-    imports: [
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatIconModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-    ],
-    templateUrl: "./worker-day-addons.component.html",
-    styleUrl: "./worker-day-addons.component.scss",
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: "app-worker-day-addons",
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+  ],
+  templateUrl: "./worker-day-addons.component.html",
+  styleUrl: "./worker-day-addons.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
   fb = inject(FormBuilder);
@@ -56,7 +56,7 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
       id: new FormControl(null, Validators.required),
       value: new FormControl(
         { value: null, disabled: true },
-        Validators.required,
+        Validators.required
       ),
     });
   }
@@ -86,8 +86,8 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
         this.addonGroup.value.value === null)
     )
       return;
-    
-    let changed = false
+
+    let changed = false;
 
     for (const worker of this.workerSelection().selected) {
       const workerDayAddons = worker.get("workerDayAddons") as FormArray;
@@ -107,8 +107,7 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
       workerDayAddons.push(workerAddonGroup);
       changed = true;
     }
-    if (changed)
-      this.update.emit();
+    if (changed) this.update.emit();
     this.addonGroup.reset();
   }
 
@@ -120,12 +119,10 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
   addonTypeChange(id: number | null | undefined) {
     if (!id) return;
     const addon = this.addons().find((a) => a.id === id);
-    
+
     if (!addon || addon.addonType === "VARIABLE_ADDON") {
       this.addonGroup.controls.value.enable();
-
-    }
-    else this.addonGroup.controls.value.disable();
+    } else this.addonGroup.controls.value.disable();
 
     this.updateCanAdd();
   }

@@ -3,7 +3,7 @@ import { catchError, Observable } from "rxjs";
 import { DataListResponse } from "../models/data-list-response";
 import { RestResponse } from "../models/rest-response";
 import { CrudService } from "./crud.service";
-import { BasicPayData } from "../admin/models/rate";
+import { BasicPayData } from "../models/rate";
 import {
   OfficeWorkers,
   Worker,

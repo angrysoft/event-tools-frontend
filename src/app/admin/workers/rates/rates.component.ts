@@ -6,7 +6,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
-import { RateValueDto } from "../../models/rate";
+import { RateValueDto } from "../../../models/rate";
 import { BasicPay } from "../../../models/worker";
 import { RatesService } from "../../services/rates.service";
 

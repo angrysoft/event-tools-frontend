@@ -26,28 +26,28 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { Rate, RateForm, RateType } from "../../../models/rate";
+import { Rate, RateForm, RateType } from "../../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
-import {AutofocusDirective} from "../../../../directives/autofocus.directive";
+import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
-    selector: "app-rate-form",
-    imports: [
-        FormBaseComponent,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatIcon,
-        MatOptionModule,
-        MatSelectModule,
-        AutofocusDirective
-    ],
-    templateUrl: "./rate-form.component.html",
-    styleUrl: "./rate-form.component.scss"
+  selector: "app-rate-form",
+  imports: [
+    FormBaseComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIcon,
+    MatOptionModule,
+    MatSelectModule,
+    AutofocusDirective,
+  ],
+  templateUrl: "./rate-form.component.html",
+  styleUrl: "./rate-form.component.scss",
 })
 export class RateFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
@@ -84,7 +84,7 @@ export class RateFormComponent implements OnInit, OnDestroy {
       rateType: new FormControl("", [Validators.required]),
       overtimeAfter: new FormControl(
         { value: null, disabled: true },
-        Validators.required,
+        Validators.required
       ),
     });
 
@@ -106,7 +106,7 @@ export class RateFormComponent implements OnInit, OnDestroy {
       .subscribe((formEvents) => {
         if (formEvents instanceof StatusChangeEvent) {
           this.canSend.set(
-            formEvents.status === "VALID" && this.rateForm.dirty,
+            formEvents.status === "VALID" && this.rateForm.dirty
           );
         }
       });

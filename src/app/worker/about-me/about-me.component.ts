@@ -13,6 +13,8 @@ import { ActionToolbarComponent } from "../../components/action-toolbar/action-t
 import { ConfirmDialogComponent } from "../../components/confirm-dialog/confirm-dialog.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { WorkersService } from "../../services/workers.service";
+import { WorkerDocsComponent } from "./worker-docs/worker-docs.component";
+import { WorkerCarComponent } from "./worker-car/worker-car.component";
 
 export interface DialogData {
   workerId: number;
@@ -29,18 +31,16 @@ export interface DialogData {
     MatDialogModule,
     MatTabsModule,
     MatListModule,
-    DocsComponent,
     LoaderComponent,
     ActionToolbarComponent,
-  ],
+    WorkerDocsComponent,
+    WorkerCarComponent
+],
   templateUrl: "./about-me.component.html",
   styleUrl: "./about-me.component.scss",
 })
 export class AboutMeComponent {
-  readonly confirm = inject(MatDialog);
   readonly workerService: WorkersService = inject(WorkersService);
-  readonly router = inject(Router);
-  readonly route = inject(ActivatedRoute);
   worker = signal<Worker>({
     firstName: "",
     lastName: "",
@@ -72,8 +72,6 @@ export class AboutMeComponent {
   });
   loading = signal<boolean>(true);
 
-  workerId: number = Number(this.route.snapshot.paramMap.get("id"));
-  tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
 
   constructor() {
     this.workerService.getAboutMe().subscribe((response) => {

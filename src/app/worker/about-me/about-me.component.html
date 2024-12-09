@@ -3,7 +3,7 @@
 <section class="worker-details-section">
   <app-action-toolbar title="Dane Pracownika" />
 
-  <mat-tab-group [selectedIndex]="tabIndex">
+  <mat-tab-group>
     <mat-tab label="Dane Personalne">
       @defer () {
       <div class="worker-data">
@@ -108,19 +108,15 @@
     </mat-tab>
 
     <mat-tab label="Dokumenty">
-     
+      <app-worker-docs [workerDocs]="worker().workerDoc" />
     </mat-tab>
 
     <mat-tab label="Auta">
-      
+      <app-worker-car [cars]="worker().cars ?? []" />
     </mat-tab>
 
-    <mat-tab label="Stawki">
-      
-    </mat-tab>
+    <mat-tab label="Stawki"> </mat-tab>
 
-    <mat-tab label="Dodatki">
-      
-    </mat-tab>
+    <mat-tab label="Dodatki"> </mat-tab>
   </mat-tab-group>
 </section>

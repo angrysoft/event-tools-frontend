@@ -6,7 +6,7 @@ import {
   RateValue,
   RateValueDto,
   RateValueNamesDto,
-} from "../models/rate";
+} from "../../models/rate";
 import { DataListResponse } from "../../models/data-list-response";
 import { catchError, Observable } from "rxjs";
 import { RestResponse } from "../../models/rest-response";

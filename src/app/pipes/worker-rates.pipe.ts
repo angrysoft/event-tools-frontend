@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Rate } from "../admin/models/rate";
+import { Rate } from "../models/rate";
 
 @Pipe({
   name: "workerRates",

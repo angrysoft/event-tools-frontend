@@ -8,11 +8,11 @@ import {
   WorkerDayStatusPayload,
   WorkersRateDay,
 } from "../models/events";
-import { Rate } from "../admin/models/rate";
+import { Rate } from "../models/rate";
 import { Observable } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { DataListResponse } from "../models/data-list-response";
-import { Addon } from "../admin/models/addon";
+import { Addon } from "../models/addon";
 import { ScheduleService } from "./schedule.service";
 import { Schedule } from "../models/schedule";
 import { CalendarDay } from "../models/calendar";
