@@ -1,0 +1,17 @@
+<mat-card appearance="outlined" class="rates">
+ 
+  <mat-card-content class="rate-list mat-elevation-z4">
+    @for (addon of workerAddons(); track addon.id) {
+    <section class="rate-item">
+      <h4>{{ getAddonName(addon.addonId) }}</h4>
+      <div class="rate-value">
+        <span> Wartość: </span>
+        <span>{{ addon.value }} zł</span>
+      </div>
+    </section>
+    <mat-divider />
+    } @empty {
+    <h4>Brak Dodatków</h4>
+    }
+  </mat-card-content>
+</mat-card>

@@ -1,10 +1,7 @@
 import {
   Component,
   inject,
-  input,
-  OnDestroy,
-  OnInit,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormBuilder,
@@ -24,19 +21,18 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { debounceTime, Subject, takeUntil } from "rxjs";
-import { AddonGroup, Addon } from "../../../models/addon";
+import { RatesService } from "../../../admin/services/rates.service";
+import { Addon, AddonGroup } from "../../../models/addon";
+import {
+  EventDay,
+  WorkerAddons,
+  WorkerDay,
+  WorkerDayForm,
+} from "../../../models/events";
 import { Rate } from "../../../models/rate";
 import { WorkerBase } from "../../../models/worker";
-import { RatesService } from "../../../admin/services/rates.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
-import {
-  WorkerDayForm,
-  EventDay,
-  WorkerDay,
-  WorkerAddons,
-} from "../../../models/events";
 import { WorkerRatesPipe } from "../../../pipes/worker-rates.pipe";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateTimeToString } from "../../../utils/date";
 import { FormBaseComponent } from "../../form-base/form-base.component";
 import { WorkTimeComponent } from "../../work-time/work-time.component";
@@ -63,7 +59,7 @@ import { WorkerChooserComponent } from "../../worker-chooser/worker-chooser.comp
   styleUrl: "./add-workers.component.scss",
   providers: [provideNativeDateAdapter()],
 })
-export class AddWorkersComponent implements OnInit, OnDestroy {
+export class AddWorkersComponent {
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -73,7 +69,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
   addWorkersForm: FormGroup<WorkerDayForm>;
   addonGroup: FormGroup<AddonGroup>;
-  destroy = new Subject();
   formTitle = "Dodaj Pracowników";
   eventId = Number(this.route.snapshot.paramMap.get("eventId"));
   dayId = Number(this.route.snapshot.paramMap.get("dayId"));
@@ -131,19 +126,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     this.service.getAddons().subscribe((resp) => {
       if (resp.ok) this.addons.set(resp.data.items);
     });
-  }
-
-  ngOnInit(): void {
-    // this.addWorkersForm.statusChanges
-    //   .pipe(takeUntil(this.destroy), debounceTime(500))
-    //   .subscribe((status) => {
-    //     this.canSend.set(status === "VALID" && this.addWorkersForm.dirty);
-    //   });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   get workers() {

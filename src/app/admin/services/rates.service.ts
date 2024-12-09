@@ -48,6 +48,10 @@ export class RatesService extends CrudService<Rate> {
     );
   }
 
+  getAllRates() {
+    return this._get<RestResponse<DataListResponse<Rate>>>(this.userApi);
+  }
+
   getRateValue(rateValueId: number): Observable<RestResponse<RateValueDto>> {
     return this._get<RestResponse<RateValueDto>>(
       `${this.api}/values/${rateValueId}`

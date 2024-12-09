@@ -214,12 +214,9 @@ app-schedule,
 app-work-schedule,
 app-worker-form,
 app-form-base,
-app-rates,
 app-setting-list,
 app-groups,
 app-teams,
-app-addons,
-app-cars,
 app-event-days,
 app-admin-event-days,
 app-show-event,
@@ -237,7 +234,6 @@ app-schedule {
     display: flex;
     flex-direction: column;
 }
-
 
 .delete-button {
     @include mat.button-overrides((filled-container-color: var(--mat-sys-error),

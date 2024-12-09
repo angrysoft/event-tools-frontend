@@ -1,0 +1,35 @@
+<mat-card appearance="outlined" class="rates">
+  <mat-card-content class="rate-list mat-elevation-z4">
+    <section class="rate-item">
+        <h4>Podstawa:</h4>
+        <div class="rate-value">Wysokość Podstawy: {{ basicPay().value }} zł</div>
+    </section>
+    <mat-divider />
+    @for (rate of rates(); track rate.id) {
+    <section class="rate-item">
+      <h4>{{ getRateName(rate.rateId) }}</h4>
+      <div class="rate-value">
+        @if (ratesWithBase.includes(getRateType(rate.rateId))) {
+        <div>Stawka podstawowa: {{ rate.value }} zł</div>
+        } @if (getRateType(rate.id) === "HOUR_RATE" || getRateType(rate.rateId) ===
+        "BASE_OVERTIME_RATE") {
+        <div>
+          <span>Stawka za nadgodzinę: {{ rate.perHourOvertimeValue }} zł</span>
+        </div>
+        } @if (getRateType(rate.rateId) === "HOUR_RATE") {
+        <div>
+          <span> Stawka za godzinę: {{ rate.perHourValue }} zł</span>
+        </div>
+        } @if (getRateType(rate.rateId) === "BASE_OVERTIME_ADDON") {
+        <div>
+          <span> Dodatek: {{ rate.overtimeAddonValue }} zł</span>
+        </div>
+        }
+      </div>
+    </section>
+    <mat-divider />
+    } @empty {
+    <h4>Brak Przypisanych Stawek</h4>
+    }
+  </mat-card-content>
+</mat-card>

@@ -1,20 +1,19 @@
-import { Component, HostListener, inject, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatTabsModule } from "@angular/material/tabs";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { Worker } from "../../models/worker";
-import { DocsComponent } from "../../admin/workers/docs/docs.component";
 import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
-import { ConfirmDialogComponent } from "../../components/confirm-dialog/confirm-dialog.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
+import { Worker } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
-import { WorkerDocsComponent } from "./worker-docs/worker-docs.component";
 import { WorkerCarComponent } from "./worker-car/worker-car.component";
+import { WorkerDocsComponent } from "./worker-docs/worker-docs.component";
+import { WorkerRatesComponent } from "./worker-rates/worker-rates.component";
+import { WorkerAddonsComponent } from "./worker-addons/worker-addons.component";
 
 export interface DialogData {
   workerId: number;
@@ -34,7 +33,9 @@ export interface DialogData {
     LoaderComponent,
     ActionToolbarComponent,
     WorkerDocsComponent,
-    WorkerCarComponent
+    WorkerCarComponent,
+    WorkerRatesComponent,
+    WorkerAddonsComponent
 ],
   templateUrl: "./about-me.component.html",
   styleUrl: "./about-me.component.scss",

@@ -2,10 +2,9 @@ import {
   Component,
   effect,
   inject,
-  input,
   OnDestroy,
   OnInit,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormControl,
@@ -26,9 +25,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
+import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 import { Rate, RateForm, RateType } from "../../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
-import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-rate-form",

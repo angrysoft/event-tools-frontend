@@ -2,10 +2,9 @@ import {
   Component,
   effect,
   inject,
-  input,
   OnDestroy,
   OnInit,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormControl,
@@ -21,11 +20,11 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { CrudService } from "../../../../services/crud.service";
 import { Team, TeamForm } from "../../../../models/teams";
-import { Subject, takeUntil } from "rxjs";
+import { CrudService } from "../../../../services/crud.service";
 
 @Component({
   selector: "app-team-form",

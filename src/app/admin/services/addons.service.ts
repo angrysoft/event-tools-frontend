@@ -14,6 +14,8 @@ import { RestResponse } from "../../models/rest-response";
   providedIn: "root",
 })
 export class AddonsService extends CrudService<Addon> {
+  userApi = "/api/workers/addons";
+
   constructor() {
     super();
     this.api = "/api/admin/workers/addons";
@@ -32,6 +34,11 @@ export class AddonsService extends CrudService<Addon> {
       `${this.api}/values`,
       { workerId: workerId }
     );
+  }
+
+  getAllAddons() {
+    return this._get<RestResponse<DataListResponse<Addon>>>(
+      `${this.userApi}`);
   }
 
   getAddonValue(addonValueId: number): Observable<RestResponse<AddonValueDto>> {

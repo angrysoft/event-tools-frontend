@@ -2,7 +2,6 @@
 
 <section class="worker-details-section">
   <app-action-toolbar title="Dane Pracownika" />
-
   <mat-tab-group>
     <mat-tab label="Dane Personalne">
       @defer () {
@@ -108,15 +107,24 @@
     </mat-tab>
 
     <mat-tab label="Dokumenty">
-      <app-worker-docs [workerDocs]="worker().workerDoc" />
+      @defer () {
+        <app-worker-docs [workerDocs]="worker().workerDoc" />
+      }
     </mat-tab>
 
     <mat-tab label="Auta">
-      <app-worker-car [cars]="worker().cars ?? []" />
+      @defer () {
+        <app-worker-car [cars]="worker().cars ?? []" />
+      }
     </mat-tab>
 
-    <mat-tab label="Stawki"> </mat-tab>
-
-    <mat-tab label="Dodatki"> </mat-tab>
+    <mat-tab label="Stawki">
+      @defer () {
+        <app-worker-rates [basicPay]="worker().basicPay" [rates]="worker().rateValues ?? []" />
+      }
+    </mat-tab>
+    <mat-tab label="Dodatki">
+      <app-worker-addons [workerAddons]="worker().addonValues ?? []"/>
+    </mat-tab>
   </mat-tab-group>
 </section>
