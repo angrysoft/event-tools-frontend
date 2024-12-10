@@ -28,7 +28,7 @@ import { FormBaseComponent } from "../../../components/form-base/form-base.compo
 import { WorkerForm } from "../../../models/worker";
 import { WorkerHints } from "../../../models/worker-hints";
 import { WorkersService } from "../../../services/workers.service";
-import { passwordValidator } from "./passwordValidator";
+import { passwordValidator } from "../../../validators/passwordValidator";
 
 @Component({
   selector: "app-worker-form",

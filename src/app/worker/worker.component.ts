@@ -12,6 +12,7 @@ import { MediaMatcher } from "@angular/cdk/layout";
 import { AuthService } from "../services/auth.service";
 import { MatDialog } from "@angular/material/dialog";
 import { SetThemeComponent } from "../components/settings/set-theme/set-theme.component";
+import { ChangePasswordComponent } from "../components/settings/change-password/change-password.component";
 
 @Component({
   selector: "app-worker",
@@ -60,7 +61,7 @@ export class WorkerComponent {
   }
 
   changePassword() {
-    throw new Error("Method not implemented.");
+    const changePassword = this.dialog.open(ChangePasswordComponent);
   }
   changeTheme() {
     const changeThemeDialog = this.dialog.open(SetThemeComponent);
