@@ -10,6 +10,8 @@ import { RouterOutlet } from "@angular/router";
 import { MenuActionComponent } from "../components/menu-action/menu-action.component";
 import { MediaMatcher } from "@angular/cdk/layout";
 import { AuthService } from "../services/auth.service";
+import { MatDialog } from "@angular/material/dialog";
+import { SetThemeComponent } from "../components/settings/set-theme/set-theme.component";
 
 @Component({
   selector: "app-worker",
@@ -29,6 +31,7 @@ import { AuthService } from "../services/auth.service";
 })
 export class WorkerComponent {
   private readonly auth = inject(AuthService);
+  private readonly dialog = inject(MatDialog);
   mobileQuery: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
   username = "";
@@ -60,6 +63,6 @@ export class WorkerComponent {
     throw new Error("Method not implemented.");
   }
   changeTheme() {
-    throw new Error("Method not implemented.");
+    const changeThemeDialog = this.dialog.open(SetThemeComponent);
   }
 }
