@@ -1,11 +1,17 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { catchError, Observable, of, throwError } from "rxjs";
+import { Router } from "@angular/router";
+import {
+  catchError,
+  Observable,
+  of,
+  throwError
+} from "rxjs";
 import { DataListResponse } from "../models/data-list-response";
 import { Page } from "../models/page";
 import { RestResponse } from "../models/rest-response";
-import { Router } from "@angular/router";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
@@ -14,10 +20,8 @@ export class CrudService<T> {
   readonly http = inject(HttpClient);
   private apiUrl = "";
   private readonly _snackBar = inject(MatSnackBar);
-  router: any;
-  constructor() {
-    this.router = inject(Router);
-  }
+  router = inject(Router);
+  auth = inject(AuthService);
 
   set api(apiUrl: string) {
     this.apiUrl = apiUrl;
@@ -133,8 +137,9 @@ export class CrudService<T> {
   protected handleError(err: any) {
     switch (err.status) {
       case 401: {
-        this.router.navigateByUrl("/login");
-        return new Observable<RestResponse<string>>();
+        // FIXME: wszystkie serwisy powinny obsłużyć on destroy !?
+        this.auth.logout()
+        return of(err.error);
       }
       case 403:
       case 400:
