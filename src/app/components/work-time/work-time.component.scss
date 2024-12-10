@@ -1,0 +1,14 @@
+.day-change {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.day-change-info {
+    font-size: 0.8rem;
+}
+
+.day-change-btn {
+    display: flex;
+    gap: 0.1rem;
+}

@@ -3,9 +3,7 @@
   <form [formGroup]="changeTimeForm" class="form" id="change-time-form">
     <app-work-time
       [startTime]="changeTimeForm.controls.startTime"
-      [startHour]="changeTimeForm.controls.startHour"
       [endTime]="changeTimeForm.controls.endTime"
-      [endHour]="changeTimeForm.controls.endHour"
     />
   </form>
 </mat-dialog-content>
@@ -15,8 +13,8 @@
   </button>
   <button
     mat-button
-    [mat-dialog-close]="changeTimeForm.value"
-    [disabled]="!canSend()"
+    [mat-dialog-close]="timeResult"
+    [disabled]="!changeTimeForm.valid || !changeTimeForm.dirty"
     type="button"
   >
     Ok

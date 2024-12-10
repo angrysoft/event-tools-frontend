@@ -46,7 +46,7 @@
           >
         </mat-expansion-panel>
       </mat-accordion>
-      
+
       <mat-divider></mat-divider>
 
       <mat-accordion>
@@ -86,10 +86,15 @@
         </button>
         <span>Event Tools</span>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>person</mat-icon>
-        </button>
+        <div class="user">
+          <span>{{ username }}</span>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>person</mat-icon>
+          </button>
+        </div>
         <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="changeTheme()">Zmień wygląd</button>
+          <button mat-menu-item (click)="changePassword()">Zmień hasło</button>
           <button mat-menu-item (click)="onLogout()">Wyloguj</button>
         </mat-menu>
       </mat-toolbar-row>

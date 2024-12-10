@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core";
 import { CrudService } from "../../services/crud.service";
-import { Addon, AddonType, AddonValue, AddonValueDto } from "../models/addon";
+import {
+  Addon,
+  AddonType,
+  AddonValue,
+  AddonValueDto,
+} from "../../models/addon";
 import { catchError, Observable } from "rxjs";
 import { DataListResponse } from "../../models/data-list-response";
 import { RestResponse } from "../../models/rest-response";
@@ -9,6 +14,8 @@ import { RestResponse } from "../../models/rest-response";
   providedIn: "root",
 })
 export class AddonsService extends CrudService<Addon> {
+  userApi = "/api/workers/addons";
+
   constructor() {
     super();
     this.api = "/api/admin/workers/addons";
@@ -16,27 +23,32 @@ export class AddonsService extends CrudService<Addon> {
 
   getAddonsTypes(): Observable<RestResponse<DataListResponse<AddonType>>> {
     return this._get<RestResponse<DataListResponse<AddonType>>>(
-      `${this.api}/types`,
+      `${this.api}/types`
     );
   }
 
   getWorkerAddons(
-    workerId: number,
+    workerId: number
   ): Observable<RestResponse<DataListResponse<AddonValueDto>>> {
     return this._get<RestResponse<DataListResponse<AddonValueDto>>>(
       `${this.api}/values`,
-      { workerId: workerId },
+      { workerId: workerId }
     );
+  }
+
+  getAllAddons() {
+    return this._get<RestResponse<DataListResponse<Addon>>>(
+      `${this.userApi}`);
   }
 
   getAddonValue(addonValueId: number): Observable<RestResponse<AddonValueDto>> {
     return this._get<RestResponse<AddonValueDto>>(
-      `${this.api}/values/${addonValueId}`,
+      `${this.api}/values/${addonValueId}`
     );
   }
 
   createAddonValue(
-    addonValue: Partial<AddonValue>,
+    addonValue: Partial<AddonValue>
   ): Observable<RestResponse<string>> {
     return this.http
       .post<RestResponse<string>>(`${this.api}/values`, addonValue)
@@ -45,12 +57,12 @@ export class AddonsService extends CrudService<Addon> {
 
   updateAddonValue(
     addonValueId: number,
-    addonValue: Partial<AddonValue>,
+    addonValue: Partial<AddonValue>
   ): Observable<RestResponse<string>> {
     return this.http
       .put<RestResponse<string>>(
         `${this.api}/values/${addonValueId}`,
-        addonValue,
+        addonValue
       )
       .pipe(catchError(this.handleError));
   }

@@ -20,6 +20,13 @@ function getTimeFromDataTimeString(dateIn: string): string {
   return date.toLocaleTimeString();
 }
 
+function getDateTime(dateIn: string | Date) {
+  if (dateIn instanceof Date) {
+    return dateIn;
+  }
+  return new Date(dateIn);
+}
+
 function dateStringFromMonthYear(month: number, year: number) {
   if (!year || !month) return null;
   return `${year}-${addPad(month)}-01`;
@@ -30,4 +37,5 @@ export {
   dateTimeToString,
   getTimeFromDataTimeString,
   dateStringFromMonthYear,
+  getDateTime,
 };

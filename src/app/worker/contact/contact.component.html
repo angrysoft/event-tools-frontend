@@ -1,0 +1,16 @@
+@if (worker) {
+  <h2 mat-dialog-title>{{ worker.firstName }} {{worker.lastName }}</h2>
+  @if(worker.phone) {
+    <div class="call">
+      <span class="phone">{{ worker.phone }}</span>
+      <a mat-icon-button href="tel:{{ worker.phone }}"><mat-icon>call</mat-icon></a>
+    </div>
+  } @else {
+    <h4 class="call">Brak Numeru Telefonu</h4>
+  }
+} @else {
+  <h2 mat-dialog-title>Brak Kontaktu</h2>
+}
+<mat-dialog-actions>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="null">Zamknij</button>
+</mat-dialog-actions>

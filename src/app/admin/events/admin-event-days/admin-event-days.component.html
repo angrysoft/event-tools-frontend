@@ -15,7 +15,7 @@
       <button mat-flat-button (click)="addDay()" title="alt+a">
         <mat-icon>add</mat-icon>Dodaj Dzień
       </button>
-
+     
       <button
         mat-flat-button
         (click)="delDay()"
@@ -89,14 +89,13 @@
   </div>
   <mat-divider />
   <mat-tab-group
-    [(selectedIndex)]="tabIdx.value"
-    (selectedIndexChange)="tabIdx.setValue($event)"
+    [(selectedIndex)]="tabIdx"
     (selectedTabChange)="tabChange($event)"
-    #tabs
+    (animationDone)="setTab($event)"
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
-      <app-worker-day [day]="day" [selection]="selection" />
+      <app-worker-day [day]="day" [selection]="selection" [tableColumns]="tableColumns"/>
     </mat-tab>
     } @empty {
     <h2>Nic tu jeszcze nie ma</h2>

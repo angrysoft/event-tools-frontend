@@ -1,4 +1,8 @@
-import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  inject,
+  signal
+} from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -17,19 +21,18 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { debounceTime, Subject, takeUntil } from "rxjs";
-import { AddonGroup, Addon } from "../../../admin/models/addon";
-import { Rate } from "../../../admin/models/rate";
-import { WorkerBase } from "../../../admin/models/worker";
 import { RatesService } from "../../../admin/services/rates.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
+import { Addon, AddonGroup } from "../../../models/addon";
 import {
-  WorkerDayForm,
   EventDay,
-  WorkerDay,
   WorkerAddons,
+  WorkerDay,
+  WorkerDayForm,
 } from "../../../models/events";
+import { Rate } from "../../../models/rate";
+import { WorkerBase } from "../../../models/worker";
 import { WorkerRatesPipe } from "../../../pipes/worker-rates.pipe";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateTimeToString } from "../../../utils/date";
 import { FormBaseComponent } from "../../form-base/form-base.component";
 import { WorkTimeComponent } from "../../work-time/work-time.component";
@@ -56,7 +59,7 @@ import { WorkerChooserComponent } from "../../worker-chooser/worker-chooser.comp
   styleUrl: "./add-workers.component.scss",
   providers: [provideNativeDateAdapter()],
 })
-export class AddWorkersComponent implements OnInit, OnDestroy {
+export class AddWorkersComponent {
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -66,7 +69,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
   addWorkersForm: FormGroup<WorkerDayForm>;
   addonGroup: FormGroup<AddonGroup>;
-  destroy = new Subject();
   formTitle = "Dodaj Pracowników";
   eventId = Number(this.route.snapshot.paramMap.get("eventId"));
   dayId = Number(this.route.snapshot.paramMap.get("dayId"));
@@ -90,9 +92,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       eventDay: new FormControl(this.dayId, Validators.required),
       rate: new FormControl(),
       startTime: new FormControl(null, Validators.required),
-      startHour: new FormControl("09:00"),
       endTime: new FormControl(null, Validators.required),
-      endHour: new FormControl("21:00"),
       workers: this.fb.array([], Validators.required),
       workerDayAddons: this.fb.array([]),
     });
@@ -102,22 +102,21 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
       value: new FormControl(),
     });
 
-    this.service.getEventDay(this.eventId, this.dayId).subscribe((resp) => {
-      if (resp.ok) {
-        this.addWorkersForm.patchValue(resp.data);
-        const startTime = new Date(resp.data.startDate);
-        startTime.setHours(9);
-        startTime.setMinutes(0);
-        const endTime = new Date(resp.data.startDate);
-        endTime.setHours(21);
-        endTime.setMinutes(0);
+    const state: any = this.router.getCurrentNavigation()?.extras.state;
+    let startTime = new Date();
 
-        this.addWorkersForm.controls.startTime.setValue(startTime);
-        this.addWorkersForm.controls.endTime.setValue(endTime, {
-          emitEvent: false,
-        });
-        this.eventDay.set(resp.data);
-      }
+    if (state.startDate) startTime = new Date(state.startDate);
+    if (state.backTo) this.backTo = state.backTo;
+
+    startTime.setHours(9);
+    startTime.setMinutes(0);
+
+    const endTime = new Date(startTime);
+    endTime.setHours(21);
+    endTime.setMinutes(0);
+    this.addWorkersForm.controls.startTime.setValue(startTime);
+    this.addWorkersForm.controls.endTime.setValue(endTime, {
+      emitEvent: false,
     });
 
     this.service.getRates().subscribe((resp) => {
@@ -127,19 +126,6 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
     this.service.getAddons().subscribe((resp) => {
       if (resp.ok) this.addons.set(resp.data.items);
     });
-  }
-
-  ngOnInit(): void {
-    this.addWorkersForm.statusChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((status) => {
-        this.canSend.set(status === "VALID" && this.addWorkersForm.dirty);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   get workers() {
@@ -169,27 +155,29 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
 
   private updateWorkerList(workers: WorkerBase[]) {
     workers.forEach((worker) => {
-      this.rateSrv.getWorkerRates(worker.id ?? -1).subscribe((resp) => {
-        const ratesId: number[] = [];
-        if (resp.ok)
-          resp.data.items.forEach((r) => {
-            ratesId.push(r.rateId);
-          });
+      this.rateSrv
+        .getWorkerAssignedRateValues(worker.id ?? -1)
+        .subscribe((resp) => {
+          const ratesId: number[] = [];
+          if (resp.ok)
+            resp.data.forEach((r) => {
+              ratesId.push(r.rateId);
+            });
 
-        const workerGroup = this.fb.group({
-          id: new FormControl(worker.id, Validators.required),
-          name: new FormControl(`${worker.firstName} ${worker.lastName}`),
-          rate: new FormControl(null, Validators.required),
-          rates: new FormControl(ratesId),
+          const workerGroup = this.fb.group({
+            id: new FormControl(worker.id, Validators.required),
+            name: new FormControl(`${worker.firstName} ${worker.lastName}`),
+            rate: new FormControl(null, Validators.required),
+            rates: new FormControl(ratesId),
+          });
+          if (
+            !this.addWorkersForm.controls.workers.controls.some(
+              (wg) => wg.value.id === worker.id
+            )
+          ) {
+            this.addWorkersForm.controls.workers.push(workerGroup);
+          }
         });
-        if (
-          !this.addWorkersForm.controls.workers.controls.some(
-            (wg) => wg.value.id === worker.id
-          )
-        ) {
-          this.addWorkersForm.controls.workers.push(workerGroup);
-        }
-      });
     });
   }
 
@@ -244,7 +232,7 @@ export class AddWorkersComponent implements OnInit, OnDestroy {
         });
 
         const workerDay: WorkerDay = {
-          eventDay: formValues.eventDay,
+          eventDay: this.dayId,
           worker: w.id,
           rate: w.rate,
           workerName: w.name,

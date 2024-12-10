@@ -16,26 +16,26 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { Addon, AddonValueForm } from "../../../models/addon";
+import { Addon, AddonValueForm } from "../../../../models/addon";
 import { AddonsService } from "../../../services/addons.service";
 
 @Component({
-    selector: "app-addon-value-form",
-    imports: [
-        ReactiveFormsModule,
-        FormBaseComponent,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatInput,
-        MatDatepickerModule,
-        MatButtonModule,
-        MatOptionModule,
-        MatSelectModule,
-    ],
-    templateUrl: "./addon-value-form.component.html",
-    styleUrl: "./addon-value-form.component.scss"
+  selector: "app-addon-value-form",
+  imports: [
+    ReactiveFormsModule,
+    FormBaseComponent,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatInput,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
+  ],
+  templateUrl: "./addon-value-form.component.html",
+  styleUrl: "./addon-value-form.component.scss",
 })
 export class AddonValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);
@@ -68,7 +68,7 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
       this.addonValueId.set(Number(paramAddonValueId));
       this.service.getAddonValue(this.addonValueId()).subscribe((resp) => {
         if (resp.ok) {
-          console.log(resp.data)
+          console.log(resp.data);
           this.addonValueForm.patchValue(resp.data);
           this.update.set(true);
         }
@@ -78,7 +78,7 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
     this.service.getAll().subscribe((resp) => {
       if (resp.ok) {
         this.addons.set(
-          resp.data.items.filter((a) => a.addonType !== "VARIABLE_ADDON"),
+          resp.data.items.filter((a) => a.addonType !== "VARIABLE_ADDON")
         );
       }
     });
@@ -88,7 +88,7 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
     this.addonValueForm.statusChanges
       .pipe(takeUntil(this.destroy))
       .subscribe((changeEvent) => {
-        console.log(this.addonValueForm.value)
+        console.log(this.addonValueForm.value);
         this.canSend.set(changeEvent === "VALID" && this.addonValueForm.dirty);
       });
   }

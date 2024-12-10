@@ -14,13 +14,13 @@ import {
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { Router } from "@angular/router";
-import { WorkerBase } from "../../admin/models/worker";
-import { WorkersService } from "../../admin/services/workers.service";
+import { WorkerBase } from "../../models/worker";
+import { WorkersService } from "../../services/workers.service";
 import { DataTablePaginatorIntl } from "../data-table/data-table.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { InputFilters, SearchQuery } from "../search/model";
 import { SearchComponent } from "../search/search.component";
-import { DataTableDataSource } from "./data-table-datasource";
+import { WorkerChooseTableDataSource } from "./worker-choose-data-table-datasource";
 import { WorkerChooserConfig } from "./worker-chooser-config";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 
@@ -68,14 +68,14 @@ export class WorkerChooserComponent<T> {
 
   readonly paginator = viewChild.required(MatPaginator);
   readonly table = viewChild.required(MatTable);
-  dataSource!: DataTableDataSource<WorkerBase>;
+  dataSource!: WorkerChooseTableDataSource;
 
   get columnNames() {
     return this.tableColumns.map((el) => el.def);
   }
 
   constructor() {
-    this.dataSource = new DataTableDataSource<WorkerBase>(this.service);
+    this.dataSource = new WorkerChooseTableDataSource(this.service);
   }
 
   ngOnInit(): void {
@@ -88,8 +88,14 @@ export class WorkerChooserComponent<T> {
 
     this.service.getWorkersHints().subscribe((resp) => {
       if (resp.ok) {
-        this.filters()['team'] = { name: "Ekipa", values: resp.data.teams.map((t) => t.name) };
-        this.filters()['group'] = { name: "Grupa", values: resp.data.groups.map((t) => t.name) };
+        this.filters()["team"] = {
+          name: "Ekipa",
+          values: resp.data.teams.map((t) => t.name),
+        };
+        this.filters()["group"] = {
+          name: "Grupa",
+          values: resp.data.groups.map((t) => t.name),
+        };
 
         //TODO check ??
         // this.filters.set({

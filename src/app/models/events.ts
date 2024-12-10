@@ -63,10 +63,8 @@ interface WorkerDayForm {
   id: FormControl<number | null>;
   eventDay: FormControl<number | null>;
   rate: FormControl<number | null>;
-  startTime: FormControl<Date | string | null>;
-  startHour: FormControl<string | null>;
-  endTime: FormControl<Date | string | null>;
-  endHour: FormControl<string | null>;
+  startTime: FormControl<Date  | null>;
+  endTime: FormControl<Date  | null>;
   workers: FormArray;
   workerDayAddons: FormArray;
 }

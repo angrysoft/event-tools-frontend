@@ -21,8 +21,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { debounceTime, Subject, takeUntil } from "rxjs";
-import { Addon, AddonGroup } from "../../../admin/models/addon";
-import { Rate } from "../../../admin/models/rate";
+import { Addon, AddonGroup } from "../../../models/addon";
+import { Rate } from "../../../models/rate";
 import { RatesService } from "../../../admin/services/rates.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { EventDay, WorkersRateDay } from "../../../models/events";
@@ -57,7 +57,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
   router = inject(Router);
   service = inject(WorkerDaysService);
   rateSrv = inject(RatesService);
-
+  showAmount = true;
   canSend = signal<boolean>(false);
   rates = signal<Rate[]>([]);
   addons = signal<Addon[]>([]);
@@ -98,11 +98,18 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
       value: new FormControl(),
     });
 
-    let selected: WorkerSelect[] =
+    const selected: WorkerSelect[] =
       (this.router.getCurrentNavigation()?.extras.state![
         "selected"
       ] as WorkerSelect[]) ?? [];
     if (selected) this.updateWorkerList(selected);
+
+    const backTo = this.router.getCurrentNavigation()?.extras.state!["backTo"];
+    if (backTo) this.backTo = backTo;
+
+    const showAmount =
+      this.router.getCurrentNavigation()?.extras.state!["showAmount"];
+    if (showAmount !== undefined) this.showAmount = showAmount;
   }
 
   ngOnInit(): void {
@@ -149,29 +156,31 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
   private updateWorkerList(selection: WorkerSelect[]) {
     selection.forEach((workerDay) => {
-      this.rateSrv.getWorkerRates(workerDay.worker ?? -1).subscribe((resp) => {
-        const ratesId: number[] = [];
-        if (resp.ok)
-          resp.data.items.forEach((r) => {
-            ratesId.push(r.rateId);
-          });
+      this.rateSrv
+        .getWorkerAssignedRateValues(workerDay.worker ?? -1)
+        .subscribe((resp) => {
+          const ratesId: number[] = [];
+          if (resp.ok)
+            resp.data.forEach((r) => {
+              ratesId.push(r.rateId);
+            });
 
-        const workerGroup: FormGroup<WorkersRateDay> = this.fb.group({
-          workerDay: new FormControl(workerDay.id, Validators.required),
-          workerName: new FormControl(workerDay.workerName),
-          worker: new FormControl(workerDay.worker, Validators.required),
-          rate: new FormControl(workerDay.rate, Validators.required),
-          rates: new FormControl(ratesId),
-          workerDayAddons: this.fb.array(workerDay.workerDayAddons),
+          const workerGroup: FormGroup<WorkersRateDay> = this.fb.group({
+            workerDay: new FormControl(workerDay.id, Validators.required),
+            workerName: new FormControl(workerDay.workerName),
+            worker: new FormControl(workerDay.worker, Validators.required),
+            rate: new FormControl(workerDay.rate, Validators.required),
+            rates: new FormControl(ratesId),
+            workerDayAddons: this.fb.array(workerDay.workerDayAddons),
+          });
+          if (
+            !this.changeRateForm.controls.workers.controls.some(
+              (wg) => wg.value.id === workerDay.id
+            )
+          ) {
+            this.changeRateForm.controls.workers.push(workerGroup);
+          }
         });
-        if (
-          !this.changeRateForm.controls.workers.controls.some(
-            (wg) => wg.value.id === workerDay.id
-          )
-        ) {
-          this.changeRateForm.controls.workers.push(workerGroup);
-        }
-      });
     });
   }
 
@@ -196,7 +205,8 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
       this.service
         .changeRates(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
-          if (resp.ok) this.router.navigateByUrl(this.backTo);
+          if (resp.ok)
+            this.router.navigateByUrl(`${this.backTo}?tab=${this.tab}`);
           else {
             this.service.showError(resp);
           }

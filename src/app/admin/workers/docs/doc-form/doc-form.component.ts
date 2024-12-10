@@ -24,27 +24,27 @@ import { MatInput, MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map, Observable, shareReplay, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { WorkerDocForm } from "../../../models/worker-doc";
+import { WorkerDocForm } from "../../../../models/worker-doc";
 import { DocsService } from "../../../services/docs.service";
 
 @Component({
-    selector: "app-doc-form",
-    imports: [
-        ReactiveFormsModule,
-        FormBaseComponent,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatInput,
-        MatDatepickerModule,
-        MatIcon,
-        MatButtonModule,
-        AsyncPipe,
-    ],
-    providers: [provideNativeDateAdapter()],
-    templateUrl: "./doc-form.component.html",
-    styleUrl: "./doc-form.component.scss"
+  selector: "app-doc-form",
+  imports: [
+    ReactiveFormsModule,
+    FormBaseComponent,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatInput,
+    MatDatepickerModule,
+    MatIcon,
+    MatButtonModule,
+    AsyncPipe,
+  ],
+  providers: [provideNativeDateAdapter()],
+  templateUrl: "./doc-form.component.html",
+  styleUrl: "./doc-form.component.scss",
 })
 export class DocFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);
@@ -65,7 +65,7 @@ export class DocFormComponent implements OnInit, OnDestroy {
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
-      shareReplay(),
+      shareReplay()
     );
 
   constructor() {

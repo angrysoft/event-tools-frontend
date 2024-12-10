@@ -32,6 +32,10 @@ export class LoginComponent implements OnInit {
   sending = signal<boolean>(false);
   readonly auth = inject(AuthService);
 
+  constructor() {
+    this.auth.checkAuth();
+  }
+
   ngOnInit() {
     this.auth.loginError.subscribe((err) => {
       this.error = err;

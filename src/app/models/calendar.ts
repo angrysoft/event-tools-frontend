@@ -13,5 +13,7 @@ interface CalendarEvent {
   eventNumber: string;
   color: string;
   info: string | null;
+  accepted: boolean;
+  dayOff: boolean;
 }
-export { CalendarDay };
+export { CalendarDay, CalendarEvent };

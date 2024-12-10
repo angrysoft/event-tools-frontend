@@ -1,0 +1,30 @@
+<div class="doc-list">
+  @for (doc of workerDocs(); track doc.id) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ doc.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (doc.hasExpirationDate) {
+      <p>Wygasa : {{ doc.expire }}</p>
+      } @if (doc.fileName) {
+      <p>
+        Plik :
+        <a
+          mat-button
+          href="/api/workers/doc/file/{{ doc.fileName }}"
+          target="_blank"
+          >{{ doc.fileName }}</a
+        >
+      </p>
+      }
+    </mat-card-content>
+  </mat-card>
+  } @empty {
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-content>
+      <h4>Brak Dokumentów</h4>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>

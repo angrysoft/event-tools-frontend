@@ -1,0 +1,17 @@
+.call {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: center;
+    gap:2rem;
+    padding: 2rem;
+}
+
+.phone {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 1rem;
+    border: 1px solid var(--mat-sys-outline);
+    border-radius: 0.5rem;
+    letter-spacing: 0.1rem;
+}

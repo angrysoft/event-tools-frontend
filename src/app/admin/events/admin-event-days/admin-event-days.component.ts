@@ -1,14 +1,12 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import {
-  AfterViewInit,
   Component,
   HostListener,
   inject,
   signal,
   viewChild,
 } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
@@ -25,24 +23,24 @@ import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-c
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import { dateToString } from "../../../utils/date";
 
-import { WorkerBase } from "../../models/worker";
-import { EventDaysService } from "../../services/event-days.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
 import { AddDayComponent } from "../../../components/events/add-day/add-day.component";
-import { ChangeStatusComponent } from "./change-status/change-status.component";
-import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
-import { WorkerDayComponent } from "./worker-day/worker-day.component";
-import {
-  EventDay,
-  WorkerDay,
-  DuplicateDaysPayload,
-  ChangeWorkerPayload,
-  WorkerDayStatusPayload,
-  EventItemDto,
-} from "../../../models/events";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
-import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
 import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
+import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
+import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
+import { WorkerDayComponent } from "../../../components/events/worker-day/worker-day.component";
+import {
+  ChangeWorkerPayload,
+  DuplicateDaysPayload,
+  EventDay,
+  EventItemDto,
+  WorkerDay,
+  WorkerDayStatusPayload,
+} from "../../../models/events";
+import { WorkerDaysService } from "../../../services/worker-days.service";
+import { WorkerBase } from "../../../models/worker";
+import { EventDaysService } from "../../services/event-days.service";
+import { ChangeStatusComponent } from "./change-status/change-status.component";
 
 @Component({
   selector: "app-admin-event-days",
@@ -59,7 +57,7 @@ import { ChangeWorkerComponent } from "../../../components/events/change-worker/
   templateUrl: "./admin-event-days.component.html",
   styleUrl: "./admin-event-days.component.scss",
 })
-export class AdminEventDaysComponent implements AfterViewInit {
+export class AdminEventDaysComponent {
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -79,7 +77,8 @@ export class AdminEventDaysComponent implements AfterViewInit {
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);
-  tabIdx = new FormControl(1);
+  firstTime = true;
+  tabIdx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   backTo = `/admin/events/${this.eventId}`;
   selection = new SelectionModel<WorkerDay>(true, []);
@@ -90,6 +89,18 @@ export class AdminEventDaysComponent implements AfterViewInit {
 
   readonly tabs = viewChild.required(MatTabGroup);
 
+  tableColumns: { name: string; def: string }[] = [
+    { name: "select", def: "select" },
+    { name: "Start", def: "startTime" },
+    { name: "Koniec", def: "endTime" },
+    { name: "Godziny", def: "workHours" },
+    { name: "Pracownik", def: "workerName" },
+    { name: "Stawka", def: "rateName" },
+    { name: "Kwota", def: "rateValue" },
+    { name: "Dodatki", def: "addons" },
+    { name: "Suma", def: "total" },
+  ];
+
   constructor() {
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
@@ -97,9 +108,12 @@ export class AdminEventDaysComponent implements AfterViewInit {
     this.loadDays();
   }
 
-  ngAfterViewInit(): void {
-    this.tabIdx.setValue(2);
-    this.tabs().selectedIndex = 2;
+  setTab(idx: any) {
+    if (this.firstTime) {
+      const tab = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
+      this.tabIdx = tab;
+      this.firstTime = false;
+    }
   }
 
   private loadDays() {
@@ -118,13 +132,12 @@ export class AdminEventDaysComponent implements AfterViewInit {
     if (!tab) return;
     this.dayId = this.eventDays().at(tab.index)?.id ?? -1;
     this.selection.clear();
-    // this.tabIdx.setValue(tab.index);
     this.tabLabel.set(tab.tab.textLabel);
     this.setStatus();
   }
 
   setStatus() {
-    const state = this.eventDays().at(this.tabIdx.value ?? -1)?.state ?? "";
+    const state = this.eventDays().at(this.tabIdx)?.state ?? "";
     const status = this.statuses()[state];
     if (status) {
       this.dayStatus.set(status);
@@ -142,13 +155,6 @@ export class AdminEventDaysComponent implements AfterViewInit {
     const addDialog = this.dialog.open(AddDayComponent, { disableClose: true });
     addDialog.afterClosed().subscribe((result) => {
       if (!result) return;
-      console.log({
-        event: this.eventId,
-        startDate: dateToString(result.startDate),
-        state: "TEMPLATE",
-        info: result.info,
-        workerDays: [],
-      });
       this.loading.set(true);
       this.service
         .addDay(this.eventId, {
@@ -192,15 +198,22 @@ export class AdminEventDaysComponent implements AfterViewInit {
   }
 
   addWorkers() {
+    const day = this.eventDays().at(this.tabIdx);
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx.value}`
+      `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx}`,
+      {
+        state: {
+          startDate: day?.startDate,
+          backTo: `/admin/events/${this.eventId}/day`,
+        },
+      }
     );
   }
 
   duplicateDay() {
     const duplicateDialog = this.dialog.open(DuplicateDaysComponent, {
       data: {
-        startTime: this.eventDays().at(this.tabIdx.value ?? 0)?.startDate,
+        startTime: this.eventDays().at(this.tabIdx)?.startDate,
       },
       maxWidth: "95vw",
     });
@@ -418,7 +431,7 @@ export class AdminEventDaysComponent implements AfterViewInit {
 
   editRatesAndAddons() {
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx.value}`,
+      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
       {
         state: {
           selected: this.selection.selected.slice(),

@@ -12,19 +12,14 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatIcon } from "@angular/material/icon";
 import { RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
-import { WorkerDoc } from "../../models/worker-doc";
+import { WorkerDoc } from "../../../models/worker-doc";
 import { DocsService } from "../../services/docs.service";
 
 @Component({
-    selector: "app-docs",
-    imports: [
-        MatCardModule,
-        RouterLink,
-        MatButtonModule,
-        MatIcon,
-    ],
-    templateUrl: "./docs.component.html",
-    styleUrl: "./docs.component.scss"
+  selector: "app-docs",
+  imports: [MatCardModule, RouterLink, MatButtonModule, MatIcon],
+  templateUrl: "./docs.component.html",
+  styleUrl: "./docs.component.scss",
 })
 export class DocsComponent {
   readonly confirm = inject(MatDialog);
@@ -59,7 +54,7 @@ export class DocsComponent {
           .subscribe((response) => {
             if (response.ok) {
               this.docList.set(
-                this.docList().filter((doc) => doc.id !== docId),
+                this.docList().filter((doc) => doc.id !== docId)
               );
             } else this.docService.showError(response);
           });

@@ -8,11 +8,11 @@ import {
   WorkerDayStatusPayload,
   WorkersRateDay,
 } from "../models/events";
-import { Rate } from "../admin/models/rate";
+import { Rate } from "../models/rate";
 import { Observable } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { DataListResponse } from "../models/data-list-response";
-import { Addon } from "../admin/models/addon";
+import { Addon } from "../models/addon";
 import { ScheduleService } from "./schedule.service";
 import { Schedule } from "../models/schedule";
 import { CalendarDay } from "../models/calendar";
@@ -25,18 +25,19 @@ export class WorkerDaysService
   implements ScheduleService
 {
   private readonly userApi = "/api/events";
+
   constructor() {
     super();
     this.api = "/api/admin/events";
   }
 
   getRates(): Observable<RestResponse<DataListResponse<Rate>>> {
-    const url = "/api/admin/workers/rates";
+    const url = "/api/workers/rates";
     return this._get<RestResponse<DataListResponse<Rate>>>(url);
   }
 
   getAddons(): Observable<RestResponse<DataListResponse<Addon>>> {
-    const url = "/api/admin/workers/addons";
+    const url = "/api/workers/addons";
     return this._get<RestResponse<DataListResponse<Addon>>>(url);
   }
 
@@ -128,7 +129,7 @@ export class WorkerDaysService
   }
 
   changeWorkerInDates(eventId: number, payload: any) {
-    return this._put<any>(`${this.api}/${eventId}/worker/change`, payload);
+    return this._put<any>(`${this.userApi}/${eventId}/worker/change`, payload);
   }
 
   getSchedule(
@@ -151,6 +152,10 @@ export class WorkerDaysService
 
   addDaysOff(payload: { from: string; to: string; worker: number }) {
     return this._put(`${this.userApi}/day-off`, payload);
+  }
+
+  workerDaysOffRequest(payload: { from: any; to: any }) {
+    return this._put(`${this.userApi}/day-off/request`, payload);
   }
 
   acceptDayOff(id: any) {

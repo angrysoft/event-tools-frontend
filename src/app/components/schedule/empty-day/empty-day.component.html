@@ -1,0 +1,17 @@
+@if (showMenu()) {
+<div class="empty" [cdkContextMenuTriggerFor]="emptyMenu"></div>
+
+<ng-template #emptyMenu let-data="data" let-worker="worker">
+  <div class="context-menu" cdkMenu>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('addDayOff')"
+    >
+      Dodaj Dzień wolny
+    </button>
+  </div>
+</ng-template>
+} @else {
+<div class="empty"></div>
+}

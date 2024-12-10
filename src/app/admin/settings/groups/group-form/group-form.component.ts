@@ -4,7 +4,7 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  signal
+  signal,
 } from "@angular/core";
 import {
   FormControl,
@@ -24,23 +24,23 @@ import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { CrudService } from "../../../../services/crud.service";
-import { Group, GroupForm } from "../../../models/group";
+import { Group, GroupForm } from "../../../../models/group";
 
 @Component({
-    selector: "app-group-form",
-    imports: [
-        FormBaseComponent,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatIcon,
-    ],
-    templateUrl: "./group-form.component.html",
-    styleUrl: "./group-form.component.scss"
+  selector: "app-group-form",
+  imports: [
+    FormBaseComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIcon,
+  ],
+  templateUrl: "./group-form.component.html",
+  styleUrl: "./group-form.component.scss",
 })
 export class GroupFormComponent implements OnInit, OnDestroy {
   readonly router = inject(Router);
@@ -87,7 +87,7 @@ export class GroupFormComponent implements OnInit, OnDestroy {
       .subscribe((formEvents) => {
         if (formEvents instanceof StatusChangeEvent) {
           this.canSend.set(
-            formEvents.status === "VALID" && this.groupForm.dirty,
+            formEvents.status === "VALID" && this.groupForm.dirty
           );
         }
       });

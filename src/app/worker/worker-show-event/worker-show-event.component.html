@@ -1,0 +1,10 @@
+<app-loader [loading]="loading()" />
+
+<section class="event-details-section">
+  <app-action-toolbar title="Dane Imprezy" backTo="/worker/calendar">
+  </app-action-toolbar>
+  
+  <app-event-info [eventData]="eventData()" [tabIndex]="tabIndex">
+    <app-worker-event-files [eventId]="eventId" />
+  </app-event-info>
+</section>

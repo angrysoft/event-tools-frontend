@@ -23,26 +23,26 @@ import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
-import { Rate, RateValueForm } from "../../../models/rate";
+import { Rate, RateValueForm } from "../../../../models/rate";
 import { RatesService } from "../../../services/rates.service";
 
 @Component({
-    selector: "app-rate-value-form",
-    imports: [
-        ReactiveFormsModule,
-        FormBaseComponent,
-        MatCardModule,
-        MatLabel,
-        MatFormFieldModule,
-        MatInputModule,
-        MatInput,
-        MatDatepickerModule,
-        MatButtonModule,
-        MatOptionModule,
-        MatSelectModule,
-    ],
-    templateUrl: "./rate-value-form.component.html",
-    styleUrl: "./rate-value-form.component.scss"
+  selector: "app-rate-value-form",
+  imports: [
+    ReactiveFormsModule,
+    FormBaseComponent,
+    MatCardModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
+    MatInput,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
+  ],
+  templateUrl: "./rate-value-form.component.html",
+  styleUrl: "./rate-value-form.component.scss",
 })
 export class RateValueFormComponent implements OnInit, OnDestroy {
   readonly breakpointObserver = inject(BreakpointObserver);
@@ -64,15 +64,15 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
       rateId: new FormControl(null, Validators.required),
       perHourOvertimeValue: new FormControl(
         { value: 0, disabled: true },
-        Validators.required,
+        Validators.required
       ),
       perHourValue: new FormControl(
         { value: 0, disabled: true },
-        Validators.required,
+        Validators.required
       ),
       overtimeAddonValue: new FormControl(
         { value: 0, disabled: true },
-        Validators.required,
+        Validators.required
       ),
       value: new FormControl({ value: 0, disabled: true }, Validators.required),
     });

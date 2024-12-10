@@ -1,0 +1,95 @@
+<app-loader [loading]="loading()" />
+
+<section class="main-section">
+  <header class="header">
+    <button mat-icon-button routerLink="{{ backTo }}">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>
+      {{ eventInfo().number }} - {{ eventInfo().name }} -
+      <span [class]="stateCls">{{ dayStatus() }}</span>
+    </h2>
+  </header>
+  <div class="actions">
+    <div class="action-buttons">
+      <button
+        mat-flat-button
+        (click)="changeStatus()"
+        [disabled]="eventDays().length === 0 || readOnly"
+      >
+        <mat-icon>content_copy</mat-icon>Zatwierdź
+      </button>
+      <mat-divider vertical="true" />
+    </div>
+
+    <div class="action-buttons">
+      <button
+        mat-flat-button
+        (click)="addWorkers()"
+        [disabled]="eventDays().length === 0 || readOnly"
+      >
+        <mat-icon>person_add</mat-icon>Dodaj
+      </button>
+
+      <button
+        mat-flat-button
+        (click)="duplicateDay()"
+        [disabled]="selection.isEmpty() || readOnly"
+      >
+        <mat-icon>content_copy</mat-icon>Duplikuj
+      </button>
+
+      <button
+        mat-flat-button
+        [disabled]="selection.isEmpty() || readOnly"
+        (click)="editTime()"
+      >
+        <mat-icon>schedule</mat-icon>Godziny
+      </button>
+
+      <button
+        mat-flat-button
+        [disabled]="selection.isEmpty() || readOnly"
+        (click)="editRatesAndAddons()"
+      >
+        <mat-icon>money</mat-icon>Stawki/Dodatki
+      </button>
+
+      <button
+        mat-flat-button
+        [disabled]="isMultipleSelected || readOnly"
+        (click)="changeWorker()"
+      >
+        <mat-icon>change_circle</mat-icon>Zmień Pracownika
+      </button>
+
+      <button
+        mat-flat-button
+        [disabled]="selection.isEmpty() || readOnly"
+        (click)="removeWorkersDays()"
+        class="delete-button"
+      >
+        <mat-icon>person_remove</mat-icon>Usuń
+      </button>
+    </div>
+  </div>
+  <mat-divider />
+  <mat-tab-group
+    [(selectedIndex)]="tabIdx"
+    (selectedTabChange)="tabChange($event)"
+    (animationDone)="setTab($event)"
+    #tabs
+  >
+    @for (day of eventDays(); track day.startDate) {
+    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
+      <app-worker-day
+        [day]="day"
+        [selection]="selection"
+        [tableColumns]="tableColumns"
+      />
+    </mat-tab>
+    } @empty {
+    <h2>Nic tu jeszcze nie ma</h2>
+    }
+  </mat-tab-group>
+</section>

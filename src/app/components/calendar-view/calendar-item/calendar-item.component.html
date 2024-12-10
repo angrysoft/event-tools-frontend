@@ -1,0 +1,30 @@
+@if (data().dayOff) {
+<div class="event" [style.backgroundColor]="'var(--mat-sys-on-background)'" [cdkContextMenuTriggerFor]="dayOffMenu">
+  @if (data().accepted) {
+  <span [style.color]="'var(--mat-sys-background)'">Wolne</span>
+  } @else {
+  <span [style.color]="'red'">Wolne - do potwierdzenia</span>
+  }
+</div>
+<ng-template #dayOffMenu>
+  <div class="context-menu" cdkMenu>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="removeAction()"
+    >
+      Usuń
+    </button>
+  </div>
+</ng-template>
+} @else {
+<div
+  class="event"
+  [style.background]="data().color"
+  [style.color]="getTextColor(data().color)"
+  (click)="goToAction()"
+  [style.cursor] = "'pointer'"
+>
+  {{ data().eventNumber }} - {{ data().eventName }}
+</div>
+}

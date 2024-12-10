@@ -1,0 +1,45 @@
+@if(showMenu()) {
+<div
+  [style.backgroundColor]="data().color"
+  [style.color]="getTextColor(data().color)"
+  (click)="triggerAction('goto')"
+  class="data"
+  [cdkContextMenuTriggerFor]="dayMenu"
+>
+  {{ data().eventName }}
+</div>
+<ng-template #dayMenu>
+  <div class="context-menu" cdkMenu>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('remove')"
+    >
+      Usuń
+    </button>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('duplicate')"
+    >
+      Duplikuj
+    </button>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('changeWorker')"
+    >
+      Zmień pracownika
+    </button>
+  </div>
+</ng-template>
+} @else {
+<div
+  [style.backgroundColor]="data().color"
+  [style.color]="getTextColor(data().color)"
+  (click)="triggerAction('goto')"
+  class="data"
+>
+  {{ data().eventName }}
+</div>
+}

@@ -9,8 +9,8 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
-import { Worker } from "../../models/worker";
-import { WorkersService } from "../../services/workers.service";
+import { Worker } from "../../../models/worker";
+import { WorkersService } from "../../../services/workers.service";
 import { AddonsComponent } from "../addons/addons.component";
 import { CarsComponent } from "../cars/cars.component";
 import { DocsComponent } from "../docs/docs.component";
@@ -23,8 +23,8 @@ export interface DialogData {
 }
 
 @Component({
-    selector: "app-show-worker",
-    imports: [
+  selector: "app-show-worker",
+  imports: [
     MatIconModule,
     MatDividerModule,
     MatButtonModule,
@@ -38,10 +38,10 @@ export interface DialogData {
     LoaderComponent,
     AddonsComponent,
     CarsComponent,
-    ActionToolbarComponent
-],
-    templateUrl: "./show-worker.component.html",
-    styleUrl: "./show-worker.component.scss"
+    ActionToolbarComponent,
+  ],
+  templateUrl: "./show-worker.component.html",
+  styleUrl: "./show-worker.component.scss",
 })
 export class ShowWorkerComponent {
   readonly confirm = inject(MatDialog);
@@ -75,7 +75,7 @@ export class ShowWorkerComponent {
     },
     password: null,
     password2: null,
-    authority: null
+    authority: null,
   });
   loading = signal<boolean>(true);
 

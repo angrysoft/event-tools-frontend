@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
-import { EventEmitter, Injectable, OnInit, Output } from "@angular/core";
-import { Router } from "@angular/router";
-import { Observable, catchError, throwError } from "rxjs";
+import { EventEmitter, inject, Injectable, Output } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { catchError, Observable, throwError } from "rxjs";
 import { RestResponse } from "../models/rest-response";
 import { User } from "../models/user";
 
@@ -16,11 +16,13 @@ export class AuthService {
 
   @Output()
   loginError = new EventEmitter<string>();
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  http = inject(HttpClient);
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor() {
     this.authenticated.subscribe((auth) => {
       let url: string = "/login";
-
       if (auth) {
         switch (this.user?.authority) {
           case "ROLE_ADMIN":
@@ -28,14 +30,14 @@ export class AuthService {
             url = "/admin/dashboard";
             break;
           case "ROLE_WORKER":
-            url = "/worker";
+            url = "/worker/calendar";
             break;
           default:
             url = "/login";
             break;
         }
       }
-      this.router.navigateByUrl(url);
+      this.router.navigateByUrl(url, { replaceUrl: true });
     });
   }
 
@@ -62,12 +64,13 @@ export class AuthService {
       .pipe(
         catchError((err) => {
           if (err.status === 401) {
+            this.authenticated.emit(false);
             return new Observable<RestResponse<User>>();
           }
           return throwError(
-            () => new Error("Something bad happened; please try again later."),
+            () => new Error("Something bad happened; please try again later.")
           );
-        }),
+        })
       )
       .subscribe((resp) => {
         if (resp.ok) {
@@ -75,6 +78,12 @@ export class AuthService {
           this.authenticated.emit(true);
         }
       });
+  }
+
+  checkAuth() {
+    if (this.isAuthenticated()) {
+      this.authenticated.emit(true);
+    }
   }
 
   login(username: string, password: string) {
@@ -92,9 +101,9 @@ export class AuthService {
             return new Observable<RestResponse<User>>();
           }
           return throwError(
-            () => new Error("Something bad happened; please try again later."),
+            () => new Error("Something bad happened; please try again later.")
           );
-        }),
+        })
       )
       .subscribe((response) => {
         if (response.ok) {
