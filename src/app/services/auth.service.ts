@@ -30,7 +30,7 @@ export class AuthService {
             url = "/admin/dashboard";
             break;
           case "ROLE_WORKER":
-            url = "/worker";
+            url = "/worker/calendar";
             break;
           default:
             url = "/login";
