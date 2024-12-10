@@ -48,9 +48,10 @@ export class ChangePasswordComponent {
   }
 
   save() {
-    const password = this.changePasswordGroup.value.password;
-    if (!password) return;
-    this.service.changePassword(password).subscribe((resp) => {
+    const passwordPayload = this.changePasswordGroup.value;
+    if (!passwordPayload.password && !passwordPayload.password2) return;
+    
+    this.service.changePassword(passwordPayload).subscribe((resp) => {
       if (resp.ok) {
         this.passwordChanged = true;
         this.auth.logout();

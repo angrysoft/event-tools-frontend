@@ -103,7 +103,9 @@ export class WorkersService extends CrudService<Worker> {
     return this._get<RestResponse<Worker>>(`${this.userApi}/about-me`);
   }
 
-  changePassword(password: string) {
-    return this._put(`${this.userApi}/change-password`, { password: password });
+  changePassword(
+    payload: Partial<{ password: string | null; password2: string | null }>
+  ) {
+    return this._put(`${this.userApi}/change-password`, payload);
   }
 }
