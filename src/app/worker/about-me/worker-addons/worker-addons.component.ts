@@ -2,13 +2,12 @@ import { Component, inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { RouterLink } from '@angular/router';
 import { AddonsService } from '../../../admin/services/addons.service';
 import { Addon, AddonValue } from '../../../models/addon';
 
 @Component({
   selector: "app-worker-addons",
-  imports: [MatCardModule, RouterLink, MatButtonModule, MatDividerModule],
+  imports: [MatCardModule,  MatButtonModule, MatDividerModule],
   templateUrl: "./worker-addons.component.html",
   styleUrl: "./worker-addons.component.scss",
 })
