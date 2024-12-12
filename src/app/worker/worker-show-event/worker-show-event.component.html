@@ -4,7 +4,7 @@
   <app-action-toolbar title="Dane Imprezy" backTo="/worker/calendar">
   </app-action-toolbar>
   
-  <app-event-info [eventData]="eventData()" [tabIndex]="tabIndex">
+  <app-event-info [eventData]="eventData()" [tabIndex]="tabIndex" [showDays]="true">
     <app-worker-event-files [eventId]="eventId"  files/>
     <app-worker-event-days [eventId]="eventId" days/>
   </app-event-info>

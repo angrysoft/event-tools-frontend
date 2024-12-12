@@ -12,5 +12,6 @@ import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
 })
 export class EventInfoComponent {
   eventData = input.required<EventItemDto>();
+  showDays = input<boolean>(false);
   tabIndex = input<number>(1);
 }

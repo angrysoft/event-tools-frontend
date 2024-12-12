@@ -95,7 +95,7 @@
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
-      <app-worker-day [day]="day" [selection]="selection" [tableColumns]="tableColumns"/>
+      <app-worker-day [day]="day" [selection]="selection" [tableColumns]="tableColumns" [coordinatorId]="eventInfo().coordinatorId ?? 0"/>
     </mat-tab>
     } @empty {
     <h2>Nic tu jeszcze nie ma</h2>

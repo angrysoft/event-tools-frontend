@@ -47,9 +47,11 @@
       <ng-content select="[files]" />
       }
     </mat-tab>
-    <mat-tab label="Harmonogram">
-      @defer () {
-      <ng-content select="[days]" />
-      }
-    </mat-tab>
+    @if (showDays()) {
+      <mat-tab label="Harmonogram">
+        @defer () {
+        <ng-content select="[days]" />
+        }
+      </mat-tab>
+    }
   </mat-tab-group>

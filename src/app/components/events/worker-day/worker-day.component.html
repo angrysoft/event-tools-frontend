@@ -41,6 +41,7 @@
       mat-row
       *matRowDef="let row; columns: columnNames"
       (click)="selection().toggle(row)"
+      [class]="getClass(row)"
     ></tr>
   </table>
 </div>
