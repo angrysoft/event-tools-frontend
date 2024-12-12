@@ -12,7 +12,7 @@ import {
 } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { WorkerBase } from "../../../models/worker";
-import { EventDaysService } from "../../../admin/services/event-days.service";
+import { EventDaysService } from "../../../services/event-days.service";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
 import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";

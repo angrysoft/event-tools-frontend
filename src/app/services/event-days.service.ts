@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { CrudService } from "../../services/crud.service";
-import { EventDay, EventDaysInfo } from "../../models/events";
+import { CrudService } from "./crud.service";
+import { EventDay, EventDaysInfo } from "../models/events";
 import { catchError, Observable } from "rxjs";
-import { RestResponse } from "../../models/rest-response";
+import { RestResponse } from "../models/rest-response";
 
 @Injectable({
   providedIn: "root",
@@ -24,6 +24,12 @@ export class EventDaysService extends CrudService<EventDay> {
     );
   }
 
+  getDaysWorker(eventId: number): Observable<RestResponse<EventDaysInfo>> {
+    return this._get<RestResponse<EventDaysInfo>>(
+      `${this.userApi}/${eventId}/day/worker`
+    );
+  }
+
   addDay(eventId: number, day: EventDay) {
     return this.http
       .post(`${this.api}/${eventId}/day`, day)
@@ -34,5 +40,11 @@ export class EventDaysService extends CrudService<EventDay> {
     return this.http
       .delete(`${this.api}/${eventId}/day/${dayId}`)
       .pipe(catchError(this.handleError));
+  }
+
+  getStatuses() {
+    return this._get<RestResponse<{ [key: string]: string }>>(
+      `${this.userApi}/day/statuses`
+    );
   }
 }

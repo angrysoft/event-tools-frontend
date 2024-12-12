@@ -1,0 +1,19 @@
+<div class="mat-elevation-z8 table-wrapper">
+  <table mat-table aria-label="Elements" [dataSource]="daysDataSource">
+    @for (col of tableColumns(); track col.def) {
+    <ng-container matColumnDef="{{ col.def }}">
+      <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
+      @if (col.def.endsWith("Time")) {
+      <td mat-cell *matCellDef="let row">
+        {{ row[col.def] | date : "short" }}
+      </td>
+      } @else {
+      <td mat-cell *matCellDef="let row">{{ row[col.def] }}</td>
+      }
+    </ng-container>
+    }
+
+    <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnNames" [class]="colorClass()"></tr>
+  </table>
+</div>

@@ -5,6 +5,8 @@
   </app-action-toolbar>
   
   <app-event-info [eventData]="eventData()" [tabIndex]="tabIndex">
-    <app-worker-event-files [eventId]="eventId" />
+    <app-worker-event-files [eventId]="eventId"  files/>
+    <app-worker-event-days [eventId]="eventId" days/>
   </app-event-info>
+
 </section>

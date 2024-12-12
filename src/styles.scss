@@ -137,14 +137,6 @@ $_primary: map.merge(map.get($_palettes, primary), $_rest);
 $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
 
 :root {
-    // --xs-max-width: 600px;
-    // --sm-min-width: 601px;
-    // --sm-max-width: 767px;
-    // --md-min-width: 768px;
-    // --md-max-width: 991px;
-    // --lg-min-width: 992px;
-    // --lg-max-width: 1199px;
-    // --xl-min-width: 1200px;
     --color-theme: light dark;
 }
 
@@ -314,4 +306,20 @@ mat-card-content.form-group-col, .form-group-col {
 
 * {
     box-sizing: border-box;
+}
+
+.CHIEF {
+    color: red !important;
+}
+
+.TEMPLATE {
+    color: blue !important;
+}
+
+.COORDINATOR {
+    color: darkorange !important;
+}
+
+.APPROVED {
+    color: inherit !important;
 }
