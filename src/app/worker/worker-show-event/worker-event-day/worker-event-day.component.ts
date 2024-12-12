@@ -2,7 +2,6 @@ import { DatePipe } from "@angular/common";
 import { Component, input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatDivider } from "@angular/material/divider";
 import { MatTableModule } from "@angular/material/table";
 import { EventDay } from "../../../models/events";
 
@@ -12,7 +11,6 @@ import { EventDay } from "../../../models/events";
     MatTableModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatDivider,
     DatePipe,
   ],
   templateUrl: "./worker-event-day.component.html",
