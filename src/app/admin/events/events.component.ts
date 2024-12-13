@@ -2,7 +2,6 @@ import { Component, inject, signal } from "@angular/core";
 import { DataTableComponent } from "../../components/data-table/data-table.component";
 import { InputFilters } from "../../components/search/model";
 import { EventDaysService } from "../../services/event-days.service";
-import { verifyHostBindings } from "@angular/compiler";
 
 @Component({
   selector: "app-events",
