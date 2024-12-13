@@ -32,7 +32,7 @@
       >
         <mat-option [value]="null"></mat-option>
         @for (item of filter.value.values; track item) {
-        <mat-option [value]="item">{{ item }}</mat-option>
+        <mat-option [value]="item.value">{{ item.name }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

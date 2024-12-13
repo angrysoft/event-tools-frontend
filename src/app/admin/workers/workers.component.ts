@@ -24,8 +24,18 @@ export class WorkersComponent implements AfterViewInit {
     this.workerService.getWorkersHints().subscribe((resp) => {
       if (resp.ok) {
         this.inputFilters.set({
-          team: { name: "Ekipa", values: resp.data.teams.map((t) => t.name) },
-          group: { name: "Grupa", values: resp.data.groups.map((t) => t.name) },
+          team: {
+            name: "Ekipa",
+            values: resp.data.teams.map((t) => {
+              return { name: t.name, value: t.name };
+            }),
+          },
+          group: {
+            name: "Grupa",
+            values: resp.data.groups.map((t) => {
+              return { name: t.name, value: t.name };
+            }),
+          },
         });
       }
     });

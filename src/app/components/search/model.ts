@@ -2,7 +2,12 @@ import { FormControl, FormRecord } from "@angular/forms";
 
 interface Filter {
   name:string;
-  values:string[]
+  values:FilterItem[]
+}
+
+interface FilterItem {
+  name:string;
+  value: string;
 }
 
 interface SearchQuery {
@@ -18,4 +23,4 @@ interface InputFilters {
   [key:string]:Filter;
 }
 
-export { SearchQuery, InputFilters, SearchQueryForm };
+export { SearchQuery, InputFilters, SearchQueryForm, FilterItem };
