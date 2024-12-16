@@ -21,6 +21,7 @@ import { EventDay, WorkerDay } from "../../../models/events";
 })
 export class WorkerDayComponent {
   day = input.required<EventDay>();
+  coordinatorId = input<number | null>(null);
   selection = input.required<SelectionModel<WorkerDay>>();
   tableColumns = input.required<{ name: string; def: string }[]>();
   length = 0;
@@ -64,5 +65,11 @@ export class WorkerDayComponent {
     return `${this.selection().isSelected(row) ? "deselect" : "select"} row ${
       row.id
     }`;
+  }
+
+  getClass(row:any) {
+    if (row["editedBy"] !== this.coordinatorId())
+      return "CHIEF"
+    return "";
   }
 }

@@ -1,0 +1,24 @@
+<div class="day-section">
+  <div class="legend">
+    <span class="label">Statusy dni: </span>
+    @for (item of statuses()| keyvalue; track $index) {
+    <span [class]="item.key">{{ item.value }}</span>
+    }
+  </div>
+  @for (day of eventDays(); track $index) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <h4>{{ day.startDate | date : "dd/MM/YYYY" }}</h4>
+    </mat-card-header>
+    <mat-card-content >
+      <app-worker-event-day [day]="day" [tableColumns]="tableColumns" [colorClass]="day.state"/>
+    </mat-card-content>
+  </mat-card>
+  <div class="legend">
+  
+</div>
+  } @empty {
+  <h4>Brak Harmonogramu</h4>
+  }
+  
+</div>

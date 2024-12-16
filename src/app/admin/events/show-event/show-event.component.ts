@@ -43,6 +43,7 @@ export class ShowEventComponent {
     accountManager: "",
     chief: "",
     editors: [],
+    coordinatorId: 0
   });
 
   loading = signal<boolean>(true);

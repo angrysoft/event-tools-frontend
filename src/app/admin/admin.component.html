@@ -6,6 +6,7 @@
     [mode]="mobileQuery.matches ? 'over' : 'side'"
     [opened]="!mobileQuery.matches"
     [disableClose]="!mobileQuery.matches"
+    (click)="sideNavOnClick($event)"
   >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>

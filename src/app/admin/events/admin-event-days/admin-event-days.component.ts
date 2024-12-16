@@ -39,7 +39,7 @@ import {
 } from "../../../models/events";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { WorkerBase } from "../../../models/worker";
-import { EventDaysService } from "../../services/event-days.service";
+import { EventDaysService } from "../../../services/event-days.service";
 import { ChangeStatusComponent } from "./change-status/change-status.component";
 
 @Component({
@@ -74,6 +74,7 @@ export class AdminEventDaysComponent {
     accountManager: "",
     chief: "",
     editors: [],
+    coordinatorId: 0
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);

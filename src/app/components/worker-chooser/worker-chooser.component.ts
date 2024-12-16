@@ -90,18 +90,16 @@ export class WorkerChooserComponent<T> {
       if (resp.ok) {
         this.filters()["team"] = {
           name: "Ekipa",
-          values: resp.data.teams.map((t) => t.name),
+          values: resp.data.teams.map((t) => {
+            return { name: t.name, value: t.name };
+          }),
         };
         this.filters()["group"] = {
           name: "Grupa",
-          values: resp.data.groups.map((t) => t.name),
+          values: resp.data.groups.map((g) => {
+            return { name: g.name, value: g.name };
+          }),
         };
-
-        //TODO check ??
-        // this.filters.set({
-        //   team: { name: "Ekipa", values: resp.data.teams.map((t) => t.name) },
-        //   group: { name: "Grupa", values: resp.data.groups.map((t) => t.name) },
-        // });
       }
     });
   }

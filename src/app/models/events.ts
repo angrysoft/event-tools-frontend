@@ -28,6 +28,7 @@ interface EventItemDto {
   number: string;
   description: string;
   coordinator: string;
+  coordinatorId?: number;
   accountManager: string;
   chief: string;
   editors: string[];

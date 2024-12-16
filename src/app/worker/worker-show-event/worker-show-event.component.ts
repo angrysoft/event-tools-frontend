@@ -7,6 +7,7 @@ import { LoaderComponent } from "../../components/loader/loader.component";
 import { EventItemDto } from "../../models/events";
 import { EventsService } from "../../services/events.service";
 import { WorkerEventFilesComponent } from "./worker-event-files/worker-event-files.component";
+import { WorkerEventDaysComponent } from "./worker-event-days/worker-event-days.component";
 
 @Component({
   selector: "app-worker-show-event",
@@ -14,7 +15,8 @@ import { WorkerEventFilesComponent } from "./worker-event-files/worker-event-fil
     LoaderComponent,
     ActionToolbarComponent,
     EventInfoComponent,
-    WorkerEventFilesComponent
+    WorkerEventFilesComponent,
+    WorkerEventDaysComponent
 ],
   templateUrl: "./worker-show-event.component.html",
   styleUrl: "./worker-show-event.component.scss",
