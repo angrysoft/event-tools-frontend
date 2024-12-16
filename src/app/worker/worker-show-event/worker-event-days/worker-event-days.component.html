@@ -10,15 +10,16 @@
     <mat-card-header>
       <h4>{{ day.startDate | date : "dd/MM/YYYY" }}</h4>
     </mat-card-header>
-    <mat-card-content >
-      <app-worker-event-day [day]="day" [tableColumns]="tableColumns" [colorClass]="day.state"/>
+    <mat-card-content>
+      <app-worker-event-day
+        [workerDays]="day.workerDays"
+        [tableColumns]="tableColumns"
+        [colorClass]="day.state"
+      />
     </mat-card-content>
   </mat-card>
-  <div class="legend">
-  
-</div>
+  <div class="legend"></div>
   } @empty {
   <h4>Brak Harmonogramu</h4>
   }
-  
 </div>

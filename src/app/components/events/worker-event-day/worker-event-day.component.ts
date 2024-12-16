@@ -3,7 +3,7 @@ import { Component, input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatTableModule } from "@angular/material/table";
-import { EventDay } from "../../../models/events";
+import { EventDay, WorkerDay } from "../../../models/events";
 
 @Component({
   selector: "app-worker-event-day",
@@ -17,7 +17,7 @@ import { EventDay } from "../../../models/events";
   styleUrl: "./worker-event-day.component.scss",
 })
 export class WorkerEventDayComponent {
-  day = input.required<EventDay>();
+  workerDays = input.required<WorkerDay[]>();
   tableColumns = input.required<{ name: string; def: string }[]>();
   colorClass = input<string>("");
 
@@ -26,8 +26,8 @@ export class WorkerEventDayComponent {
   }
 
   get daysDataSource() {
-    const workerDays = this.day().workerDays ?? [];
-    const days = workerDays.map((d) => {
+   
+    const days = this.workerDays().map((d) => {
       d.addons = d.workerDayAddons
         .map((addon) => {
           if (addon.money) return `${addon.name}:${addon.money}`;
