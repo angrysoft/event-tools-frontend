@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EventReport, FromDatesReport, MonthReport } from "../models/reports";
+import { EventReport, FromDatesReport, MonthReport, PlanExecutionReport } from "../models/reports";
 import { RestResponse } from "../models/rest-response";
 import { CrudService } from "./crud.service";
 
@@ -33,10 +33,7 @@ export class ReportsService extends CrudService<any> {
     );
   }
 
-  getOwnMonthRaportForWorker(
-    month: number | string,
-    year: number | string
-  ) {
+  getOwnMonthRaportForWorker(month: number | string, year: number | string) {
     return this._get<RestResponse<MonthReport>>(
       `/api/reports/month/worker/${month}/${year}`
     );
@@ -71,5 +68,9 @@ export class ReportsService extends CrudService<any> {
         team: reportMember,
       }
     );
+  }
+
+  getPlanExecutionReport(eventId: number) {
+    return this._get<RestResponse<PlanExecutionReport>>(`${this.api}/plan-execution/${eventId}`);
   }
 }

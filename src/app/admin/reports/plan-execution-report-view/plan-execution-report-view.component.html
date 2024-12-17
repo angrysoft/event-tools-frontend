@@ -1,1 +1,94 @@
-<p>plan-execution-report-view works!</p>
+<app-loader [loading]="loading()" />
+
+<div class="side-content">
+  <app-action-toolbar title="Raport Plan/Realizacja" backTo="/admin/reports/plan-execution">
+    <a
+      mat-button
+      href="/api/admin/reports/plan-execution/{{ eventId }}/pdf"
+      target="_blank"
+      >Pobierz PDF</a
+    >
+  </app-action-toolbar>
+
+  <mat-card appearance="outlined" class="report">
+    <mat-card-header class="header">
+      <div class="logo"><img src="assets/logo_ves_sq.png" alt="Logo" /></div>
+      <div class="header-info">
+        <div>
+          <span class="label">Nazwa: </span>
+          <span>{{ eventInfo().name }} </span>
+        </div>
+        <div>
+          <span class="label">Numer: </span>
+          <span>{{ eventInfo().number }} </span>
+        </div>
+        <div>
+          <span class="label">Koordynator: </span>
+          <span>{{ eventInfo().coordinator }} </span>
+        </div>
+        <div>
+          <span class="label">Opiekun Klienta: </span>
+          <span>{{ eventInfo().accountManager }} </span>
+        </div>
+        <div>
+          <span class="label">Kierownik:</span>
+          <span>{{ eventInfo().chief }} </span>
+        </div>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="report-data">
+      @for (day of days(); track $index) {
+      <h3>{{ day.startDate | date : "dd/MM/YYYY" }}</h3>
+      <h4>Plan:</h4>
+      <app-worker-event-day
+        [workerDays]="day.planDay"
+        [tableColumns]="tableColumns"
+      />
+      <h4>Realizacja:</h4>
+      <app-worker-event-day
+        [workerDays]="day.eventDay"
+        [tableColumns]="tableColumns"
+      />
+      <mat-divider />
+      }
+      <div class="legend">
+        <span class="label">Statusy dni: </span>
+        @for (item of statuses()| keyvalue; track $index) {
+        <span [class]="item.key">{{ item.value }}</span>
+        }
+      </div>
+      <div class="summary">
+        <p><span class="label">Podsumowanie Plan: </span></p>
+        <p>
+          <span class="label">Łacznie stawki</span>
+          <span>{{ totalsPlan().totalRates }} </span>
+        </p>
+        <p>
+          <span class="label">Łacznie dodatki</span>
+          <span>{{ totalsPlan().totalAddons }}</span>
+        </p>
+        <p>
+          <span class="label">Łacznie</span>
+          <span>{{ totalsPlan().total }}</span>
+        </p>
+      </div>
+      <mat-divider />
+      <div class="summary">
+        <p><span class="label">Podsumowanie Realizacja: </span></p>
+        <p>
+          <span class="label">Łacznie stawki</span>
+          <span>{{ totalsExecution().totalRates }} </span>
+        </p>
+        <p>
+          <span class="label">Łacznie dodatki</span>
+          <span>{{ totalsExecution().totalAddons }}</span>
+        </p>
+        <p>
+          <span class="label">Łacznie</span>
+          <span>{{ totalsExecution().total }}</span>
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

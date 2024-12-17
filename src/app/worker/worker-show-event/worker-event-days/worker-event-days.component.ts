@@ -3,7 +3,7 @@ import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { EventDaysService } from "../../../services/event-days.service";
 import { EventDay, EventItemDto } from "../../../models/events";
-import { WorkerEventDayComponent } from "../worker-event-day/worker-event-day.component";
+import { WorkerEventDayComponent } from "../../../components/events/worker-event-day/worker-event-day.component";
 
 @Component({
   selector: "app-worker-event-days",
@@ -38,7 +38,7 @@ export class WorkerEventDaysComponent implements OnInit {
   ];
 
   constructor() {
-    this.service.getStatuses().subscribe(resp=> {
+    this.service.getStatuses().subscribe((resp) => {
       this.statuses.set(resp.data);
     });
   }
