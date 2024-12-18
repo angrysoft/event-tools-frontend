@@ -1,11 +1,11 @@
 @if (showMenu()) {
 <div
-  [style.backgroundColor]="'var(--sys-on-background)'"
+  [style.backgroundColor]="'var(--mat-sys-on-background)'"
   class="data"
   [cdkContextMenuTriggerFor]="dayOffMenu"
 >
   @if (accepted()) {
-  <span [style.color]="'var(--sys-background)'">Wolne</span>
+  <span [style.color]="'var(--mat-sys-background)'">Wolne</span>
   } @else {
   <span [style.color]="'red'">Wolne - do potwierdzenia</span>
   }
@@ -41,11 +41,11 @@
 </ng-template>
 } @else {
     <div
-  [style.backgroundColor]="'var(--sys-on-background)'"
+  [style.backgroundColor]="'var(--mat-sys-on-background)'"
   class="data"
 >
   @if (accepted()) {
-  <span [style.color]="'var(--sys-background)'">Wolne</span>
+  <span [style.color]="'var(--mat-sys-background)'">Wolne</span>
   } @else {
   <span [style.color]="'red'">Wolne - do potwierdzenia</span>
   }
