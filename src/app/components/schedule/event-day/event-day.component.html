@@ -6,7 +6,7 @@
   class="data"
   [cdkContextMenuTriggerFor]="dayMenu"
 >
-  {{ data().eventName }}
+  {{ data().eventName | eventName }} {{ data().info}}
 </div>
 <ng-template #dayMenu>
   <div class="context-menu" cdkMenu>

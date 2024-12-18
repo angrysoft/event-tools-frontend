@@ -1,7 +1,7 @@
 <app-loader [loading]="loading()" />
 
 <section class="side-content">
-  <app-action-toolbar title="Dane Pracownika" backTo="/admin/workers">
+  <app-action-toolbar title="{{worker().firstName}} {{worker().lastName}}" backTo="/admin/workers">
     <button mat-flat-button routerLink="/admin/workers/edit/{{ worker().id }}">
       Edytuj
     </button>
