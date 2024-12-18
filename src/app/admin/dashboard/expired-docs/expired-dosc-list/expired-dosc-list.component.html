@@ -1,0 +1,12 @@
+
+<h2 mat-dialog-title>Dokumenty po terminie</h2>
+<mat-dialog-content class="doc-list">
+  @for (doc of data.docs; track doc.id) {
+  <a routerLink="/admin/workers/{{ doc.worker }}" [queryParams]="{ tab: 1 }" mat-button [mat-dialog-close]="true"
+    >{{ doc.name }} - {{ doc.expire }}</a
+  >
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Zamknij</button>
+</mat-dialog-actions>

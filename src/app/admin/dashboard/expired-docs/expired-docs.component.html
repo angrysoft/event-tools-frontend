@@ -1,0 +1,16 @@
+<mat-card appearance="outlined">
+  <mat-card-content class="widget">
+    @if (docCount === 0) {
+    <h4>Dokumenty Pracowników są aktualne</h4>
+    }@else {
+    <h4 [matBadge]="docCount" matBadgeOverlap="false">
+      Dokumenty pracowników po terminie
+    </h4>
+    }
+  </mat-card-content>
+  <mat-card-actions
+    ><button mat-button [disabled]="docCount === 0" (click)="showList()">
+      Lista
+    </button></mat-card-actions
+  >
+</mat-card>

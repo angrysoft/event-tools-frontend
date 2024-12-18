@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ExpiredDocsComponent } from "./expired-docs/expired-docs.component";
 
 @Component({
     selector: 'app-dashboard',
-    imports: [],
+    imports: [ExpiredDocsComponent],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
 })

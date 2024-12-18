@@ -2,6 +2,7 @@ import { FormControl } from "@angular/forms";
 import { WorkerId } from "./worker";
 
 type WorkerDoc = {
+expired: any;
   id: number | null;
   name: string | null;
   fileName: string | null;
