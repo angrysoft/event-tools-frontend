@@ -155,7 +155,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   get cssCols() {
-    return `repeat(${this.header.length}, auto)`;
+    return `repeat(${this.header.length+1}, auto)`;
   }
 
   get rows() {

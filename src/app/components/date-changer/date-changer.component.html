@@ -1,5 +1,4 @@
   <form [formGroup]="dateFrom" class="actions">
-    <div class="action-buttons">
       <button mat-icon-button (click)="prevMonth()" type="button">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
@@ -11,8 +10,6 @@
       <button mat-icon-button (click)="nextMonth()" type="button">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
-    </div>
-    <div class="action-inputs">
       <mat-form-field appearance="outline" id="month">
         <mat-label>Miesiące</mat-label>
         <mat-select formControlName="month">
@@ -41,5 +38,4 @@
           maxlength="4"
         />
       </mat-form-field>
-    </div>
   </form>

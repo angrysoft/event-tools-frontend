@@ -7,6 +7,9 @@
 />
 <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
   <div class="col sticky-row sticky-col" style="z-index: 10">
+    <div class="header">N</div>
+  </div>
+  <div class="col sticky-row col-name" style="z-index: 10">
     <div class="header">Imię Nazwisko</div>
   </div>
   @for (day of days; track day.date) {
@@ -17,13 +20,16 @@
   </div>
   } @for (row of schedules().workerSchedules; track row.workerName) {
   <div class="col sticky-col">
+    <div class="number">{{ $index + 1 }}</div>
+  </div>
+  <div class="col col-name">
     <div
       class="name nowrap"
       [style.backgroundColor]="row.color"
-      [style.color]="getTextColor(row.color)"
+      [style.color]="row.color ? 'black' : 'inherit'"
       (click)="goToWorker(row.id)"
     >
-      {{ $index + 1 }} {{ row.workerName }}
+      {{ row.workerName }}
     </div>
   </div>
   @for (day of days; track day.day) { @if(row.days[day.day]) {
@@ -45,8 +51,11 @@
     } }
   </div>
   } @else {
-    <app-empty-day [showMenu]="admin()" [data]="{data:day, worker:row}" (actionTrigger)="emptyDayAction($event)"/>
+  <app-empty-day
+    [showMenu]="admin()"
+    [data]="{ data: day, worker: row }"
+    (actionTrigger)="emptyDayAction($event)"
+  />
   } } }
   <div class="end" [style.gridColumnEnd]="cssCols" #end></div>
 </div>
-
