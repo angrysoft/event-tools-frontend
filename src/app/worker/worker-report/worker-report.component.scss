@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
+    scrollbar-width: thin;
 }
 
 .header {
@@ -15,14 +15,10 @@
     padding: 0 1rem;
     border-bottom: 1px solid var(--sys-outline);
     font-size: 0.7rem;
+    
 }
 
-.report-data {
-    box-sizing: border-box;
-    height: 100%;
-    overflow: auto;
-    scrollbar-width: thin;
-}
+
 
 .logo {
     display: flex;
@@ -50,6 +46,7 @@
 .summary,
 .legend {
     border-top: 1px solid var(--sys-outline);
+    padding: 1rem;
 }
 
 :host {
@@ -79,5 +76,8 @@
     .header {
         grid-template-columns: auto 1fr;
         font-size: 1rem;
+    }
+    .report-data {
+        padding: 0 1rem;
     }
 }

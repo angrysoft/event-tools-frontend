@@ -71,7 +71,10 @@ export class WorkerReportComponent {
           this.reportDate = resp.data.reportDate;
           this.totals.set(resp.data.totals);
           this.setReportWorker(resp.data.workerDays);
-        } else this.service.showError(resp);
+        } else {
+          this.setReportWorker([]);
+          this.service.showError(resp)
+        };
         this.loading.set(false);
       });
   }
