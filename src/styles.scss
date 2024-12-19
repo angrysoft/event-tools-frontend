@@ -323,3 +323,39 @@ mat-card-content.form-group-col, .form-group-col {
 .APPROVED {
     color: inherit !important;
 }
+
+
+
+.context-menu {
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 180px;
+    max-width: 280px;
+    background-color: var(--mat-sys-on-background);
+    padding: 6px 0;
+}
+
+.context-menu-item {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    color: var(--mat-sys-background);
+
+    user-select: none;
+    min-width: 64px;
+    line-height: 36px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex: 1;
+}
+
+.context-menu-item:hover {
+    background-color: var(--mat-sys-inverse-surface);
+}
+
+.context-menu-item:active {
+    background-color: var(--mat-sys-inverse-surface);
+}
