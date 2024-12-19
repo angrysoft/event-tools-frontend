@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, input, OnDestroy, output } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  output,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -13,6 +21,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { debounceTime, Subject, takeUntil } from "rxjs";
 import { dateToString } from "../../utils/date";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MediaMatcher } from "@angular/cdk/layout";
 
 @Component({
   selector: "app-date-changer",
@@ -24,6 +34,7 @@ import { dateToString } from "../../utils/date";
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
+    MatExpansionModule,
   ],
   templateUrl: "./date-changer.component.html",
   styleUrl: "./date-changer.component.scss",
@@ -35,9 +46,19 @@ export class DateChangerComponent implements OnDestroy {
   refresh = output();
   destroy = new Subject();
 
+  mobileQuery: MediaQueryList;
+  private readonly _mobileQueryListener: () => void;
+
   constructor() {
     const date = new Date();
     date.setDate(1);
+
+    const changeDetectorRef = inject(ChangeDetectorRef);
+    const media = inject(MediaMatcher);
+
+    this.mobileQuery = media.matchMedia("(max-width: 600px)");
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener("change", this._mobileQueryListener);
 
     this.dateFrom = new FormGroup<DateForm>({
       month: new FormControl(date.getMonth(), Validators.required),
@@ -70,6 +91,7 @@ export class DateChangerComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
+     this.mobileQuery.removeEventListener("change", this._mobileQueryListener);
   }
 
   nextMonth() {

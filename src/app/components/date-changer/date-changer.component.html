@@ -1,4 +1,16 @@
-  <form [formGroup]="dateFrom" class="actions">
+<mat-expansion-panel [expanded]="!mobileQuery.matches" [formGroup]="dateFrom" class="date-panel">
+  @if(mobileQuery.matches) {
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="title">
+        <span>Zmień date</span>
+        <mat-icon>date_range</mat-icon>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  }
+  <div class="actions">
+    <div class="action-buttons">
       <button mat-icon-button (click)="prevMonth()" type="button">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
@@ -10,7 +22,9 @@
       <button mat-icon-button (click)="nextMonth()" type="button">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
-      <mat-form-field appearance="outline" id="month">
+    </div>
+    <div class="action-inputs">
+      <mat-form-field appearance="outline" id="month" subscriptSizing="dynamic">
         <mat-label>Miesiące</mat-label>
         <mat-select formControlName="month">
           <mat-option [value]="0">Styczeń</mat-option>
@@ -27,7 +41,7 @@
           <mat-option [value]="11">Grudzień</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline" id="year">
+      <mat-form-field appearance="outline" id="year" subscriptSizing="dynamic">
         <mat-label>Rok</mat-label>
         <input
           matInput
@@ -38,4 +52,6 @@
           maxlength="4"
         />
       </mat-form-field>
-  </form>
+    </div>
+  </div>
+</mat-expansion-panel>

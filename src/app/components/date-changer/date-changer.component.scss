@@ -1,15 +1,16 @@
 .actions {
     display: flex;
-    padding: 0.1rem;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
+
 .action-buttons, .action-inputs {
     display: flex;
     position: relative;
-    align-items: start;
+    align-items: center;
     justify-content: start;
+    padding-top: 1rem;
 }
 
 .action-inputs {
@@ -31,4 +32,15 @@
     align-items: center;
     box-sizing: border-box;
     padding: 0.4rem;
+}
+
+.example-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+    margin-left: 8px;
+}
+
+.title {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
 }
