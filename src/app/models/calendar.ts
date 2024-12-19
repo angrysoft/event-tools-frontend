@@ -11,9 +11,10 @@ interface CalendarEvent {
   event: number;
   eventName: string;
   eventNumber: string;
-  color: string;
+  color: string | null;
   info: string | null;
   accepted: boolean;
   dayOff: boolean;
+  state:string;
 }
 export { CalendarDay, CalendarEvent };

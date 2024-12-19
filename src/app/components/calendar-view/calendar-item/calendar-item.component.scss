@@ -1,8 +1,17 @@
 .event {
     padding: 0.3rem;
     font-size: 0.6rem;
-    word-break: break-all;
+    // word-break: break-all;
+    white-space: nowrap;
     border-radius: 0.4rem;
+    overflow: hidden;
+    scrollbar-width: thin;
+}
+
+.event-name {
+    // display: inline-block;
+    // padding-left: 100%;
+    // animation: move 25s linear infinite;
 }
 
 @media only screen and (min-width: 960px) {
@@ -12,36 +21,13 @@
 
 }
 
-.context-menu {
-    display: inline-flex;
-    flex-direction: column;
-    min-width: 180px;
-    max-width: 280px;
-    background-color: var(--mat-sys-on-background);
-    padding: 6px 0;
+@keyframes move {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(-100%, 0);
+    }
 }
 
-.context-menu-item {
-    background-color: transparent;
-    cursor: pointer;
-    border: none;
-    color: var(--mat-sys-background);
-
-    user-select: none;
-    min-width: 64px;
-    line-height: 36px;
-    padding: 0 16px;
-
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    flex: 1;
-}
-
-.context-menu-item:hover {
-    background-color: rgb(208, 208, 208);
-}
-
-.context-menu-item:active {
-    background-color: rgb(170, 170, 170);
-}

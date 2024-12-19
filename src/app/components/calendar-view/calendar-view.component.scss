@@ -1,19 +1,33 @@
+.calendar-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-collapse: collapse;
+    box-shadow: var(--mat-sys-level5);
+    background-color: var(--mat-sys-surface);
+}
+
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, auto);
-    padding: 0.5rem;
-    position: relative;
+    grid-template-columns: repeat(7, 7rem);
     height: 100%;
     width: 100%;
     overflow: auto;
     scrollbar-width: thin;
+    
 }
 
 .header, .day {
     display: grid;
     border-collapse: collapse;
-    border: 1px solid var(--mat-sys-outline);
+    padding: 0.2rem;
 }
+
+
+
 .header {
     padding: 0.5rem;
     align-items: center;
@@ -25,7 +39,26 @@
     display: flex;
     flex-direction: column;
     min-height: 3rem;
-    overflow: auto;
+    min-width: 3rem;
+    overflow: hidden;
+    border-collapse: collapse;
+    border-right: 1px solid var(--mat-sys-outline-variant);
+    border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.day:nth-child(7n) {
+    border-right: none;
+}
+
+.day:nth-child(1), 
+.day:nth-child(2), 
+.day:nth-child(3), 
+.day:nth-child(4),
+.day:nth-child(5),
+.day:nth-child(6),
+.day:nth-child(7)
+{
+    border-top: none;
 }
 
 .day-head {
@@ -35,20 +68,21 @@
     font-size: 0.8rem;
 }
 
-.event {
-    padding: 0.3rem;
-    font-size: 0.6rem;
-    word-break: break-all;
-    cursor: pointer;
-    border-radius: 0.4rem;
-}
-
 @media only screen and (min-width: 960px) {
-    .event {
-        font-size: 0.8rem;
+    .calendar {
+        grid-template-columns: repeat(7, 1fr);
     }
-
     .day-head {
         font-size: 1rem;
     }
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 1rem;
 }

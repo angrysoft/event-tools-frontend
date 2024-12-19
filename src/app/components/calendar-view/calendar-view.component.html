@@ -1,34 +1,37 @@
 <app-loader [loading]="loading()" />
 
-<div class="side-content">
   <app-date-changer (dateChanged)="dateChange($event)" />
-  <div class="mat-elevation-z8 calendar">
-    @for (day of days(); track day.day) { @if (day.day < 1) {
-    <div class="day">
-      <div class="day-head">
-        @if($index < 7) {
-        <div>{{ getDay($index) }}</div>
-        }
-        <div>x</div>
-      </div>
-    </div>
-    } @else {
-    <div class="day">
-      <div class="day-head">
-        @if($index < 7) {
-        <div>{{ getDay($index) }}</div>
-        }
-        <div>
-          {{ day.day }}
+  <div class="calendar-wrapper mat-elevation-z8">
+    <div class="calendar">
+      @for (day of days(); track day.day) { @if (day.day < 1) {
+      <div class="day">
+        <div class="day-head">
+          @if($index < 7) {
+          <div>{{ getDay($index) }}</div>
+          }
+          <div></div>
         </div>
       </div>
-      @for (event of day.events; track event.id) {
-        <app-calendar-item [data]="event" (actionTrigger)="handleActions($event)"/>
-      }
+      } @else {
+      <div class="day">
+        <div class="day-head">
+          @if($index < 7) {
+          <div>{{ getDay($index) }}</div>
+          }
+          <div>
+            {{ day.day }}
+          </div>
+        </div>
+        @for (event of day.events; track event.id) {
+        <app-calendar-item
+          [data]="event"
+          (actionTrigger)="handleActions($event)"
+        />
+        }
+      </div>
+      } }
     </div>
-    } }
+    @if (showAdd()) {
+    <app-add-button (action)="addDayOff()" />
+    }
   </div>
-</div>
-@if (showAdd()) {
-  <app-add-button (action)="addDayOff()" />
-}

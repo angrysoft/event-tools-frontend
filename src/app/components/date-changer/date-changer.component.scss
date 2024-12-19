@@ -1,17 +1,27 @@
-.actions, .action-buttons {
+.actions {
     display: flex;
     gap: 1rem;
     padding: 0.1rem;
+    flex-wrap: wrap;
 }
 
-.actions {
-    flex-wrap: wrap;
+.action-buttons, .action-inputs {
+    display: flex;
+    position: relative;
+    align-items: start;
+    justify-content: start;
+}
+
+.action-inputs {
+    gap: 0.5rem;
 }
 
 #month.mat-mdc-form-field {
     max-width: 9rem;
+    font-size: 0.8rem;
 }
 
 #year.mat-mdc-form-field {
     max-width: 6rem !important;
+    font-size: 0.8rem;
 }

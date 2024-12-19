@@ -20,11 +20,13 @@
 } @else {
 <div
   class="event"
-  [style.background]="data().color"
-  [style.color]="getTextColor(data().color)"
+  [style.background]="data().color ?? '#106d20'"
+  [style.color]="data().state === 'TEMPLATE' ? 'white' : 'black'"
   (click)="goToAction()"
   [style.cursor] = "'pointer'"
 >
-  {{ data().eventNumber }} - {{ data().eventName }}
+<span class="event-name">
+  {{ data().eventName }}
+</span>
 </div>
 }

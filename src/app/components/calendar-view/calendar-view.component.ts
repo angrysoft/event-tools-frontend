@@ -51,19 +51,33 @@ export class CalendarViewComponent {
     ];
     this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {
       if (resp.ok) {
-        const newDays: CalendarDay[] = [];
+        const headDays: CalendarDay[] = [];
+        const tailDays: CalendarDay[] = [];
         const dayOffset = weekDays.indexOf(resp.data.at(0)?.weekName ?? "");
+        let track = -1;
         if (dayOffset < 0) return;
         for (let i = 0; i < dayOffset; i++) {
-          newDays.push({
-            day: i * -1,
+          headDays.push({
+            day: track,
             weekName: "",
             events: [],
           });
+          track--;
         }
+        headDays.push(...resp.data);
 
-        newDays.push(...resp.data);
-        this.days.set(newDays);
+        const dayTail = Math.ceil(headDays.length / 7) * 7 - headDays.length;
+          
+        for (let i = 0; i < dayTail; i++) {
+          tailDays.push({
+            day: track,
+            weekName: "",
+            events: [],
+          });
+          track--;
+        }
+        headDays.push(...tailDays);
+        this.days.set(headDays);
         this.loading.set(false);
       }
     });

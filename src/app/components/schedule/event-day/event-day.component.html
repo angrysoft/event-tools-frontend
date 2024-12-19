@@ -1,12 +1,12 @@
 @if(showMenu()) {
 <div
-  [style.backgroundColor]="data().color"
-  [style.color]="getTextColor(data().color)"
+  [style.backgroundColor]="data().color ?? '#106d20'"
+  [style.color]="data().state === 'TEMPLATE' ? 'white' : 'black'"
   (click)="triggerAction('goto')"
   class="data"
   [cdkContextMenuTriggerFor]="dayMenu"
 >
-  {{ data().eventName | eventName }} {{ data().info}}
+  {{ data().eventName }} {{ data().info}}
 </div>
 <ng-template #dayMenu>
   <div class="context-menu" cdkMenu>
@@ -35,8 +35,8 @@
 </ng-template>
 } @else {
 <div
-  [style.backgroundColor]="data().color"
-  [style.color]="getTextColor(data().color)"
+  [style.backgroundColor]="data().color ?? '#106d20'"
+  [style.color]="data().state === 'TEMPLATE' ? 'white' : 'black'"
   (click)="triggerAction('goto')"
   class="data"
 >
