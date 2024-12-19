@@ -2,12 +2,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import {
-  catchError,
-  Observable,
-  of,
-  throwError
-} from "rxjs";
+import { catchError, Observable, of, throwError } from "rxjs";
 import { DataListResponse } from "../models/data-list-response";
 import { Page } from "../models/page";
 import { RestResponse } from "../models/rest-response";
@@ -135,22 +130,13 @@ export class CrudService<T> {
   }
 
   protected handleError(err: any) {
-    switch (err.status) {
-      case 401: {
-        // FIXME: wszystkie serwisy powinny obsłużyć on destroy !?
-        this.auth.logout()
-        return of(err.error);
-      }
-      case 403:
-      case 400:
-      case 409:
-      case 404:
-        return of(err.error);
-      default:
-        return throwError(
-          () => new Error("Something bad happened; please try again later.")
-        );
+    if (err.status === 401) {
+      // FIXME: wszystkie serwisy powinny obsłużyć on destroy !?
+      this.auth.logout();
+    } else if (err.status === 413) {
+      err.error.data = "Za duży plik";
     }
+    return of(err.error);
   }
 
   showError(err: any) {
