@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Dodaj Dzień</h2>
 <mat-dialog-content>
   <form [formGroup]="addDayForm" class="form" id="add-day-form">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Wybierz date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="startDate"/>
       <mat-hint>MM/DD/YYYY</mat-hint>
@@ -10,6 +10,10 @@
         [for]="picker"
       ></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Opis dnia</mat-label>
+      <input matInput formControlName="info" type="text"/>
     </mat-form-field>
   </form>
 </mat-dialog-content>
@@ -20,7 +24,7 @@
   <button
     mat-button
     [mat-dialog-close]="addDayForm.value"
-    [disabled]="!canSend()"
+    [disabled]="!addDayForm.valid || !addDayForm.dirty"
     type="button"
   >
     Ok

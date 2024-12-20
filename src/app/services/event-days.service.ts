@@ -47,4 +47,10 @@ export class EventDaysService extends CrudService<EventDay> {
       `${this.userApi}/day/statuses`
     );
   }
+
+  changeInfo(eventId: number, dayId: number, info: string) {
+    return this._put(`${this.api}/${eventId}/day/${dayId}/info`, {
+      info: info,
+    });
+  }
 }

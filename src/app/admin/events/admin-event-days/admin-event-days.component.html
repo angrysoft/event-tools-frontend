@@ -6,7 +6,10 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2>
-      {{ eventInfo().number }} - {{ eventInfo().name }} -
+      {{ eventInfo().number }} - {{ eventInfo().name }}
+      @if (dayInfo().length > 0) {
+      <span>[ {{ dayInfo() }} ]</span>
+      } -
       <span [class]="stateCls">{{ dayStatus() }}</span>
     </h2>
   </header>
@@ -15,7 +18,7 @@
       <button mat-flat-button (click)="addDay()" title="alt+a">
         <mat-icon>add</mat-icon>Dodaj Dzień
       </button>
-     
+
       <button
         mat-flat-button
         (click)="delDay()"
@@ -32,6 +35,14 @@
         [disabled]="eventDays().length === 0"
       >
         <mat-icon>content_copy</mat-icon>Zmień status
+      </button>
+
+      <button
+        mat-flat-button
+        (click)="changeInfo()"
+        [disabled]="eventDays().length === 0"
+      >
+        <mat-icon>description</mat-icon>Zmień opis
       </button>
       <mat-divider vertical="true" />
     </div>
@@ -95,7 +106,12 @@
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
-      <app-worker-day [day]="day" [selection]="selection" [tableColumns]="tableColumns" [coordinatorId]="eventInfo().coordinatorId ?? 0"/>
+      <app-worker-day
+        [day]="day"
+        [selection]="selection"
+        [tableColumns]="tableColumns"
+        [coordinatorId]="eventInfo().coordinatorId ?? 0"
+      />
     </mat-tab>
     } @empty {
     <h2>Nic tu jeszcze nie ma</h2>

@@ -41,6 +41,7 @@ import { WorkerDaysService } from "../../../services/worker-days.service";
 import { WorkerBase } from "../../../models/worker";
 import { EventDaysService } from "../../../services/event-days.service";
 import { ChangeStatusComponent } from "./change-status/change-status.component";
+import { ChangeInfoComponent } from "../../../components/events/change-info/change-info.component";
 
 @Component({
   selector: "app-admin-event-days",
@@ -74,10 +75,11 @@ export class AdminEventDaysComponent {
     accountManager: "",
     chief: "",
     editors: [],
-    coordinatorId: 0
+    coordinatorId: 0,
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);
+  dayInfo = signal<string>("");
   firstTime = true;
   tabIdx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
@@ -138,12 +140,16 @@ export class AdminEventDaysComponent {
   }
 
   setStatus() {
-    const state = this.eventDays().at(this.tabIdx)?.state ?? "";
-    const status = this.statuses()[state];
+    const day = this.eventDays().at(this.tabIdx);
+    if (!day) return;
+
+    const status = this.statuses()[day.state];
     if (status) {
       this.dayStatus.set(status);
-      this.stateCls = state;
+      this.stateCls = day.state;
     }
+
+    this.dayInfo.set(day.info ?? "");
   }
 
   get isMultipleSelected() {
@@ -426,6 +432,31 @@ export class AdminEventDaysComponent {
             this.selection.clear();
           } else this.workerDayService.showError(resp);
           this.loading.set(false);
+        });
+    });
+  }
+
+  changeInfo() {
+    const changeInfoDialog = this.dialog.open(ChangeInfoComponent, {
+      data: {
+        info: this.eventDays().at(this.tabIdx)?.info,
+      },
+      maxWidth: "95vw",
+    });
+
+    changeInfoDialog.afterClosed().subscribe((result) => {
+      if (!result) return;
+      this.loading.set(true);
+
+      this.service
+        .changeInfo(this.eventId, this.dayId, result.info)
+        .subscribe((resp) => {
+          if (resp.ok) {
+            this.loadDays();
+          } else {
+            this.service.showError(resp);
+            this.loading.set(false);
+          }
         });
     });
   }
