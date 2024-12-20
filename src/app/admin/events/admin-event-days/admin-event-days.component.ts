@@ -113,7 +113,19 @@ export class AdminEventDaysComponent {
 
   setTab(idx: any) {
     if (this.firstTime) {
-      const tab = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
+      let tab = 0;
+      const date = this.route.snapshot.queryParamMap.get("date");
+      if (date) {
+        const idx = this.eventDays().findIndex((d) => d.startDate === date);
+        if (idx !== -1) {
+          tab = idx;
+        }
+      } else {
+        const idx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
+        if (idx) {
+          tab = idx;
+        }
+      }
       this.tabIdx = tab;
       this.firstTime = false;
     }

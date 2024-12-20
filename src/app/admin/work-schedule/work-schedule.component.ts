@@ -16,7 +16,7 @@ export class WorkScheduleComponent {
     if (action.action == "event") {
       const data = action.data as WorkerDaySchedule;
       this.router.navigateByUrl(
-        `/admin/events/${data.eventId}/day?name=${data.eventName}&tab=${data.startDate}`,
+        `/admin/events/${data.eventId}/day?name=${data.eventName}&date=${data.startDate}`,
       );
     } else if (action.action == "worker") {
       this.router.navigateByUrl(
