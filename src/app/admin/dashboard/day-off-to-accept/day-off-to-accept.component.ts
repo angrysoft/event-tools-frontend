@@ -18,7 +18,7 @@ export class DayOffToAcceptComponent {
   dialog = inject(MatDialog);
 
   constructor() {
-    this.service.getDayOffToAccept().subscribe((resp) => {
+    this.service.getDayOffsToAccept().subscribe((resp) => {
       if (resp.ok) {
         this.days.set(resp.data);
       } else this.service.showError(resp);
