@@ -13,7 +13,6 @@ export class WorkScheduleComponent {
   dialog = inject(MatDialog);
 
   onAction(action: any) {
-    console.log(action);
     if (action.action === "worker") {
       this.dialog.open(ContactComponent, {
         data: { worker: action.data.workerId },
