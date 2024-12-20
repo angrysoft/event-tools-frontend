@@ -22,7 +22,6 @@ export class EventsComponent {
   constructor() {
     this.service.getStatuses().subscribe((resp) => {
       if (resp.ok) {
-        console.log(resp.data);
         const states: { name: string; value: string }[] = [];
         for (const entry of Object.entries(resp.data)) {
           states.push({
