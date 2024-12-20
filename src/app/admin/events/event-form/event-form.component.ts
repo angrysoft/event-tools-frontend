@@ -84,6 +84,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
     this.eventForm = new FormGroup<EventItemForm>({
       id: new FormControl(null),
       name: new FormControl("", [Validators.required]),
+      shortName: new FormControl("", [Validators.required]),
       number: new FormControl("", [Validators.required]),
       coordinatorId: new FormControl(null, Validators.required),
       accountManagerId: new FormControl(null, Validators.required),

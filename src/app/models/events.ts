@@ -14,6 +14,7 @@ interface EventItem {
 interface EventItemForm {
   id: FormControl<number | null>;
   name: FormControl<string | null>;
+  shortName: FormControl<string | null>;
   number: FormControl<string | null>;
   description: FormControl<string | null>;
   coordinatorId: FormControl<number | null>;
