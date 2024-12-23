@@ -14,8 +14,9 @@ import { RestResponse } from "../models/rest-response";
 import { DataListResponse } from "../models/data-list-response";
 import { Addon } from "../models/addon";
 import { ScheduleService } from "./schedule.service";
-import { Schedule } from "../models/schedule";
+import { DayOff, Schedule } from "../models/schedule";
 import { CalendarDay } from "../models/calendar";
+import { Page } from "../models/page";
 
 @Injectable({
   providedIn: "root",
@@ -166,5 +167,20 @@ export class WorkerDaysService
   }
   removeDayOff(id: any) {
     return this._delete(`${this.userApi}/day-off/${id}`);
+  }
+
+  getDayOffToAccept(pageNumber: number, pageSize: number) {
+    return this._get<RestResponse<Page<DayOff>>>("/api/admin/day-offs", {
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    });
+  }
+
+  acceptDayOffs(days: number[]) {
+    return this._put("/api/admin/day-offs", days);
+  }
+
+  removeDayOffs(days: number[]) {
+    return this._delete("/api/admin/day-offs", {days: days.join(",")});
   }
 }

@@ -93,4 +93,12 @@ export const adminRoutes: Routes = [
         "./reports/plan-execution-report-view/plan-execution-report-view.component"
       ).then((m) => m.PlanExecutionReportViewComponent),
   },
+  {
+    path: "day-offs",
+    title: "Dni wolne",
+    loadComponent: () =>
+      import(
+        "./day-offs/day-offs.component"
+      ).then((m) => m.DayOffsComponent),
+  },
 ];

@@ -1,0 +1,15 @@
+:host {
+    display: block;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+}
+
+.table-wrapper {
+    height: 100%;
+    overflow: auto;
+}
+
+tr {
+    cursor: pointer;
+}

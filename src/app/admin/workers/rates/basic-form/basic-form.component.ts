@@ -54,10 +54,6 @@ export class BasicFormComponent implements OnInit, OnDestroy {
       .subscribe((changeEvent) => {
         this.canSend.set(changeEvent === "VALID" && this.basicForm.dirty);
       });
-    this.basicForm
-      .get("perHourValue")
-      ?.valueChanges.pipe(takeUntil(this.destroy))
-      .subscribe((val) => console.log(val));
   }
 
   ngOnDestroy(): void {

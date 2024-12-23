@@ -63,7 +63,6 @@ export class SendDialogComponent implements AfterContentInit {
         }),
       )
       .subscribe((httpEvent) => {
-        console.log(httpEvent);
         if (httpEvent.type == HttpEventType.UploadProgress) {
           if (httpEvent.total) {
             if (httpEvent.total == httpEvent.loaded) {
@@ -86,6 +85,5 @@ export class SendDialogComponent implements AfterContentInit {
     this.cancel.next(null);
     this.cancel.complete();
     this.sending.set(false);
-    console.log("cancel clicked");
   }
 }

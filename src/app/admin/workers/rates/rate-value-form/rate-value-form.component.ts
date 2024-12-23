@@ -123,7 +123,6 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
     if (!this.rateValueForm.valid) {
       return;
     }
-    console.log(this.rateValueForm.value);
     if (this.update()) this.updateRateValue();
     else this.createRateValue();
   }

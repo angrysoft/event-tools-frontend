@@ -116,7 +116,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
       .getSchedule(size, offset, this.currentDate)
       .subscribe((resp) => {
         if (resp.ok) {
-          console.log(resp.data);
           this.observer.disconnect();
           this.schedules.set(resp.data);
           this.schedules().size = this.size;

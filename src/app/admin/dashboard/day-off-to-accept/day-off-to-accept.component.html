@@ -1,15 +1,15 @@
 <mat-card appearance="outlined">
   <mat-card-content class="widget">
-    @if (dayCount === 0) {
+    @if (days() === 0) {
     <h4>Brak dni do potwierdzenia</h4>
     }@else {
-    <h4 [matBadge]="dayCount" matBadgeOverlap="false">
+    <h4 [matBadge]="days()" matBadgeOverlap="false">
       Dni wolne do potwierdzenia
     </h4>
     }
   </mat-card-content>
   <mat-card-actions
-    ><button mat-button [disabled]="dayCount === 0" (click)="showList()">
+    ><button mat-button [disabled]="days() === 0" [routerLink]="['/admin/', 'day-offs']">
       Lista
     </button></mat-card-actions
   >

@@ -22,6 +22,6 @@ export class DashboardService extends CrudService<any> {
   }
 
   getDayOffsToAccept() {
-    return this._get<RestResponse<DayOff[]>>(`${this.api}/day-offs-to-accept`);
+    return this._get<RestResponse<number>>(`${this.api}/day-offs-to-accept`);
   }
 }

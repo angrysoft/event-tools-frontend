@@ -121,10 +121,20 @@ export class CrudService<T> {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-  protected _delete(api: string): Observable<RestResponse<string | void>> {
+  protected _delete(
+    api: string,
+    params: {
+      [key: string]: string | number | boolean | number[];
+    } | null = null
+  ): Observable<RestResponse<string | void>> {
+    let reqParams: HttpParams | undefined = undefined;
+    if (params && Object.keys(params).length > 0) {
+      reqParams = new HttpParams({ fromObject: params });
+    }
     return this.http
       .delete<RestResponse<string | void>>(api, {
         withCredentials: true,
+        params: reqParams,
       })
       .pipe(catchError(this.handleError.bind(this)));
   }

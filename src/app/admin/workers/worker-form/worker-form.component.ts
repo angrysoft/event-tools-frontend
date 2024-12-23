@@ -136,7 +136,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
       untracked(() => {
         if (wId >= 0) {
           this.workerService.get(wId).subscribe((response) => {
-            console.log(response.data);
             if (response.ok) {
               this.workerForm.patchValue(response.data);
               this.update = true;
@@ -224,7 +223,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     this.error.set("");
-    console.debug(this.workerForm.value);
 
     if (this.workerForm.valid) {
       if (this.update) {
