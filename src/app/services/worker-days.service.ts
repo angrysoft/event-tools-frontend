@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core";
-import { CrudService } from "./crud.service";
+import { Observable } from "rxjs";
+import { Addon } from "../models/addon";
+import { CalendarDay } from "../models/calendar";
+import { DataListResponse } from "../models/data-list-response";
 import {
   ChangeWorkerPayload,
   DuplicateDaysPayload,
@@ -8,15 +11,13 @@ import {
   WorkerDayStatusPayload,
   WorkersRateDay,
 } from "../models/events";
-import { Rate } from "../models/rate";
-import { Observable } from "rxjs";
-import { RestResponse } from "../models/rest-response";
-import { DataListResponse } from "../models/data-list-response";
-import { Addon } from "../models/addon";
-import { ScheduleService } from "./schedule.service";
-import { DayOff, Schedule } from "../models/schedule";
-import { CalendarDay } from "../models/calendar";
 import { Page } from "../models/page";
+import { Rate } from "../models/rate";
+import { RestResponse } from "../models/rest-response";
+import { DayOff, Schedule } from "../models/schedule";
+import { ChangeWorkerInDatesPayload } from "../models/events";
+import { CrudService } from "./crud.service";
+import { ScheduleService } from "./schedule.service";
 
 @Injectable({
   providedIn: "root",
@@ -77,14 +78,14 @@ export class WorkerDaysService
     dayId: number,
     data: {
       workerDays: { [key: number]: string };
-      startTime: any;
-      endTime: any;
+      startTime: Date | string;
+      endTime: Date | string;
     }
   ) {
     return this._put<{
       workerDays: { [key: number]: string };
-      startTime: any;
-      endTime: any;
+      startTime: Date | string;
+      endTime: Date | string;
     }>(`${this.userApi}/${eventId}/day/${dayId}/time`, data);
   }
 
@@ -129,8 +130,11 @@ export class WorkerDaysService
     );
   }
 
-  changeWorkerInDates(eventId: number, payload: any) {
-    return this._put<any>(`${this.userApi}/${eventId}/worker/change`, payload);
+  changeWorkerInDates(eventId: number, payload: ChangeWorkerInDatesPayload) {
+    return this._put<ChangeWorkerInDatesPayload>(
+      `${this.userApi}/${eventId}/worker/change`,
+      payload
+    );
   }
 
   getSchedule(
@@ -155,17 +159,17 @@ export class WorkerDaysService
     return this._put(`${this.userApi}/day-off`, payload);
   }
 
-  workerDaysOffRequest(payload: { from: any; to: any }) {
+  workerDaysOffRequest(payload: { from: string; to: string }) {
     return this._put(`${this.userApi}/day-off/request`, payload);
   }
 
-  acceptDayOff(id: any) {
+  acceptDayOff(id: number) {
     return this._put(`${this.api}/day-off/${id}/accept`);
   }
-  rejectDayOff(id: any) {
+  rejectDayOff(id: number) {
     return this._put(`${this.api}/day-off/${id}/reject`);
   }
-  removeDayOff(id: any) {
+  removeDayOff(id: number) {
     return this._delete(`${this.userApi}/day-off/${id}`);
   }
 

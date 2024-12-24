@@ -1,13 +1,13 @@
-import { Component, inject, input, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { AddonsService } from '../../../admin/services/addons.service';
-import { Addon, AddonValue } from '../../../models/addon';
+import { Component, inject, input, signal } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatDividerModule } from "@angular/material/divider";
+import { AddonsService } from "../../../admin/services/addons.service";
+import { Addon, AddonValue } from "../../../models/addon";
 
 @Component({
   selector: "app-worker-addons",
-  imports: [MatCardModule,  MatButtonModule, MatDividerModule],
+  imports: [MatCardModule, MatButtonModule, MatDividerModule],
   templateUrl: "./worker-addons.component.html",
   styleUrl: "./worker-addons.component.scss",
 })
@@ -28,11 +28,13 @@ export class WorkerAddonsComponent {
     });
   }
 
-  getAddonName(id: any): string {
+  getAddonName(id: number | null): string {
+    if (!id) return "";
     return this.addons()[id]?.name ?? "";
   }
 
-  getAddonType(id: any): string {
+  getAddonType(id: number | null): string {
+    if (!id) return "";
     return this.addons()[id]?.addonType ?? "";
   }
 }

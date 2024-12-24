@@ -40,7 +40,7 @@ export class WorkerChooseTableDataSource extends DataSource<WorkerBase> {
     this.loading.set(true);
 
     let action: Observable<RestResponse<Page<WorkerBase>>>;
-    let params: { [key: string]: string | number } = {
+    const params: { [key: string]: string | number } = {
       pageNumber: this.paginator?.pageIndex ?? 0,
       pageSize: this.paginator?.pageSize ?? this.defaultPageSize,
     };

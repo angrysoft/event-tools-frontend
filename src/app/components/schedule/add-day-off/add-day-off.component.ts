@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, signal, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { provideNativeDateAdapter } from "@angular/material/core";
@@ -24,7 +24,7 @@ import { Subject, takeUntil } from "rxjs";
     providers: [provideNativeDateAdapter()],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddDayOffComponent {
+export class AddDayOffComponent implements OnInit, OnDestroy {
   daysOffForm: FormGroup<DaysOffForm>;
   destroy = new Subject();
   canSend = signal<boolean>(false);

@@ -1,105 +1,62 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    [fixedInViewport]="mobileQuery.matches"
-    [mode]="mobileQuery.matches ? 'over' : 'side'"
-    [opened]="!mobileQuery.matches"
-    [disableClose]="!mobileQuery.matches"
-    (click)="sideNavOnClick($event)"
+<app-main-nav>
+  <app-menu-action href="/admin/dashboard" icon="dashboard"
+    >Dashboard</app-menu-action
   >
-    <mat-toolbar>Menu-ddd</mat-toolbar>
-    <mat-nav-list>
-      <app-menu-action href="/admin/dashboard" icon="dashboard"
-        >Dashboard</app-menu-action
-      >
-      <app-menu-action href="/admin/work-schedule" icon="perm_contact_calendar"
-        >Grafik</app-menu-action
-      >
-      <app-menu-action href="/admin/calendar" icon="calendar_month"
-        >Kalendarz</app-menu-action
-      >
-      <app-menu-action href="/admin/events" icon="event"
+  <app-menu-action href="/admin/work-schedule" icon="perm_contact_calendar"
+    >Grafik</app-menu-action
+  >
+  <app-menu-action href="/admin/calendar" icon="calendar_month"
+    >Kalendarz</app-menu-action
+  >
+  <app-menu-action href="/admin/events" icon="event">Imprezy</app-menu-action>
+  <app-menu-action href="/admin/workers" icon="person"
+    >Pracownicy</app-menu-action
+  >
+
+  <mat-divider></mat-divider>
+
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Raporty</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-menu-action href="/admin/reports/event" icon="docs"
         >Imprezy</app-menu-action
       >
-      <app-menu-action href="/admin/workers" icon="person"
-        >Pracownicy</app-menu-action
+      <app-menu-action href="/admin/reports/workers" icon="docs"
+        >Miesięczny</app-menu-action
       >
+      <app-menu-action href="/admin/reports/from-dates" icon="docs"
+        >Z zakresu</app-menu-action
+      >
+      <app-menu-action href="/admin/reports/plan-execution" icon="docs"
+        >Plan/Realizacja</app-menu-action
+      >
+    </mat-expansion-panel>
+  </mat-accordion>
 
-      <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
 
-      <mat-accordion>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Raporty</mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-menu-action href="/admin/reports/event" icon="docs"
-            >Imprezy</app-menu-action
-          >
-          <app-menu-action href="/admin/reports/workers" icon="docs"
-            >Miesięczny</app-menu-action
-          >
-          <app-menu-action href="/admin/reports/from-dates" icon="docs"
-            >Z zakresu</app-menu-action
-          >
-          <app-menu-action href="/admin/reports/plan-execution" icon="docs"
-            >Plan/Realizacja</app-menu-action
-          >
-        </mat-expansion-panel>
-      </mat-accordion>
-
-      <mat-divider></mat-divider>
-
-      <mat-accordion>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Ustawienia</mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-menu-action href="/admin/settings/groups" icon="groups"
-            >Grupy</app-menu-action
-          >
-          <app-menu-action href="/admin/settings/teams" icon="diversity_3"
-            >Ekipa</app-menu-action
-          >
-          <app-menu-action href="/admin/settings/rates" icon="money"
-            >Stawki</app-menu-action
-          >
-          <app-menu-action href="/admin/settings/addons" icon="money"
-            >Dodatki</app-menu-action
-          >
-          <app-menu-action href="/admin/settings/cars" icon="directions_car"
-            >Auta</app-menu-action
-          >
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-        >
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <span>Event Tools</span>
-
-        <div class="user">
-          <span>{{ username }}</span>
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>person</mat-icon>
-          </button>
-        </div>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="changeTheme()">Zmień wygląd</button>
-          <button mat-menu-item (click)="changePassword()">Zmień hasło</button>
-          <button mat-menu-item (click)="onLogout()">Wyloguj</button>
-        </mat-menu>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Ustawienia</mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-menu-action href="/admin/settings/groups" icon="groups"
+        >Grupy</app-menu-action
+      >
+      <app-menu-action href="/admin/settings/teams" icon="diversity_3"
+        >Ekipa</app-menu-action
+      >
+      <app-menu-action href="/admin/settings/rates" icon="money"
+        >Stawki</app-menu-action
+      >
+      <app-menu-action href="/admin/settings/addons" icon="money"
+        >Dodatki</app-menu-action
+      >
+      <app-menu-action href="/admin/settings/cars" icon="directions_car"
+        >Auta</app-menu-action
+      >
+    </mat-expansion-panel>
+  </mat-accordion>
+</app-main-nav>

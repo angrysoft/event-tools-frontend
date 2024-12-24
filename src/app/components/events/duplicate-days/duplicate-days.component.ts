@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  signal,
+  signal, OnInit, OnDestroy,
 } from "@angular/core";
 import {
   FormControl,
@@ -33,7 +33,7 @@ import { Subject, takeUntil } from "rxjs";
     providers: [provideNativeDateAdapter()],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DuplicateDaysComponent {
+export class DuplicateDaysComponent implements OnInit, OnDestroy {
   duplicateDaysForm: FormGroup<DuplicateDaysForm>;
   destroy = new Subject();
   canSend = signal<boolean>(false);

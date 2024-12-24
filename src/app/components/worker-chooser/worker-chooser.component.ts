@@ -1,5 +1,5 @@
 import { SelectionModel } from "@angular/cdk/collections";
-import { Component, inject, signal, viewChild } from "@angular/core";
+import { Component, inject, signal, viewChild, OnInit, AfterViewInit } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
   MAT_DIALOG_DATA,
@@ -41,7 +41,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
   styleUrl: "./worker-chooser.component.scss",
   providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }],
 })
-export class WorkerChooserComponent<T> {
+export class WorkerChooserComponent implements OnInit, AfterViewInit {
   readonly service = inject(WorkersService);
   readonly router = inject(Router);
   filters = signal<InputFilters>({

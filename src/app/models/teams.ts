@@ -1,6 +1,10 @@
-import { Group, GroupForm } from "./group";
+import { GroupForm } from "./group";
 
-interface Team extends Group {}
+interface Team {
+  id: number;
+  name: string;
+  sort: number;
+}
 
 interface TeamForm extends GroupForm {}
 

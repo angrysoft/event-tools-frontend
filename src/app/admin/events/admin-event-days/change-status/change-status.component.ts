@@ -1,5 +1,5 @@
 import { KeyValuePipe } from "@angular/common";
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, signal, OnInit, OnDestroy } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -27,7 +27,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     templateUrl: "./change-status.component.html",
     styleUrl: "./change-status.component.scss"
 })
-export class ChangeStatusComponent {
+export class ChangeStatusComponent implements OnInit, OnDestroy {
   changeStatusForm: FormGroup<ChangeStatusForm>;
   destroy = new Subject();
   canSend = signal<boolean>(false);

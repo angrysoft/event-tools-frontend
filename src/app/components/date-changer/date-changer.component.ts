@@ -39,7 +39,7 @@ import { MediaMatcher } from "@angular/cdk/layout";
   templateUrl: "./date-changer.component.html",
   styleUrl: "./date-changer.component.scss",
 })
-export class DateChangerComponent implements OnDestroy {
+export class DateChangerComponent implements OnDestroy, AfterViewInit {
   dateFrom: FormGroup<DateForm>;
   showRefresh = input<boolean>(false);
   dateChanged = output<string>();

@@ -36,7 +36,7 @@ export class WorkersService extends CrudService<Worker> {
   }
 
   getAllWorkerPaged(
-    opts: { [key: string]: any } | null = null
+    opts: { [key: string]: number | string } | null = null
   ): Observable<RestResponse<Page<WorkerBase>>> {
     return this._get<RestResponse<Page<WorkerBase>>>(this.userApi, opts);
   }

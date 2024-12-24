@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from "@angular/core";
+import { Component, inject, input, signal, OnInit } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -21,7 +21,7 @@ import { AddonsService } from "../../services/addons.service";
   templateUrl: "./addons.component.html",
   styleUrl: "./addons.component.scss",
 })
-export class AddonsComponent {
+export class AddonsComponent implements OnInit {
   readonly confirm = inject(MatDialog);
   workerAddons = signal<AddonValueDto[]>([]);
   workerId = input.required<number>();

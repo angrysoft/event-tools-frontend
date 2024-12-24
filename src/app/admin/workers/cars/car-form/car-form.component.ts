@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal } from "@angular/core";
+import { Component, effect, inject, input, signal, OnInit } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -37,7 +37,7 @@ import { CarsService } from "../../../services/cars.service";
   templateUrl: "./car-form.component.html",
   styleUrl: "./car-form.component.scss",
 })
-export class CarFormComponent {
+export class CarFormComponent implements OnInit {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   readonly service = inject(CarsService);

@@ -3,9 +3,8 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
-import { DayOff } from "../../../models/schedule";
-import { DashboardService } from "../../../services/dashboard.service";
 import { RouterLink } from "@angular/router";
+import { DashboardService } from "../../../services/dashboard.service";
 
 @Component({
   selector: "app-day-off-to-accept",
@@ -24,12 +23,5 @@ export class DayOffToAcceptComponent {
         this.days.set(resp.data);
       } else this.service.showError(resp);
     });
-  }
-
-  showList() {
-    // this.dialog.open(ExpiredDoscListComponent, {
-    //   data: { docs: this.days() },
-    // });
-    console.log(this.days());
   }
 }

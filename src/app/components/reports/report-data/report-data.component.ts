@@ -1,5 +1,5 @@
 import { DatePipe, KeyValuePipe } from "@angular/common";
-import { Component, effect, inject, input, signal, viewChild } from "@angular/core";
+import { Component, effect, inject, input, signal, viewChild, AfterViewInit } from "@angular/core";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { ReportDataSource } from "./report-datasource";
@@ -10,7 +10,7 @@ import { ReportDataSource } from "./report-datasource";
   templateUrl: "./report-data.component.html",
   styleUrl: "./report-data.component.scss",
 })
-export class ReportDataComponent<T> {
+export class ReportDataComponent<T> implements AfterViewInit {
   workerDayService = inject(WorkerDaysService);
   readonly table = viewChild.required(MatTable);
   statuses = signal<{ [key: string]: string }>({});
@@ -31,7 +31,6 @@ export class ReportDataComponent<T> {
 
   ngAfterViewInit(): void {
     this.table().dataSource = this.dataSource;
-    // this.dataSource.loadData(this.data());
   }
 
   get columnNames() {

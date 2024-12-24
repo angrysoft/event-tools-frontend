@@ -58,15 +58,15 @@ interface WorkerDay {
   total?: string;
   addons?: string;
   workerDayAddons: WorkerAddons[];
-  state?:string;
+  state?: string;
 }
 
 interface WorkerDayForm {
   id: FormControl<number | null>;
   eventDay: FormControl<number | null>;
   rate: FormControl<number | null>;
-  startTime: FormControl<Date  | null>;
-  endTime: FormControl<Date  | null>;
+  startTime: FormControl<Date | null>;
+  endTime: FormControl<Date | null>;
   workers: FormArray;
   workerDayAddons: FormArray;
 }
@@ -120,6 +120,14 @@ interface ChangeWorkerPayload {
   workerDay: number;
 }
 
+interface ChangeWorkerInDatesPayload {
+  newWorker: number | null;
+  newWorkerName: string;
+  oldWorker: number;
+  from: Date | string;
+  to: Date | string;
+}
+
 export {
   EventItem,
   EventItemForm,
@@ -133,5 +141,6 @@ export {
   DuplicateDaysPayload,
   WorkersRateDay,
   ChangeWorkerPayload,
+  ChangeWorkerInDatesPayload,
   EventDaysInfo,
 };

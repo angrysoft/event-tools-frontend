@@ -42,13 +42,13 @@ export class WorkTimeComponent {
   }
 
   onAddDay() {
-    let newTime = this.endTime().value;
+    const newTime = this.endTime().value;
     newTime?.setDate(newTime.getDate() + 1);
     this.setEndTimeValue(newTime);
   }
 
   onRmDay() {
-    let newTime = this.endTime().value;
+    const newTime = this.endTime().value;
     newTime?.setDate(newTime.getDate() - 1);
     this.setEndTimeValue(newTime);
   }

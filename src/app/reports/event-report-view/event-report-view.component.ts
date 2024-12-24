@@ -1,6 +1,12 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe, KeyValuePipe } from "@angular/common";
-import { Component, inject, signal, viewChild } from "@angular/core";
+import {
+  Component,
+  inject,
+  signal,
+  viewChild,
+  AfterViewInit,
+} from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -39,7 +45,7 @@ import { MatMenuModule } from "@angular/material/menu";
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",
 })
-export class EventReportViewComponent {
+export class EventReportViewComponent implements AfterViewInit {
   reportService = inject(ReportsService);
   workerDayService = inject(WorkerDaysService);
   route = inject(ActivatedRoute);
@@ -121,7 +127,8 @@ export class EventReportViewComponent {
         if (resp.ok) {
           this.eventInfo.set(resp.data.info);
           this.totals.set(resp.data.totals);
-          const workers: any = {};
+          const workers: { [key: number]: { id: number; workerName: string } } =
+            {};
           const workerDays = [];
           for (const eventDay of resp.data.eventDays) {
             workerDays.push(

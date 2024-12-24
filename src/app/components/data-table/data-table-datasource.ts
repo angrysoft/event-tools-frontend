@@ -35,7 +35,7 @@ export class DataTableDataSource<T> extends DataSource<T> {
     this.loading.set(true);
 
     let action: Observable<RestResponse<Page<T>>>;
-    let params: {[key:string]: string | number} = {
+    const params: {[key:string]: string | number} = {
       pageNumber: this.paginator?.pageIndex ?? 0,
       pageSize: this.paginator?.pageSize ?? this.defaultPageSize,
     };

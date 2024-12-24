@@ -1,12 +1,19 @@
 import { Injectable } from "@angular/core";
-import { EventReport, FromDatesReport, MonthReport, PlanExecutionReport } from "../models/reports";
+import {
+  EventReport,
+  FromDatesReport,
+  MonthReport,
+  PlanExecutionReport,
+} from "../models/reports";
 import { RestResponse } from "../models/rest-response";
 import { CrudService } from "./crud.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class ReportsService extends CrudService<any> {
+export class ReportsService extends CrudService<
+  EventReport | MonthReport | FromDatesReport | PlanExecutionReport
+> {
   constructor() {
     super();
     this.api = "/api/admin/reports";
@@ -71,6 +78,8 @@ export class ReportsService extends CrudService<any> {
   }
 
   getPlanExecutionReport(eventId: number) {
-    return this._get<RestResponse<PlanExecutionReport>>(`${this.api}/plan-execution/${eventId}`);
+    return this._get<RestResponse<PlanExecutionReport>>(
+      `${this.api}/plan-execution/${eventId}`
+    );
   }
 }

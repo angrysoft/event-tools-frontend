@@ -30,6 +30,7 @@ import { DuplicateDaysComponent } from "../../../components/events/duplicate-day
 import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
 import { WorkerDayComponent } from "../../../components/events/worker-day/worker-day.component";
 import {
+  ChangeWorkerInDatesPayload,
   ChangeWorkerPayload,
   DuplicateDaysPayload,
   EventDay,
@@ -111,7 +112,7 @@ export class AdminEventDaysComponent {
     this.loadDays();
   }
 
-  setTab(idx: any) {
+  setTab() {
     if (this.firstTime) {
       let tab = 0;
       const date = this.route.snapshot.queryParamMap.get("date");
@@ -278,7 +279,7 @@ export class AdminEventDaysComponent {
       if (!result) return;
       this.loading.set(true);
 
-      const workerDays: any = {};
+      const workerDays:any = {};
       this.selection.selected.forEach((sel) => {
         if (sel.id) workerDays[sel.id] = sel.workerName;
       });
@@ -370,7 +371,7 @@ export class AdminEventDaysComponent {
 
           this.loading.set(true);
           if (result.inRange && newWorker) {
-            const payload = {
+            const payload: ChangeWorkerInDatesPayload = {
               newWorker: newWorker.id,
               newWorkerName: `${newWorker.firstName} ${newWorker.lastName}`,
               oldWorker: this.selection.selected.at(0)?.worker ?? -1,

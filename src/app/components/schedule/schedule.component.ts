@@ -19,7 +19,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { WorkerBase } from "../../models/worker";
-import { ChangeWorkerPayload } from "../../models/events";
+import { ChangeWorkerInDatesPayload, ChangeWorkerPayload } from "../../models/events";
 import { MenuAction } from "../../models/menu";
 import {
   Schedule,
@@ -280,7 +280,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
           this.loading.set(true);
           if (result.inRange && newWorker) {
-            const payload = {
+            const payload:ChangeWorkerInDatesPayload = {
               newWorker: newWorker.id,
               newWorkerName: `${newWorker.firstName} ${newWorker.lastName}`,
               oldWorker: data.worker,

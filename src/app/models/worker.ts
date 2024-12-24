@@ -80,6 +80,12 @@ interface WorkerForm {
   authority: FormControl<string | null>;
 }
 
+
+interface WorkerParam {
+  pageNumber?: number;
+  pageSize?: number;
+  query:string;
+}
 export {
   BasicPay,
   OfficeWorkers,
@@ -88,4 +94,5 @@ export {
   WorkerForm,
   WorkerId,
   WorkersItem,
+  WorkerParam
 };

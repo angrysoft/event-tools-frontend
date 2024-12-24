@@ -23,6 +23,7 @@ import { LoaderComponent } from "../../../components/loader/loader.component";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
 import {
+  ChangeWorkerInDatesPayload,
   ChangeWorkerPayload,
   DuplicateDaysPayload,
   EventDay,
@@ -109,7 +110,7 @@ export class ManageSettlementsComponent {
     });
   }
 
-  setTab(idx: any) {
+  setTab() {
     if (this.firstTime) {
       const tab = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
       this.tabIdx = tab;
@@ -210,10 +211,11 @@ export class ManageSettlementsComponent {
       if (!result) return;
       this.loading.set(true);
 
-      const workerDays: any = {};
+      const workerDays: { [key: number]: string } = {};
       this.selection.selected.forEach((sel) => {
-        if (sel.id) workerDays[sel.id] = sel.workerName;
+        if (sel.id) workerDays[sel.id] = sel.workerName ?? "";
       });
+      
       this.workerDayService
         .changeTime(this.eventId, this.dayId, {
           workerDays: workerDays,
@@ -320,7 +322,7 @@ export class ManageSettlementsComponent {
 
           this.loading.set(true);
           if (result.inRange && newWorker) {
-            const payload = {
+            const payload: ChangeWorkerInDatesPayload = {
               newWorker: newWorker.id,
               newWorkerName: `${newWorker.firstName} ${newWorker.lastName}`,
               oldWorker: this.selection.selected.at(0)?.worker ?? -1,

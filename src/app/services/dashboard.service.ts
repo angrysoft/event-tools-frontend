@@ -1,15 +1,12 @@
 import { Injectable } from "@angular/core";
-import { CrudService } from "./crud.service";
 import { RestResponse } from "../models/rest-response";
 import { WorkerDoc } from "../models/worker-doc";
-import { DayOff } from "../models/schedule";
+import { CrudService } from "./crud.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class DashboardService extends CrudService<any> {
-  userApi = "/api/dashboard";
-
+export class DashboardService extends CrudService<WorkerDoc | number> {
   constructor() {
     super();
     this.api = "/api/admin/dashboard";

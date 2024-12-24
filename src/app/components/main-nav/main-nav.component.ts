@@ -1,5 +1,5 @@
 import { MediaMatcher } from "@angular/cdk/layout";
-import { ChangeDetectorRef, Component, inject, viewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, inject, viewChild, OnDestroy } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
@@ -28,7 +28,7 @@ import { SetThemeComponent } from "../settings/set-theme/set-theme.component";
   templateUrl: "./main-nav.component.html",
   styleUrl: "./main-nav.component.scss",
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly dialog = inject(MatDialog);
   mobileQuery: MediaQueryList;

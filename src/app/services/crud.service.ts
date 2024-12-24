@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { catchError, Observable, of, throwError } from "rxjs";
+import { catchError, Observable, of } from "rxjs";
 import { DataListResponse } from "../models/data-list-response";
 import { Page } from "../models/page";
 import { RestResponse } from "../models/rest-response";
@@ -33,7 +33,7 @@ export class CrudService<T> {
   }
 
   getAllPaged(
-    opts: { [key: string]: any } | null = null
+    opts: { [key: string]: number | string } | null = null
   ): Observable<RestResponse<Page<T>>> {
     return this._get<RestResponse<Page<T>>>(this.apiUrl, opts);
   }

@@ -1,4 +1,4 @@
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -18,7 +18,7 @@ export class DayOffDataSource extends DataSource<DayOff> {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<DayOff[]> {
+  connect(): Observable<DayOff[]> {
     this.paginator?.page.subscribe(() => {
       this.loadData();
     });

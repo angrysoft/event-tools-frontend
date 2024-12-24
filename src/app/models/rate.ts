@@ -46,7 +46,7 @@ interface RateValueForm {
 }
 
 interface RateValue {
-  id?: number | null;
+  id: number | null;
   workerId: number | null;
   rateId: number | null;
   perHourOvertimeValue: number | null;

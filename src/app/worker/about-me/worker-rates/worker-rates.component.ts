@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal } from "@angular/core";
+import { Component, inject, input, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -36,14 +36,15 @@ export class WorkerRatesComponent {
         this.rateNames.set(rates);
       }
     });
-
   }
 
-  getRateName(id: any): string {
+  getRateName(id: number | null): string {
+    if (!id) return "";
     return this.rateNames()[id]?.name ?? "";
   }
 
-  getRateType(id: any): string {
+  getRateType(id: number | null): string {
+    if (!id) return "";
     return this.rateNames()[id]?.rateType ?? "";
   }
 }

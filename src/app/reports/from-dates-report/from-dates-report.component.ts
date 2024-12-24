@@ -1,8 +1,4 @@
-import {
-  Component,
-  inject,
-  signal
-} from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -30,6 +26,7 @@ import { WorkerHints } from "../../models/worker-hints";
 import { WorkersService } from "../../services/workers.service";
 import { dateToString } from "../../utils/date";
 import { datesValidator } from "./datesValidator";
+import { FromDatesReportPayload } from "../../models/reports";
 
 @Component({
   selector: "app-from-dates-report",
@@ -125,21 +122,27 @@ export class FromDatesReportComponent {
     }
     this.reportSettingsFrom.updateValueAndValidity();
   }
+
   handelSubmit() {
     if (!this.reportSettingsFrom.valid) return;
 
     const data = this.reportSettingsFrom.value;
-    const payload: { [key: string]: any } = {};
+    const payload: FromDatesReportPayload = {
+      reportType: data.reportType ?? null,
+      from: "",
+      to: "",
+      members: [],
+    };
 
-    payload["reportType"] = data.reportType;
     if (data.from && data.to) {
       payload["from"] = dateToString(data.from);
       payload["to"] = dateToString(data.to);
     }
-    if (data.reportType == "team") payload["members"] = [data.teamId];
-    else if (data.reportType == "workers")
-      payload["members"] = data.workers.map((w: { id: any }) => w.id);
-    console.log(payload);
+
+    if (data.reportType == "team" && data.teamId) {
+      payload.members = [data.teamId];
+    } else if (data.reportType == "workers")
+      payload.members = data.workers.map((w: { id: number }) => w.id);
     this.router.navigateByUrl("/admin/reports/from-dates/view", {
       state: payload,
     });
