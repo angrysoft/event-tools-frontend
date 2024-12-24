@@ -1,8 +1,7 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormArray,
@@ -14,23 +13,23 @@ import {
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatDialog } from "@angular/material/dialog";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { Router } from "@angular/router";
-import { WorkersService } from "../../../services/workers.service";
-import { WorkerHints } from "../../../models/worker-hints";
-import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
-import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { WorkerBase } from "../../../models/worker";
-import { MatSelectModule } from "@angular/material/select";
-import { LoaderComponent } from "../../../components/loader/loader.component";
+import { MatChipsModule } from "@angular/material/chips";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDialog } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
-import { MatChipsModule } from "@angular/material/chips";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { Router } from "@angular/router";
+import { LoaderComponent } from "../../components/loader/loader.component";
+import { WorkerChooserConfig } from "../../components/worker-chooser/worker-chooser-config";
+import { WorkerChooserComponent } from "../../components/worker-chooser/worker-chooser.component";
+import { WorkerBase } from "../../models/worker";
+import { WorkerHints } from "../../models/worker-hints";
+import { WorkersService } from "../../services/workers.service";
+import { dateToString } from "../../utils/date";
 import { datesValidator } from "./datesValidator";
-import { dateToString } from "../../../utils/date";
 
 @Component({
   selector: "app-from-dates-report",

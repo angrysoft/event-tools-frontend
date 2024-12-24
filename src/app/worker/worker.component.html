@@ -1,75 +1,16 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    [fixedInViewport]="mobileQuery.matches"
-    [mode]="mobileQuery.matches ? 'over' : 'side'"
-    [opened]="!mobileQuery.matches"
-    [disableClose]="!mobileQuery.matches"
-    (click)="sideNavOnClick($event)"
+<app-main-nav>
+  <app-menu-action href="/worker/calendar" icon="calendar_month"
+    >Kalendarz</app-menu-action
   >
-    <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-      <!-- <app-menu-action href="/worker/dashboard" icon="dashboard"
-        >Dashboard</app-menu-action
-      > -->
-      <app-menu-action href="/worker/calendar" icon="calendar_month"
-        >Kalendarz</app-menu-action
-      >
 
-      <app-menu-action href="/worker/work-schedule" icon="perm_contact_calendar"
-        >Grafik</app-menu-action
-      >
-      <!-- <mat-accordion>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Rozliczenia</mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-menu-action href="/worker/settlements/chief" icon="docs"
-            >Kierownika</app-menu-action
-          >
-          <app-menu-action href="/worker/settlements/common" icon="docs"
-            >Wspólne</app-menu-action
-          >
-        </mat-expansion-panel>
-      </mat-accordion> -->
-      <app-menu-action href="/worker/settlements/chief" icon="docs"
-            >Rozliczenia</app-menu-action
-          >
-      <mat-divider />
-      <app-menu-action href="/worker/report" icon="docs"
-        >Raport</app-menu-action
-      >
+  <app-menu-action href="/worker/work-schedule" icon="perm_contact_calendar"
+    >Grafik</app-menu-action
+  >
+  <app-menu-action href="/worker/settlements/chief" icon="docs"
+    >Rozliczenia</app-menu-action
+  >
+  <mat-divider />
+  <app-menu-action href="/worker/report" icon="docs">Raport</app-menu-action>
 
-      <app-menu-action href="/worker/info" icon="docs">O mnie</app-menu-action>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-        >
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <span>Event Tools</span>
-
-        <div class="user">
-          <span>{{ username }}</span>
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>person</mat-icon>
-          </button>
-        </div>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="changeTheme()">Zmień wygląd</button>
-          <button mat-menu-item (click)="changePassword()">Zmień hasło</button>
-          <button mat-menu-item (click)="onLogout()">Wyloguj</button>
-        </mat-menu>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <app-menu-action href="/worker/info" icon="docs">O mnie</app-menu-action>
+</app-main-nav>

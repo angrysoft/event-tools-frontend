@@ -11,15 +11,15 @@ import {
 } from "@angular/material/slide-toggle";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { ActivatedRoute } from "@angular/router";
-import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
-import { WorkerFilterComponent } from "../../../components/reports/worker-filter/worker-filter.component";
-import { EventItemDto } from "../../../models/events";
-import { Totals } from "../../../models/reports";
-import { ReportsService } from "../../../services/reports.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
+import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
+import { LoaderComponent } from "../../components/loader/loader.component";
+import { WorkerFilterComponent } from "../../components/reports/worker-filter/worker-filter.component";
+import { EventItemDto } from "../../models/events";
+import { Totals } from "../../models/reports";
+import { ReportsService } from "../../services/reports.service";
+import { WorkerDaysService } from "../../services/worker-days.service";
 import { EventReportDataSource } from "./event-report-datasource";
-import { AmountPipe } from "../../../pipes/amount.pipe";
+import { AmountPipe } from "../../pipes/amount.pipe";
 import { MatMenuModule } from "@angular/material/menu";
 
 @Component({

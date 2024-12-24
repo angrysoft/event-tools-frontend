@@ -32,8 +32,8 @@ export class AuthService {
           case "ROLE_WORKER":
             url = "/worker/calendar";
             break;
-          default:
-            url = "/login";
+          case "ROLE_ACCOUNT_MANAGER":
+            url = "/account-manager/calendar";
             break;
         }
       }
@@ -56,6 +56,26 @@ export class AuthService {
     )
       return true;
     return false;
+  }
+
+  isAccountManager() {
+    
+     if (
+       this.user &&
+       (this.user.authority === "ROLE_ACCOUNT_MANAGER")
+     )
+       return true;
+     return false;
+  }
+
+  isWorker() {
+    
+     if (
+       this.user &&
+       (this.user.authority === "ROLE_WORKER")
+     )
+       return true;
+     return false;
   }
 
   getUser() {

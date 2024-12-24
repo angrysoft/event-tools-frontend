@@ -1,7 +1,8 @@
 import { Routes } from "@angular/router";
-import { authGuard, isAdmin } from "./auth.guard";
+import { isWorker, isAdmin, isAccountManager } from "./auth.guard";
 import { adminRoutes } from "./admin/admin.routes";
 import { workerRoutes } from "./worker/worker.routes";
+import { accountManagerRoutes } from "./account-manager/account-manager.routes";
 
 export const routes: Routes = [
   {
@@ -20,11 +21,19 @@ export const routes: Routes = [
   },
   {
     path: "worker",
-    canActivate: [authGuard],
+    canActivate: [isWorker],
     title: "Event Tools",
     loadComponent: () =>
       import("./worker/worker.component").then((m) => m.WorkerComponent),
     children: workerRoutes,
+  },
+  {
+    path: "account-manager",
+    canActivate: [isAccountManager],
+    title: "Event Tools",
+    loadComponent: () =>
+      import("./account-manager/account-manager.component").then((m) => m.AccountManagerComponent),
+    children: accountManagerRoutes,
   },
   {
     path: "accessDenied",

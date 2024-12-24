@@ -2,17 +2,17 @@ import { Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { Router } from "@angular/router";
-import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
-import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
-import { ReportDataComponent } from "../../../components/reports/report-data/report-data.component";
+import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
+import { LoaderComponent } from "../../components/loader/loader.component";
+import { MonthReportWorkerInfoComponent } from "../../components/reports/month-report-worker-info/month-report-worker-info.component";
+import { ReportDataComponent } from "../../components/reports/report-data/report-data.component";
 import {
   DataTeamDay,
   DataWorkerDay,
   EventWorkerDay,
   MonthTotal
-} from "../../../models/reports";
-import { ReportsService } from "../../../services/reports.service";
+} from "../../models/reports";
+import { ReportsService } from "../../services/reports.service";
 
 @Component({
   selector: "app-workers-report-view",

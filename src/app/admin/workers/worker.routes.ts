@@ -12,7 +12,7 @@ export const workersRoutes: Routes = [
     title: "Dodaj Pracownika",
     loadComponent: () =>
       import("./worker-form/worker-form.component").then(
-        (m) => m.WorkerFormComponent,
+        (m) => m.WorkerFormComponent
       ),
   },
   {
@@ -20,7 +20,7 @@ export const workersRoutes: Routes = [
     title: "Zmień Dane Pracownika",
     loadComponent: () =>
       import("./worker-form/worker-form.component").then(
-        (m) => m.WorkerFormComponent,
+        (m) => m.WorkerFormComponent
       ),
   },
   {
@@ -28,7 +28,7 @@ export const workersRoutes: Routes = [
     title: "Dane Pracownika",
     loadComponent: () =>
       import("./show-worker/show-worker.component").then(
-        (m) => m.ShowWorkerComponent,
+        (m) => m.ShowWorkerComponent
       ),
   },
   {
@@ -36,7 +36,7 @@ export const workersRoutes: Routes = [
     title: "Edytuj Dokument",
     loadComponent: () =>
       import("./docs/doc-form/doc-form.component").then(
-        (m) => m.DocFormComponent,
+        (m) => m.DocFormComponent
       ),
   },
   {
@@ -44,7 +44,7 @@ export const workersRoutes: Routes = [
     title: "Edytuj Dokument",
     loadComponent: () =>
       import("./docs/doc-form/doc-form.component").then(
-        (m) => m.DocFormComponent,
+        (m) => m.DocFormComponent
       ),
   },
   {
@@ -52,7 +52,7 @@ export const workersRoutes: Routes = [
     title: "Przypisz Podstawe",
     loadComponent: () =>
       import("./rates/basic-form/basic-form.component").then(
-        (m) => m.BasicFormComponent,
+        (m) => m.BasicFormComponent
       ),
   },
   {
@@ -60,7 +60,7 @@ export const workersRoutes: Routes = [
     title: "Przypisz Stawkę",
     loadComponent: () =>
       import("./rates/rate-value-form/rate-value-form.component").then(
-        (m) => m.RateValueFormComponent,
+        (m) => m.RateValueFormComponent
       ),
   },
   {
@@ -68,7 +68,7 @@ export const workersRoutes: Routes = [
     title: "Edytuj Stawkę",
     loadComponent: () =>
       import("./rates/rate-value-form/rate-value-form.component").then(
-        (m) => m.RateValueFormComponent,
+        (m) => m.RateValueFormComponent
       ),
   },
   {
@@ -76,7 +76,7 @@ export const workersRoutes: Routes = [
     title: "Przypisz Dodatek",
     loadComponent: () =>
       import("./addons/addon-value-form/addon-value-form.component").then(
-        (m) => m.AddonValueFormComponent,
+        (m) => m.AddonValueFormComponent
       ),
   },
   {
@@ -84,7 +84,7 @@ export const workersRoutes: Routes = [
     title: "Edytuj Dodatek",
     loadComponent: () =>
       import("./addons/addon-value-form/addon-value-form.component").then(
-        (m) => m.AddonValueFormComponent,
+        (m) => m.AddonValueFormComponent
       ),
   },
   {
@@ -98,7 +98,7 @@ export const workersRoutes: Routes = [
     title: "Dodaj Auto",
     loadComponent: () =>
       import("./cars/car-form/car-form.component").then(
-        (m) => m.CarFormComponent,
+        (m) => m.CarFormComponent
       ),
   },
   {
@@ -106,7 +106,7 @@ export const workersRoutes: Routes = [
     title: "Edytuj Auto",
     loadComponent: () =>
       import("./cars/car-form/car-form.component").then(
-        (m) => m.CarFormComponent,
+        (m) => m.CarFormComponent
       ),
   },
 ];

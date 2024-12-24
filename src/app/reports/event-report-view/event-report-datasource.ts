@@ -1,7 +1,7 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { WorkerDay } from "../../../models/events";
+import { WorkerDay } from "../../models/events";
 
 export class EventReportDataSource extends DataSource<WorkerDay> {
   private readonly dataSubject = new BehaviorSubject<WorkerDay[]>([]);

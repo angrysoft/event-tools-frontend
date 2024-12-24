@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
-import { ScheduleComponent } from "../../components/schedule/schedule.component";
 import { Router } from "@angular/router";
-import { ScheduleAction, WorkerDaySchedule } from "../../models/schedule";
+import { ScheduleComponent } from "../components/schedule/schedule.component";
+import { ScheduleAction, WorkerDaySchedule } from "../models/schedule";
 
 @Component({
     selector: "app-work-schedule",

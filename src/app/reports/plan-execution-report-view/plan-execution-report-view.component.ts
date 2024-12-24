@@ -4,13 +4,13 @@ import { MatCardModule } from "@angular/material/card";
 import { MatDivider } from "@angular/material/divider";
 import { MatTable } from "@angular/material/table";
 import { ActivatedRoute } from "@angular/router";
-import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
-import { WorkerEventDayComponent } from "../../../components/events/worker-event-day/worker-event-day.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
-import { EventItemDto } from "../../../models/events";
-import { EventPlanExecutionDay, Totals } from "../../../models/reports";
-import { ReportsService } from "../../../services/reports.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
+import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
+import { WorkerEventDayComponent } from "../../components/events/worker-event-day/worker-event-day.component";
+import { LoaderComponent } from "../../components/loader/loader.component";
+import { EventItemDto } from "../../models/events";
+import { EventPlanExecutionDay, Totals } from "../../models/reports";
+import { ReportsService } from "../../services/reports.service";
+import { WorkerDaysService } from "../../services/worker-days.service";
 import { MatButtonModule } from "@angular/material/button";
 
 @Component({

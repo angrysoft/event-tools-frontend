@@ -1,20 +1,6 @@
 import { Routes } from "@angular/router";
-import { settingsRoutes } from "./settings/settings.route";
-import { workersRoutes } from "./workers/worker.routes";
-import { eventsRoutes } from "./events/events.routes";
 
-export const adminRoutes: Routes = [
-  {
-    path: "dashboard",
-    title: "Dashboard",
-    loadComponent: () =>
-      import("./dashboard/dashboard.component").then(
-        (m) => m.DashboardComponent
-      ),
-  },
-  ...workersRoutes,
-  ...settingsRoutes,
-  ...eventsRoutes,
+export const accountManagerRoutes: Routes = [
   {
     path: "calendar",
     title: "Kalendarz Imprez",
@@ -92,11 +78,5 @@ export const adminRoutes: Routes = [
       import(
         "../reports/plan-execution-report-view/plan-execution-report-view.component"
       ).then((m) => m.PlanExecutionReportViewComponent),
-  },
-  {
-    path: "day-offs",
-    title: "Dni wolne",
-    loadComponent: () =>
-      import("./day-offs/day-offs.component").then((m) => m.DayOffsComponent),
   },
 ];

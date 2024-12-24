@@ -1,6 +1,6 @@
 import { Component, signal } from "@angular/core";
-import { DataTableComponent } from "../../../components/data-table/data-table.component";
-import { InputFilters } from "../../../components/search/model";
+import { DataTableComponent } from "../../components/data-table/data-table.component";
+import { InputFilters } from "../../components/search/model";
 
 @Component({
   selector: "app-event-report",

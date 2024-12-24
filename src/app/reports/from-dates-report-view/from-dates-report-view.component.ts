@@ -1,21 +1,21 @@
 import { Component, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
-import { ReportsService } from "../../../services/reports.service";
+import { ReportsService } from "../../services/reports.service";
 import {
   DataTeamDay,
   DataWorkerDay,
   EventWorkerDay,
   FromDatesReport,
   Totals,
-} from "../../../models/reports";
-import { ReportDataComponent } from "../../../components/reports/report-data/report-data.component";
-import { MonthReportWorkerInfoComponent } from "../../../components/reports/month-report-worker-info/month-report-worker-info.component";
+} from "../../models/reports";
+import { ReportDataComponent } from "../../components/reports/report-data/report-data.component";
+import { MonthReportWorkerInfoComponent } from "../../components/reports/month-report-worker-info/month-report-worker-info.component";
 import { MatCardModule } from "@angular/material/card";
-import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
-import { LoaderComponent } from "../../../components/loader/loader.component";
+import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
+import { LoaderComponent } from "../../components/loader/loader.component";
 import { MatButtonModule } from "@angular/material/button";
 import { Observable } from "rxjs";
-import { RestResponse } from "../../../models/rest-response";
+import { RestResponse } from "../../models/rest-response";
 
 @Component({
   selector: "app-from-dates-report-view",
