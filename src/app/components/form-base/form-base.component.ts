@@ -1,28 +1,18 @@
-import { Component, HostListener, inject, input, signal } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDividerModule } from "@angular/material/divider";
-import { MatIcon } from "@angular/material/icon";
-import { Router, RouterLink } from "@angular/router";
+import { ActionToolbarComponent } from "../action-toolbar/action-toolbar.component";
 
 @Component({
-    selector: "app-form-base",
-    imports: [MatIcon, MatDividerModule, RouterLink, MatButtonModule],
-    templateUrl: "./form-base.component.html",
-    styleUrl: "./form-base.component.scss"
+  selector: "app-form-base",
+  imports: [MatDividerModule, MatButtonModule, ActionToolbarComponent],
+  templateUrl: "./form-base.component.html",
+  styleUrl: "./form-base.component.scss",
 })
 export class FormBaseComponent {
   backTo = input.required<string>();
   formTitle = input.required<string>();
   formIdName = input.required<string>();
-  queryParams = input<{[key:string]:string | number}>({});
-
+  queryParams = input<{ [key: string]: string | number }>({});
   canSend = input<boolean>(false);
-  error = signal<string>("");
-
-  router = inject(Router);
-
-  @HostListener("document:keydown.Escape", ['$event'])
-  handleCancel() {
-    this.router.navigateByUrl(this.backTo(), { replaceUrl: true });
-  }
 }

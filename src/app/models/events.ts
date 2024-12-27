@@ -106,6 +106,12 @@ interface DuplicateDaysPayload {
   workerDays: number[];
 }
 
+interface ChangeTimePayload {
+  workerDays: { [key: number]: string };
+  startTime: Date | string;
+  endTime: Date | string;
+}
+
 interface WorkersRateDay {
   workerDay: FormControl<number | null>;
   workerName: FormControl<string | null>;
@@ -143,5 +149,6 @@ export {
   WorkersRateDay,
   ChangeWorkerPayload,
   ChangeWorkerInDatesPayload,
+  ChangeTimePayload,
   EventDaysInfo,
 };

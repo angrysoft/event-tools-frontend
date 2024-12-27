@@ -34,6 +34,7 @@ import { EventItem, EventItemForm } from "../../../models/events";
 import { EventsService } from "../../../services/events.service";
 import { OfficeWorkers, WorkerBase } from "../../../models/worker";
 import { WorkersService } from "../../../services/workers.service";
+import { AutofocusDirective } from "../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-event-form",
@@ -48,6 +49,7 @@ import { WorkersService } from "../../../services/workers.service";
     MatButtonModule,
     MatOptionModule,
     MatSelectModule,
+    AutofocusDirective,
   ],
   templateUrl: "./event-form.component.html",
   styleUrl: "./event-form.component.scss",
@@ -90,7 +92,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
       accountManagerId: new FormControl(null, Validators.required),
       chiefId: new FormControl(null, Validators.required),
       description: new FormControl(""),
-      eventChiefs: new FormArray<any>([]),
+      eventChiefs: new FormArray<FormControl<WorkerBase>>([]),
     });
 
     this.workerService.getOfficeWorkers().subscribe((resp) => {
@@ -164,8 +166,7 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
     this.destroy.complete();
   }
 
-  setDescription(text: any) {
-    console.log(text);
+  setDescription(text: { data: string }) {
     this.eventForm.controls.description.setValue(text.data);
   }
 

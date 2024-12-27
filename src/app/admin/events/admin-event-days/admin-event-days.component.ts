@@ -30,6 +30,7 @@ import { DuplicateDaysComponent } from "../../../components/events/duplicate-day
 import { RemoveWorkerDayComponent } from "../../../components/events/remove-worker-day/remove-worker-day.component";
 import { WorkerDayComponent } from "../../../components/events/worker-day/worker-day.component";
 import {
+  ChangeTimePayload,
   ChangeWorkerInDatesPayload,
   ChangeWorkerPayload,
   DuplicateDaysPayload,
@@ -278,17 +279,17 @@ export class AdminEventDaysComponent {
     timeDialog.afterClosed().subscribe((result) => {
       if (!result) return;
       this.loading.set(true);
-
-      const workerDays:any = {};
+      const payload: ChangeTimePayload = {
+        workerDays: {},
+        startTime: result.startTime,
+        endTime: result.endTime,
+      };
       this.selection.selected.forEach((sel) => {
-        if (sel.id) workerDays[sel.id] = sel.workerName;
+        if (sel.id && sel.workerName)
+          payload.workerDays[sel.id] = sel.workerName;
       });
       this.workerDayService
-        .changeTime(this.eventId, this.dayId, {
-          workerDays: workerDays,
-          startTime: result.startTime,
-          endTime: result.endTime,
-        })
+        .changeTime(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
           if (resp.ok) {
             this.loadDays();

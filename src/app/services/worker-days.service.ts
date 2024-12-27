@@ -4,6 +4,8 @@ import { Addon } from "../models/addon";
 import { CalendarDay } from "../models/calendar";
 import { DataListResponse } from "../models/data-list-response";
 import {
+  ChangeTimePayload,
+  ChangeWorkerInDatesPayload,
   ChangeWorkerPayload,
   DuplicateDaysPayload,
   EventDay,
@@ -15,7 +17,6 @@ import { Page } from "../models/page";
 import { Rate } from "../models/rate";
 import { RestResponse } from "../models/rest-response";
 import { DayOff, Schedule } from "../models/schedule";
-import { ChangeWorkerInDatesPayload } from "../models/events";
 import { CrudService } from "./crud.service";
 import { ScheduleService } from "./schedule.service";
 
@@ -73,20 +74,11 @@ export class WorkerDaysService
     );
   }
 
-  changeTime(
-    eventId: number,
-    dayId: number,
-    data: {
-      workerDays: { [key: number]: string };
-      startTime: Date | string;
-      endTime: Date | string;
-    }
-  ) {
-    return this._put<{
-      workerDays: { [key: number]: string };
-      startTime: Date | string;
-      endTime: Date | string;
-    }>(`${this.userApi}/${eventId}/day/${dayId}/time`, data);
+  changeTime(eventId: number, dayId: number, payload: ChangeTimePayload) {
+    return this._put<ChangeTimePayload>(
+      `${this.userApi}/${eventId}/day/${dayId}/time`,
+      payload
+    );
   }
 
   duplicateDays(eventId: number, dayId: number, payload: DuplicateDaysPayload) {
@@ -185,6 +177,6 @@ export class WorkerDaysService
   }
 
   removeDayOffs(days: number[]) {
-    return this._delete("/api/admin/day-offs", {days: days.join(",")});
+    return this._delete("/api/admin/day-offs", { days: days.join(",") });
   }
 }

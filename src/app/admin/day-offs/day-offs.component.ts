@@ -61,7 +61,7 @@ export class DayOffsComponent implements AfterViewInit {
     this.table().dataSource = this.dataSource;
   }
 
-  isSelected(row: any) {
+  isSelected(row: DayOff) {
     return this.selection.selected.some((el) => el.id === row.id);
   }
 

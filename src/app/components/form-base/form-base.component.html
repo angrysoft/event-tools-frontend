@@ -1,13 +1,5 @@
 <div class="form-base">
-  <header class="form-header">
-    <button
-      mat-icon-button
-      routerLink="{{ backTo() }}"
-      [queryParams]="queryParams()"
-    >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <h2>{{ formTitle() }}</h2>
+  <app-action-toolbar [title]="formTitle()" [backTo]="backTo()">
     <button
       mat-flat-button
       type="submit"
@@ -16,8 +8,7 @@
     >
       Zapisz
     </button>
-  </header>
-  <mat-divider />
+  </app-action-toolbar>
   <div class="form-base-content">
     <ng-content />
   </div>
