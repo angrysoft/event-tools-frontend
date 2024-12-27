@@ -1,12 +1,17 @@
 <app-loader [loading]="loading()" />
 
-<section class="event-details-section">
+<div class="side-content">
   <app-action-toolbar title="Dane Imprezy" backTo="/worker/calendar">
   </app-action-toolbar>
-  
-  <app-event-info [eventData]="eventData()" [tabIndex]="tabIndex" [showDays]="true">
-    <app-worker-event-files [eventId]="eventId"  files/>
-    <app-worker-event-days [eventId]="eventId" days/>
-  </app-event-info>
 
-</section>
+  <section class="event-details-section">
+    <app-event-info
+      [eventData]="eventData()"
+      [tabIndex]="tabIndex"
+      [showDays]="true"
+    >
+      <app-worker-event-files [eventId]="eventId" files />
+      <app-worker-event-days [eventId]="eventId" days />
+    </app-event-info>
+  </section>
+</div>

@@ -61,10 +61,17 @@
       </mat-card-content>
     </mat-card>
     } @if (update()) {
-    <button mat-fab extended type="button" (click)="deleteRate()">
-      <mat-icon>delete</mat-icon>
-      Usuń Stawkę
-    </button>
+    <div>
+      <button
+        mat-flat-button
+        class="delete-button"
+        type="button"
+        (click)="deleteRate()"
+      >
+        <mat-icon>delete</mat-icon>
+        Usuń Stawkę
+      </button>
+    </div>
     }
   </form>
 </app-form-base>

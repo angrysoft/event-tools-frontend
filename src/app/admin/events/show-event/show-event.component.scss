@@ -3,12 +3,8 @@
     flex-direction: column;
     gap: 1rem;
     height: 100%;
-    overflow: auto;
-}
-
-.delete-button {
-    background-color: var(--sys-error-container);
-    color: var(--sys-on-error-container);
+    overflow: hidden;
+    border: 1px solid red;
 }
 
 .url {

@@ -35,20 +35,22 @@ export class DataTableDataSource<T> extends DataSource<T> {
     this.loading.set(true);
 
     let action: Observable<RestResponse<Page<T>>>;
-    const params: {[key:string]: string | number} = {
+    const params: { [key: string]: string | number } = {
       pageNumber: this.paginator?.pageIndex ?? 0,
       pageSize: this.paginator?.pageSize ?? this.defaultPageSize,
     };
 
     if (this.query && Object.keys(this.query).length > 0) {
-      action = this.crudService.searchPaged({...params, ...this.query});
+      action = this.crudService.searchPaged({ ...params, ...this.query });
     } else {
       action = this.crudService.getAllPaged(params);
     }
 
     action.subscribe((result) => {
-      this.totalElements = result.data.page.totalElements;
-      this.dataSubject.next(result.data.content);
+      if (result.ok) {
+        this.totalElements = result.data.page.totalElements;
+        this.dataSubject.next(result.data.content);
+      } else this.crudService.showError(result);
       this.loading.set(false);
     });
   }

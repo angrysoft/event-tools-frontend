@@ -13,9 +13,16 @@
 .filters {
     display: flex;
     flex-wrap: wrap;
+    justify-content: start;
     gap: 1rem;
 }
 
 .filter {
     flex-grow: 1;
+}
+
+@media only screen and (min-width: 960px) {
+    .filter {
+        flex-grow: 0;
+    }
 }

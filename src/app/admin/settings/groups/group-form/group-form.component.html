@@ -36,16 +36,17 @@
       </mat-card-content>
     </mat-card>
     @if (update()) {
-    <button
-      mat-fab
-      extended
-      type="button"
-      class="delete-button"
-      (click)="deleteGroup()"
-    >
-      <mat-icon>delete</mat-icon>
-      Usuń Grupę
-    </button>
+    <div>
+      <button
+        mat-flat-button
+        type="button"
+        class="delete-button"
+        (click)="deleteGroup()"
+      >
+        <mat-icon>delete</mat-icon>
+        Usuń Grupę
+      </button>
+    </div>
     }
   </form>
 </app-form-base>

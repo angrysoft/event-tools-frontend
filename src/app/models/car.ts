@@ -5,6 +5,12 @@ interface Car {
   workerId: number;
   name: string;
   registration: string;
+  carDoc: CarDoc[];
+  company: false;
+}
+
+interface CarDoc {
+
 }
 
 interface CarForm {
@@ -14,4 +20,4 @@ interface CarForm {
   registration: FormControl<string | null>;
 }
 
-export { Car, CarForm };
+export { Car, CarForm, CarDoc };
