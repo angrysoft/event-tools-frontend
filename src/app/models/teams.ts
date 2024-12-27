@@ -1,4 +1,4 @@
-import { GroupForm } from "./group";
+import { FormControl } from "@angular/forms";
 
 interface Team {
   id: number;
@@ -6,6 +6,10 @@ interface Team {
   sort: number;
 }
 
-interface TeamForm extends GroupForm {}
+interface TeamForm {
+  id: FormControl<number | null>;
+  name: FormControl<string | null>;
+  sort: FormControl<number | null>;
+}
 
 export { Team, TeamForm };

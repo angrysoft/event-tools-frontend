@@ -12,7 +12,7 @@ export class DayOffComponent {
   showMenu = input<boolean>(false);
   accepted = input.required<boolean>();
   actionTrigger = output<MenuAction>();
-  data = input<any>();
+  data = input.required<{id: number}>();
 
   triggerAction(action: string) {
     this.actionTrigger.emit({

@@ -1,4 +1,4 @@
-import { Component, effect, input, signal } from "@angular/core";
+import { Component, effect, input } from "@angular/core";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({

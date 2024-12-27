@@ -24,7 +24,7 @@
             formControlName="firstName"
             placeholder="Imię"
             autocomplete="given-name"
-            autofocus
+            appAutofocus
           />
           @if (workerForm.controls.firstName.getError("exists")) {
           <mat-error>

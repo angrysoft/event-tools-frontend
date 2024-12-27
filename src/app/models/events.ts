@@ -59,6 +59,7 @@ interface WorkerDay {
   addons?: string;
   workerDayAddons: WorkerAddons[];
   state?: string;
+  editedBy?: number;
 }
 
 interface WorkerDayForm {

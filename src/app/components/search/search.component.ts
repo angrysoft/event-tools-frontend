@@ -79,7 +79,7 @@ export class SearchComponent implements AfterViewInit {
     this.searchRequest.emit(sendValue);
   }
 
-  private removeNulls(value: { [x: string]: any }) {
+  private removeNulls(value: { [x: string]: string | null }) {
     const cleaned: { [key: string]: string } = {};
     for (const [k, v] of Object.entries(value)) {
       if (v) cleaned[k] = v;

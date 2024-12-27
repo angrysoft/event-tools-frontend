@@ -34,8 +34,6 @@ export class CalendarViewComponent {
   showAdd = input<boolean>(false);
 
   currentDate: string = "";
-  schedules: any;
-  size: any;
 
   weekDayNames = ["PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "NIEDZ."];
 
@@ -154,10 +152,10 @@ export class CalendarViewComponent {
   handleActions(menuData: MenuAction) {
     switch (menuData.action) {
       case "remove":
-        this.removeDayOff(menuData.data);
+        this.removeDayOff(menuData.data as number);
         break;
       case "goTo":
-        this.goToEvent(menuData.data);
+        this.goToEvent(menuData.data as number);
     }
   }
 }

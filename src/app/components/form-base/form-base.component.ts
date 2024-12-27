@@ -14,7 +14,7 @@ export class FormBaseComponent {
   backTo = input.required<string>();
   formTitle = input.required<string>();
   formIdName = input.required<string>();
-  queryParams = input<any>({});
+  queryParams = input<{[key:string]:string | number}>({});
 
   canSend = input<boolean>(false);
   error = signal<string>("");
@@ -22,7 +22,7 @@ export class FormBaseComponent {
   router = inject(Router);
 
   @HostListener("document:keydown.Escape", ['$event'])
-  handleCancel(event: any) {
+  handleCancel() {
     this.router.navigateByUrl(this.backTo(), { replaceUrl: true });
   }
 }

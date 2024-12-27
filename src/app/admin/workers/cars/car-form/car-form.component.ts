@@ -104,14 +104,14 @@ export class CarFormComponent implements OnInit {
       .update(this.carId(), this.carForm.value as Car)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
-        else this.handleError(resp);
+        else this.service.showError(resp);
       });
   }
 
   addCar() {
     this.service.create(this.carForm.value as Car).subscribe((resp) => {
       if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
-      else this.handleError(resp);
+      else this.service.showError(resp);
     });
   }
 
@@ -128,13 +128,6 @@ export class CarFormComponent implements OnInit {
           }
         });
       }
-    });
-  }
-
-  handleError(err: any) {
-    console.warn(err.error);
-    this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {
-      verticalPosition: "top",
     });
   }
 }

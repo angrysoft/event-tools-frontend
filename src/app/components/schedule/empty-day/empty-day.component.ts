@@ -1,6 +1,6 @@
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 import { Component, input, output } from '@angular/core';
-import { MenuAction } from '../../../models/menu';
+import { MenuAction, WorkerAction } from '../../../models/menu';
 
 @Component({
   selector: "app-empty-day",
@@ -11,12 +11,12 @@ import { MenuAction } from '../../../models/menu';
 export class EmptyDayComponent {
   showMenu = input<boolean>(false);
   actionTrigger = output<MenuAction>();
-  data = input<any>();
+  data = input<WorkerAction>();
 
   triggerAction(action: string) {
     this.actionTrigger.emit({
       action: action,
-      data: this.data(),
+      data: this.data() as WorkerAction,
     });
   }
 }

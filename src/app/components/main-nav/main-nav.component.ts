@@ -1,5 +1,11 @@
 import { MediaMatcher } from "@angular/cdk/layout";
-import { ChangeDetectorRef, Component, inject, viewChild, OnDestroy } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  viewChild,
+  OnDestroy,
+} from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
@@ -37,7 +43,6 @@ export class MainNavComponent implements OnDestroy {
   sideNav = viewChild<MatSidenav>("drawer");
 
   constructor() {
-    console.log("wtf ...");
     this.username = `${this.auth.user?.firstName} ${this.auth.user?.lastName}`;
     const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
@@ -67,8 +72,11 @@ export class MainNavComponent implements OnDestroy {
     this.dialog.open(SetThemeComponent);
   }
 
-  sideNavOnClick(ev: any) {
-    if (this.mobileQuery.matches && !ev.target.tagName.startsWith("MAT-")) {
+  sideNavOnClick(ev: MouseEvent) {
+    if (
+      this.mobileQuery.matches &&
+      !(ev.target as HTMLElement)?.tagName.startsWith("MAT-")
+    ) {
       this.sideNav()?.close();
     }
   }

@@ -2,7 +2,7 @@ import { Component, inject } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ScheduleComponent } from "../../components/schedule/schedule.component";
 import { ContactComponent } from "../contact/contact.component";
-import { ScheduleAction } from "../../models/schedule";
+import { ScheduleAction, ScheduleWorkerId } from "../../models/schedule";
 
 @Component({
   selector: "app-work-schedule",
@@ -13,10 +13,11 @@ import { ScheduleAction } from "../../models/schedule";
 export class WorkScheduleComponent {
   dialog = inject(MatDialog);
 
-  onAction(action: any) {
+  onAction(action: ScheduleAction) {
     if (action.action === "worker") {
+      const data = action.data as ScheduleWorkerId;
       this.dialog.open(ContactComponent, {
-        data: { worker: action.data.workerId },
+        data: { worker: data.workerId },
       });
     }
   }

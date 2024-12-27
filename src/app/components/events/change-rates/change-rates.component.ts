@@ -149,6 +149,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   removeWorkerAddon(worker: any, idx: number) {
     worker.get("workerDayAddons").removeAt(idx);
     this.addonsChanged();
@@ -192,6 +193,7 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
   handleSubmit() {
     if (this.changeRateForm.valid && this.changeRateForm.dirty) {
       const payload: WorkersRateDay[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.changeRateForm.value.workers.forEach((w: any) => {
         payload.push({
           worker: w.worker,
@@ -225,5 +227,5 @@ interface WorkerSelect {
   worker: number;
   rate: number;
   workerName: string;
-  workerDayAddons: any[];
+  workerDayAddons: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

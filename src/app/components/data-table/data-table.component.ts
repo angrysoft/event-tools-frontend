@@ -44,18 +44,18 @@ export class DataTablePaginatorIntl implements MatPaginatorIntl {
 }
 
 @Component({
-    selector: "app-data-table",
-    imports: [
-        AddButtonComponent,
-        MatTableModule,
-        MatProgressSpinnerModule,
-        MatPaginatorModule,
-        LoaderComponent,
-        SearchComponent,
-    ],
-    templateUrl: "./data-table.component.html",
-    styleUrl: "./data-table.component.scss",
-    providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }]
+  selector: "app-data-table",
+  imports: [
+    AddButtonComponent,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
+    LoaderComponent,
+    SearchComponent,
+  ],
+  templateUrl: "./data-table.component.html",
+  styleUrl: "./data-table.component.scss",
+  providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }],
 })
 export class DataTableComponent<T> implements AfterViewInit, OnInit {
   readonly service = inject(CrudService<T>);
@@ -90,7 +90,8 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator();
     this.table().dataSource = this.dataSource;
   }
-
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick(row: any) {
     this.router.navigateByUrl(`${this.actionsUrl()}/${row[this.itemIdName()]}`);
   }

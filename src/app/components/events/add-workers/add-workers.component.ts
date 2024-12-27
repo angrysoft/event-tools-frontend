@@ -101,7 +101,7 @@ export class AddWorkersComponent {
       id: new FormControl(),
       value: new FormControl(),
     });
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const state: any = this.router.getCurrentNavigation()?.extras.state;
     let startTime = new Date();
 
@@ -196,7 +196,7 @@ export class AddWorkersComponent {
 
     if (
       this.addWorkersForm.controls.workerDayAddons.value.find(
-        (a: any) => a.addon === addon.id
+        (a: { addon: number; }) => a.addon === addon.id
       )
     )
       return;
@@ -224,7 +224,7 @@ export class AddWorkersComponent {
 
       for (const w of formValues.workers) {
         const workerDayAddons: WorkerAddons[] = [];
-        formValues.workerDayAddons.forEach((a: any) => {
+        formValues.workerDayAddons.forEach((a: WorkerAddons) => {
           workerDayAddons.push({
             ...a,
             worker: w.id,

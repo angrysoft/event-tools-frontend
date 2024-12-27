@@ -2,6 +2,7 @@ import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
 import { Component, input, output } from "@angular/core";
 import { MenuAction } from "../../../models/menu";
 import { getTextColor } from "../../../utils/colors";
+import { WorkerDaySchedule } from "../../../models/schedule";
 
 @Component({
   selector: "app-event-day",
@@ -12,7 +13,7 @@ import { getTextColor } from "../../../utils/colors";
 export class EventDayComponent {
   showMenu = input<boolean>(false);
   actionTrigger = output<MenuAction>();
-  data = input<any>();
+  data = input.required<WorkerDaySchedule>();
 
   triggerAction(action: string) {
     this.actionTrigger.emit({

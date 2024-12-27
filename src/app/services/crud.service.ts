@@ -76,7 +76,7 @@ export class CrudService<T> {
   }
 
   searchPaged(
-    opts: { [key: string]: string } | null = null
+    opts: { [key: string]: string | number } | null = null
   ): Observable<RestResponse<Page<T>>> {
     return this._get<RestResponse<Page<T>>>(`${this.apiUrl}/search`, opts);
   }
@@ -139,6 +139,7 @@ export class CrudService<T> {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected handleError(err: any) {
     if (err.status === 401) {
       // FIXME: wszystkie serwisy powinny obsłużyć on destroy !?
@@ -149,6 +150,7 @@ export class CrudService<T> {
     return of(err.error);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   showError(err: any) {
     console.warn(err.error);
     this._snackBar.open(err.data ?? "Coś poszło nie tak...", "Zamknij", {

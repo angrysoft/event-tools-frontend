@@ -1,4 +1,4 @@
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { CrudService } from "../../../services/crud.service";
@@ -15,7 +15,7 @@ export class ListDataSource<T> extends DataSource<T> {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  connect(): Observable<T[]> {
     this.loadData();
     return this.listSubject.asObservable();
   }

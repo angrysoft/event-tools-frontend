@@ -59,15 +59,16 @@ export class DocsService extends CrudService<WorkerDoc> {
     if (doc.id) {
       formData.set("id", doc.id.toString());
     }
-
     formData.set("name", doc.name ?? "");
 
-    if (doc.expire && !(doc.expire instanceof Date)) {
-      doc.expire = new Date(doc.expire as string);
+    if (doc.expirationDate && doc.expire) {
+      if (!(doc.expire instanceof Date)) {
+        doc.expire = new Date(doc.expire);
+      }
+      formData.set("expire", doc.expire?.toLocaleDateString() ?? "");
     }
-
-    formData.set("expire", doc.expire?.toLocaleDateString() ?? "");
     formData.set("expirationDate", doc.expirationDate?.toString() ?? "false");
+
     if (doc.file) formData.set("file", doc.file);
     formData.set("worker", doc.worker?.toString() ?? "");
     return formData;

@@ -94,7 +94,7 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
 
       if (
         !workerDayAddons ||
-        workerDayAddons?.value.find((a: any) => a.addon === addon.id)
+        workerDayAddons?.value.find((a: { addon: number; }) => a.addon === addon.id)
       )
         continue;
 
@@ -111,10 +111,10 @@ export class WorkerDayAddonsComponent implements AfterViewInit, OnDestroy {
     this.addonGroup.reset();
   }
 
-  removeWorkerAddon(worker: any, idx: number) {
-    worker.get("workerDayAddons").removeAt(idx);
-    this.update.emit();
-  }
+  // removeWorkerAddon(worker: any, idx: number) {
+  //   worker.get("workerDayAddons").removeAt(idx);
+  //   this.update.emit();
+  // }
 
   addonTypeChange(id: number | null | undefined) {
     if (!id) return;

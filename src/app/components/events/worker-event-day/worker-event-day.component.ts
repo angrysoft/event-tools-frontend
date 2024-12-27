@@ -3,7 +3,7 @@ import { Component, input } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatTableModule } from "@angular/material/table";
-import { EventDay, WorkerDay } from "../../../models/events";
+import { WorkerDay } from "../../../models/events";
 
 @Component({
   selector: "app-worker-event-day",

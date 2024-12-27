@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { CanActivateFn, RedirectCommand, Router } from "@angular/router";
 import { AuthService } from "./services/auth.service";
 
-const authGuard: CanActivateFn = (route, state) => {
+const authGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
@@ -14,7 +14,7 @@ const authGuard: CanActivateFn = (route, state) => {
   }
 };
 
-const isAdmin: CanActivateFn = (route, state) => {
+const isAdmin: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
@@ -28,7 +28,7 @@ const isAdmin: CanActivateFn = (route, state) => {
   }
 };
 
-const isAccountManager: CanActivateFn = (route, state) => {
+const isAccountManager: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
    if (auth.isAccountManager()) return true;
@@ -41,7 +41,7 @@ const isAccountManager: CanActivateFn = (route, state) => {
    }
 }
 
-const isWorker: CanActivateFn = (route, state) => {
+const isWorker: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
    if (auth.isWorker()) return true;

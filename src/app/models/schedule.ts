@@ -9,7 +9,7 @@ interface Schedule {
 interface WorkerSchedule {
   id: number;
   workerName: string;
-  color: string;
+  color: string | null;
   days: {
     [key: string]: WorkerDaySchedule[];
   };
@@ -27,10 +27,14 @@ interface WorkerDaySchedule {
   eventDay: number;
   eventName: string;
   startDate: string;
+  startTime: string | Date;
+  endTime: string | Date;
   worker: number;
-  color: string;
+  color: string | null;
   dayOff: boolean;
   accepted: boolean;
+  state: string;
+  info: string | null;
 }
 
 interface Day {
@@ -41,12 +45,17 @@ interface Day {
 
 interface ScheduleAction {
   action: "worker" | "event" | "goto";
-  data: WorkerDaySchedule | { workerId: number };
+  data: WorkerDaySchedule | ScheduleWorkerId;
+}
+
+interface ScheduleWorkerId {
+  workerId: number
 }
 
 export {
   Schedule,
   WorkerSchedule,
+  ScheduleWorkerId,
   WorkerDaySchedule,
   Day,
   ScheduleAction,

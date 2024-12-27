@@ -1,10 +1,10 @@
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
+import { Page } from "../../models/page";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
-import { Page } from "../../models/page";
 import { SearchQuery } from "../search/model";
 
 export class DataTableDataSource<T> extends DataSource<T> {
@@ -19,7 +19,7 @@ export class DataTableDataSource<T> extends DataSource<T> {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  connect(): Observable<T[]> {
     this.paginator?.page.subscribe(() => {
       this.loadData();
     });

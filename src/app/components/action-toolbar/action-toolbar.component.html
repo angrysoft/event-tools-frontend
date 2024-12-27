@@ -1,6 +1,6 @@
 <header class="header">
   @if (showBackTo) {
-    <button mat-icon-button [routerLink]="backTo()">
+    <button mat-icon-button (click)="handleBackTo()">
       <mat-icon>arrow_back</mat-icon>
     </button>
   } @else {

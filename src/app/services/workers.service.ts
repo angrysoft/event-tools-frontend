@@ -59,7 +59,7 @@ export class WorkersService extends CrudService<Worker> {
   }
 
   searchWorkerPaged(
-    opts: { [key: string]: string } | null = null
+    opts: { [key: string]: string | number } | null = null
   ): Observable<RestResponse<Page<WorkerBase>>> {
     return this._get<RestResponse<Page<WorkerBase>>>(
       `${this.userApi}/search`,

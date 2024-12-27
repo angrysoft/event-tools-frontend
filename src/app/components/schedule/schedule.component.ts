@@ -19,8 +19,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { WorkerBase } from "../../models/worker";
-import { ChangeWorkerInDatesPayload, ChangeWorkerPayload } from "../../models/events";
-import { MenuAction } from "../../models/menu";
+import {
+  ChangeWorkerInDatesPayload,
+  ChangeWorkerPayload,
+} from "../../models/events";
+import { DayId, MenuAction, WorkerAction } from "../../models/menu";
 import {
   Schedule,
   ScheduleAction,
@@ -154,7 +157,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   get cssCols() {
-    return `repeat(${this.header.length+1}, auto)`;
+    return `repeat(${this.header.length + 1}, auto)`;
   }
 
   get rows() {
@@ -166,10 +169,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.offset = 0;
     this.loadData(this.size, this.offset);
   }
-
-  // onClick(data: any) {
-  //   this.action.emit({ action: "event", data: data });
-  // }
 
   goToWorker(id: number) {
     this.action.emit({ action: "worker", data: { workerId: id } });
@@ -195,7 +194,10 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  addDayOff(worker: any, data: any) {
+  addDayOff(
+    worker: { workerName: string; id: number },
+    data: { date: string | Date }
+  ) {
     const dayOffDialog = this.dialog.open(AddDayOffComponent, {
       data: {
         startDate: data.date,
@@ -280,7 +282,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
           this.loading.set(true);
           if (result.inRange && newWorker) {
-            const payload:ChangeWorkerInDatesPayload = {
+            const payload: ChangeWorkerInDatesPayload = {
               newWorker: newWorker.id,
               newWorkerName: `${newWorker.firstName} ${newWorker.lastName}`,
               oldWorker: data.worker,
@@ -316,7 +318,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  removeDayOff(data: any) {
+  removeDayOff(data: DayId) {
     const delDialog = this.dialog.open(ConfirmDialogComponent, {
       data: { msg: "Czy na pewno chcesz usunąć" },
     });
@@ -334,7 +336,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  rejectDayOff(data: any) {
+  rejectDayOff(data: DayId) {
     this.loading.set(true);
     this.workerDayService.rejectDayOff(data.id).subscribe((resp) => {
       if (resp.ok) {
@@ -344,7 +346,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  acceptDayOff(data: any) {
+  acceptDayOff(data: DayId) {
     this.loading.set(true);
     this.workerDayService.acceptDayOff(data.id).subscribe((resp) => {
       if (resp.ok) {
@@ -365,13 +367,13 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   dayOffAction(menuData: MenuAction) {
     switch (menuData.action) {
       case "accept":
-        this.acceptDayOff(menuData.data);
+        this.acceptDayOff(menuData.data as DayId);
         break;
       case "remove":
-        this.removeDayOff(menuData.data);
+        this.removeDayOff(menuData.data as DayId);
         break;
       case "reject":
-        this.rejectDayOff(menuData.data);
+        this.rejectDayOff(menuData.data as DayId);
         break;
     }
   }
@@ -379,21 +381,26 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   eventDayAction(menuData: MenuAction) {
     switch (menuData.action) {
       case "duplicate":
-        this.duplicateDay(menuData.data);
+        this.duplicateDay(menuData.data as WorkerDaySchedule);
         break;
       case "remove":
-        this.removeDay(menuData.data);
+        this.removeDay(menuData.data as WorkerDaySchedule);
         break;
       case "changeWorker":
-        this.changeWorker(menuData.data);
+        this.changeWorker(menuData.data as WorkerDaySchedule);
         break;
       case "goto":
-        this.action.emit({ action: "event", data: menuData.data });
+        this.action.emit({
+          action: "event",
+          data: menuData.data as WorkerDaySchedule | { workerId: number },
+        });
     }
   }
 
   emptyDayAction(menuData: MenuAction) {
-    if (menuData.action === "addDayOff")
-      this.addDayOff(menuData.data.worker, menuData.data.data);
+    if (menuData.action === "addDayOff") {
+      const data = menuData.data as WorkerAction;
+      this.addDayOff(data.worker, data.data);
+    }
   }
 }

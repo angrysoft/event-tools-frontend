@@ -116,7 +116,7 @@ export class WorkerChooserComponent implements OnInit, AfterViewInit {
     this.dataSource.loadData();
   }
 
-  isSelected(row: any) {
+  isSelected(row: WorkerBase) {
     return this.selection.selected.some((el) => el.id === row.id);
   }
 }

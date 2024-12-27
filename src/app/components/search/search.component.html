@@ -10,7 +10,7 @@
       />
       <mat-hint>Minimum 3 znaki</mat-hint>
     </mat-form-field>
-    <button mat-fab>
+    <button mat-fab [disabled]="!searchForm.valid && !searchForm.dirty">
       <mat-icon>search</mat-icon>
     </button>
     <button

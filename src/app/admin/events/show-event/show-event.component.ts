@@ -1,17 +1,17 @@
-import { Component, HostListener, inject, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTabsModule } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { EventFilesComponent } from "../../../components/events/event-files/event-files.component";
 import { EventInfoComponent } from "../../../components/events/event-info/event-info.component";
 import { LoaderComponent } from "../../../components/loader/loader.component";
 import { EventItemDto } from "../../../models/events";
 import { EventsService } from "../../../services/events.service";
-import { EventFilesComponent } from "../../../components/events/event-files/event-files.component";
-import { ActionToolbarComponent } from "../../../components/action-toolbar/action-toolbar.component";
 
 @Component({
   selector: "app-show-event",
@@ -73,10 +73,5 @@ export class ShowEventComponent {
         });
       }
     });
-  }
-
-  @HostListener("document:keydown.Escape", ["$event"])
-  handleCancel(event: any) {
-    this.router.navigateByUrl("/admin/events", { replaceUrl: true });
   }
 }

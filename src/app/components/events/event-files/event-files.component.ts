@@ -1,6 +1,7 @@
 import {
   Component,
   effect,
+  ElementRef,
   inject,
   input,
   signal,
@@ -30,7 +31,7 @@ export class EventFilesComponent {
   files = signal<EventFile[]>([]);
   confirm = inject(MatDialog);
   dropZoneClasses = signal<string[]>(["drop-zone"]);
-  readonly inputFile = viewChild<any>("file");
+  readonly inputFile = viewChild<ElementRef<HTMLInputElement>>("file");
   private readonly cancel = new Subject();
 
   constructor() {
@@ -81,7 +82,10 @@ export class EventFilesComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.inputFile().nativeElement.value = "";
+      const inputFileElement = this.inputFile()?.nativeElement;
+      if (inputFileElement) {
+        inputFileElement.value = "";
+      }
       if (result === true) {
         this.service.getEventFiles(this.eventId()).subscribe((resp) => {
           if (resp.ok) this.files.set(resp.data);

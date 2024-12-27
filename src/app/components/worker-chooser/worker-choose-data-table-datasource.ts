@@ -1,12 +1,12 @@
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Page } from "../../models/page";
 import { RestResponse } from "../../models/rest-response";
+import { WorkerBase } from "../../models/worker";
 import { WorkersService } from "../../services/workers.service";
 import { SearchQuery } from "../search/model";
-import { WorkerBase } from "../../models/worker";
 
 export class WorkerChooseTableDataSource extends DataSource<WorkerBase> {
   private readonly dataSubject = new BehaviorSubject<WorkerBase[]>([]);
@@ -20,7 +20,7 @@ export class WorkerChooseTableDataSource extends DataSource<WorkerBase> {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<WorkerBase[]> {
+  connect(): Observable<WorkerBase[]> {
     this.paginator?.page.subscribe(() => {
       this.loadData();
     });

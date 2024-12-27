@@ -49,7 +49,7 @@ export class SettingListComponent<T> implements AfterViewInit, OnInit {
     this.dataSource.loadData();
   }
 
-  onClick(row: any) {
+  onClick(row: {id:number}) {
     this.router.navigateByUrl(`${this.actionsUrl()}/${row.id}`);
   }
 }

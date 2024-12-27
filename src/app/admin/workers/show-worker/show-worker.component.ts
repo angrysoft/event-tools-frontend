@@ -119,7 +119,7 @@ export class ShowWorkerComponent {
   }
 
   @HostListener("document:keydown.Escape", ["$event"])
-  handleCancel(event: any) {
+  handleCancel() {
     this.router.navigateByUrl("/admin/workers", { replaceUrl: true });
   }
 }

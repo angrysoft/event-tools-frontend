@@ -35,7 +35,7 @@ export class ChangeWorkerComponent {
 
   constructor() {
     let date = null;
-    if (this.data && this.data.startDate) date = new Date(this.data.startDate);
+    if (this.data.startDate) date = new Date(this.data.startDate);
     this.changeWorkerForm = new FormGroup<ChangeWorkerForm>({
       from: new FormControl(date, Validators.required),
       to: new FormControl(date, Validators.required),
@@ -53,7 +53,7 @@ export class ChangeWorkerComponent {
     return dateToString(this.changeWorkerForm.controls.to.value ?? new Date());
   }
 
-  inRangeChange(ev: any) {
+  inRangeChange(ev: {checked: boolean}) {
     if (ev.checked) {
       this.changeWorkerForm.enable();
       this.changeWorkerForm.enable();

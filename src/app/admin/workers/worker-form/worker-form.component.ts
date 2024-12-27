@@ -29,6 +29,7 @@ import { WorkerForm } from "../../../models/worker";
 import { WorkerHints } from "../../../models/worker-hints";
 import { WorkersService } from "../../../services/workers.service";
 import { passwordValidator } from "../../../validators/passwordValidator";
+import { AutofocusDirective } from "../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-worker-form",
@@ -43,6 +44,7 @@ import { passwordValidator } from "../../../validators/passwordValidator";
     MatDividerModule,
     MatCardModule,
     FormBaseComponent,
+    AutofocusDirective
   ],
   templateUrl: "./worker-form.component.html",
   styleUrl: "./worker-form.component.scss",
@@ -187,17 +189,16 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
   }
 
   toggleAccount() {
-    if (this.workerForm.controls.hasAccount.value) this.enableAccount(true);
+    if (this.workerForm.controls.hasAccount.value) this.enableAccount();
     else this.disableAccount();
   }
 
-  enableAccount(checkPasswords: boolean) {
+  enableAccount() {
     this.workerForm.controls.username.enable();
     this.workerForm.controls.password.enable();
     this.workerForm.controls.password2.enable();
     this.workerForm.controls.authority.enable();
     this.workerForm.addValidators(passwordValidator());
-    // this.passwordCheck.set(checkPasswords);
     this.workerForm.updateValueAndValidity();
   }
 
@@ -211,7 +212,6 @@ export class WorkerFormComponent implements OnInit, OnDestroy {
     this.workerForm.controls.authority.disable();
     this.workerForm.controls.authority.reset();
     this.workerForm.removeValidators(passwordValidator);
-    // this.workerAccount.markAsPristine();
     this.workerForm.updateValueAndValidity();
   }
 

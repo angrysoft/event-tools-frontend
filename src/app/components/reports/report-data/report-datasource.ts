@@ -1,4 +1,4 @@
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { DataSource } from "@angular/cdk/collections";
 import { signal } from "@angular/core";
 import { MatTableModule } from "@angular/material/table";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -12,7 +12,7 @@ export class ReportDataSource<T> extends DataSource<T> {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  connect(): Observable<T[]> {
     return this.dataSubject.asObservable();
   }
 
