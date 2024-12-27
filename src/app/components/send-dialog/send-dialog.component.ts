@@ -2,7 +2,6 @@ import { HttpClient, HttpEventType } from "@angular/common/http";
 import { AfterContentInit, Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
-import { MatDivider } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatProgressBar } from "@angular/material/progress-bar";
@@ -15,7 +14,6 @@ import { catchError, of, Subject, takeUntil } from "rxjs";
         MatDialogModule,
         MatProgressBar,
         MatIconModule,
-        MatDivider,
         MatListModule
     ],
     templateUrl: "./send-dialog.component.html",

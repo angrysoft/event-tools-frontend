@@ -1,6 +1,5 @@
 <h2 mat-dialog-title>{{ data.header }}</h2>
-<mat-dialog-content>
-  <div class="progress">
+<mat-dialog-content class="progress">
     <mat-list>
       @for (name of fileNames(); track $index) {
       <mat-list-item>{{ name }}</mat-list-item>
@@ -11,14 +10,12 @@
       @if (sending()) {
       <mat-icon (click)="cancelSend()">cancel</mat-icon>
       } @else {
-      <mat-icon style="padding: 0.5rem">check_circle</mat-icon>
+      <mat-icon>check_circle</mat-icon>
       }
     </div>
     @if (error()) {
     <div style="color: red">{{ error() }}</div>
     }
-  </div>
-  <mat-divider />
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]="true" [disabled]="sending()">
