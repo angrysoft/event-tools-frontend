@@ -42,7 +42,7 @@ export class ReportsService extends CrudService<
 
   getOwnMonthRaportForWorker(month: number | string, year: number | string) {
     return this._get<RestResponse<MonthReport>>(
-      `/api/reports/month/worker/${month}/${year}`
+      `/api/worker-reports/month/worker/${month}/${year}`
     );
   }
 
