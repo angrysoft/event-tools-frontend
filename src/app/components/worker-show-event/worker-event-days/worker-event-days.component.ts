@@ -3,7 +3,7 @@ import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { EventDaysService } from "../../../services/event-days.service";
 import { EventDay, EventItemDto } from "../../../models/events";
-import { WorkerEventDayComponent } from "../../../components/events/worker-event-day/worker-event-day.component";
+import { WorkerEventDayComponent } from "../../events/worker-event-day/worker-event-day.component";
 
 @Component({
   selector: "app-worker-event-days",
@@ -53,7 +53,6 @@ export class WorkerEventDaysComponent implements OnInit {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
         this.eventDays.set(resp.data.eventDays);
-        console.log(resp.data);
       }
       this.loading.set(false);
     });

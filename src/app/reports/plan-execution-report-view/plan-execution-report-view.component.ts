@@ -3,7 +3,7 @@ import { Component, inject, signal, viewChild } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatDivider } from "@angular/material/divider";
 import { MatTable } from "@angular/material/table";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
 import { WorkerEventDayComponent } from "../../components/events/worker-event-day/worker-event-day.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
@@ -23,8 +23,8 @@ import { MatButtonModule } from "@angular/material/button";
     DatePipe,
     LoaderComponent,
     MatDivider,
-    WorkerEventDayComponent
-],
+    WorkerEventDayComponent,
+  ],
   templateUrl: "./plan-execution-report-view.component.html",
   styleUrl: "./plan-execution-report-view.component.scss",
 })
@@ -32,6 +32,7 @@ export class PlanExecutionReportViewComponent {
   reportService = inject(ReportsService);
   workerDayService = inject(WorkerDaysService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   loading = signal<boolean>(true);
   statuses = signal<{ [key: string]: string }>({});
@@ -45,7 +46,7 @@ export class PlanExecutionReportViewComponent {
     chief: "",
     editors: [],
   });
-  
+
   totalsPlan = signal<Totals>({
     totalHours: 0,
     totalAddons: "",
@@ -61,6 +62,7 @@ export class PlanExecutionReportViewComponent {
   });
 
   days = signal<EventPlanExecutionDay[]>([]);
+  backTo = signal<string>("/admin/reports/plan-execution");
 
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
   readonly table = viewChild.required(MatTable);
@@ -77,6 +79,13 @@ export class PlanExecutionReportViewComponent {
   ];
 
   constructor() {
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state) {
+      if (state["backTo"]) {
+        this.backTo.set(state["backTo"]);
+      }
+    }
+
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });

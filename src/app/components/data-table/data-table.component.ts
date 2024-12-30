@@ -5,7 +5,7 @@ import {
   Injectable,
   input,
   OnInit,
-  viewChild
+  viewChild,
 } from "@angular/core";
 import {
   MatPaginator,
@@ -67,6 +67,7 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   api = input.required<string>();
 
   actionsUrl = input.required<string>();
+  actionsData = input<{ [key: string]: string } | undefined>();
 
   tableColumns = input.required<{ name: string; def: string }[]>();
 
@@ -90,10 +91,19 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator();
     this.table().dataSource = this.dataSource;
   }
-  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick(row: any) {
-    this.router.navigateByUrl(`${this.actionsUrl()}/${row[this.itemIdName()]}`);
+    if (this.actionsData()) {
+      this.router.navigateByUrl(
+        `${this.actionsUrl()}/${row[this.itemIdName()]}`,
+        { state: this.actionsData() }
+      );
+    } else {
+      this.router.navigateByUrl(
+        `${this.actionsUrl()}/${row[this.itemIdName()]}`
+      );
+    }
   }
 
   searchQuery(q: SearchQuery) {

@@ -1,11 +1,11 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Raport Miesieczny" backTo="/admin/reports/workers">
+  <app-action-toolbar title="Raport Miesieczny" [backTo]="backTo">
     @if (reportData().length > 0) {
     <a
       mat-button
-      href="/api/admin/reports/month/{{ reportType() }}/{{reportMemberId}}/{{ month }}/{{
+      href="/api/reports/month/{{ reportType() }}/{{reportMemberId}}/{{ month }}/{{
         year
       }}/pdf"
       target="_blank"

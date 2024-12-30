@@ -1,17 +1,19 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Raport z zakresu dat" backTo="/admin/reports/from-dates">
+  <app-action-toolbar
+    title="Raport z zakresu dat"
+    [backTo]="backTo()"
+  >
     @if (reportData().length > 0) {
     <a
       mat-button
-      href="/api/admin/reports/from-dates/{{ reportType() }}/pdf?from={{
-        from
-      }}&to={{ to }}&{{ reportType() }}={{ reportMembers }}"
+      href="/api/reports/from-dates/{{ reportType() }}/pdf?from={{ from }}&to={{
+        to
+      }}&{{ reportType() }}={{ reportMembers }}"
       target="_blank"
       >Pobierz PDF</a
     >
-    <!-- <a mat-button href="/api/admin/reports/event/{{eventId}}/csv?hideAmount={{hideAmount()}}" target="_blank">Pobierz CSV</a> -->
     }
   </app-action-toolbar>
 

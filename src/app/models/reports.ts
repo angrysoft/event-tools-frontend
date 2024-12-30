@@ -73,6 +73,7 @@ interface FromDatesReportPayload {
   from: string;
   to: string;
   members: string[] | number[];
+  backTo: string;
 }
 
 export {

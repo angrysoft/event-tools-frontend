@@ -1,10 +1,10 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Raport Plan/Realizacja" backTo="/admin/reports/plan-execution">
+  <app-action-toolbar title="Raport Plan/Realizacja" [backTo]="backTo()">
     <a
       mat-button
-      href="/api/admin/reports/plan-execution/{{ eventId }}/pdf"
+      href="/api/reports/plan-execution/{{ eventId }}/pdf"
       target="_blank"
       >Pobierz PDF</a
     >

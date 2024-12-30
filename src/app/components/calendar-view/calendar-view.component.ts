@@ -31,6 +31,7 @@ export class CalendarViewComponent {
   loading = signal<boolean>(true);
   days = signal<CalendarDay[]>([]);
   eventUrl = input<string>("/admin/events");
+  eventUrlData = input<{ [key: string]: string } | undefined>();
   showAdd = input<boolean>(false);
 
   currentDate: string = "";
@@ -65,7 +66,7 @@ export class CalendarViewComponent {
         headDays.push(...resp.data);
 
         const dayTail = Math.ceil(headDays.length / 7) * 7 - headDays.length;
-          
+
         for (let i = 0; i < dayTail; i++) {
           tailDays.push({
             day: track,
@@ -146,7 +147,13 @@ export class CalendarViewComponent {
   }
 
   goToEvent(event: number) {
-    this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
+    if (this.eventUrlData()) {
+      this.router.navigateByUrl(`${this.eventUrl()}/${event}`, {
+        state: this.eventUrlData(),
+      });
+    } else {
+      this.router.navigateByUrl(`${this.eventUrl()}/${event}`);
+    }
   }
 
   handleActions(menuData: MenuAction) {

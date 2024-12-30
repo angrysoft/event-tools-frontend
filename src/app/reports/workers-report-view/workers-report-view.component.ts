@@ -10,7 +10,7 @@ import {
   DataTeamDay,
   DataWorkerDay,
   EventWorkerDay,
-  MonthTotal
+  MonthTotal,
 } from "../../models/reports";
 import { ReportsService } from "../../services/reports.service";
 
@@ -35,6 +35,7 @@ export class WorkersReportViewComponent {
   reportMemberId: number = 0;
   month: number = 0;
   year: number = 2024;
+  backTo = "/admin/reports/workers";
 
   totals = signal<MonthTotal>({
     basicPay: 0,
@@ -81,6 +82,8 @@ export class WorkersReportViewComponent {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
+
+    if (reportConfig["backTo"]) this.backTo = reportConfig["backTo"];
 
     if (reportConfig["reportType"] === "worker")
       this.tableColumns = this.tableColumnsWorker;

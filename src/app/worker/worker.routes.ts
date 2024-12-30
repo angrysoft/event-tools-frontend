@@ -21,9 +21,9 @@ export const workerRoutes: Routes = [
     path: "event/:eventId",
     title: "Dane Imprezy",
     loadComponent: () =>
-      import("./worker-show-event/worker-show-event.component").then(
-        (m) => m.WorkerShowEventComponent
-      ),
+      import(
+        "../components/worker-show-event/worker-show-event.component"
+      ).then((m) => m.WorkerShowEventComponent),
   },
   {
     path: "settlements/chief",
@@ -77,8 +77,6 @@ export const workerRoutes: Routes = [
     path: "info",
     title: "Informacje",
     loadComponent: () =>
-      import("./about-me/about-me.component").then(
-        (m) => m.AboutMeComponent
-      ),
+      import("./about-me/about-me.component").then((m) => m.AboutMeComponent),
   },
 ];

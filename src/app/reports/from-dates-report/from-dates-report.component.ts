@@ -17,7 +17,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { WorkerChooserConfig } from "../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../components/worker-chooser/worker-chooser.component";
@@ -49,6 +49,7 @@ import { FromDatesReportPayload } from "../../models/reports";
 })
 export class FromDatesReportComponent {
   readonly workerService: WorkersService = inject(WorkersService);
+  readonly route = inject(ActivatedRoute);
   readonly dialog = inject(MatDialog);
   readonly router = inject(Router);
   fb = inject(FormBuilder);
@@ -59,8 +60,16 @@ export class FromDatesReportComponent {
     groups: [],
     authorities: [],
   };
+  reportViewUrl = "/admin/reports/from-dates/view";
+  backTo = "/admin/reports/from-dates";
 
   constructor() {
+    const actions = this.route.snapshot.data["actions"];
+    if (actions) this.reportViewUrl = actions;
+
+    const backTo = this.route.snapshot.data["backTo"];
+    if (backTo) this.backTo = backTo;
+
     this.workerService.getWorkersHints().subscribe((response) => {
       if (response.ok) {
         this.hints = response.data;
@@ -132,6 +141,7 @@ export class FromDatesReportComponent {
       from: "",
       to: "",
       members: [],
+      backTo: this.backTo,
     };
 
     if (data.from && data.to) {
@@ -143,7 +153,8 @@ export class FromDatesReportComponent {
       payload.members = [data.teamId];
     } else if (data.reportType == "workers")
       payload.members = data.workers.map((w: { id: number }) => w.id);
-    this.router.navigateByUrl("/admin/reports/from-dates/view", {
+
+    this.router.navigateByUrl(this.reportViewUrl, {
       state: payload,
     });
   }

@@ -10,7 +10,12 @@ interface Car {
 }
 
 interface CarDoc {
-
+  id: number | null;
+  name: string | null;
+  fileName: string | null;
+  car: number | null;
+  hasExpirationDate: boolean | null;
+  expire?: Date | string | null;
 }
 
 interface CarForm {

@@ -1,6 +1,7 @@
 <app-data-table
-  api="/api/admin/events"
-  actionsUrl="/admin/reports/plan-execution"
+  [api]="api()"
+  [actionsUrl]="actions()"
+  [actionsData]="{ backTo: actions() }"
   [tableColumns]="tableColumns"
   [search]="true"
   [filters]="inputFilters()"

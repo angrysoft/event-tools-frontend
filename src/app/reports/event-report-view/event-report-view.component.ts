@@ -16,7 +16,7 @@ import {
   MatSlideToggleModule,
 } from "@angular/material/slide-toggle";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { WorkerFilterComponent } from "../../components/reports/worker-filter/worker-filter.component";
@@ -49,6 +49,7 @@ export class EventReportViewComponent implements AfterViewInit {
   reportService = inject(ReportsService);
   workerDayService = inject(WorkerDaysService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   dialog = inject(MatDialog);
 
   loading = signal<boolean>(true);
@@ -69,6 +70,8 @@ export class EventReportViewComponent implements AfterViewInit {
     totalRates: "",
     total: "",
   });
+  backTo = signal<string>("/admin/reports/event");
+
   hideAmount = signal<boolean>(false);
   workerSelection = new SelectionModel<number>();
   workerList = signal<WorkerSelection[]>([]);
@@ -99,6 +102,13 @@ export class EventReportViewComponent implements AfterViewInit {
   tableColumns: { name: string; def: string }[] = this.tableColumnsFull;
 
   constructor() {
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state) {
+      if (state["backTo"]) {
+        this.backTo.set(state["backTo"]);
+      }
+    }
+
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });

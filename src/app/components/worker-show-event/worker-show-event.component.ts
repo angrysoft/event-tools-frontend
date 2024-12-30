@@ -1,9 +1,9 @@
 import { Component, inject, signal } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
-import { EventInfoComponent } from "../../components/events/event-info/event-info.component";
-import { LoaderComponent } from "../../components/loader/loader.component";
+import { ActionToolbarComponent } from "../action-toolbar/action-toolbar.component";
+import { EventInfoComponent } from "../events/event-info/event-info.component";
+import { LoaderComponent } from "../loader/loader.component";
 import { EventItemDto } from "../../models/events";
 import { EventsService } from "../../services/events.service";
 import { WorkerEventFilesComponent } from "./worker-event-files/worker-event-files.component";
@@ -16,8 +16,8 @@ import { WorkerEventDaysComponent } from "./worker-event-days/worker-event-days.
     ActionToolbarComponent,
     EventInfoComponent,
     WorkerEventFilesComponent,
-    WorkerEventDaysComponent
-],
+    WorkerEventDaysComponent,
+  ],
   templateUrl: "./worker-show-event.component.html",
   styleUrl: "./worker-show-event.component.scss",
 })
@@ -36,13 +36,20 @@ export class WorkerShowEventComponent {
     chief: "",
     editors: [],
   });
+  backTo = signal<string>("/worker/calendar");
 
   loading = signal<boolean>(true);
   eventId: number = Number(this.route.snapshot.paramMap.get("eventId"));
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
 
   constructor() {
-    console.log(this.eventId);
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state) {
+      if (state["backTo"]) {
+        this.backTo.set(state["backTo"]);
+      }
+    }
+
     this.service.geEventInfoForWorker(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventData.set(resp.data);
@@ -50,5 +57,4 @@ export class WorkerShowEventComponent {
       this.loading.set(false);
     });
   }
-
 }

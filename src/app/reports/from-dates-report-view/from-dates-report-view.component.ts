@@ -42,6 +42,8 @@ export class FromDatesReportViewComponent {
     totalRates: "",
     total: "",
   });
+  backTo = signal<string>("/admin/reports/from-dates");
+
   reportFrom: string = "";
   from: string = "";
   reportTo: string = "";
@@ -64,10 +66,13 @@ export class FromDatesReportViewComponent {
 
   constructor() {
     const reportConfig = this.router.getCurrentNavigation()?.extras.state;
+  
     if (!reportConfig || !reportConfig["from"] || !reportConfig["to"]) {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
+    if (reportConfig["backTo"]) this.backTo.set(reportConfig["backTo"]);
+    
     this.from = reportConfig["from"];
     this.to = reportConfig["to"];
 

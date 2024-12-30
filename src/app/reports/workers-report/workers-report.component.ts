@@ -11,7 +11,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { MatFormField, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { WorkerChooserConfig } from "../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../components/worker-chooser/worker-chooser.component";
@@ -38,10 +38,13 @@ export class WorkersReportComponent {
   readonly workerService: WorkersService = inject(WorkersService);
   readonly dialog = inject(MatDialog);
   readonly router = inject(Router);
+  readonly route = inject(ActivatedRoute);
   loading = signal<boolean>(false);
   step = signal(0);
   panelOpenState = signal<boolean>(true);
   workerName = signal<string>("");
+  reportViewUrl = "/admin/reports/workers/view";
+  backTo = "/admin/reports/workers";
 
   reportSettingFrom: FormGroup<ReportSettingForm>;
   hints: WorkerHints = {
@@ -51,6 +54,12 @@ export class WorkersReportComponent {
   };
 
   constructor() {
+    const actions = this.route.snapshot.data["actions"];
+    if (actions) this.reportViewUrl = actions;
+
+    const backTo = this.route.snapshot.data["backTo"];
+    if (backTo) this.backTo = backTo;
+
     const date = new Date();
     date.setDate(1);
 
@@ -79,8 +88,9 @@ export class WorkersReportComponent {
   }
 
   handelSubmit() {
-    this.router.navigateByUrl("/admin/reports/workers/view", {
-      state: this.reportSettingFrom.value,
+    const payload = {...this.reportSettingFrom.value, "backTo": this.backTo};
+    this.router.navigateByUrl(this.reportViewUrl, {
+      state: payload
     });
   }
 

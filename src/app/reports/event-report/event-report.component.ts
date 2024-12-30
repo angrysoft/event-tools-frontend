@@ -1,4 +1,5 @@
-import { Component, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { DataTableComponent } from "../../components/data-table/data-table.component";
 import { InputFilters } from "../../components/search/model";
 
@@ -9,6 +10,7 @@ import { InputFilters } from "../../components/search/model";
   styleUrl: "./event-report.component.scss",
 })
 export class EventReportComponent {
+  route = inject(ActivatedRoute);
   inputFilters = signal<InputFilters>({});
   tableColumns = [
     { name: "id", def: "id" },
@@ -16,4 +18,12 @@ export class EventReportComponent {
     { name: "Nazwa", def: "name" },
     { name: "Koordynator", def: "coordinatorName" },
   ];
+  api = signal<string>("/api/admin/events");
+  actions = signal<string>("/admin/reports/event");
+  constructor() {
+    const api = this.route.snapshot.data["api"];
+    const actions = this.route.snapshot.data["actions"];
+    if (api) this.api.set(api);
+    if (actions) this.actions.set(actions);
+  }
 }

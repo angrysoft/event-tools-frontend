@@ -16,7 +16,7 @@ export class ReportsService extends CrudService<
 > {
   constructor() {
     super();
-    this.api = "/api/admin/reports";
+    this.api = "/api/reports";
   }
 
   // getEventRaport(eventId: number): Observable<RestResponse<EventReport>> {
