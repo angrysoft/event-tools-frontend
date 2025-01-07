@@ -1,4 +1,11 @@
-import { Component, effect, inject, input, signal, OnInit } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  OnInit,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -65,6 +72,7 @@ export class CarFormComponent implements OnInit {
         Validators.required,
         Validators.maxLength(8),
       ]),
+      company: new FormControl(false),
     });
 
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");

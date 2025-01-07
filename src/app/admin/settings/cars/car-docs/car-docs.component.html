@@ -1,0 +1,49 @@
+<div class="doc-list">
+  <a mat-fab extended routerLink="/admin/settings/cars/{{ carId() }}/doc/add">
+    <mat-icon>add</mat-icon>
+    Dodaj Dokument
+  </a>
+  @for (doc of docs(); track doc.id) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ doc.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (doc.hasExpirationDate) {
+      <p>Wygasa : {{ doc.expire }}</p>
+      } @if (doc.fileName) {
+      <p>
+        Plik :
+        <a
+          mat-button
+          href="/api/admin/car/doc/file/{{ doc.fileName }}?carId={{
+            carId()
+          }}"
+          target="_blank"
+          >{{ doc.fileName }}</a
+        >
+      </p>
+      }
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-card-actions>
+        <button
+          mat-button
+          routerLink="/admin/cars/{{ carId() }}/doc/{{ doc.id }}"
+        >
+          Edytuj
+        </button>
+        <button mat-button class="tertiary-button" (click)="removeFile(doc.id)">
+          Usuń
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+  } @empty {
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-content>
+      <h4>Brak Dokumentów</h4>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>

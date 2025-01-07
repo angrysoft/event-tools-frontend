@@ -1,0 +1,41 @@
+<app-loader [loading]="loading()" />
+
+<div class="side-content">
+  <app-action-toolbar title="Dane Auta" backTo="/admin/settings/cars">
+    <button mat-flat-button (click)="edit()">Edytuj</button>
+
+    <button mat-flat-button class="delete-button" (click)="removeCar()">
+      Usuń
+    </button>
+  </app-action-toolbar>
+  <mat-tab-group [selectedIndex]="tabIndex">
+    <mat-tab label="Dane" class="tab">
+      <div class="car-data">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Dane Auta</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              <span class="label">Nazwa: </span>
+              <span>{{ carData().name }} </span>
+            </p>
+            <p>
+              <span class="label">Numer: </span>
+              <span>{{ carData().registration }} </span>
+            </p>
+            <p>
+              <span class="label">Auto firmowe: </span>
+              <span>{{ carData().company ? "Tak" : "Nie" }} </span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+    @if (carData().company) {
+        <mat-tab label="Dokumenty">
+          <app-car-docs [docs]="carData().carDoc ?? []" [carId]="carData().id" />
+        </mat-tab>
+    }
+  </mat-tab-group>
+</div>

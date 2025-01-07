@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable } from "rxjs";
 import { DataListResponse } from "../../models/data-list-response";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
-import { Car } from "../../models/car";
+import { Car, CarDoc, CarDocData } from "../../models/car";
 
 @Injectable({
   providedIn: "root",
 })
 export class CarsService extends CrudService<Car> {
+
   getWorkerCars(
     workerId: number
   ): Observable<RestResponse<DataListResponse<Car>>> {
@@ -19,6 +20,61 @@ export class CarsService extends CrudService<Car> {
 
   constructor() {
     super();
-    this.api = "/api/admin/workers/cars";
+    this.api = "/api/admin/cars";
+  }
+
+  getDoc(carId: number, docId: number): Observable<RestResponse<CarDoc>> {
+    return this._get<RestResponse<CarDoc>>(
+      `${this.api}/doc/${docId}`
+    ).pipe(catchError(this.handleError));
+  }
+
+  updateDoc(
+    docId: number,
+    doc: Partial<CarDocData>
+  ): Observable<RestResponse<void | string>> {
+    return this.http
+      .put<RestResponse<void | string>>(
+        `${this.api}/doc/${docId}`,
+        this.prepareDate(doc)
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  createDoc(doc: Partial<CarDocData>) {
+    return this.http
+      .post<RestResponse<void | string>>(
+        `${this.api}/${doc.car}/doc`,
+        this.prepareDate(doc)
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteDoc(docId: number) {
+    return this.http
+      .delete<RestResponse<void | string>>(
+        `${this.api}/doc/${docId}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  private prepareDate(doc: Partial<CarDocData>): FormData {
+    const formData = new FormData();
+    if (doc.id) {
+      formData.set("id", doc.id.toString());
+    }
+    formData.set("name", doc.name ?? "");
+
+    if (doc.expirationDate && doc.expire) {
+      if (!(doc.expire instanceof Date)) {
+        doc.expire = new Date(doc.expire);
+      }
+      formData.set("expire", doc.expire?.toLocaleDateString() ?? "");
+    }
+    formData.set("expirationDate", doc.expirationDate?.toString() ?? "false");
+
+    if (doc.file) formData.set("file", doc.file);
+    formData.set("car", doc.car?.toString() ?? "");
+    return formData;
   }
 }

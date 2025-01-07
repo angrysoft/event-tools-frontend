@@ -99,4 +99,28 @@ export const settingsRoutes: Routes = [
     loadComponent: () =>
       import("./cars/cars.component").then((m) => m.CarsComponent),
   },
+  {
+    path: "settings/cars/add",
+    title: "Dodaj Auto",
+    loadComponent: () =>
+      import("./cars/car-form/car-form.component").then((m) => m.CarFormComponent),
+  },
+  {
+    path: "settings/cars/edit/:car",
+    title: "Auto",
+    loadComponent: () =>
+      import("./cars/car-form/car-form.component").then((m) => m.CarFormComponent),
+  },
+  {
+    path: "settings/cars/:car/doc/add",
+    title: "Auto",
+    loadComponent: () =>
+      import("./cars/car-doc-form/car-doc-form.component").then((m) => m.CarDocFormComponent),
+  },
+  {
+    path: "settings/cars/:car",
+    title: "Auto",
+    loadComponent: () =>
+      import("./cars/show-car/show-car.component").then((m) => m.ShowCarComponent),
+  },
 ];
