@@ -40,8 +40,8 @@ export class CarDocFormComponent {
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly docsService = inject(CarsService);
-  docId = signal<number>(-1);
-  carId = signal<number>(-1);
+  docId = Number(this.route.snapshot.paramMap.get("id") ?? "-1");
+  carId = Number(this.route.snapshot.paramMap.get("car") ?? "-1");
   backTo = signal<string>("/admin/settings/cars");
   canSend = signal<boolean>(false);
   dropZoneClasses = signal<string[]>(["drop-zone"]);
@@ -57,20 +57,18 @@ export class CarDocFormComponent {
       name: new FormControl("", [Validators.required]),
       expire: new FormControl(),
       expirationDate: new FormControl(false),
-      car: new FormControl(this.carId(), [Validators.required]),
+      car: new FormControl(this.carId, [Validators.required]),
     });
 
     const media = inject(MediaMatcher);
     this.mobileQuery = media.matchMedia("(max-width: 600px)");
-    const paramDocId = this.route.snapshot.paramMap.get("id");
-    const paramCarId = this.route.snapshot.paramMap.get("car");
+    if (this.carId > 0)
+      this.backTo.set("/admin/settings/cars/" + this.carId);
     
-    if (paramDocId && paramCarId) {
-      this.carId.set(Number(paramCarId));
-      this.backTo.set("/admin/settings/cars/" + paramCarId);
-      this.docId.set(Number(paramDocId));
+    if (this.docId > 0) {
       this.update.set(true);
-      this.docsService.getDoc(this.carId(), this.docId()).subscribe((resp) => {
+      this.docsService.getDoc(this.carId, this.docId).subscribe((resp) => {
+        console.log(resp.data);
         if (resp.ok) {
           this.docForm.patchValue({
             ...resp.data,
@@ -125,7 +123,7 @@ export class CarDocFormComponent {
 
   updateDoc() {
     this.docsService
-      .updateDoc(this.docId(), this.docForm.value)
+      .updateDoc(this.docId, this.docForm.value)
       .subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=1");
         else this.docsService.showError(resp);
