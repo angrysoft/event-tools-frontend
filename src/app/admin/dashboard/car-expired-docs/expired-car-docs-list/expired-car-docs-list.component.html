@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Dokumenty po terminie</h2>
+<mat-dialog-content class="doc-list">
+  @for (doc of data.docs | keyvalue; track $index) {
+  <a routerLink="/admin/settings/cars/{{ doc.value }}" [queryParams]="{ tab: 1 }" mat-button [mat-dialog-close]="true"
+    >{{ doc.key }}</a
+  >
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Zamknij</button>
+</mat-dialog-actions>

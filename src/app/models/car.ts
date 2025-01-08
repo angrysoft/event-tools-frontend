@@ -14,7 +14,7 @@ interface CarDoc {
   name: string | null;
   fileName: string | null;
   car: number | null;
-  hasExpirationDate: boolean | null;
+  expirationDate: boolean | null;
 
   expire?: Date | string | null;
 }

@@ -7,6 +7,7 @@ import { CrudService } from "./crud.service";
   providedIn: "root",
 })
 export class DashboardService extends CrudService<WorkerDoc | number> {
+  
   constructor() {
     super();
     this.api = "/api/admin/dashboard";
@@ -15,6 +16,11 @@ export class DashboardService extends CrudService<WorkerDoc | number> {
   getWorkerExpiredDocs() {
     return this._get<RestResponse<WorkerDoc[]>>(
       `${this.api}/worker-expired-docs`
+    );
+  }
+  getCarExpiredDocs() {
+    return this._get<RestResponse<{[key:string]:string}>>(
+      `${this.api}/car-expired-docs`
     );
   }
 

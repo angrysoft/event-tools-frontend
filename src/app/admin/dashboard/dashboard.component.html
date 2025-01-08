@@ -1,4 +1,10 @@
-    <div class="dashboard">
-        <app-expired-docs />
-        <app-day-off-to-accept />
-    </div>
+<div class="dashboard">
+  @defer () {
+  <app-expired-docs />
+  } @defer () {
+  <app-day-off-to-accept />
+  }
+  @defer () {
+  <app-car-expired-docs />
+  }
+</div>

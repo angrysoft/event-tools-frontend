@@ -19,8 +19,8 @@ import { CarDocsComponent } from "../car-docs/car-docs.component";
     MatButtonModule,
     MatTabsModule,
     MatCardModule,
-    CarDocsComponent
-],
+    CarDocsComponent,
+  ],
   templateUrl: "./show-car.component.html",
   styleUrl: "./show-car.component.scss",
 })
@@ -32,7 +32,7 @@ export class ShowCarComponent {
   loading = signal<boolean>(true);
 
   carId = Number(this.route.snapshot.paramMap.get("car") ?? -1);
-  tabIndex = Number(this.route.snapshot.queryParamMap.get("tab") ?? "0");
+  tabIndex = Number(this.route.snapshot.queryParamMap.get("tab") ?? "1");
 
   carData = signal<Car>({
     id: null,
@@ -71,5 +71,22 @@ export class ShowCarComponent {
         });
       }
     });
+  }
+
+  removeDoc(doc: number | null ) {
+     const removeConfirm = this.dialog.open(ConfirmDialogComponent, {
+       data: { msg: "Czy na pewno usunąć auto ?" },
+     });
+
+     removeConfirm.afterClosed().subscribe((result) => {
+       if (result === true && doc) {
+         this.service.deleteDoc(doc).subscribe((resp) => {
+           if (resp) {
+             const docs = this.carData().carDoc ?? [];
+             this.carData().carDoc = docs.filter(d => d.id !== doc);
+           } else this.service.showError(resp);
+         });
+       }
+     });
   }
 }

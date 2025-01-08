@@ -3,7 +3,6 @@
 <div class="side-content">
   <app-action-toolbar title="Dane Auta" backTo="/admin/settings/cars">
     <button mat-flat-button (click)="edit()">Edytuj</button>
-
     <button mat-flat-button class="delete-button" (click)="removeCar()">
       Usuń
     </button>
@@ -33,9 +32,13 @@
       </div>
     </mat-tab>
     @if (carData().company) {
-        <mat-tab label="Dokumenty">
-          <app-car-docs [docs]="carData().carDoc ?? []" [carId]="carData().id" />
-        </mat-tab>
+    <mat-tab label="Dokumenty">
+      <app-car-docs
+        [docs]="carData().carDoc ?? []"
+        [carId]="carData().id"
+        (remove)="removeDoc($event)"
+      />
+    </mat-tab>
     }
   </mat-tab-group>
 </div>

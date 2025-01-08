@@ -1,9 +1,9 @@
-import { Component, input } from "@angular/core";
-import { CarDoc } from "../../../../models/car";
-import { MatCardModule } from "@angular/material/card";
+import { Component, input, output } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
-import { RouterLink } from "@angular/router";
+import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
+import { RouterLink } from "@angular/router";
+import { CarDoc } from "../../../../models/car";
 
 @Component({
   selector: "app-car-docs",
@@ -14,8 +14,9 @@ import { MatIconModule } from "@angular/material/icon";
 export class CarDocsComponent {
   docs = input.required<CarDoc[]>();
   carId = input.required<number | null>();
+  remove = output<number | null>();
 
-  removeFile(id: number | null) {
-    console.log(id);
+  removeDoc(id: number | null) {
+    this.remove.emit(id);
   }
 }

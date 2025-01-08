@@ -118,6 +118,12 @@ export const settingsRoutes: Routes = [
       import("./cars/car-doc-form/car-doc-form.component").then((m) => m.CarDocFormComponent),
   },
   {
+    path: "settings/cars/:car/doc/:doc",
+    title: "Auto",
+    loadComponent: () =>
+      import("./cars/car-doc-form/car-doc-form.component").then((m) => m.CarDocFormComponent),
+  },
+  {
     path: "settings/cars/:car",
     title: "Auto",
     loadComponent: () =>

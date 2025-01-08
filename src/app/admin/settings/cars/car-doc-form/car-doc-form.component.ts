@@ -40,7 +40,7 @@ export class CarDocFormComponent {
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   readonly docsService = inject(CarsService);
-  docId = Number(this.route.snapshot.paramMap.get("id") ?? "-1");
+  docId = Number(this.route.snapshot.paramMap.get("doc") ?? "-1");
   carId = Number(this.route.snapshot.paramMap.get("car") ?? "-1");
   backTo = signal<string>("/admin/settings/cars");
   canSend = signal<boolean>(false);
