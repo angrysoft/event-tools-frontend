@@ -30,7 +30,6 @@ export class CarExpiredDocsComponent {
   }
 
   showList() {
-    console.log(this.docs());
     this.dialog.open(ExpiredCarDocsListComponent, {
       data: { docs: this.docs() },
     });
