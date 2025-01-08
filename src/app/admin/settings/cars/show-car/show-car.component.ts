@@ -32,7 +32,7 @@ export class ShowCarComponent {
   loading = signal<boolean>(true);
 
   carId = Number(this.route.snapshot.paramMap.get("car") ?? -1);
-  tabIndex = Number(this.route.snapshot.queryParamMap.get("tab") ?? "1");
+  tabIndex = Number(this.route.snapshot.queryParams["tab"] ?? "0");
 
   carData = signal<Car>({
     id: null,

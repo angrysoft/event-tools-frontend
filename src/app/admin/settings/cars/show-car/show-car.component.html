@@ -9,6 +9,7 @@
   </app-action-toolbar>
   <mat-tab-group [selectedIndex]="tabIndex" class="tabs">
     <mat-tab label="Dane">
+      @defer () {
       <div class="car-data">
         <mat-card appearance="outlined">
           <mat-card-header>
@@ -30,14 +31,17 @@
           </mat-card-content>
         </mat-card>
       </div>
+      }
     </mat-tab>
     @if (carData().company) {
     <mat-tab label="Dokumenty">
+      @defer () {
       <app-car-docs
         [docs]="carData().carDoc ?? []"
         [carId]="carData().id"
         (remove)="removeDoc($event)"
       />
+      }
     </mat-tab>
     }
   </mat-tab-group>
