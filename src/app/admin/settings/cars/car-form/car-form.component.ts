@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Car, CarForm } from "../../../../models/car";
 import { CarsService } from "../../../services/cars.service";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @Component({
   selector: "app-car-form",
@@ -23,6 +24,7 @@ import { CarsService } from "../../../services/cars.service";
     MatFormFieldModule,
     FormBaseComponent,
     ReactiveFormsModule,
+    MatSlideToggleModule
   ],
   templateUrl: "./car-form.component.html",
   styleUrl: "./car-form.component.scss",
