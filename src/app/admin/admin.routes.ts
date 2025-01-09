@@ -30,6 +30,14 @@ export const adminRoutes: Routes = [
       ),
   },
   {
+    path: "car-schedule",
+    title: "Grafik Aut",
+    loadComponent: () =>
+      import("./car-schedule/car-schedule.component").then(
+        (m) => m.CarScheduleComponent
+      ),
+  },
+  {
     path: "reports/event",
     title: "Raporty",
     loadComponent: () =>

@@ -1,7 +1,7 @@
 <mat-card appearance="outlined">
   <mat-card-content class="widget">
     @if (days() === 0) {
-    <h4>Brak dni do potwierdzenia</h4>
+    <h4>Brak dni wolnych do potwierdzenia</h4>
     }@else {
     <h4 [matBadge]="days()" matBadgeOverlap="false">
       Dni wolne do potwierdzenia

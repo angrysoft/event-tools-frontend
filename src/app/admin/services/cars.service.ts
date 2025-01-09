@@ -3,13 +3,12 @@ import { catchError, Observable } from "rxjs";
 import { DataListResponse } from "../../models/data-list-response";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
-import { Car, CarDoc, CarDocData } from "../../models/car";
+import { Car, CarDoc, CarDocData, CarSchedule } from "../../models/car";
 
 @Injectable({
   providedIn: "root",
 })
 export class CarsService extends CrudService<Car> {
-
   getWorkerCars(
     workerId: number
   ): Observable<RestResponse<DataListResponse<Car>>> {
@@ -24,9 +23,9 @@ export class CarsService extends CrudService<Car> {
   }
 
   getDoc(carId: number, docId: number): Observable<RestResponse<CarDoc>> {
-    return this._get<RestResponse<CarDoc>>(
-      `${this.api}/doc/${docId}`
-    ).pipe(catchError(this.handleError));
+    return this._get<RestResponse<CarDoc>>(`${this.api}/doc/${docId}`).pipe(
+      catchError(this.handleError)
+    );
   }
 
   updateDoc(
@@ -52,9 +51,7 @@ export class CarsService extends CrudService<Car> {
 
   deleteDoc(docId: number) {
     return this.http
-      .delete<RestResponse<void | string>>(
-        `${this.api}/doc/${docId}`
-      )
+      .delete<RestResponse<void | string>>(`${this.api}/doc/${docId}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -77,5 +74,17 @@ export class CarsService extends CrudService<Car> {
     if (doc.file) formData.set("file", doc.file);
     formData.set("car", doc.car?.toString() ?? "");
     return formData;
+  }
+
+  getSchedule(
+    size: number,
+    page: number,
+    date: string
+  ): Observable<RestResponse<CarSchedule>> {
+    return this._get<RestResponse<CarSchedule>>(`${this.api}/schedule`, {
+      pageSize: size,
+      pageNumber: page,
+      date: date,
+    });
   }
 }

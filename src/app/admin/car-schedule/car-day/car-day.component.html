@@ -1,0 +1,34 @@
+<div
+  [style.backgroundColor]="data().color ?? '#106d20'"
+  [style.color]="data().color ? 'black' : 'inherit'"
+  (click)="triggerAction('editDay')"
+  class="data"
+  [cdkContextMenuTriggerFor]="dayMenu"
+>{{ data().info}}
+   
+</div>
+<ng-template #dayMenu>
+  <div class="context-menu" cdkMenu>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('remove')"
+    >
+      Usuń
+    </button>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('duplicate')"
+    >
+      Duplikuj
+    </button>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('changeWorker')"
+    >
+      Zmień Auto
+    </button>
+  </div>
+</ng-template>

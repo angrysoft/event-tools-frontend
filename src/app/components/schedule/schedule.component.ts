@@ -97,6 +97,8 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
         }
       });
     }, options);
+    this.end().nativeElement.style.display = "none";
+    this.observer.observe(this.end().nativeElement);
   }
 
   ngOnDestroy(): void {
@@ -119,13 +121,11 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
       .getSchedule(size, offset, this.currentDate)
       .subscribe((resp) => {
         if (resp.ok) {
-          this.observer.disconnect();
           this.schedules.set(resp.data);
           this.schedules().size = this.size;
           this.loading.set(false);
-          const end = this.end();
-          this.observer.observe(end.nativeElement);
-          end.nativeElement.style.gridColumn = `1 / span ${this.header.length}`;
+          this.end().nativeElement.style.gridColumn = `1 / span ${this.header.length +1}`;
+          this.end().nativeElement.style.display = "block";
         }
       });
   }
@@ -133,6 +133,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   loadMore() {
     const newOffset = this.offset + this.size;
     if (newOffset > this.schedules().total) return;
+    this.end().nativeElement.style.display = "none";
     this.offset = newOffset;
     this.workerDayService
       .getSchedule(this.size, this.offset, this.currentDate)
@@ -142,6 +143,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           this.schedules().total = resp.data.total;
           this.loading.set(false);
         }
+        this.end().nativeElement.style.display = "block";
       });
   }
 

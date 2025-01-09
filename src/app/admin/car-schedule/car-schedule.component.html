@@ -1,0 +1,47 @@
+<app-loader [loading]="loading()" />
+<div class="wrapper">
+  <app-date-changer
+    (dateChanged)="dateChange($event)"
+    [showRefresh]="true"
+    (refresh)="reloadData()"
+  />
+  <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
+    <div class="col sticky-row sticky-col" style="z-index: 10">
+      <div class="header">N</div>
+    </div>
+    <div class="col sticky-row col-name" style="z-index: 10">
+      <div class="header">Nazwa</div>
+    </div>
+    @for (day of days; track day.date) {
+    <div class="col sticky-row">
+      <div class="header">
+        {{ day.date | date : "EE dd/MM" }}
+      </div>
+    </div>
+    } @for (row of schedules().schedules; track row.carName) {
+    <div class="col sticky-col">
+      <div class="number">{{ $index + 1 }}</div>
+    </div>
+    <div class="col col-name">
+      <div
+        class="name nowrap"
+        [routerLink]="'/admin/settings/cars/' + row.id.toString()"
+      >
+        {{ row.carName }}
+      </div>
+    </div>
+    @for (day of days; track day.day) { @if(row.days[day.day]) {
+    <div class="col">
+      @for (item of row.days[day.day]; track getTrackOf(item)) {
+      <app-car-day [data]="item" (actionTrigger)="carDayAction($event)" />
+      }
+    </div>
+    } @else {
+    <app-empty-car-day
+      [data]="{ data: day, car: row }"
+      (actionTrigger)="emptyDayAction($event)"
+    />
+    } } }
+    <div class="end" [style.gridColumnEnd]="cssCols" #end></div>
+  </div>
+</div>

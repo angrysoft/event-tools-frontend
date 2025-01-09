@@ -1,4 +1,5 @@
 import { FormControl } from "@angular/forms";
+import { Day } from "./schedule";
 
 interface Car {
   id: number | null;
@@ -41,4 +42,51 @@ interface CarDocForm {
   file: FormControl<File | null>;
 }
 
-export { Car, CarDoc, CarDocData, CarDocForm, CarForm };
+interface CarSchedule {
+  schedules: CarScheduleDay[];
+  page: number;
+  size: number;
+  total: number;
+  totalPages: number;
+  days: Day[];
+}
+
+interface CarScheduleDay {
+  id: number;
+  carName: string;
+  days: {
+    [key: string]: CarDay[];
+  };
+}
+
+interface CarDay {
+  id: number;
+  car: number;
+  color: string | null;
+  info: string;
+  startTime: string | Date;
+  endTime: string | Date;
+}
+
+interface CarAction {
+  carDay: CarDay | null;
+  data: Day;
+}
+
+interface CarMenuAction {
+  action: string;
+  data: { data: Day; car: CarScheduleDay } | CarDay;
+}
+
+export {
+  Car,
+  CarDoc,
+  CarDocData,
+  CarDocForm,
+  CarForm,
+  CarSchedule,
+  CarScheduleDay,
+  CarDay,
+  CarAction,
+  CarMenuAction,
+};
