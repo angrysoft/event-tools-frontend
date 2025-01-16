@@ -1,14 +1,23 @@
 <div
   [style.backgroundColor]="data().color ?? '#106d20'"
   [style.color]="data().color ? 'black' : 'inherit'"
-  (click)="triggerAction('editDay')"
+  (click)="triggerAction('showDay', $event)"
   class="data"
+  [class.selected]="selected()"
   [cdkContextMenuTriggerFor]="dayMenu"
->{{ data().info}}
-   
+>
+  {{ data().info }}
 </div>
 <ng-template #dayMenu>
   <div class="context-menu" cdkMenu>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('addDay')"
+    >
+      Dodaj
+    </button>
+
     <button
       class="context-menu-item"
       cdkMenuItem
@@ -16,6 +25,17 @@
     >
       Usuń
     </button>
+
+    @if(!isMultipleSelected()) {
+
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('editDay')"
+    >
+      Edytuj
+    </button>
+
     <button
       class="context-menu-item"
       cdkMenuItem
@@ -23,6 +43,7 @@
     >
       Duplikuj
     </button>
+
     <button
       class="context-menu-item"
       cdkMenuItem
@@ -30,5 +51,7 @@
     >
       Zmień Auto
     </button>
+
+    }
   </div>
 </ng-template>

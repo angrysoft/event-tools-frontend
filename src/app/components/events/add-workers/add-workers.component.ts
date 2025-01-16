@@ -75,7 +75,6 @@ export class AddWorkersComponent {
   tab = this.route.snapshot.queryParamMap.get("tab") ?? 0;
   backTo = `/admin/events/${this.eventId}/day`;
 
-  canSend = signal<boolean>(false);
   rates = signal<Rate[]>([]);
   addons = signal<Addon[]>([]);
   eventDay = signal<EventDay>({

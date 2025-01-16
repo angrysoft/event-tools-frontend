@@ -1,11 +1,15 @@
-<div class="empty" [cdkContextMenuTriggerFor]="emptyMenu"></div>
+<div
+  class="empty"
+  [cdkContextMenuTriggerFor]="emptyMenu"
+  (click)="triggerAction('unselect')"
+></div>
 
 <ng-template #emptyMenu let-data="data" let-worker="worker">
   <div class="context-menu" cdkMenu>
     <button
       class="context-menu-item"
       cdkMenuItem
-      (click)="triggerAction('addDayCarDay')"
+      (click)="triggerAction('addCarDay')"
     >
       Dodaj
     </button>

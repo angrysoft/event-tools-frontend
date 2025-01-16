@@ -1,0 +1,36 @@
+<app-form-base
+  [backTo]="backTo()"
+  [queryParams]="{ month: month, year: year}"
+  [formTitle]="title()"
+  formIdName="car-day-form"
+  [canSend]="carDayForm.valid && carDayForm.dirty"
+>
+  <form
+    [formGroup]="carDayForm"
+    class="form"
+    id="car-day-form"
+    (submit)="handleSubmit()"
+  >
+    <mat-card appearance="outlined">
+      <mat-card-header>Czas</mat-card-header>
+      <mat-card-content>
+        <app-work-time
+          [startTime]="carDayForm.controls.startTime"
+          [endTime]="carDayForm.controls.endTime"
+        />
+      </mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-content class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>Info</mat-label>
+            <input matInput type="text" formControlName="info" maxlength="160" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Kolor</mat-label>
+            <input matInput type="color" formControlName="color" />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</app-form-base>

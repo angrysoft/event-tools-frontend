@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{ data.info }}</h2>
+<mat-dialog-content>
+  <p>
+    <span class="title">Start: </span>
+    <span>{{ data.startTime |date:'medium' }}</span>
+  </p>
+  <p>
+    <span class="title">Koniec: </span>
+    <span>{{ data.endTime |date: 'medium' }}</span>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close="editDay" type="button">
+    Edytuj
+  </button>
+  <button mat-button mat-dialog-close="removeDay" type="button" class="delete-button">
+    Usuń
+  </button>
+  <button mat-button cdkFocusInitial mat-dialog-close="none" type="button">
+    Zamknij
+  </button>
+</mat-dialog-actions>

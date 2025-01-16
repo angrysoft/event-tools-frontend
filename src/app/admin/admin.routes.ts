@@ -38,6 +38,14 @@ export const adminRoutes: Routes = [
       ),
   },
   {
+    path: "car-schedule/manage",
+    title: "Grafik Aut",
+    loadComponent: () =>
+      import("./car-schedule/car-day-manage/car-day-manage.component").then(
+        (m) => m.CarDayManageComponent
+      ),
+  },
+  {
     path: "reports/event",
     title: "Raporty",
     loadComponent: () =>

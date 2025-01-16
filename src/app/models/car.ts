@@ -60,12 +60,13 @@ interface CarScheduleDay {
 }
 
 interface CarDay {
-  id: number;
-  car: number;
+  id: number | null;
+  car: number | null;
+  carName?: string | null;
   color: string | null;
-  info: string;
-  startTime: string | Date;
-  endTime: string | Date;
+  info: string | null;
+  startTime: string | Date | null;
+  endTime: string | Date | null;
 }
 
 interface CarAction {
@@ -75,7 +76,12 @@ interface CarAction {
 
 interface CarMenuAction {
   action: string;
-  data: { data: Day; car: CarScheduleDay } | CarDay;
+  data: EmptyDay | CarDay;
+}
+
+interface EmptyDay {
+  data: Day;
+  car: CarScheduleDay;
 }
 
 export {
@@ -87,6 +93,7 @@ export {
   CarSchedule,
   CarScheduleDay,
   CarDay,
+  EmptyDay,
   CarAction,
   CarMenuAction,
 };

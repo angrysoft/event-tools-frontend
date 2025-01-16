@@ -3,7 +3,7 @@ import { catchError, Observable } from "rxjs";
 import { DataListResponse } from "../../models/data-list-response";
 import { RestResponse } from "../../models/rest-response";
 import { CrudService } from "../../services/crud.service";
-import { Car, CarDoc, CarDocData, CarSchedule } from "../../models/car";
+import { Car, CarDay, CarDoc, CarDocData, CarSchedule } from "../../models/car";
 
 @Injectable({
   providedIn: "root",
@@ -86,5 +86,32 @@ export class CarsService extends CrudService<Car> {
       pageNumber: page,
       date: date,
     });
+  }
+
+  getCarDay(carDayId: number) {
+    return this._get<RestResponse<CarDay>>(`${this.api}/day/${carDayId}`);
+  }
+
+  addCarDay(payload: CarDay) {
+    return this._post<CarDay>(`${this.api}/day`, payload);
+  }
+
+  updateCarDay(payload: CarDay) {
+    return this._put<CarDay>(`${this.api}/day`, payload);
+  }
+
+  duplicateCarDay(payload: { from: string; to: string; day: number }) {
+    return this._put<{ from: string; to: string; day: number }>(
+      `${this.api}/day/duplicate`,
+      payload
+    );
+  }
+
+  removeDay(day: number) {
+    return this._delete(`${this.api}/day/${day}`);
+  }
+
+  removeDayList(days: number[]) {
+    return this._put<number[]>(`${this.api}/remove-day-list`, days);
   }
 }

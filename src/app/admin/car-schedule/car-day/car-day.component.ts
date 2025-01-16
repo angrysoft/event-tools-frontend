@@ -1,7 +1,7 @@
-import { Component, input, output } from "@angular/core";
-import { getTextColor } from "../../../utils/colors";
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
+import { Component, input, output } from "@angular/core";
 import { CarDay, CarMenuAction } from "../../../models/car";
+import { getTextColor } from "../../../utils/colors";
 
 @Component({
   selector: "app-car-day",
@@ -12,11 +12,23 @@ import { CarDay, CarMenuAction } from "../../../models/car";
 export class CarDayComponent {
   data = input.required<CarDay>();
   actionTrigger = output<CarMenuAction>();
+  carName = input<string>();
+  isMultipleSelected = input<boolean>(false);
+  selected = input<boolean>(false);
 
-  triggerAction(action: string) {
+  triggerAction(action: string, ev: MouseEvent | null = null) {
+    if (action === "showDay" && ev) {
+      if (ev.ctrlKey) {
+        this.actionTrigger.emit({
+          action: "selectDay",
+          data: this.data(),
+        });
+        return;
+      }
+    }
     this.actionTrigger.emit({
       action: action,
-      data: this.data(),
+      data: { ...this.data(), carName: this.carName() },
     });
   }
 

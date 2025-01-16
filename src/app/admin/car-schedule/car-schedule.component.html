@@ -4,6 +4,7 @@
     (dateChanged)="dateChange($event)"
     [showRefresh]="true"
     (refresh)="reloadData()"
+    [initDate]="initDate"
   />
   <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
     <div class="col sticky-row sticky-col" style="z-index: 10">
@@ -33,7 +34,13 @@
     @for (day of days; track day.day) { @if(row.days[day.day]) {
     <div class="col">
       @for (item of row.days[day.day]; track getTrackOf(item)) {
-      <app-car-day [data]="item" (actionTrigger)="carDayAction($event)" />
+      <app-car-day
+        [data]="item"
+        [carName]="row.carName"
+        (actionTrigger)="carDayAction($event)"
+        [isMultipleSelected]="isMultipleSelected"
+        [selected]="daySelection.isSelected(item)"
+      />
       }
     </div>
     } @else {

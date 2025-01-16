@@ -1,7 +1,5 @@
 :host {
     height: 100%;
-    border-collapse: collapse;
-    border: 1px solid var(--mat-sys-outline-variant);
 }
 
 .data {
@@ -13,4 +11,15 @@
     justify-content: center;
     cursor: pointer;
     outline: none;
+    border-collapse: collapse;
+    border: 1px solid var(--mat-sys-outline-variant);
+}
+
+.selected {
+    background-color: transparent !important;
+    color: var(--mat-sys-primary) !important;
+    text-decoration: underline;
+    border-collapse: collapse;
+    border-style: dashed;
+    border-color: var(--mat-sys-primary);
 }

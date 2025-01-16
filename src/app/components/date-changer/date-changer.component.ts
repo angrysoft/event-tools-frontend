@@ -42,6 +42,7 @@ import { MediaMatcher } from "@angular/cdk/layout";
 export class DateChangerComponent implements OnDestroy, AfterViewInit {
   dateFrom: FormGroup<DateForm>;
   showRefresh = input<boolean>(false);
+  initDate = input<string | null>(null);
   dateChanged = output<string>();
   refresh = output();
   destroy = new Subject();
@@ -50,9 +51,6 @@ export class DateChangerComponent implements OnDestroy, AfterViewInit {
   private readonly _mobileQueryListener: () => void;
 
   constructor() {
-    const date = new Date();
-    date.setDate(1);
-
     const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
 
@@ -61,8 +59,8 @@ export class DateChangerComponent implements OnDestroy, AfterViewInit {
     this.mobileQuery.addEventListener("change", this._mobileQueryListener);
 
     this.dateFrom = new FormGroup<DateForm>({
-      month: new FormControl(date.getMonth(), Validators.required),
-      year: new FormControl(date.getFullYear(), [
+      month: new FormControl(null, Validators.required),
+      year: new FormControl(null, [
         Validators.required,
         Validators.min(2024),
         Validators.minLength(4),
@@ -83,15 +81,25 @@ export class DateChangerComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const date = new Date();
+    let date = new Date();
+    const dateString = this.initDate() ?? "";
+    if (dateString.length == 10) date = new Date(dateString);
+
     date.setDate(1);
+    this.dateFrom.setValue(
+      {
+        month: date.getMonth(),
+        year: date.getFullYear(),
+      },
+      { emitEvent: false }
+    );
     this.dateChanged.emit(dateToString(date));
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
-     this.mobileQuery.removeEventListener("change", this._mobileQueryListener);
+    this.mobileQuery.removeEventListener("change", this._mobileQueryListener);
   }
 
   nextMonth() {

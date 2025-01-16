@@ -1,8 +1,10 @@
+import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   inject,
   OnDestroy,
   output,
@@ -10,17 +12,19 @@ import {
   viewChild,
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ConfirmDialogComponent } from "../../components/confirm-dialog/confirm-dialog.component";
 import { DateChangerComponent } from "../../components/date-changer/date-changer.component";
 import { DuplicateDaysComponent } from "../../components/events/duplicate-days/duplicate-days.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
-import { CarDay, CarMenuAction, CarSchedule } from "../../models/car";
+import { CarDay, CarMenuAction, CarSchedule, EmptyDay } from "../../models/car";
 import { ScheduleAction, WorkerDaySchedule } from "../../models/schedule";
 import { getTextColor } from "../../utils/colors";
+import { dateStringFromMonthYear } from "../../utils/date";
 import { CarsService } from "../services/cars.service";
+import { CarDayViewComponent } from "./car-day-view/car-day-view.component";
 import { CarDayComponent } from "./car-day/car-day.component";
 import { EmptyCarDayComponent } from "./empty-car-day/empty-car-day.component";
-import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-car-schedule",
@@ -38,6 +42,9 @@ import { RouterLink } from "@angular/router";
 export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   private readonly carService = inject(CarsService);
   private readonly dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  daySelection = new SelectionModel<CarDay>(true, [], true);
   observer!: IntersectionObserver;
 
   schedules = signal<CarSchedule>({
@@ -55,6 +62,15 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   size: number = 30;
   readonly end = viewChild.required<ElementRef<HTMLDivElement>>("end");
   currentDate: string = "";
+  initDate: string | null = null;
+
+  constructor() {
+    const month = this.route.snapshot.queryParamMap.get("month");
+    const year = this.route.snapshot.queryParamMap.get("year");
+    if (month && year) {
+      this.initDate = dateStringFromMonthYear(Number(month) + 1, Number(year));
+    }
+  }
 
   ngAfterViewInit(): void {
     const options = {
@@ -77,6 +93,10 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
     this.observer.disconnect();
   }
 
+  get isMultipleSelected() {
+    return this.daySelection.selected.length > 1;
+  }
+
   reloadData() {
     let size = this.size;
     if (this.page > 0) {
@@ -88,7 +108,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
 
   loadData(size: number, page: number) {
     this.loading.set(true);
-   
+
     this.carService
       .getSchedule(size, page, this.currentDate)
       .subscribe((resp) => {
@@ -107,7 +127,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   loadMore() {
     const newPage = this.page + 1;
     if (newPage > this.schedules().totalPages) return;
-    
+
     this.end().nativeElement.style.display = "none";
     this.page = newPage;
     this.carService
@@ -157,22 +177,22 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   }
 
   removeDay(data: CarDay) {
-    console.log(data);
+    let msg = "Czy na pewno chcesz usunąć";
+    if (this.isMultipleSelected) {
+      msg = `Czy chcesz usunąć zaznaczone (${this.daySelection.selected.length})`;
+    }
     const delDialog = this.dialog.open(ConfirmDialogComponent, {
-      data: { msg: "Czy na pewno chcesz usunąć" },
+      data: { msg: msg },
     });
 
     delDialog.afterClosed().subscribe((result) => {
-      if (result && result === true) {
+      if (result && result === true && data.id) {
         this.loading.set(true);
-
-        // this.carService
-        //   .removeWorkersDays(data.eventId, data.eventDay, [data.id])
-        //   .subscribe((resp) => {
-        //     if (resp.ok) {
-        //       this.reloadData();
-        //     }
-        //   });
+        this.carService.removeDay(data.id).subscribe((resp) => {
+          if (resp.ok) {
+            this.reloadData();
+          }
+        });
       }
     });
   }
@@ -210,30 +230,88 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   }
 
   carDayAction(menuData: CarMenuAction) {
-    console.log(menuData)
     switch (menuData.action) {
       case "duplicate":
         // this.duplicateDay(menuData.data as WorkerDaySchedule);
         break;
-      case "remove":
-        // this.removeDay(menuData.data as WorkerDaySchedule);
+      case "selectDay":
+        console.log("select ", menuData.data);
+        this.daySelection.toggle(menuData.data as CarDay);
         break;
-      case "changeWorker":
+      case "addDay":
+        this.addDay(menuData.data as CarDay);
+        break;
+      case "remove":
+        this.removeDay(menuData.data as CarDay);
+        break;
+      case "changeCar":
         // this.changeWorker(menuData.data as WorkerDaySchedule);
         break;
-      case "goto":
-      // this.action.emit({
-      //   action: "event",
-      //   data: menuData.data as WorkerDaySchedule | { workerId: number },
-      // });
+      case "showDay":
+        this.showDay(menuData.data as CarDay);
+        break;
+      case "editDay": {
+        this.router.navigateByUrl("/admin/car-schedule/manage", {
+          state: {
+            day: { ...menuData.data },
+          },
+        });
+        break;
+      }
     }
   }
 
-  emptyDayAction(menuData: { action: string }) {
-    console.log(menuData);
-    // if (menuData.action === "addDayOff") {
-    //   const data = menuData.data as WorkerAction;
-    //   this.addDayOff(data.worker, data.data);
-    // }
+  @HostListener("window.key.esc")
+  unselect() {
+    this.daySelection.clear();
+  }
+
+  showDay(data: CarDay) {
+    this.daySelection.clear();
+    const dialog = this.dialog.open(CarDayViewComponent, {
+      data: { ...data },
+    });
+
+    dialog.afterClosed().subscribe((result) => {
+      switch (result) {
+        case "editDay":
+          this.carDayAction({ action: "editDay", data: data });
+          break;
+        case "removeDay":
+          this.removeDay(data);
+      }
+    });
+  }
+
+  addDay(data: CarDay) {
+    const startTime = new Date(data.startTime as string);
+    startTime.setHours(9);
+    startTime.setMinutes(0);
+    this.router.navigateByUrl("/admin/car-schedule/manage", {
+      state: {
+        day: {
+          car: data.car,
+          carName: data.carName,
+          startTime: startTime,
+        },
+      },
+    });
+  }
+
+  emptyDayAction(menuData: CarMenuAction) {
+    if (menuData.action === "unselect") {
+      this.unselect();
+    } else if (menuData.action === "addCarDay") {
+      const data = menuData.data as EmptyDay;
+      this.addDay({
+        id: null,
+        car: data?.car?.id,
+        carName: data.car.carName,
+        color: null,
+        info: null,
+        startTime: data.data.date,
+        endTime: null,
+      });
+    }
   }
 }
