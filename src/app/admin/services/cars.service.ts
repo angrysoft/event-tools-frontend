@@ -100,8 +100,8 @@ export class CarsService extends CrudService<Car> {
     return this._put<CarDay>(`${this.api}/day`, payload);
   }
 
-  duplicateCarDay(payload: { from: string; to: string; day: number }) {
-    return this._put<{ from: string; to: string; day: number }>(
+  duplicateCarDay(payload: { from: string; to: string; day: number | null }) {
+    return this._put<{ from: string; to: string; day: number | null }>(
       `${this.api}/day/duplicate`,
       payload
     );

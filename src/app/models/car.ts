@@ -61,6 +61,7 @@ interface CarScheduleDay {
 
 interface CarDay {
   id: number | null;
+  carDayId?: number | null;
   car: number | null;
   carName?: string | null;
   color: string | null;

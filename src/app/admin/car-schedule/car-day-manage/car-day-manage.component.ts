@@ -81,9 +81,9 @@ export class CarDayManageComponent {
       data.color = "#fff";
       this.carDayForm.patchValue(data);
     }
-    // this.backTo.set(
-    //   `/admin/car-schedule?month=${data.startTime.getMonth()}&year=${data.startTime.getFullYear()}`
-    // );
+    this.backTo.set(
+      `/admin/car-schedule?month=${data.startTime.getMonth()}&year=${data.startTime.getFullYear()}`
+    );
   }
 
   handleSubmit() {
@@ -100,10 +100,12 @@ export class CarDayManageComponent {
     if (payload.id) {
       this.service.updateCarDay(payload).subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo());
+        else this.service.showError(resp);
       });
     } else {
       this.service.addCarDay(payload).subscribe((resp) => {
         if (resp.ok) this.router.navigateByUrl(this.backTo());
+        else this.service.showError(resp);
       });
     }
   }

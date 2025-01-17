@@ -18,9 +18,9 @@ import { DateChangerComponent } from "../../components/date-changer/date-changer
 import { DuplicateDaysComponent } from "../../components/events/duplicate-days/duplicate-days.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { CarDay, CarMenuAction, CarSchedule, EmptyDay } from "../../models/car";
-import { ScheduleAction, WorkerDaySchedule } from "../../models/schedule";
+import { ScheduleAction } from "../../models/schedule";
 import { getTextColor } from "../../utils/colors";
-import { dateStringFromMonthYear } from "../../utils/date";
+import { dateStringFromMonthYear, dateToString } from "../../utils/date";
 import { CarsService } from "../services/cars.service";
 import { CarDayViewComponent } from "./car-day-view/car-day-view.component";
 import { CarDayComponent } from "./car-day/car-day.component";
@@ -179,28 +179,46 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   removeDay(data: CarDay) {
     let msg = "Czy na pewno chcesz usunąć";
     if (this.isMultipleSelected) {
-      msg = `Czy chcesz usunąć zaznaczone (${this.daySelection.selected.length})`;
+      msg = `Czy na pewno chcesz usunąć zaznaczone (${this.daySelection.selected.length})`;
     }
     const delDialog = this.dialog.open(ConfirmDialogComponent, {
       data: { msg: msg },
     });
 
     delDialog.afterClosed().subscribe((result) => {
-      if (result && result === true && data.id) {
+      if (result && result === true) {
         this.loading.set(true);
-        this.carService.removeDay(data.id).subscribe((resp) => {
-          if (resp.ok) {
-            this.reloadData();
-          }
-        });
+
+        if (this.isMultipleSelected) {
+          if (this.daySelection.isEmpty()) return;
+          console.log(this.daySelection.selected);
+          const selectedDays: number[] = this.daySelection.selected.map(
+            (d) => d.carDayId
+          ) as number[];
+
+          this.carService.removeDayList(selectedDays).subscribe((resp) => {
+            if (resp.ok) {
+              this.reloadData();
+            } else this.carService.showError(resp);
+            this.loading.set(false);
+          });
+        } else {
+          if (data.id === null) return;
+          this.carService.removeDay(data.id).subscribe((resp) => {
+            if (resp.ok) {
+              this.reloadData();
+            } else this.carService.showError(resp);
+            this.loading.set(false);
+          });
+        }
       }
     });
   }
 
-  duplicateDay(data: WorkerDaySchedule) {
+  duplicateDay(carDay: CarDay) {
     const duplicateDialog = this.dialog.open(DuplicateDaysComponent, {
       data: {
-        startTime: data.startDate,
+        startTime: carDay.startTime,
       },
       maxWidth: "95vw",
     });
@@ -208,21 +226,23 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
       if (!result) return;
       this.loading.set(true);
 
-      // const payload = {
-      //   from: dateToString(result.start),
-      //   to: dateToString(result.end),
-      //   workerDays: [data.id],
-      // };
+      const payload = {
+        from: dateToString(result.start),
+        to: dateToString(result.end),
+        day: carDay.carDayId ?? null,
+      };
 
-      // this.carService
-      //   .duplicateDays(data.eventId, data.eventDay, payload)
-      //   .subscribe((resp) => {
-      //     if (resp.ok) {
-      //       this.reloadData();
-      //     } else this.carService.showError(resp);
-      //     this.loading.set(false);
-      //   });
+      this.carService.duplicateCarDay(payload).subscribe((resp) => {
+        if (resp.ok) {
+          this.reloadData();
+        } else this.carService.showError(resp);
+        this.loading.set(false);
+      });
     });
+  }
+
+  changeCar(carDay: CarDay) {
+    console.log("change car: ", carDay);
   }
 
   getTextColor(color: string) {
@@ -232,7 +252,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   carDayAction(menuData: CarMenuAction) {
     switch (menuData.action) {
       case "duplicate":
-        // this.duplicateDay(menuData.data as WorkerDaySchedule);
+        this.duplicateDay(menuData.data as CarDay);
         break;
       case "selectDay":
         console.log("select ", menuData.data);
@@ -245,7 +265,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
         this.removeDay(menuData.data as CarDay);
         break;
       case "changeCar":
-        // this.changeWorker(menuData.data as WorkerDaySchedule);
+        this.changeCar(menuData.data as CarDay);
         break;
       case "showDay":
         this.showDay(menuData.data as CarDay);
