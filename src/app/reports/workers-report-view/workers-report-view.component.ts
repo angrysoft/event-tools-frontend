@@ -78,7 +78,8 @@ export class WorkersReportViewComponent {
 
   constructor() {
     const reportConfig = this.router.getCurrentNavigation()?.extras.state;
-    if (!reportConfig || !reportConfig["month"] || !reportConfig["year"]) {
+    console.log(reportConfig);
+    if (!reportConfig || reportConfig["month"] === null || reportConfig["year"] === null) {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
