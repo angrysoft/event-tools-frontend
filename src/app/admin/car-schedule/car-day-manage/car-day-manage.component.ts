@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  signal
+  signal,
 } from "@angular/core";
 import {
   FormControl,
@@ -49,6 +49,7 @@ export class CarDayManageComponent {
     const currentDate = new Date();
     this.month = currentDate.getMonth();
     this.year = currentDate.getFullYear();
+
     this.carDayForm = new FormGroup<CarForm>({
       id: new FormControl(null),
       car: new FormControl(null, Validators.required),
@@ -60,27 +61,23 @@ export class CarDayManageComponent {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const state: any = this.router.getCurrentNavigation()?.extras.state;
-    let data = { ...state.day };
+    const data = { ...state.day };
     if (data.carDayId) {
       this.service.getCarDay(state.day.carDayId).subscribe((resp) => {
         if (resp.ok) {
-          data = { ...resp.data };
-          data.startTime = new Date(resp.data.startTime as string);
-          data.endTime = new Date(resp.data.endTime as string);
-          this.carDayForm.patchValue(data);
+          this.prepareInitData({ ...resp.data });
         } else this.service.showError(resp);
       });
     } else {
-      data.startTime = new Date(data.startTime);
-      data.startTime.setHours(9);
-      data.startTime.setMinutes(0);
-
-      data.endTime = new Date(data.startTime);
-      data.endTime.setHours(21);
-      data.endTime.setMinutes(0);
-      data.color = "#fff";
-      this.carDayForm.patchValue(data);
+      this.prepareInitData(data);
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  prepareInitData(data: any) {
+    data.startTime = new Date(data.startTime as string);
+    data.endTime = new Date(data.endTime as string);
+    this.carDayForm.patchValue(data);
     this.backTo.set(
       `/admin/car-schedule?month=${data.startTime.getMonth()}&year=${data.startTime.getFullYear()}`
     );

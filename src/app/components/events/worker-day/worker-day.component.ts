@@ -24,6 +24,7 @@ export class WorkerDayComponent {
   coordinatorId = input<number | null>(null);
   selection = input.required<SelectionModel<WorkerDay>>();
   tableColumns = input.required<{ name: string; def: string }[]>();
+  admin = input<boolean>(false);
   length = 0;
 
   get columnNames() {
@@ -68,7 +69,7 @@ export class WorkerDayComponent {
   }
 
   getClass(row:WorkerDay) {
-    if (row["editedBy"] !== this.coordinatorId())
+    if (row["editedBy"] !== this.coordinatorId() && this.admin())
       return "CHIEF"
     return "";
   }

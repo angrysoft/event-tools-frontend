@@ -112,6 +112,7 @@ export class CarsService extends CrudService<Car> {
   }
 
   removeDayList(days: number[]) {
-    return this._put<number[]>(`${this.api}/remove-day-list`, days);
+    console.log(days);
+    return this._put<number[]>(`${this.api}/day/remove-day-list`, days);
   }
 }

@@ -104,6 +104,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
       this.page = size - this.size;
     }
     this.loadData(size, 0);
+    this.daySelection.clear();
   }
 
   loadData(size: number, page: number) {
@@ -191,7 +192,6 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
 
         if (this.isMultipleSelected) {
           if (this.daySelection.isEmpty()) return;
-          console.log(this.daySelection.selected);
           const selectedDays: number[] = this.daySelection.selected.map(
             (d) => d.carDayId
           ) as number[];
@@ -203,8 +203,13 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
             this.loading.set(false);
           });
         } else {
-          if (data.id === null) return;
-          this.carService.removeDay(data.id).subscribe((resp) => {
+          if (!data.carDayId) {
+            this.carService.showMsg("Id dnia jest nieustawione");
+            this.loading.set(false);
+            return;
+          }
+
+          this.carService.removeDay(data.carDayId).subscribe((resp) => {
             if (resp.ok) {
               this.reloadData();
             } else this.carService.showError(resp);
@@ -255,7 +260,6 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
         this.duplicateDay(menuData.data as CarDay);
         break;
       case "selectDay":
-        console.log("select ", menuData.data);
         this.daySelection.toggle(menuData.data as CarDay);
         break;
       case "addDay":
@@ -281,7 +285,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener("window.key.esc")
+  @HostListener("document:keydown.Escape")
   unselect() {
     this.daySelection.clear();
   }
@@ -307,12 +311,18 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
     const startTime = new Date(data.startTime as string);
     startTime.setHours(9);
     startTime.setMinutes(0);
+    const endTime = new Date(startTime);
+    endTime.setHours(21);
+    endTime.setMinutes(0);
+    const color = "#fff";
     this.router.navigateByUrl("/admin/car-schedule/manage", {
       state: {
         day: {
           car: data.car,
           carName: data.carName,
           startTime: startTime,
+          endTime: endTime,
+          color: color,
         },
       },
     });
