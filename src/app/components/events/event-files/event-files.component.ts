@@ -89,6 +89,7 @@ export class EventFilesComponent {
       if (result === true) {
         this.service.getEventFiles(this.eventId()).subscribe((resp) => {
           if (resp.ok) this.files.set(resp.data);
+          else this.service.showError(resp);
         });
       }
     });

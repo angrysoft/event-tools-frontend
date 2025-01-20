@@ -8,16 +8,16 @@ import { MatProgressBar } from "@angular/material/progress-bar";
 import { catchError, of, Subject, takeUntil } from "rxjs";
 
 @Component({
-    selector: "app-send-dialog",
-    imports: [
-        MatButtonModule,
-        MatDialogModule,
-        MatProgressBar,
-        MatIconModule,
-        MatListModule
-    ],
-    templateUrl: "./send-dialog.component.html",
-    styleUrl: "./send-dialog.component.scss"
+  selector: "app-send-dialog",
+  imports: [
+    MatButtonModule,
+    MatDialogModule,
+    MatProgressBar,
+    MatIconModule,
+    MatListModule,
+  ],
+  templateUrl: "./send-dialog.component.html",
+  styleUrl: "./send-dialog.component.scss",
 })
 export class SendDialogComponent implements AfterContentInit {
   readonly data = inject(MAT_DIALOG_DATA);
@@ -52,13 +52,13 @@ export class SendDialogComponent implements AfterContentInit {
         catchError((err) => {
           if (err.status === 413) {
             this.error.set("Plik jest za duży");
-          } else {
-            this.error.set(err.data ?? "Coś poszło nie tak...");
-          }
+          } else if (err.error.data)
+            this.error.set(err.error.data ?? "Coś poszło nie tak...");
+          else this.error.set(err.data ?? "Coś poszło nie tak...");
           this.progress.set(0);
           this.sending.set(false);
           return of(err);
-        }),
+        })
       )
       .subscribe((httpEvent) => {
         if (httpEvent.type == HttpEventType.UploadProgress) {
@@ -68,7 +68,7 @@ export class SendDialogComponent implements AfterContentInit {
               this.progress.set(100);
             }
             this.progress.set(
-              Math.round(100 * (httpEvent.loaded / httpEvent.total)),
+              Math.round(100 * (httpEvent.loaded / httpEvent.total))
             );
           }
         }
