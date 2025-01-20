@@ -18,6 +18,7 @@ import { RouterOutlet } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { ChangePasswordComponent } from "../settings/change-password/change-password.component";
 import { SetThemeComponent } from "../settings/set-theme/set-theme.component";
+import { AboutComponent } from "../about/about.component";
 
 @Component({
   selector: "app-main-nav",
@@ -79,5 +80,9 @@ export class MainNavComponent implements OnDestroy {
     ) {
       this.sideNav()?.close();
     }
+  }
+
+  about() {
+    this.dialog.open(AboutComponent);
   }
 }
