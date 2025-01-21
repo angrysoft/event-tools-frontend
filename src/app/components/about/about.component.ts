@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { backendVersion, frontendVersion } from '../../version'; 
 
 @Component({
   selector: 'app-about',
@@ -9,5 +10,6 @@ import { MatDialogModule } from '@angular/material/dialog';
   styleUrl: './about.component.scss'
 })
 export class AboutComponent {
-
+  backendVersion = backendVersion;
+  frontendVersion = frontendVersion;
 }
