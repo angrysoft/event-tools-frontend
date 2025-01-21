@@ -50,16 +50,18 @@ export class AppComponent implements OnInit {
       });
 
     if (this.swUpdate.isEnabled) {
-      const confirm = this.dialog.open(ConfirmDialogComponent, {
-        data: {
-          msg: "Nowa wersja jest dostępna do zainstalowania. Czy chcesz zaktualizować aplikację?",
-        },
-      });
-
-      confirm.afterClosed().subscribe((result) => {
-        if (result === true) {
-          this.swUpdate.activateUpdate().then(() => window.location.reload());
-        }
+      this.swUpdate.checkForUpdate().then((update) => {
+        if (!update) return;
+        const confirm = this.dialog.open(ConfirmDialogComponent, {
+          data: {
+            msg: "Nowa wersja jest dostępna do zainstalowania. Czy chcesz zaktualizować aplikację?",
+          },
+        });
+        confirm.afterClosed().subscribe((result) => {
+          if (result === true) {
+            this.swUpdate.activateUpdate().then(() => window.location.reload());
+          }
+        });
       });
     }
   }
