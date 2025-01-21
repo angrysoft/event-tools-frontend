@@ -8,7 +8,7 @@
     @if (reportData().length > 0) {
     <a
       mat-button
-      href="/api/reports/from-dates/{{ reportType() }}/pdf?from={{ from }}&to={{
+      href="/api/reports/from-dates/{{ reportType() }}/pdf?ngsw-bypass=true&from={{ from }}&to={{
         to
       }}&{{ reportType() }}={{ reportMembers }}"
       target="_blank"

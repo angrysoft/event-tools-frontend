@@ -74,7 +74,7 @@ export class WorkerReportComponent {
         } else {
           this.setReportWorker([]);
           this.service.showError(resp)
-        };
+        }
         this.loading.set(false);
       });
   }
