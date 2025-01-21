@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 VERSION=$(npm pkg get version | sed 's/"//g')
-rm -rv dist
+rm -frv dist
 ng build --configuration production
 
 cd dist
