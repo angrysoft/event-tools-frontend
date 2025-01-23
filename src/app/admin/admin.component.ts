@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MainNavComponent } from "../components/main-nav/main-nav.component";
 import { MenuActionComponent } from "../components/menu-action/menu-action.component";
-import { registerNotification } from "../utils/registerNotification";
+import { NotificationService } from "../services/notification.service";
 
 @Component({
   selector: "app-main",
@@ -17,7 +17,8 @@ import { registerNotification } from "../utils/registerNotification";
   ],
 })
 export class AdminComponent implements OnInit {
- ngOnInit(): void {
-     registerNotification();
- }
+ notify = inject(NotificationService);
+   ngOnInit(): void {
+     this.notify.registerNotification();
+   }
 }
