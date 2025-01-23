@@ -1,10 +1,9 @@
-import {
-  Component
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MainNavComponent } from "../components/main-nav/main-nav.component";
 import { MenuActionComponent } from "../components/menu-action/menu-action.component";
+import { registerNotification } from "../utils/registerNotification";
 
 @Component({
   selector: "app-main",
@@ -17,4 +16,8 @@ import { MenuActionComponent } from "../components/menu-action/menu-action.compo
     MatDividerModule,
   ],
 })
-export class AdminComponent {}
+export class AdminComponent implements OnInit {
+ ngOnInit(): void {
+     registerNotification();
+ }
+}
