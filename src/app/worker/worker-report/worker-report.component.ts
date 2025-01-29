@@ -83,7 +83,6 @@ export class WorkerReportComponent {
     const workerDays: DataWorkerDay[] = [];
     this.canDownloadReport.set(true);
     for (const day of data) {
-      console.log(day.state)
       if (day.state !== "APPROVED") this.canDownloadReport.set(false);
       workerDays.push({
         eventName: day.eventName,
