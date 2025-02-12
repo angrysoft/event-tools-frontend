@@ -53,4 +53,10 @@ export class EventDaysService extends CrudService<EventDay> {
       info: info,
     });
   }
+
+  changeComment(eventId: number, dayId: number, comment: string) {
+    return this._put(`${this.api}/${eventId}/day/${dayId}/comment`, {
+      comment: comment,
+    });
+  }
 }

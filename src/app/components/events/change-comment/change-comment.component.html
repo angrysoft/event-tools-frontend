@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Komentarz</h2>
+<mat-dialog-content>
+  <form [formGroup]="changeCommentForm" class="form" id="change-comment">
+    <mat-form-field appearance="outline">
+      <mat-label>Komentarz</mat-label>
+      <textarea matInput formControlName="comment" maxlength="160" cdkFocusInitial rows="8" cols="40"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" type="button">
+    Anuluj
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="changeCommentForm.value"
+    [disabled]="!changeCommentForm.valid || !changeCommentForm.dirty"
+    type="button"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>

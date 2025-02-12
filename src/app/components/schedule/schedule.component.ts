@@ -43,6 +43,8 @@ import { AddDayOffComponent } from "./add-day-off/add-day-off.component";
 import { DayOffComponent } from "./day-off/day-off.component";
 import { EmptyDayComponent } from "./empty-day/empty-day.component";
 import { EventDayComponent } from "./event-day/event-day.component";
+import { EventDaysService } from "../../services/event-days.service";
+import { ChangeCommentComponent } from "../events/change-comment/change-comment.component";
 
 @Component({
   selector: "app-schedule",
@@ -66,6 +68,7 @@ import { EventDayComponent } from "./event-day/event-day.component";
 })
 export class ScheduleComponent implements OnDestroy, AfterViewInit {
   private readonly workerDayService = inject(WorkerDaysService);
+  private readonly eventDayService = inject(EventDaysService);
   private readonly dialog = inject(MatDialog);
   observer!: IntersectionObserver;
 
@@ -121,10 +124,13 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
       .getSchedule(size, offset, this.currentDate)
       .subscribe((resp) => {
         if (resp.ok) {
+          console.log(resp.data)
           this.schedules.set(resp.data);
           this.schedules().size = this.size;
           this.loading.set(false);
-          this.end().nativeElement.style.gridColumn = `1 / span ${this.header.length +1}`;
+          this.end().nativeElement.style.gridColumn = `1 / span ${
+            this.header.length + 1
+          }`;
           this.end().nativeElement.style.display = "block";
         }
       });
@@ -358,6 +364,28 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     });
   }
 
+  changeComment(data: WorkerDaySchedule) {
+    const changeCommentDialog = this.dialog.open(ChangeCommentComponent, {
+      data: { comment: data.comment },
+      maxWidth: "95vw",
+    });
+
+    changeCommentDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(result.comment, data);
+        this.loading.set(true);
+        this.eventDayService
+          .changeComment(data.eventId, data.eventDay, result.comment)
+          .subscribe((resp) => {
+            if (resp.ok) {
+              this.reloadData();
+            } else this.workerDayService.showError(resp);
+            this.loading.set(false);
+          });
+      }
+    });
+  }
+
   checkDayOff(data: WorkerDaySchedule) {
     return `${data.id}.${data.startDate}.${data.accepted}`;
   }
@@ -390,6 +418,9 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
         break;
       case "changeWorker":
         this.changeWorker(menuData.data as WorkerDaySchedule);
+        break;
+      case "comment":
+        this.changeComment(menuData.data as WorkerDaySchedule);
         break;
       case "goto":
         this.action.emit({

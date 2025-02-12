@@ -3,10 +3,14 @@
   [style.backgroundColor]="data().color ?? '#106d20'"
   [style.color]="data().state === 'TEMPLATE' ? 'white' : 'black'"
   (click)="triggerAction('goto')"
+  [matTooltip]="data().comment ?? ''"
+  matTooltipClass="comment"
   class="data"
   [cdkContextMenuTriggerFor]="dayMenu"
->{{ data().eventName }} {{ data().info}}
-   
+  [matBadge]="data().comment ? '@' : null"
+  matBadgeSize="small"
+>
+  {{ data().eventName }} {{ data().info }}
 </div>
 <ng-template #dayMenu>
   <div class="context-menu" cdkMenu>
@@ -31,6 +35,13 @@
     >
       Zmień pracownika
     </button>
+    <button
+      class="context-menu-item"
+      cdkMenuItem
+      (click)="triggerAction('comment')"
+    >
+      Komentarz
+    </button>
   </div>
 </ng-template>
 } @else {
@@ -40,6 +51,6 @@
   (click)="triggerAction('goto')"
   class="data"
 >
-  {{ data().eventName }} {{ data().info}}
+  {{ data().eventName }} {{ data().info }}
 </div>
 }

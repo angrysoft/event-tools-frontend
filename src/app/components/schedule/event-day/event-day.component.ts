@@ -1,12 +1,20 @@
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
 import { Component, input, output } from "@angular/core";
+import { MatBadgeModule } from "@angular/material/badge";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { MenuAction } from "../../../models/menu";
-import { getTextColor } from "../../../utils/colors";
 import { WorkerDaySchedule } from "../../../models/schedule";
+import { getTextColor } from "../../../utils/colors";
 
 @Component({
   selector: "app-event-day",
-  imports: [CdkContextMenuTrigger, CdkMenu, CdkMenuItem],
+  imports: [
+    CdkContextMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
+    MatTooltipModule,
+    MatBadgeModule,
+  ],
   templateUrl: "./event-day.component.html",
   styleUrl: "./event-day.component.scss",
 })
