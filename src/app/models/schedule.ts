@@ -35,6 +35,7 @@ interface WorkerDaySchedule {
   accepted: boolean;
   state: string;
   info: string | null;
+  comment: string | null;
 }
 
 interface Day {
