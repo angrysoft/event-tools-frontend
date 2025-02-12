@@ -7,7 +7,7 @@ import { EventFile, EventItem, EventItemDto } from "../models/events";
   providedIn: "root",
 })
 export class EventsService extends CrudService<EventItem | EventItemDto> {
-  userApi = "/api/events"
+  userApi = "/api/events";
 
   constructor() {
     super();
@@ -19,20 +19,24 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
   }
 
   geEventInfoForWorker(event: number) {
-    return this._get<RestResponse<EventItemDto>>(`${this.userApi}/info/${event}`);
+    return this._get<RestResponse<EventItemDto>>(
+      `${this.userApi}/info/${event}`
+    );
   }
 
   getEventFiles(eventId: number) {
     return this._get<RestResponse<EventFile[]>>(`${this.api}/${eventId}/file`);
   }
 
-  getEventFilesForWorker(event:number) {
-    return this._get<RestResponse<EventFile[]>>(`${this.userApi}/${event}/file`);
+  getEventFilesForWorker(event: number) {
+    return this._get<RestResponse<EventFile[]>>(
+      `${this.userApi}/${event}/file`
+    );
   }
 
   deleteFile(eventId: number, fileName: string) {
     return this.http.delete<RestResponse<string>>(
-      `${this.api}/${eventId}/file/${fileName}`,
+      `${this.api}/${eventId}/file/${fileName}`
     );
   }
 
@@ -45,5 +49,11 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
       reportProgress: true,
       observe: "events",
     });
+  }
+
+  getWorkersMails(eventId: number) {
+    return this._get<RestResponse<string[]>>(
+      `${this.api}/worker-emails/${eventId}`
+    );
   }
 }

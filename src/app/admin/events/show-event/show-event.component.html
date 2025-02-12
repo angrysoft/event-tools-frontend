@@ -2,6 +2,15 @@
 
 <div class="side-content">
   <app-action-toolbar title="Dane Imprezy" backTo="/admin/events">
+    <a
+      mat-flat-button
+      [href]="mailUrl"
+      target="_blank"
+      [disabled]="workersMails().length === 0"
+    >
+    <mat-icon>email</mat-icon>
+      Email
+  </a>
     <button
       mat-flat-button
       routerLink="/admin/events/edit/{{ eventData().id }}"

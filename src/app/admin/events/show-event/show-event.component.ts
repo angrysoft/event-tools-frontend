@@ -24,8 +24,8 @@ import { EventsService } from "../../../services/events.service";
     RouterLink,
     EventInfoComponent,
     EventFilesComponent,
-    ActionToolbarComponent
-],
+    ActionToolbarComponent,
+  ],
   templateUrl: "./show-event.component.html",
   styleUrl: "./show-event.component.scss",
 })
@@ -43,10 +43,12 @@ export class ShowEventComponent {
     accountManager: "",
     chief: "",
     editors: [],
-    coordinatorId: 0
+    coordinatorId: 0,
   });
 
   loading = signal<boolean>(true);
+  workersMails = signal<string[]>([]);
+
   eventId: number = Number(this.route.snapshot.paramMap.get("eventId"));
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
 
@@ -57,6 +59,20 @@ export class ShowEventComponent {
       }
       this.loading.set(false);
     });
+
+    this.service.getWorkersMails(this.eventId).subscribe((resp) => {
+      if (resp.ok) {
+        this.workersMails.set(resp.data);
+      }
+    });
+  }
+
+  get mailUrl() {
+    return encodeURI(
+      `mailto:${this.workersMails().join(",")}?bcc=koordynacja@ves.pl&subject=${
+        this.eventData().number
+      } ${this.eventData().name}&body=Cześć\nInformacje o imprezie są gotowe proszę o zapoznanie się z nimi.\n\nPozdrawiam.`
+    );
   }
 
   removeEvent() {
