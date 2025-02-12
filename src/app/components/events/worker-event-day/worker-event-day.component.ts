@@ -20,6 +20,7 @@ export class WorkerEventDayComponent {
   workerDays = input.required<WorkerDay[]>();
   tableColumns = input.required<{ name: string; def: string }[]>();
   colorClass = input<string>("");
+  hideAmount = input<boolean>(false);
 
   get columnNames() {
     return this.tableColumns().map((el) => el.def);
@@ -30,7 +31,7 @@ export class WorkerEventDayComponent {
     const days = this.workerDays().map((d) => {
       d.addons = d.workerDayAddons
         .map((addon) => {
-          if (addon.money) return `${addon.name}:${addon.money}`;
+          if (addon.money && !this.hideAmount()) return `${addon.name}:${addon.money}`;
           else return addon.name;
         })
         .join("\n");

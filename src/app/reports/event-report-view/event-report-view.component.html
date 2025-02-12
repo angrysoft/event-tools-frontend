@@ -42,27 +42,15 @@
         </div>
       </header>
       <div class="report-data">
-        <table mat-table aria-label="Elements">
-          @for (col of tableColumns; track col.def) {
-          <ng-container matColumnDef="{{ col.def }}">
-            <th mat-header-cell *matHeaderCellDef>{{ col.name }}</th>
-            @if (col.def.endsWith("Time")) {
-            <td mat-cell *matCellDef="let row">{{ row[col.def] | date : "short" }}</td>
-            } @else if (col.def === "addons") {
-            <td mat-cell *matCellDef="let row">{{ row[col.def] | amount : hideAmount() }}</td>
-            } @else {
-            <td mat-cell *matCellDef="let row">{{ row[col.def] }}</td>
-            }
-          </ng-container>
-          }
-
-          <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: columnNames"
-            [class]="row.state"
-          ></tr>
-        </table>
+         @for (day of days(); track $index) {
+      <h3>{{ day.startDate | date : "dd/MM/YYYY" }}</h3>
+      <app-worker-event-day
+        [workerDays]="day.workerDays"
+        [tableColumns]="tableColumns"
+        [hideAmount]="hideAmount()"
+      />
+      <mat-divider />
+      }
         <div class="legend">
           <span class="label">Statusy dni: </span>
           @for (item of statuses()| keyvalue; track $index) {

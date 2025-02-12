@@ -3,30 +3,28 @@ import { DatePipe, KeyValuePipe } from "@angular/common";
 import {
   Component,
   inject,
-  signal,
-  viewChild,
-  AfterViewInit,
+  signal
 } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
 import { MatListOption } from "@angular/material/list";
+import { MatMenuModule } from "@angular/material/menu";
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
 } from "@angular/material/slide-toggle";
-import { MatTable, MatTableModule } from "@angular/material/table";
+import { MatTableModule } from "@angular/material/table";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ActionToolbarComponent } from "../../components/action-toolbar/action-toolbar.component";
+import { WorkerEventDayComponent } from "../../components/events/worker-event-day/worker-event-day.component";
 import { LoaderComponent } from "../../components/loader/loader.component";
 import { WorkerFilterComponent } from "../../components/reports/worker-filter/worker-filter.component";
-import { EventItemDto } from "../../models/events";
+import { EventDay, EventItemDto } from "../../models/events";
 import { Totals } from "../../models/reports";
 import { ReportsService } from "../../services/reports.service";
 import { WorkerDaysService } from "../../services/worker-days.service";
-import { EventReportDataSource } from "./event-report-datasource";
-import { AmountPipe } from "../../pipes/amount.pipe";
-import { MatMenuModule } from "@angular/material/menu";
 
 @Component({
   selector: "app-event-report-view",
@@ -39,19 +37,20 @@ import { MatMenuModule } from "@angular/material/menu";
     DatePipe,
     KeyValuePipe,
     MatSlideToggleModule,
-    AmountPipe,
     MatMenuModule,
-  ],
+    WorkerEventDayComponent,
+    MatDividerModule
+],
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",
 })
-export class EventReportViewComponent implements AfterViewInit {
+export class EventReportViewComponent {
   reportService = inject(ReportsService);
   workerDayService = inject(WorkerDaysService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   dialog = inject(MatDialog);
-
+  days = signal<EventDay[]>([]);
   loading = signal<boolean>(true);
   statuses = signal<{ [key: string]: string }>({});
   eventInfo = signal<EventItemDto>({
@@ -76,8 +75,6 @@ export class EventReportViewComponent implements AfterViewInit {
   workerSelection = new SelectionModel<number>();
   workerList = signal<WorkerSelection[]>([]);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
-  readonly table = viewChild.required(MatTable);
-  dataSource!: EventReportDataSource;
 
   tableColumnsFull: { name: string; def: string }[] = [
     { name: "Start", def: "startTime" },
@@ -115,11 +112,6 @@ export class EventReportViewComponent implements AfterViewInit {
     if (this.eventId) {
       this.loadDays();
     }
-    this.dataSource = new EventReportDataSource();
-  }
-
-  ngAfterViewInit(): void {
-    this.table().dataSource = this.dataSource;
   }
 
   get columnNames() {
@@ -139,10 +131,8 @@ export class EventReportViewComponent implements AfterViewInit {
           this.totals.set(resp.data.totals);
           const workers: { [key: number]: { id: number; workerName: string } } =
             {};
-          const workerDays = [];
           for (const eventDay of resp.data.eventDays) {
-            workerDays.push(
-              ...eventDay.workerDays.map((wd) => {
+            eventDay.workerDays.forEach((wd) => {
                 wd.state = eventDay.state;
                 if (
                   wd.worker &&
@@ -156,12 +146,11 @@ export class EventReportViewComponent implements AfterViewInit {
                 }
                 return wd;
               })
-            );
           }
           if (this.workerSelection.isEmpty())
             this.workerList.set(Object.values(workers));
-
-          this.dataSource.loadData(workerDays);
+          
+          this.days.set(resp.data.eventDays);
         }
         this.loading.set(false);
       });
