@@ -1,6 +1,6 @@
 <div
   [style.backgroundColor]="data().color ?? '#106d20'"
-  [style.color]="data().color ? 'black' : 'inherit'"
+  [style.color]="getTextColor(data().color ?? '#106d20')"
   (click)="triggerAction('showDay', $event)"
   class="data"
   [class.selected]="selected()"
