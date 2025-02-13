@@ -3,14 +3,16 @@
   [style.backgroundColor]="data().color ?? '#106d20'"
   [style.color]="data().state === 'TEMPLATE' ? 'white' : 'black'"
   (click)="triggerAction('goto')"
-  [matTooltip]="data().comment ?? ''"
-  matTooltipClass="comment"
+  [title]="data().comment ?? ''"
   class="data"
+  [class.has-comment]="data().comment"
   [cdkContextMenuTriggerFor]="dayMenu"
-  [matBadge]="data().comment ? '@' : null"
-  matBadgeSize="small"
 >
-  {{ data().eventName }} {{ data().info }}
+  <span class="text"> {{ data().eventName }} {{ data().info }} </span>
+  <span
+    class="comment"
+    [class.show-comment]="data().comment"
+  ></span>
 </div>
 <ng-template #dayMenu>
   <div class="context-menu" cdkMenu>

@@ -3,17 +3,34 @@
 }
 
 .data {
-    display: flex;
+    display: grid;
     align-items: center;
-    padding: 0.2rem;
     height: 100%;
     width: 100%;
     justify-content: center;
+    justify-items: center;
     cursor: pointer;
     outline:  none;
 }
 
 .comment {
-    white-space: pre-wrap;
-    text-align: left !important;
+    display: none;
+    align-self:flex-start;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 0px solid transparent;
+    border-top: 8px solid red;
+}
+
+.text {
+    padding: 0.2rem;
+}
+
+.show-comment {
+    display: grid;
+}
+
+.has-comment {
+    grid-template-columns: 1fr auto;
 }
