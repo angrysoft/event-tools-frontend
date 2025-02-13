@@ -132,13 +132,23 @@ export class WorkerDaysService
   getSchedule(
     limit: number,
     offset: number,
-    date: string
+    date: string,
+    toDate: string | null = null
   ): Observable<RestResponse<Schedule>> {
-    return this._get<RestResponse<Schedule>>(`${this.userApi}/schedule`, {
-      limit: limit,
-      offset: offset,
-      date: date,
-    });
+    if (toDate) {
+      return this._get<RestResponse<Schedule>>(`${this.userApi}/schedule`, {
+        limit: limit,
+        offset: offset,
+        date: date,
+        toDate: toDate,
+      });
+    } else {
+      return this._get<RestResponse<Schedule>>(`${this.userApi}/schedule`, {
+        limit: limit,
+        offset: offset,
+        date: date,
+      });
+    }
   }
 
   getCalendar(date: string): Observable<RestResponse<CalendarDay[]>> {

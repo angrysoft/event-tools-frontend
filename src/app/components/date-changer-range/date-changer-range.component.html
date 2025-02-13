@@ -1,0 +1,56 @@
+<mat-expansion-panel
+  [expanded]="!mobileQuery.matches"
+  [formGroup]="dateFrom"
+  class="date-panel"
+>
+  @if(mobileQuery.matches) {
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="title">
+        <span>Zmień date</span>
+        <mat-icon>date_range</mat-icon>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  }
+  <div class="actions">
+    <div class="action-buttons">
+      <button mat-icon-button (click)="prevMonth()" type="button">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+      @if (showRefresh()) {
+      <button mat-icon-button (click)="refresh.emit()" type="button">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      }
+      <button mat-icon-button (click)="nextMonth()" type="button">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+    <div class="action-inputs">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Wybierz okres</mat-label>
+        <mat-date-range-input [formGroup]="dateFrom" [rangePicker]="picker">
+          <input
+            matStartDate
+            formControlName="start"
+            placeholder="Początek"
+            readonly
+          />
+          <input matEndDate formControlName="end" placeholder="Koniec" readonly/>
+        </mat-date-range-input>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+        @if (dateFrom.controls.start.hasError('matStartDateInvalid')) {
+        <mat-error>Invalid start date</mat-error>
+        } @if (dateFrom.controls.end.hasError('matEndDateInvalid')) {
+        <mat-error>Invalid end date</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </div>
+</mat-expansion-panel>

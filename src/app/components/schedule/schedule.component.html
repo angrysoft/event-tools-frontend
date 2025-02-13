@@ -1,10 +1,17 @@
 <app-loader [loading]="loading()" />
-
+@if (admin()) {
+<app-date-changer-range
+  (dateChanged)="dateRangeChange($event)"
+  [showRefresh]="true"
+  (refresh)="reloadData()"
+/>
+} @else {
 <app-date-changer
   (dateChanged)="dateChange($event)"
   [showRefresh]="true"
   (refresh)="reloadData()"
 />
+}
 <div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">N</div>
@@ -32,9 +39,9 @@
       {{ row.workerName }}
     </div>
   </div>
-  @for (day of days; track day.day) { @if(row.days[day.day]) {
+  @for (day of days; track day.date) { @if(row.days[day.date]) {
   <div class="col">
-    @for (item of row.days[day.day]; track checkDayOff(item)) { @if
+    @for (item of row.days[day.date]; track checkDayOff(item)) { @if
     (item.dayOff) {
     <app-day-off
       [data]="{ id: item.id }"

@@ -45,6 +45,7 @@ import { EmptyDayComponent } from "./empty-day/empty-day.component";
 import { EventDayComponent } from "./event-day/event-day.component";
 import { EventDaysService } from "../../services/event-days.service";
 import { ChangeCommentComponent } from "../events/change-comment/change-comment.component";
+import { DateChangerRangeComponent } from "../date-changer-range/date-changer-range.component";
 
 @Component({
   selector: "app-schedule",
@@ -62,6 +63,7 @@ import { ChangeCommentComponent } from "../events/change-comment/change-comment.
     DayOffComponent,
     EventDayComponent,
     EmptyDayComponent,
+    DateChangerRangeComponent,
   ],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
@@ -83,9 +85,10 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   loading = signal<boolean>(true);
   action = output<ScheduleAction>();
   offset: number = 0;
-  size: number = 30;
+  size: number = 50;
   readonly end = viewChild.required<ElementRef<HTMLDivElement>>("end");
   currentDate: string = "";
+  toDate: string | null = null;
 
   ngAfterViewInit(): void {
     const options = {
@@ -121,16 +124,13 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.loading.set(true);
 
     this.workerDayService
-      .getSchedule(size, offset, this.currentDate)
+      .getSchedule(size, offset, this.currentDate, this.toDate)
       .subscribe((resp) => {
         if (resp.ok) {
-          console.log(resp.data)
           this.schedules.set(resp.data);
           this.schedules().size = this.size;
           this.loading.set(false);
-          this.end().nativeElement.style.gridColumn = `1 / span ${
-            this.header.length + 1
-          }`;
+          this.end().nativeElement.style.gridColumn = `1 / span ${this.cols}`;
           this.end().nativeElement.style.display = "block";
         }
       });
@@ -139,6 +139,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   loadMore() {
     const newOffset = this.offset + this.size;
     if (newOffset > this.schedules().total) return;
+    this.loading.set(true);
     this.end().nativeElement.style.display = "none";
     this.offset = newOffset;
     this.workerDayService
@@ -150,14 +151,12 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           this.loading.set(false);
         }
         this.end().nativeElement.style.display = "block";
+        this.loading.set(false);
       });
   }
 
-  get header() {
-    return [
-      "workerName",
-      ...(this.schedules()?.days.map((el) => el.day.toString()) ?? []),
-    ];
+  get cols() {
+    return this.schedules().days.length + 2;
   }
 
   get days() {
@@ -165,7 +164,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   }
 
   get cssCols() {
-    return `repeat(${this.header.length + 1}, auto)`;
+    return `repeat(${this.cols}, auto)`;
   }
 
   get rows() {
@@ -174,6 +173,13 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
   dateChange(date: string) {
     this.currentDate = date;
+    this.offset = 0;
+    this.loadData(this.size, this.offset);
+  }
+
+  dateRangeChange(dateRange: { from: string; to: string }) {
+    this.currentDate = dateRange.from;
+    this.toDate = dateRange.to;
     this.offset = 0;
     this.loadData(this.size, this.offset);
   }
@@ -372,7 +378,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
 
     changeCommentDialog.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result.comment, data);
         this.loading.set(true);
         this.eventDayService
           .changeComment(data.eventId, data.eventDay, result.comment)
