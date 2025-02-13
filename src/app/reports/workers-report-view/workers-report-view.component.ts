@@ -78,8 +78,11 @@ export class WorkersReportViewComponent {
 
   constructor() {
     const reportConfig = this.router.getCurrentNavigation()?.extras.state;
-    console.log(reportConfig);
-    if (!reportConfig || reportConfig["month"] === null || reportConfig["year"] === null) {
+    if (
+      !reportConfig ||
+      reportConfig["month"] === null ||
+      reportConfig["year"] === null
+    ) {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
@@ -126,7 +129,25 @@ export class WorkersReportViewComponent {
 
   setReportWorker(data: EventWorkerDay[]) {
     const workerDays: DataWorkerDay[] = [];
+    let currentEventName = "";
+
     for (const day of data) {
+      if (currentEventName !== `${day.eventNumber}-${day.eventName}`) {
+        if (currentEventName.length !== 0)
+          workerDays.push({
+            eventName: "",
+            eventNumber: "",
+            startTime: "",
+            endTime: "",
+            workHours: null,
+            rateName: "",
+            rateValue: "",
+            addons: "",
+            total: "",
+            state: "",
+          });
+        currentEventName = `${day.eventNumber}-${day.eventName}`;
+      }
       workerDays.push({
         eventName: day.eventName,
         eventNumber: day.eventNumber,
@@ -147,7 +168,27 @@ export class WorkersReportViewComponent {
 
   setReportTeam(data: EventWorkerDay[]) {
     const workerDays: DataTeamDay[] = [];
+    let currentEventName = "";
+
     for (const day of data) {
+      if (currentEventName !== `${day.eventNumber}-${day.eventName}`) {
+        if (currentEventName.length !== 0)
+          workerDays.push({
+            workerName: "",
+            eventName: "",
+            eventNumber: "",
+            startTime: "",
+            endTime: "",
+            workHours: null,
+            rateName: "",
+            rateValue: "",
+            addons: "",
+            total: "",
+            state: "",
+          });
+        currentEventName = `${day.eventNumber}-${day.eventName}`;
+      }
+
       workerDays.push({
         workerName: day.workerDay.workerName ?? "",
         eventName: day.eventName,

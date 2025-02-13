@@ -66,13 +66,13 @@ export class FromDatesReportViewComponent {
 
   constructor() {
     const reportConfig = this.router.getCurrentNavigation()?.extras.state;
-  
+
     if (!reportConfig || !reportConfig["from"] || !reportConfig["to"]) {
       this.service.showMsg("Niepoprawne ustawienia raportu");
       return;
     }
     if (reportConfig["backTo"]) this.backTo.set(reportConfig["backTo"]);
-    
+
     this.from = reportConfig["from"];
     this.to = reportConfig["to"];
 
@@ -115,7 +115,26 @@ export class FromDatesReportViewComponent {
 
   setReport(data: EventWorkerDay[]) {
     const workerDays: DataTeamDay[] = [];
+    let currentEventName = "";
+
     for (const day of data) {
+      if (currentEventName !== `${day.eventNumber}-${day.eventName}`) {
+        if (currentEventName.length !== 0)
+          workerDays.push({
+            workerName: "",
+            eventName: "",
+            eventNumber: "",
+            startTime: "",
+            endTime: "",
+            workHours: null,
+            rateName: "",
+            rateValue: "",
+            addons: "",
+            total: "",
+            state: "",
+          });
+        currentEventName = `${day.eventNumber}-${day.eventName}`;
+      }
       workerDays.push({
         workerName: day.workerDay.workerName ?? "",
         eventName: day.eventName,

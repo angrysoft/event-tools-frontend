@@ -116,7 +116,6 @@ export class WorkersReportComponent {
   }
 
   onTypeChange(reportType: "team" | "worker") {
-    console.log(reportType);
 
     if (reportType == "team") {
       this.reportSettingFrom.controls.teamId.enable();

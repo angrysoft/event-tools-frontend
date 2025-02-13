@@ -42,7 +42,7 @@ interface DataWorkerDay {
   eventNumber: string;
   startTime: string | Date;
   endTime: string | Date;
-  workHours: number;
+  workHours: number | null;
   rateName: string;
   rateValue: string;
   addons: string;
