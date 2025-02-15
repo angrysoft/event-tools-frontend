@@ -69,7 +69,7 @@ export class ShowEventComponent {
 
   get mailUrl() {
     return encodeURI(
-      `mailto:${this.workersMails().join(",")}?bcc=koordynacja@ves.pl&subject=${
+      `mailto:${this.workersMails().join(";")}?bcc=koordynacja@ves.pl&subject=${
         this.eventData().number
       } ${this.eventData().name}&body=Cześć\nInformacje o imprezie są gotowe proszę o zapoznanie się z nimi.\n\nPozdrawiam.`
     );
