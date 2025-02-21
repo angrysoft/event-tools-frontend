@@ -10,15 +10,15 @@ import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.compone
 import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "../schedule/add-day-off/add-day-off.component";
-import { CalendarItemComponent } from "./calendar-item/calendar-item.component";
+import { MonthComponent } from "./month/month.component";
 
 @Component({
   selector: "app-calendar-view",
   imports: [
     LoaderComponent,
     DateChangerComponent,
-    CalendarItemComponent,
     AddButtonComponent,
+    MonthComponent,
   ],
   templateUrl: "./calendar-view.component.html",
   styleUrl: "./calendar-view.component.scss",
@@ -30,53 +30,30 @@ export class CalendarViewComponent {
 
   loading = signal<boolean>(true);
   days = signal<CalendarDay[]>([]);
+  months = signal<{ month: string; days: CalendarDay[] }[]>([]);
+  
   eventUrl = input<string>("/admin/events");
   eventUrlData = input<{ [key: string]: string } | undefined>();
   showAdd = input<boolean>(false);
 
   currentDate: string = "";
 
-  weekDayNames = ["PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "NIEDZ."];
-
   loadData() {
-    const weekDays = [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY",
-    ];
     this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {
       if (resp.ok) {
-        const headDays: CalendarDay[] = [];
-        const tailDays: CalendarDay[] = [];
-        const dayOffset = weekDays.indexOf(resp.data.at(0)?.weekName ?? "");
-        let track = -1;
-        if (dayOffset < 0) return;
-        for (let i = 0; i < dayOffset; i++) {
-          headDays.push({
-            day: track,
-            weekName: "",
-            events: [],
-          });
-          track--;
-        }
-        headDays.push(...resp.data);
+        const data: { month: string; days: CalendarDay[] }[] = [];
 
-        const dayTail = Math.ceil(headDays.length / 7) * 7 - headDays.length;
+        data.push({
+          month: this.currentDate,
+          days: resp.data,
+        });
+        
+        data.push({
+          month: "blabla",
+          days: resp.data,
+        });
 
-        for (let i = 0; i < dayTail; i++) {
-          tailDays.push({
-            day: track,
-            weekName: "",
-            events: [],
-          });
-          track--;
-        }
-        headDays.push(...tailDays);
-        this.days.set(headDays);
+        this.months.set(data);
         this.loading.set(false);
       }
     });
@@ -98,10 +75,6 @@ export class CalendarViewComponent {
       "SUNDAY",
     ];
     return weekDays.indexOf(weekName) === _index;
-  }
-
-  getDay(idx: number) {
-    return this.weekDayNames.at(idx);
   }
 
   addDayOff() {

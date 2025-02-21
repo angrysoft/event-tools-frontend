@@ -1,0 +1,45 @@
+:host {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(7rem, auto));
+    position: relative;
+    width: 100%;
+    background-color: var(--mat-sys-surface);
+    scroll-snap-align: start;
+}
+
+.header,
+.day {
+    display: grid;
+    border-collapse: collapse;
+    padding: 0.2rem;
+}
+
+.header {
+    padding: 0.5rem;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    min-height: 15dvh;
+    min-width: 3rem;
+    overflow: hidden;
+    border-collapse: collapse;
+    border: 1px solid var(--mat-sys-outline-variant);
+}
+
+.day-head {
+    font-weight: bold;
+    text-align: center;
+    padding: 0.1rem;
+    font-size: 0.8rem;
+}
+
+@media only screen and (min-width: 960px) {
+    .day-head {
+        font-size: 1rem;
+    }
+}

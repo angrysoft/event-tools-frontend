@@ -2,10 +2,10 @@
   <mat-sidenav
     #drawer
     class="sidenav"
-    [fixedInViewport]="mobileQuery.matches"
-    [mode]="mobileQuery.matches ? 'over' : 'side'"
-    [opened]="!mobileQuery.matches"
-    [disableClose]="!mobileQuery.matches"
+    [fixedInViewport]="isMobile"
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+    [disableClose]="!isMobile"
     (click)="sideNavOnClick($event)"
   >
     <mat-toolbar>Menu</mat-toolbar>

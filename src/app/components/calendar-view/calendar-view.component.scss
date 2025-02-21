@@ -1,87 +1,24 @@
-.calendar-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 1rem;
-    border: 1px solid var(--mat-sys-outline-variant);
-    border-collapse: collapse;
-    background-color: var(--mat-sys-surface);
-}
 
-.calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 7rem);
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-    scrollbar-width: thin;
-    
-}
-
-.header, .day {
-    display: grid;
-    border-collapse: collapse;
-    padding: 0.2rem;
-}
-
-
-
-.header {
-    padding: 0.5rem;
-    align-items: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-}
-
-.day {
+.months {
     display: flex;
     flex-direction: column;
-    min-height: 3rem;
-    min-width: 3rem;
-    overflow: hidden;
-    border-collapse: collapse;
-    border-right: 1px solid var(--mat-sys-outline-variant);
-    border-top: 1px solid var(--mat-sys-outline-variant);
-}
-
-.day:nth-child(7n) {
-    border-right: none;
-}
-
-.day:nth-child(1), 
-.day:nth-child(2), 
-.day:nth-child(3), 
-.day:nth-child(4),
-.day:nth-child(5),
-.day:nth-child(6),
-.day:nth-child(7)
-{
-    border-top: none;
-}
-
-.day-head {
-    font-weight: bold;
-    text-align: center;
-    padding: 0.1rem;
-    font-size: 0.8rem;
-}
-
-@media only screen and (min-width: 960px) {
-    .calendar {
-        grid-template-columns: repeat(7, 1fr);
-    }
-    .day-head {
-        font-size: 1rem;
-    }
+    overflow: auto;
+    width: 100%;
+    gap: 1rem;
+    scrollbar-width: thin;
+    scroll-snap-align: center;
+    scroll-snap-type: y proximity;
+    border-radius: 1rem;
+    border-collapse: separate;
+    border: 1px solid var(--mat-sys-outline-variant);
 }
 
 :host {
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    overflow: hidden;
     height: 100%;
     width: 100%;
-    overflow: hidden;
-    padding: 1rem;
+    gap: 1rem;
+    padding: 0 1rem;
 }

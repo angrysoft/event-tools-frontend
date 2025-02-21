@@ -388,7 +388,6 @@ export class ManageSettlementsComponent {
       } else {
         workerDaysToChangeStatus.push(this.dayId);
       }
-      console.log(workerDaysToChangeStatus);
       this.workerDayService
         .stateChiefToCoor(this.eventId, workerDaysToChangeStatus)
         .subscribe((resp) => {

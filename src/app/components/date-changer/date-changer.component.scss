@@ -44,3 +44,9 @@
     justify-content: center;
     align-items: center;
 }
+
+@media only screen and (max-height: 512px) and (orientation: landscape) {
+    :host {
+        display: none;
+    }
+}

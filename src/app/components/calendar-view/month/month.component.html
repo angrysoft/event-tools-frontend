@@ -1,0 +1,25 @@
+@for (day of days(); track day.day) { @if (day.day < 1) {
+
+<div class="day">
+  <div class="day-head">
+    @if($index < 7) {
+    <div>{{ getDay($index) }}</div>
+    }
+    <div></div>
+  </div>
+</div>
+} @else {
+<div class="day">
+  <div class="day-head">
+    @if($index < 7) {
+    <div>{{ getDay($index) }}</div>
+    }
+    <div>
+      {{ day.day }}
+    </div>
+  </div>
+  @for (event of day.events; track event.id) {
+  <app-calendar-item [data]="event" (actionTrigger)="handleAction($event)" />
+  }
+</div>
+} }

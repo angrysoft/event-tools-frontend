@@ -28,3 +28,15 @@
     gap: 0.5rem;
     font-size: 1rem;
 }
+
+
+@media only screen and (max-height: 512px) and (orientation: landscape) {
+    mat-toolbar.mat-toolbar.mat-toolbar-multiple-rows {
+        min-height: 0 !important;
+        height: 0 !important;
+    }
+
+    mat-toolbar-row.mat-toolbar-row {
+        display: none !important;
+    }
+}

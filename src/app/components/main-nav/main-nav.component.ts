@@ -39,6 +39,7 @@ export class MainNavComponent implements OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly dialog = inject(MatDialog);
   mobileQuery: MediaQueryList;
+  landscapeQuery: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
   username = "";
   sideNav = viewChild<MatSidenav>("drawer");
@@ -48,7 +49,9 @@ export class MainNavComponent implements OnDestroy {
     const changeDetectorRef = inject(ChangeDetectorRef);
     const media = inject(MediaMatcher);
 
-    this.mobileQuery = media.matchMedia("(max-width: 600px)");
+    this.mobileQuery = media.matchMedia("(max-width: 1024px)");
+    this.landscapeQuery = media.matchMedia("(orientation: landscape) and (max-width: 960px)");
+
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener("change", this._mobileQueryListener);
     if (this.mobileQuery.matches) {
@@ -56,6 +59,13 @@ export class MainNavComponent implements OnDestroy {
         0
       )} ${this.auth.user?.lastName.at(0)}`;
     }
+  }
+
+  get isMobile(): boolean {
+    return (
+      this.mobileQuery.matches ||
+      (this.landscapeQuery.matches)
+    );
   }
 
   ngOnDestroy(): void {
