@@ -11,9 +11,7 @@ import {
   MatTabsModule,
 } from "@angular/material/tabs";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { WorkerBase } from "../../../models/worker";
-import { EventDaysService } from "../../../services/event-days.service";
-import { ConfirmDialogComponent } from "../../../components/confirm-dialog/confirm-dialog.component";
+import { AcceptDaysComponent } from "../../../components/events/accept-days/accept-days.component";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
 import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
 import { DuplicateDaysComponent } from "../../../components/events/duplicate-days/duplicate-days.component";
@@ -30,6 +28,8 @@ import {
   EventItemDto,
   WorkerDay,
 } from "../../../models/events";
+import { WorkerBase } from "../../../models/worker";
+import { EventDaysService } from "../../../services/event-days.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateToString } from "../../../utils/date";
 
@@ -373,14 +373,11 @@ export class ManageSettlementsComponent {
   }
 
   changeStatus() {
-    const changeStatusDialog = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        msg: "Po zatwierdzeniu nie bedzie możliwości edycji danego dnia. Kontynuować ?",
-      },
-    });
+    const changeStatusDialog = this.dialog.open(AcceptDaysComponent);
 
     changeStatusDialog.afterClosed().subscribe((result) => {
-      if (!result) return;
+      if (!result.state) return;
+      
       this.loading.set(true);
 
       const workerDaysToChangeStatus: number[] = [];
@@ -391,7 +388,7 @@ export class ManageSettlementsComponent {
       } else {
         workerDaysToChangeStatus.push(this.dayId);
       }
-
+      console.log(workerDaysToChangeStatus);
       this.workerDayService
         .stateChiefToCoor(this.eventId, workerDaysToChangeStatus)
         .subscribe((resp) => {
