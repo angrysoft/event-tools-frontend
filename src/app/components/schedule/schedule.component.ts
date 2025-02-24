@@ -89,6 +89,18 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   readonly end = viewChild.required<ElementRef<HTMLDivElement>>("end");
   currentDate: string = "";
   toDate: string | null = null;
+  fontSize = signal<string>("1rem");
+
+  constructor() {
+    const r = document.querySelector(":root") as HTMLElement;
+    if (!r) return;
+    const fontSize = localStorage.getItem("calendarFontSize");
+
+    if (fontSize) {
+      this.fontSize.set(fontSize);
+      r.style.setProperty("--font-size", fontSize);
+    }
+  }
 
   ngAfterViewInit(): void {
     const options = {

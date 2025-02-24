@@ -22,21 +22,21 @@
 .day {
     display: grid;
     border-collapse: collapse;
-    padding: 0.2rem;
+    padding: 0.2em;
 }
 
 .header {
-    padding: 0.5rem;
+    padding: 0.5em;
     align-items: center;
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.8em;
 }
 
 .day {
     display: flex;
     flex-direction: column;
     min-height: 15dvh;
-    min-width: 3rem;
+    min-width: 3em;
     overflow: hidden;
     border-collapse: collapse;
     border: 1px solid var(--mat-sys-outline-variant);
@@ -45,13 +45,13 @@
 .day-head {
     font-weight: bold;
     text-align: center;
-    padding: 0.1rem;
-    font-size: 0.8rem;
+    padding: 0.1em;
+    font-size: 0.8em;
 }
 
 @media only screen and (min-width: 960px) {
     .day-head {
-        font-size: 1rem;
+        font-size: 1em;
     }
 }
 
@@ -61,6 +61,6 @@
     }
     
     .month {
-        width: calc(100vw - 2rem);
+        width: calc(100vw - 2em);
     }
 }

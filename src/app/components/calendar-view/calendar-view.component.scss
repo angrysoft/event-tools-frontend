@@ -11,6 +11,7 @@
     border-radius: 1rem;
     border-collapse: separate;
     border: 1px solid var(--mat-sys-outline-variant);
+    font-size: var(--calendar-font-size);
 }
 
 :host {
@@ -21,4 +22,5 @@
     width: 100%;
     gap: 1rem;
     padding: 0 1rem;
+    
 }

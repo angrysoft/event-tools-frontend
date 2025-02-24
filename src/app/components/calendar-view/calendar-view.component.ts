@@ -35,8 +35,20 @@ export class CalendarViewComponent {
   eventUrl = input<string>("/admin/events");
   eventUrlData = input<{ [key: string]: string } | undefined>();
   showAdd = input<boolean>(false);
-
   currentDate: string = "";
+  fontSize = signal<string>("1rem");
+
+  constructor() {
+    const r = document.querySelector(":root") as HTMLElement;
+    if (!r) return;
+    const fontSize = localStorage.getItem("calendarFontSize");
+
+    if (fontSize) {
+      this.fontSize.set(fontSize);
+      r.style.setProperty("--font-size", fontSize);
+  
+    }
+  }
 
   loadData() {
     this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {

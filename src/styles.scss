@@ -138,6 +138,8 @@ $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
 
 :root {
     --color-theme: light dark;
+    --calendar-font-size: 1rem;
+    --schedule-font-size: 1rem;
 }
 
 html {

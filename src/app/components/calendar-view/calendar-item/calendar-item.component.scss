@@ -1,11 +1,10 @@
 
 .event {
-    padding: 0.3rem;
-    font-size: 0.6rem;
+    padding: 0.3em;
+    font-size: 0.6em;
     // word-break: break-all;
     white-space: nowrap;
-    border-radius: 0.4rem;
-    // overflow: hidden;
+    border-radius: 0.4em;
     scrollbar-width: thin;
 }
 
@@ -17,7 +16,7 @@
 
 @media only screen and (min-width: 960px) {
     .event {
-        font-size: 0.8rem;
+        font-size: 0.8em;
     }
 
 }

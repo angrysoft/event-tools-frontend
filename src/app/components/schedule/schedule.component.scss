@@ -5,8 +5,8 @@
     scrollbar-width: thin;
     position: relative;
     overflow: auto;
-    font-size: 0.7rem;
-    gap: 0.5rem;
+    font-size: var(--schedule-font-size);
+    gap: 0.5em;
 }
 
 .col,
@@ -19,7 +19,7 @@
 }
 
 app-event-day:nth-child(2n) {
-    margin-top: 0.2rem;
+    margin-top: 0.2em;
     // border-top: 1px solid var(--mat-sys-outline-variant);
 }
 
@@ -30,7 +30,7 @@ app-event-day:nth-child(2n) {
 .name {
     display: flex;
     align-items: center;
-    padding: 0.2rem 0.5rem;
+    padding: 0.2em 0.5em;
     height: 100%;
     cursor: pointer;
     justify-content: left;
@@ -42,14 +42,14 @@ app-event-day:nth-child(2n) {
 
 .number {
     display: flex;
-    padding: 0.2rem;
+    padding: 0.2em;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
 
 .header {
-    padding: 0.5rem;
+    padding: 0.5em;
     font-weight: bold;
     text-align: center;
 }
@@ -80,7 +80,7 @@ app-event-day:nth-child(2n) {
 
 @media only screen and (min-width: 600px) {
     .schedule {
-        font-size: 0.8rem;
+        font-size: 0.8em;
     }
 
     .col-name {
@@ -94,6 +94,6 @@ app-event-day:nth-child(2n) {
 
 @media only screen and (min-width: 1280px) {
     .schedule {
-        font-size: 1.0rem;
+        font-size: 1.0em;
     }
 }
