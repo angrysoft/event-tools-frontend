@@ -24,12 +24,20 @@
       <div class="number">{{ $index + 1 }}</div>
     </div>
     <div class="col col-name">
+      @if (admin()) {
       <div
         class="name nowrap"
         [routerLink]="'/admin/settings/cars/' + row.id.toString()"
       >
         {{ row.carName }}
       </div>
+      } @else {
+      <div
+        class="name nowrap"
+      >
+        {{ row.carName }}
+      </div>
+      }
     </div>
     @for (day of days; track day.day) { @if(row.days[day.day]) {
     <div class="col">
@@ -40,6 +48,7 @@
         (actionTrigger)="carDayAction($event)"
         [isMultipleSelected]="isMultipleSelected"
         [selected]="daySelection.isSelected(item)"
+        [showMenu]="admin()"
       />
       }
     </div>
@@ -47,6 +56,7 @@
     <app-empty-car-day
       [data]="{ data: day, car: row }"
       (actionTrigger)="emptyDayAction($event)"
+      [showMenu]="admin()"
     />
     } } }
     <div class="end" [style.gridColumnEnd]="cssCols" #end></div>

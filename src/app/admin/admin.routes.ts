@@ -33,15 +33,18 @@ export const adminRoutes: Routes = [
     path: "car-schedule",
     title: "Grafik Aut",
     loadComponent: () =>
-      import("./car-schedule/car-schedule.component").then(
+      import("../car-schedule/car-schedule.component").then(
         (m) => m.CarScheduleComponent
       ),
+    data: {
+      admin: true,
+    },
   },
   {
     path: "car-schedule/manage",
     title: "Grafik Aut",
     loadComponent: () =>
-      import("./car-schedule/car-day-manage/car-day-manage.component").then(
+      import("../car-schedule/car-day-manage/car-day-manage.component").then(
         (m) => m.CarDayManageComponent
       ),
   },

@@ -81,7 +81,7 @@ export class CarsService extends CrudService<Car> {
     page: number,
     date: string
   ): Observable<RestResponse<CarSchedule>> {
-    return this._get<RestResponse<CarSchedule>>(`${this.api}/schedule`, {
+    return this._get<RestResponse<CarSchedule>>(`/api/cars/schedule`, {
       pageSize: size,
       pageNumber: page,
       date: date,

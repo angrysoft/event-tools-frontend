@@ -1,3 +1,4 @@
+@if (showMenu()) {
 <div
   class="empty"
   [cdkContextMenuTriggerFor]="emptyMenu"
@@ -15,3 +16,6 @@
     </button>
   </div>
 </ng-template>
+} @else {
+<div class="empty"></div>
+}

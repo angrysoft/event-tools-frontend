@@ -13,18 +13,18 @@ import {
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ConfirmDialogComponent } from "../../components/confirm-dialog/confirm-dialog.component";
-import { DateChangerComponent } from "../../components/date-changer/date-changer.component";
-import { DuplicateDaysComponent } from "../../components/events/duplicate-days/duplicate-days.component";
-import { LoaderComponent } from "../../components/loader/loader.component";
-import { CarDay, CarMenuAction, CarSchedule, EmptyDay } from "../../models/car";
-import { ScheduleAction } from "../../models/schedule";
-import { getTextColor } from "../../utils/colors";
-import { dateStringFromMonthYear, dateToString } from "../../utils/date";
-import { CarsService } from "../services/cars.service";
 import { CarDayViewComponent } from "./car-day-view/car-day-view.component";
 import { CarDayComponent } from "./car-day/car-day.component";
 import { EmptyCarDayComponent } from "./empty-car-day/empty-car-day.component";
+import { CarsService } from "../admin/services/cars.service";
+import { ConfirmDialogComponent } from "../components/confirm-dialog/confirm-dialog.component";
+import { DateChangerComponent } from "../components/date-changer/date-changer.component";
+import { DuplicateDaysComponent } from "../components/events/duplicate-days/duplicate-days.component";
+import { LoaderComponent } from "../components/loader/loader.component";
+import { CarDay, CarSchedule, CarMenuAction, EmptyDay } from "../models/car";
+import { ScheduleAction } from "../models/schedule";
+import { getTextColor } from "../utils/colors";
+import { dateStringFromMonthYear, dateToString } from "../utils/date";
 
 @Component({
   selector: "app-car-schedule",
@@ -57,6 +57,7 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
   });
 
   loading = signal<boolean>(true);
+  admin = signal<boolean>(false);
   action = output<ScheduleAction>();
   page: number = 0;
   size: number = 30;
@@ -70,6 +71,9 @@ export class CarScheduleComponent implements AfterViewInit, OnDestroy {
     if (month && year) {
       this.initDate = dateStringFromMonthYear(Number(month) + 1, Number(year));
     }
+    const admin = this.route.snapshot.data["admin"];
+    if (admin)
+      this.admin.set(admin);
   }
 
   ngAfterViewInit(): void {

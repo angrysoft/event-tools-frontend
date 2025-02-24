@@ -1,3 +1,4 @@
+@if (showMenu()) {
 <div
   [style.backgroundColor]="data().color ?? '#106d20'"
   [style.color]="getTextColor(data().color ?? '#106d20')"
@@ -44,12 +45,15 @@
       Duplikuj
     </button>
     }
-    <!-- <button
-      class="context-menu-item"
-      cdkMenuItem
-      (click)="triggerAction('changeCar')"
-    >
-      Zmień Auto
-    </button> -->
   </div>
 </ng-template>
+} @else {
+<div
+  [style.backgroundColor]="data().color ?? '#106d20'"
+  [style.color]="getTextColor(data().color ?? '#106d20')"
+  class="data"
+  [class.selected]="selected()"
+>
+  {{ data().info }}
+</div>
+}

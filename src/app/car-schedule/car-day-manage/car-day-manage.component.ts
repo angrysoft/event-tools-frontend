@@ -14,11 +14,11 @@ import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormBaseComponent } from "../../../components/form-base/form-base.component";
-import { WorkTimeComponent } from "../../../components/work-time/work-time.component";
-import { CarDay } from "../../../models/car";
-import { dateTimeToString } from "../../../utils/date";
-import { CarsService } from "../../services/cars.service";
+import { CarsService } from "../../admin/services/cars.service";
+import { FormBaseComponent } from "../../components/form-base/form-base.component";
+import { WorkTimeComponent } from "../../components/work-time/work-time.component";
+import { CarDay } from "../../models/car";
+import { dateTimeToString } from "../../utils/date";
 
 @Component({
   selector: "app-car-day-manage",

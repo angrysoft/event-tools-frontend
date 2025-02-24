@@ -13,8 +13,16 @@ export const accountManagerRoutes: Routes = [
     path: "work-schedule",
     title: "Grafik",
     loadComponent: () =>
-      import("./account-manager-schedule/account-manager-schedule.component").then(
-        (m) => m.AccountManagerScheduleComponent
+      import(
+        "./account-manager-schedule/account-manager-schedule.component"
+      ).then((m) => m.AccountManagerScheduleComponent),
+  },
+  {
+    path: "car-schedule",
+    title: "Grafik Aut",
+    loadComponent: () =>
+      import("../car-schedule/car-schedule.component").then(
+        (m) => m.CarScheduleComponent
       ),
   },
   {
