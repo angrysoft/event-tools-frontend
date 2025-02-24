@@ -7,6 +7,17 @@
     scroll-snap-align: start;
 }
 
+.month-header {
+    display: flex;
+    grid-column: 1/8;
+    justify-content: center;
+}
+
+.month {
+    width: 100%;
+    text-align: center;
+}
+
 .header,
 .day {
     display: grid;
@@ -41,5 +52,15 @@
 @media only screen and (min-width: 960px) {
     .day-head {
         font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 512px) and (orientation: portrait) {
+    .month-header {
+        justify-content: flex-start;
+    }
+    
+    .month {
+        width: calc(100vw - 2rem);
     }
 }

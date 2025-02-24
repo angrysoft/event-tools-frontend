@@ -2,9 +2,9 @@
   "name": "EventTools",
   "short_name": "ET",
   "theme_color": "#388E3C",
-  "background_color": "#005786",
+  "background_color": "#388E3C",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "scope": "/",
   "start_url": "/",
   "icons": [

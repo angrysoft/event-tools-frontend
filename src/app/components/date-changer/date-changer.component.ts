@@ -48,6 +48,7 @@ export class DateChangerComponent implements OnDestroy, AfterViewInit {
   destroy = new Subject();
 
   mobileQuery: MediaQueryList;
+  landscapeQuery: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
 
   constructor() {
@@ -55,6 +56,9 @@ export class DateChangerComponent implements OnDestroy, AfterViewInit {
     const media = inject(MediaMatcher);
 
     this.mobileQuery = media.matchMedia("(max-width: 600px)");
+    this.landscapeQuery = media.matchMedia(
+      "(orientation: landscape) and (max-width: 960px)"
+    );
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener("change", this._mobileQueryListener);
 
@@ -122,6 +126,10 @@ export class DateChangerComponent implements OnDestroy, AfterViewInit {
     else newDate.setMonth(month - 1);
     this.dateFrom.controls.month.setValue(newDate.getMonth());
     this.dateFrom.controls.year.setValue(newDate.getFullYear());
+  }
+
+  get isMobile(): boolean {
+    return this.mobileQuery.matches || this.landscapeQuery.matches;
   }
 }
 

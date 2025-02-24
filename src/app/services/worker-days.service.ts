@@ -151,10 +151,15 @@ export class WorkerDaysService
     }
   }
 
-  getCalendar(date: string): Observable<RestResponse<CalendarDay[]>> {
-    return this._get<RestResponse<CalendarDay[]>>(`${this.userApi}/calendar`, {
-      date: date,
-    });
+  getCalendar(
+    date: string
+  ): Observable<RestResponse<{ month: string; days: CalendarDay[] }[]>> {
+    return this._get<RestResponse<{ month: string; days: CalendarDay[] }[]>>(
+      `${this.userApi}/calendar`,
+      {
+        date: date,
+      }
+    );
   }
 
   addDaysOff(payload: { from: string; to: string; worker: number }) {

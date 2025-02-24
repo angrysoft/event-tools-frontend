@@ -1,5 +1,5 @@
-<mat-expansion-panel [expanded]="!mobileQuery.matches" [formGroup]="dateFrom" class="date-panel">
-  @if(mobileQuery.matches) {
+<mat-expansion-panel [expanded]="!isMobile" [formGroup]="dateFrom" class="date-panel">
+  @if(isMobile) {
   <mat-expansion-panel-header>
     <mat-panel-title>
       <div class="title">

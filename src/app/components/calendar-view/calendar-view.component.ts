@@ -31,7 +31,7 @@ export class CalendarViewComponent {
   loading = signal<boolean>(true);
   days = signal<CalendarDay[]>([]);
   months = signal<{ month: string; days: CalendarDay[] }[]>([]);
-  
+
   eventUrl = input<string>("/admin/events");
   eventUrlData = input<{ [key: string]: string } | undefined>();
   showAdd = input<boolean>(false);
@@ -41,19 +41,7 @@ export class CalendarViewComponent {
   loadData() {
     this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {
       if (resp.ok) {
-        const data: { month: string; days: CalendarDay[] }[] = [];
-
-        data.push({
-          month: this.currentDate,
-          days: resp.data,
-        });
-        
-        data.push({
-          month: "blabla",
-          days: resp.data,
-        });
-
-        this.months.set(data);
+        this.months.set(resp.data);
         this.loading.set(false);
       }
     });
@@ -136,6 +124,11 @@ export class CalendarViewComponent {
         break;
       case "goTo":
         this.goToEvent(menuData.data as number);
+        break;
+      case "load":
+        console.log(menuData);
+        if (menuData.data === 1) document.getElementById("1")?.scrollIntoView(true);
+        break;
     }
   }
 }
