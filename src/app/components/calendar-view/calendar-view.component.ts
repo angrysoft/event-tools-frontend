@@ -138,7 +138,6 @@ export class CalendarViewComponent {
         this.goToEvent(menuData.data as number);
         break;
       case "load":
-        console.log(menuData);
         if (menuData.data === 1) document.getElementById("1")?.scrollIntoView(true);
         break;
     }
