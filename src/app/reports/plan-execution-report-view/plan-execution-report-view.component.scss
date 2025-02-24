@@ -27,8 +27,7 @@
     height: 100%;
     overflow: auto;
     scrollbar-width: thin;
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 1rem;
 }
 
