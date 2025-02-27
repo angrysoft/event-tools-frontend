@@ -77,6 +77,8 @@ export const workerRoutes: Routes = [
     path: "info",
     title: "Informacje",
     loadComponent: () =>
-      import("./about-me/about-me.component").then((m) => m.AboutMeComponent),
+      import("../components/about-me/about-me.component").then(
+        (m) => m.AboutMeComponent
+      ),
   },
 ];

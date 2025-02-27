@@ -1,8 +1,14 @@
 import { Routes } from "@angular/router";
-import { isWorker, isAdmin, isAccountManager } from "./auth.guard";
+import {
+  isWorker,
+  isAdmin,
+  isAccountManager,
+  isWarehouseman,
+} from "./auth.guard";
 import { adminRoutes } from "./admin/admin.routes";
 import { workerRoutes } from "./worker/worker.routes";
 import { accountManagerRoutes } from "./account-manager/account-manager.routes";
+import { warehousemanRoutes } from "./warehouseman/warehouseman.routes";
 
 export const routes: Routes = [
   {
@@ -32,8 +38,20 @@ export const routes: Routes = [
     canActivate: [isAccountManager],
     title: "Event Tools",
     loadComponent: () =>
-      import("./account-manager/account-manager.component").then((m) => m.AccountManagerComponent),
+      import("./account-manager/account-manager.component").then(
+        (m) => m.AccountManagerComponent
+      ),
     children: accountManagerRoutes,
+  },
+  {
+    path: "warehouseman",
+    canActivate: [isWarehouseman],
+    title: "Event Tools",
+    loadComponent: () =>
+      import("./warehouseman/warehouseman.component").then(
+        (m) => m.WarehousemanComponent
+      ),
+    children: warehousemanRoutes,
   },
   {
     path: "accessDenied",

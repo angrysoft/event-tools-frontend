@@ -35,6 +35,9 @@ export class AuthService {
           case "ROLE_ACCOUNT_MANAGER":
             url = "/account-manager/calendar";
             break;
+          case "ROLE_WAREHOUSEMAN":
+            url = "/warehouseman/calendar";
+            break;
         }
       }
       this.router.navigateByUrl(url, { replaceUrl: true });
@@ -59,23 +62,19 @@ export class AuthService {
   }
 
   isAccountManager() {
-    
-     if (
-       this.user &&
-       (this.user.authority === "ROLE_ACCOUNT_MANAGER")
-     )
-       return true;
-     return false;
+    if (this.user && this.user.authority === "ROLE_ACCOUNT_MANAGER")
+      return true;
+    return false;
   }
 
   isWorker() {
-    
-     if (
-       this.user &&
-       (this.user.authority === "ROLE_WORKER")
-     )
-       return true;
-     return false;
+    if (this.user && this.user.authority === "ROLE_WORKER") return true;
+    return false;
+  }
+
+  isWarehouseman() {
+    if (this.user && this.user.authority === "ROLE_WAREHOUSEMAN") return true;
+    return false;
   }
 
   getUser() {

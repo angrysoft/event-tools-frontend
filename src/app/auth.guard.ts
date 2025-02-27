@@ -54,6 +54,19 @@ const isWorker: CanActivateFn = () => {
   }
 };
 
+const isWarehouseman: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  if (auth.isWarehouseman()) return true;
+  else if (auth.isAuthenticated()) {
+    const accessDenied = router.parseUrl("/accessDenied");
+    return new RedirectCommand(accessDenied, { skipLocationChange: true });
+  } else {
+    const loginPath = router.parseUrl("/login");
+    return new RedirectCommand(loginPath, { skipLocationChange: true });
+  }
+};
+
 const isOffice: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
@@ -68,4 +81,11 @@ const isOffice: CanActivateFn = () => {
   }
 };
 
-export { authGuard, isAdmin, isAccountManager, isWorker, isOffice };
+export {
+  authGuard,
+  isAdmin,
+  isAccountManager,
+  isWorker,
+  isWarehouseman,
+  isOffice,
+};
