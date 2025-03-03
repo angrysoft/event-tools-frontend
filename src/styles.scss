@@ -158,6 +158,11 @@ html {
     ));
 }
 
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--mat-sys-primary) var(--mat-sys-background) !important;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
