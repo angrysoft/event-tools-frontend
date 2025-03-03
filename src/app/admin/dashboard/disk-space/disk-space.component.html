@@ -1,0 +1,14 @@
+<mat-card appearance="outlined">
+  <mat-card-content class="widget" [class.warning]="diskSpace().percent > 90">
+    <h4>Miejsce na dysku</h4>
+    <div class="info">
+      <span> Całkowite {{ diskSpace().total }}</span>
+      <span> Zajęte {{ diskSpace().used }}</span>
+      <span> Dostępne {{ diskSpace().avail }} </span>
+    </div>
+    <mat-progress-bar
+      mode="determinate"
+      [value]="diskSpace().percent"
+    ></mat-progress-bar>
+  </mat-card-content>
+</mat-card>
