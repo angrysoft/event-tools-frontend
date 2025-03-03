@@ -105,7 +105,7 @@
     (animationDone)="setTab()"
   >
     @for (day of eventDays(); track day.startDate) {
-    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}">
+    <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}" [labelClass]="'tab-' + day.state">
       <app-worker-day
         [day]="day"
         [selection]="selection"
