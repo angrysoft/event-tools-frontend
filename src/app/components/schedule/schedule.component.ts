@@ -123,6 +123,21 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.observer.disconnect();
   }
 
+  scrollToCurrentMonth() {
+    const date = dateToString(new Date());
+
+    setTimeout(() => {
+      const headerEl = document.getElementById(date);
+      if (headerEl) headerEl.scrollIntoView();
+      // } else {
+      //   const first = document.getElementById(this.currentDate);
+      //   console.log(first);
+      //   if (first)
+      //     first.scrollIntoView();
+      // }
+    }, 1000);
+  }
+
   reloadData() {
     let size = this.size;
     if (this.offset > 0) {
@@ -144,6 +159,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           this.loading.set(false);
           this.end().nativeElement.style.gridColumn = `1 / span ${this.cols}`;
           this.end().nativeElement.style.display = "block";
+          this.scrollToCurrentMonth();
         }
       });
   }

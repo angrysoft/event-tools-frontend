@@ -1,7 +1,7 @@
 <header class="month-header">
   <h2 class="month">{{monthName()}}</h2>
 </header>
-@for (day of days(); track day.day) { @if (day.day < 1) {
+@for (day of days(); track getTrackDay(day.day)) { @if (day.day < 1) {
 
 <div class="day">
   <div class="day-head">
@@ -21,7 +21,7 @@
       {{ day.day }}
     </div>
   </div>
-  @for (event of day.events; track event.id) {
+  @for (event of day.events; track getTrackEvent(event.id)) {
   <app-calendar-item [data]="event" (actionTrigger)="handleAction($event)" />
   }
 </div>

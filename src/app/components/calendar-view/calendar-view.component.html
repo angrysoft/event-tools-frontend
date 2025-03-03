@@ -2,13 +2,14 @@
 
 <app-date-changer (dateChanged)="dateChange($event)" />
 <div class="months">
-  @for (month of months(); track month.month + $index) {
+  @for (month of months(); track getTrack(month.month)) {
   <app-month
     (action)="handleActions($event)"
     [monthDays]="month.days"
     [monthName]="month.month"
     [id]="$index"
     [index]="$index"
+    [reload]="reloadCount()"
   />
   }
 </div>

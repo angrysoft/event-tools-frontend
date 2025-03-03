@@ -12,7 +12,7 @@
   (refresh)="reloadData()"
 />
 }
-<div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols">
+<div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols" id="schedule">
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">N</div>
   </div>
@@ -21,7 +21,7 @@
   </div>
   @for (day of days; track day.date) {
   <div class="col sticky-row">
-    <div class="header">
+    <div class="header" [id]="day.date">
       {{ day.date | date : "EE dd/MM" }}
     </div>
   </div>

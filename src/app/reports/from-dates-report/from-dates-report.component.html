@@ -17,8 +17,9 @@
             matInput
             [matDatepicker]="datepickerFrom"
             formControlName="from"
+            readonly
           />
-          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
             matIconSuffix
             [for]="datepickerFrom"
@@ -28,8 +29,8 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Wybierz datę</mat-label>
-          <input matInput [matDatepicker]="datepickerTo" formControlName="to" />
-          <mat-hint>MM/DD/YYYY</mat-hint>
+          <input matInput [matDatepicker]="datepickerTo" formControlName="to" readonly />
+          <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
             matIconSuffix
             [for]="datepickerTo"

@@ -22,6 +22,7 @@ import { MonthComponent } from "./month/month.component";
   ],
   templateUrl: "./calendar-view.component.html",
   styleUrl: "./calendar-view.component.scss",
+  
 })
 export class CalendarViewComponent {
   private readonly router = inject(Router);
@@ -37,6 +38,7 @@ export class CalendarViewComponent {
   showAdd = input<boolean>(false);
   currentDate: string = "";
   fontSize = signal<string>("1rem");
+  reloadCount = signal(0);
 
   constructor() {
     const r = document.querySelector(":root") as HTMLElement;
@@ -46,13 +48,17 @@ export class CalendarViewComponent {
     if (fontSize) {
       this.fontSize.set(fontSize);
       r.style.setProperty("--font-size", fontSize);
-  
     }
+  }
+
+  getTrack(month: string) {
+    return `${month}-${this.reloadCount()}`;
   }
 
   loadData() {
     this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {
       if (resp.ok) {
+        this.reloadCount.update((reload) => reload + 1);
         this.months.set(resp.data);
         this.loading.set(false);
       }
@@ -138,7 +144,8 @@ export class CalendarViewComponent {
         this.goToEvent(menuData.data as number);
         break;
       case "load":
-        if (menuData.data === 1) document.getElementById("1")?.scrollIntoView(true);
+        if (menuData.data === 1)
+          document.getElementById("1")?.scrollIntoView(true);
         break;
     }
   }

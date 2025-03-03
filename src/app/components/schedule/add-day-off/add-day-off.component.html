@@ -4,10 +4,15 @@
     <mat-form-field>
       <mat-label>Wybierz dni</mat-label>
       <mat-date-range-input [formGroup]="daysOffForm" [rangePicker]="picker">
-        <input matStartDate formControlName="start" placeholder="Początek" />
-        <input matEndDate formControlName="end" placeholder="Koniec" />
+        <input
+          matStartDate
+          formControlName="start"
+          placeholder="Początek"
+          readonly
+        />
+        <input matEndDate formControlName="end" placeholder="Koniec" readonly />
       </mat-date-range-input>
-      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
       <mat-datepicker-toggle
         matIconSuffix
         [for]="picker"

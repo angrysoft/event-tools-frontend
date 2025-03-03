@@ -2,8 +2,8 @@ import { CdkMenuModule } from "@angular/cdk/menu";
 import { Component, inject, input, output } from "@angular/core";
 import { Router } from "@angular/router";
 import { CalendarEvent } from "../../../models/calendar";
-import { getTextColor } from "../../../utils/colors";
 import { MenuAction } from "../../../models/menu";
+import { getTextColor } from "../../../utils/colors";
 
 @Component({
   selector: "app-calendar-item",

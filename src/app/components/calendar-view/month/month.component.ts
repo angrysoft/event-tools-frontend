@@ -2,7 +2,7 @@ import {
   Component,
   effect,
   input,
-  OnInit,
+  OnChanges,
   output,
   signal,
   untracked
@@ -17,13 +17,14 @@ import { CalendarItemComponent } from "../calendar-item/calendar-item.component"
   templateUrl: "./month.component.html",
   styleUrl: "./month.component.scss",
 })
-export class MonthComponent implements OnInit {
+export class MonthComponent implements OnChanges {
   weekDayNames = ["PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "NIEDZ."];
   monthDays = input.required<CalendarDay[]>();
   monthName = input.required<string>();
   index = input.required<number>();
   days = signal<CalendarDay[]>([]);
   action = output<MenuAction>();
+  reload = input.required<number>();
 
   constructor() {
     effect(() => {
@@ -34,7 +35,15 @@ export class MonthComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  getTrackDay(day: number) {
+    return `${day}-${this.reload()}`;
+  }
+
+  getTrackEvent(ev: number) {
+    return `${ev}-${this.reload()}`;
+  }
+
+  prepareDays() {
     const weekDays = [
       "MONDAY",
       "TUESDAY",
@@ -72,6 +81,10 @@ export class MonthComponent implements OnInit {
     }
     headDays.push(...tailDays);
     this.days.set(headDays);
+  }
+
+  ngOnChanges() {
+    this.prepareDays();
   }
 
   handleAction(menuAction: MenuAction) {
