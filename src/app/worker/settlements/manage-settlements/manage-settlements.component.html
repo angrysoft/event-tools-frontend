@@ -77,7 +77,6 @@
   <mat-tab-group
     [(selectedIndex)]="tabIdx"
     (selectedTabChange)="tabChange($event)"
-    (animationDone)="setTab()"
     #tabs
   >
     @for (day of eventDays(); track day.startDate) {
