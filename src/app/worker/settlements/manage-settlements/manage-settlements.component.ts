@@ -107,16 +107,26 @@ export class ManageSettlementsComponent {
 
         this.setStatus();
       }
+      this.setTab()
       this.loading.set(false);
     });
   }
 
   setTab() {
-    if (this.firstTime) {
-      const tab = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
-      this.tabIdx = tab;
-      this.firstTime = false;
+    let tab = 0;
+    const date = this.route.snapshot.queryParamMap.get("date");
+    if (date) {
+      const idx = this.eventDays().findIndex((d) => d.startDate === date);
+      if (idx !== -1) {
+        tab = idx;
+      }
+    } else {
+      const idx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
+      if (idx) {
+        tab = idx;
+      }
     }
+    setTimeout(() => (this.tabIdx = tab), 100);
   }
 
   tabChange(tab: MatTabChangeEvent) {
@@ -147,11 +157,11 @@ export class ManageSettlementsComponent {
   addWorkers() {
     const day = this.eventDays().at(this.tabIdx);
     this.router.navigateByUrl(
-      `/worker/settlements/manage/addWorkers/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx}`,
+      `/worker/settlements/manage/addWorkers/${this.eventId}/day/${this.dayId}`,
       {
         state: {
           startDate: day?.startDate,
-          backTo: `/worker/settlements/manage/${this.eventId}`,
+          backTo: `/worker/settlements/manage/${this.eventId}?tab=${this.tabIdx}`,
         },
       }
     );
@@ -409,11 +419,11 @@ export class ManageSettlementsComponent {
 
   editRatesAndAddons() {
     this.router.navigateByUrl(
-      `/worker/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
+      `/worker/events/${this.eventId}/day/${this.dayId}/change`,
       {
         state: {
           selected: this.selection.selected.slice(),
-          backTo: `/worker/settlements/manage/${this.eventId}`,
+          backTo: `/worker/settlements/manage/${this.eventId}?tab=${this.tabIdx}`,
           showAmount: false,
         },
       }

@@ -1,0 +1,26 @@
+<div class="actions">
+  <button
+    mat-mini-fab
+    aria-label="-"
+    (click)="zoomAction('in')"
+    [disabled]="disableIn()"
+  >
+    <mat-icon>zoom_in</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    aria-label="+"
+    (click)="zoomAction('out')"
+    [disabled]="disableOut()"
+  >
+    <mat-icon>zoom_out</mat-icon>
+  </button>
+  <button mat-mini-fab aria-label="+" (click)="zoomAction('reset')">
+    <mat-icon>restart_alt</mat-icon>
+  </button>
+  @if (showAdd()) {
+  <button mat-mini-fab aria-label="Dodaj" (click)="handleAdd()">
+    <mat-icon>add</mat-icon>
+  </button>
+  }
+</div>

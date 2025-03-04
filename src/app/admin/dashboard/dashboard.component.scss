@@ -1,18 +1,15 @@
 .dashboard {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    display: grid;
+    grid-auto-flow: row;
     gap: 1rem;
     height: 100%;
     overflow: auto;
     padding: 1rem;
-    align-items: stretch;
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 900px) {
     .dashboard {
-        flex-direction: row;
-        align-items: start;
+        grid-auto-flow: column;
     }
 }
 
