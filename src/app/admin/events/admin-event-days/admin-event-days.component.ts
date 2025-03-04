@@ -115,23 +115,20 @@ export class AdminEventDaysComponent {
   }
 
   setTab() {
-    if (this.firstTime) {
-      let tab = 0;
-      const date = this.route.snapshot.queryParamMap.get("date");
-      if (date) {
-        const idx = this.eventDays().findIndex((d) => d.startDate === date);
-        if (idx !== -1) {
-          tab = idx;
-        }
-      } else {
-        const idx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
-        if (idx) {
-          tab = idx;
-        }
+    let tab = 0;
+    const date = this.route.snapshot.queryParamMap.get("date");
+    if (date) {
+      const idx = this.eventDays().findIndex((d) => d.startDate === date);
+      if (idx !== -1) {
+        tab = idx;
       }
-      this.tabIdx = tab;
-      this.firstTime = false;
+    } else {
+      const idx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
+      if (idx) {
+        tab = idx;
+      }
     }
+    setTimeout(() => (this.tabIdx = tab), 100);
   }
 
   private loadDays() {
@@ -142,6 +139,7 @@ export class AdminEventDaysComponent {
 
         this.setStatus();
       }
+      this.setTab();
       this.loading.set(false);
     });
   }
@@ -222,11 +220,11 @@ export class AdminEventDaysComponent {
   addWorkers() {
     const day = this.eventDays().at(this.tabIdx);
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}?tab=${this.tabIdx}`,
+      `/admin/events/${this.eventId}/day/${this.dayId}`,
       {
         state: {
           startDate: day?.startDate,
-          backTo: `/admin/events/${this.eventId}/day`,
+          backTo: `/admin/events/${this.eventId}/day?tab=${this.tabIdx}`,
         },
       }
     );
@@ -478,10 +476,11 @@ export class AdminEventDaysComponent {
 
   editRatesAndAddons() {
     this.router.navigateByUrl(
-      `/admin/events/${this.eventId}/day/${this.dayId}/change?tab=${this.tabIdx}`,
+      `/admin/events/${this.eventId}/day/${this.dayId}/change`,
       {
         state: {
           selected: this.selection.selected.slice(),
+          backTo: `/admin/events/${this.eventId}/day?tab=${this.tabIdx}`,
         },
       }
     );

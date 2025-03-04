@@ -333,19 +333,27 @@ mat-card-content.form-group-col, .form-group-col {
 }
 
 .tab-CHIEF {
-    background-color: red !important;
+    border-top: 1px solid red !important;
+    border-left: 1px solid red !important;
+    border-right: 1px solid red !important;
 }
 
 .tab-TEMPLATE {
-    background-color: blue !important;
+    border-top: 1px solid blue !important;
+    border-left: 1px solid blue !important;
+    border-right: 1px solid blue !important;
 }
 
 .tab-COORDINATOR {
-    background-color: darkorange !important;
+    border-top: 1px solid darkorange !important;
+    border-left: 1px solid darkorange !important;
+    border-right: 1px solid darkorange !important;
 }
 
 .tab-APPROVED {
-    background-color: inherit !important;
+    border-top: 1px solid inherit !important;
+    border-left: 1px solid inherit !important;
+    border-right: 1px solid inherit !important;
 }
 
 

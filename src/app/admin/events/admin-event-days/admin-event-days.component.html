@@ -102,7 +102,6 @@
   <mat-tab-group
     [(selectedIndex)]="tabIdx"
     (selectedTabChange)="tabChange($event)"
-    (animationDone)="setTab()"
   >
     @for (day of eventDays(); track day.startDate) {
     <mat-tab label="{{ day.startDate | date : 'dd/MM/YYYY' }}" [labelClass]="'tab-' + day.state">
