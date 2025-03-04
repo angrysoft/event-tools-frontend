@@ -2,12 +2,14 @@ import { DatePipe } from "@angular/common";
 import {
   AfterViewInit,
   Component,
+  effect,
   ElementRef,
   inject,
   input,
   OnDestroy,
   output,
   signal,
+  untracked,
   viewChild,
 } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -46,6 +48,7 @@ import { EventDayComponent } from "./event-day/event-day.component";
 import { EventDaysService } from "../../services/event-days.service";
 import { ChangeCommentComponent } from "../events/change-comment/change-comment.component";
 import { DateChangerRangeComponent } from "../date-changer-range/date-changer-range.component";
+import { ZoomActionsComponent } from "../zoom-actions/zoom-actions.component";
 
 @Component({
   selector: "app-schedule",
@@ -64,7 +67,8 @@ import { DateChangerRangeComponent } from "../date-changer-range/date-changer-ra
     EventDayComponent,
     EmptyDayComponent,
     DateChangerRangeComponent,
-  ],
+    ZoomActionsComponent
+],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
 })
@@ -89,17 +93,23 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   readonly end = viewChild.required<ElementRef<HTMLDivElement>>("end");
   currentDate: string = "";
   toDate: string | null = null;
-  fontSize = signal<string>("1rem");
+  fontSize = signal<number>(1);
+  showZoom = input<boolean>(false);
+  root: HTMLElement;
 
   constructor() {
-    const r = document.querySelector(":root") as HTMLElement;
-    if (!r) return;
-    const fontSize = localStorage.getItem("calendarFontSize");
+    effect(() => {
+      const size = this.fontSize();
+      untracked(() => {
+        this.root.style.setProperty("--schedule-font-size", `${size}rem`);
+        localStorage.setItem("scheduleFontSize", size.toString());
+      });
+    });
 
-    if (fontSize) {
-      this.fontSize.set(fontSize);
-      r.style.setProperty("--font-size", fontSize);
-    }
+    this.root = document.querySelector(":root") as HTMLElement;
+    const fSize = localStorage.getItem("scheduleFontSize");
+
+    if (fSize) this.fontSize.set(Number(fSize));
   }
 
   ngAfterViewInit(): void {
@@ -136,6 +146,14 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
       //     first.scrollIntoView();
       // }
     }, 1000);
+  }
+
+  handleZoom(zoomAction: string) {
+    if (zoomAction === "in" && this.fontSize() < 2)
+      this.fontSize.update((s) => s + 0.1);
+    else if (zoomAction === "out" && this.fontSize() > 0.9)
+      this.fontSize.update((s) => s - 0.1);
+    else if (zoomAction === "reset") this.fontSize.set(1);
   }
 
   reloadData() {

@@ -13,6 +13,9 @@
   />
   }
 </div>
-@if (showAdd()) {
-<app-add-button (action)="addDayOff()" />
+@if (showZoom()) {
+  <app-zoom-actions [showAdd]="showAdd()" (action)="addDayOff()" (zoom)="handleZoom($event)" [disableIn]="fontSize() >=3" [disableOut]="fontSize() <= 0.7"/>
+} @else if (showAdd()) {
+  <app-add-button (action)="addDayOff()" />
+
 }

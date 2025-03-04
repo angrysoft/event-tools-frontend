@@ -1,4 +1,11 @@
-import { Component, inject, input, signal } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { CalendarDay } from "../../models/calendar";
@@ -11,6 +18,7 @@ import { DateChangerComponent } from "../date-changer/date-changer.component";
 import { LoaderComponent } from "../loader/loader.component";
 import { AddDayOffComponent } from "../schedule/add-day-off/add-day-off.component";
 import { MonthComponent } from "./month/month.component";
+import { ZoomActionsComponent } from "../zoom-actions/zoom-actions.component";
 
 @Component({
   selector: "app-calendar-view",
@@ -19,10 +27,10 @@ import { MonthComponent } from "./month/month.component";
     DateChangerComponent,
     AddButtonComponent,
     MonthComponent,
+    ZoomActionsComponent,
   ],
   templateUrl: "./calendar-view.component.html",
   styleUrl: "./calendar-view.component.scss",
-  
 })
 export class CalendarViewComponent {
   private readonly router = inject(Router);
@@ -36,19 +44,25 @@ export class CalendarViewComponent {
   eventUrl = input<string>("/admin/events");
   eventUrlData = input<{ [key: string]: string } | undefined>();
   showAdd = input<boolean>(false);
+  showZoom = input<boolean>(false);
   currentDate: string = "";
-  fontSize = signal<string>("1rem");
+  fontSize = signal<number>(1);
   reloadCount = signal(0);
+  root: HTMLElement;
 
   constructor() {
-    const r = document.querySelector(":root") as HTMLElement;
-    if (!r) return;
-    const fontSize = localStorage.getItem("calendarFontSize");
+    effect(() => {
+      const size = this.fontSize();
+      untracked(() => {
+        this.root.style.setProperty("--calendar-font-size", `${size}rem`);
+        localStorage.setItem("calendarFontSize", size.toString());
+      });
+    });
 
-    if (fontSize) {
-      this.fontSize.set(fontSize);
-      r.style.setProperty("--font-size", fontSize);
-    }
+    this.root = document.querySelector(":root") as HTMLElement;
+    const fSize = localStorage.getItem("calendarFontSize");
+
+    if (fSize) this.fontSize.set(Number(fSize));
   }
 
   getTrack(month: string) {
@@ -81,6 +95,14 @@ export class CalendarViewComponent {
       "SUNDAY",
     ];
     return weekDays.indexOf(weekName) === _index;
+  }
+
+  handleZoom(zoomAction: string) {
+    if (zoomAction === "in" && this.fontSize() < 3)
+      this.fontSize.update((s) => s + 0.1);
+    else if (zoomAction === "out" && this.fontSize() > 0.7)
+      this.fontSize.update((s) => s - 0.1);
+    else if (zoomAction === "reset") this.fontSize.set(1);
   }
 
   addDayOff() {

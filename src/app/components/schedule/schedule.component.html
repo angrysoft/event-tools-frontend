@@ -12,7 +12,11 @@
   (refresh)="reloadData()"
 />
 }
-<div class="mat-elevation-z8 schedule" [style.gridTemplateColumns]="cssCols" id="schedule">
+<div
+  class="mat-elevation-z8 schedule"
+  [style.gridTemplateColumns]="cssCols"
+  id="schedule"
+>
   <div class="col sticky-row sticky-col" style="z-index: 10">
     <div class="header">N</div>
   </div>
@@ -66,3 +70,10 @@
   } } }
   <div class="end" [style.gridColumnEnd]="cssCols" #end></div>
 </div>
+@if (showZoom()) {
+<app-zoom-actions
+  (zoom)="handleZoom($event)"
+  [disableIn]="fontSize() >= 2"
+  [disableOut]="fontSize() <= 0.9"
+/>
+}

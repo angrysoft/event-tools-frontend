@@ -79,9 +79,9 @@ app-event-day:nth-child(2n) {
 
 
 @media only screen and (min-width: 600px) {
-    .schedule {
-        font-size: 0.8em;
-    }
+    // .schedule {
+    //     font-size: 0.8em;
+    // }
 
     .col-name {
         position: sticky;
@@ -93,7 +93,7 @@ app-event-day:nth-child(2n) {
 }
 
 @media only screen and (min-width: 1280px) {
-    .schedule {
-        font-size: 1.0em;
-    }
+    // .schedule {
+    //     font-size: 1.0em;
+    // }
 }
