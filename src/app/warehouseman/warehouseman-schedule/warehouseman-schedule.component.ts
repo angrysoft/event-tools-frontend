@@ -27,8 +27,8 @@ export class WarehousemanScheduleComponent {
       });
     } else if (action.action === "event") {
       const data = action.data as WorkerDaySchedule;
-      this.router.navigateByUrl(`/account-manager/event/${data.eventId}`, {
-        state: { backTo: "/account-manager/work-schedule" },
+      this.router.navigateByUrl(`/warehouseman/event/${data.eventId}`, {
+        state: { backTo: "/warehouseman/work-schedule" },
       });
     }
   }
