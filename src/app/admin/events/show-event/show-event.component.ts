@@ -57,7 +57,6 @@ export class ShowEventComponent {
     this.service.getInfo(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventData.set(resp.data);
-        console.log(resp.data);
       }
       this.loading.set(false);
     });
