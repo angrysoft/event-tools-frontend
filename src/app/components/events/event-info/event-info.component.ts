@@ -3,10 +3,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { EventItemDto } from '../../../models/events';
 import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-event-info',
-  imports: [MatCardModule, MatTabsModule, SafeHtmlPipe],
+  imports: [MatCardModule, MatTabsModule, SafeHtmlPipe, DatePipe],
   templateUrl: './event-info.component.html',
   styleUrl: './event-info.component.scss'
 })

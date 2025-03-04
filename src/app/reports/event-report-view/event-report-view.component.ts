@@ -1,10 +1,6 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe, KeyValuePipe } from "@angular/common";
-import {
-  Component,
-  inject,
-  signal
-} from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -39,8 +35,8 @@ import { WorkerDaysService } from "../../services/worker-days.service";
     MatSlideToggleModule,
     MatMenuModule,
     WorkerEventDayComponent,
-    MatDividerModule
-],
+    MatDividerModule,
+  ],
   templateUrl: "./event-report-view.component.html",
   styleUrl: "./event-report-view.component.scss",
 })
@@ -62,6 +58,7 @@ export class EventReportViewComponent {
     accountManager: "",
     chief: "",
     editors: [],
+    edited: "",
   });
   totals = signal<Totals>({
     totalHours: 0,
@@ -133,23 +130,23 @@ export class EventReportViewComponent {
             {};
           for (const eventDay of resp.data.eventDays) {
             eventDay.workerDays.forEach((wd) => {
-                wd.state = eventDay.state;
-                if (
-                  wd.worker &&
-                  wd.workerName &&
-                  this.workerSelection.isEmpty()
-                ) {
-                  workers[wd.worker] = {
-                    id: wd.worker,
-                    workerName: wd.workerName,
-                  };
-                }
-                return wd;
-              })
+              wd.state = eventDay.state;
+              if (
+                wd.worker &&
+                wd.workerName &&
+                this.workerSelection.isEmpty()
+              ) {
+                workers[wd.worker] = {
+                  id: wd.worker,
+                  workerName: wd.workerName,
+                };
+              }
+              return wd;
+            });
           }
           if (this.workerSelection.isEmpty())
             this.workerList.set(Object.values(workers));
-          
+
           this.days.set(resp.data.eventDays);
         }
         this.loading.set(false);

@@ -35,6 +35,7 @@ export class WorkerShowEventComponent {
     accountManager: "",
     chief: "",
     editors: [],
+    edited: "",
   });
   backTo = signal<string>("/worker/calendar");
 

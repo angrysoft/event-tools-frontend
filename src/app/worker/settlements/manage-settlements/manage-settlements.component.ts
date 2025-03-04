@@ -65,6 +65,7 @@ export class ManageSettlementsComponent {
     accountManager: "",
     chief: "",
     editors: [],
+    edited: "",
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);
@@ -215,7 +216,7 @@ export class ManageSettlementsComponent {
       this.selection.selected.forEach((sel) => {
         if (sel.id) workerDays[sel.id] = sel.workerName ?? "";
       });
-      
+
       this.workerDayService
         .changeTime(this.eventId, this.dayId, {
           workerDays: workerDays,
@@ -377,7 +378,7 @@ export class ManageSettlementsComponent {
 
     changeStatusDialog.afterClosed().subscribe((result) => {
       if (!result.state) return;
-      
+
       this.loading.set(true);
 
       const workerDaysToChangeStatus: number[] = [];

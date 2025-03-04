@@ -33,6 +33,7 @@ interface EventItemDto {
   accountManager: string;
   chief: string;
   editors: string[];
+  edited: string;
 }
 
 interface EventFile {

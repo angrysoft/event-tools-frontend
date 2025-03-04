@@ -44,6 +44,7 @@ export class ShowEventComponent {
     chief: "",
     editors: [],
     coordinatorId: 0,
+    edited: "",
   });
 
   loading = signal<boolean>(true);
@@ -56,6 +57,7 @@ export class ShowEventComponent {
     this.service.getInfo(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventData.set(resp.data);
+        console.log(resp.data);
       }
       this.loading.set(false);
     });
@@ -71,7 +73,9 @@ export class ShowEventComponent {
     return encodeURI(
       `mailto:${this.workersMails().join(";")}?bcc=koordynacja@ves.pl&subject=${
         this.eventData().number
-      } ${this.eventData().name}&body=Cześć\nInformacje o imprezie są gotowe proszę o zapoznanie się z nimi.\n\nPozdrawiam.`
+      } ${
+        this.eventData().name
+      }&body=Cześć\nInformacje o imprezie są gotowe proszę o zapoznanie się z nimi.\n\nPozdrawiam.`
     );
   }
 

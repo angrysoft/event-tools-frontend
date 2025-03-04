@@ -45,6 +45,7 @@ export class PlanExecutionReportViewComponent {
     accountManager: "",
     chief: "",
     editors: [],
+    edited: "",
   });
 
   totalsPlan = signal<Totals>({
