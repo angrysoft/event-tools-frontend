@@ -4,6 +4,7 @@
   "theme_color": "#388E3C",
   "background_color": "#388E3C",
   "display": "standalone",
+  "orientation": "any",
   "scope": "/",
   "lang": "pl-PL",
   "start_url": "/",
