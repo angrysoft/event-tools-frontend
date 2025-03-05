@@ -54,46 +54,6 @@ export const accountManagerRoutes: Routes = [
       ),
   },
   {
-    path: "reports/workers",
-    title: "Raporty Miesięczny",
-    loadComponent: () =>
-      import("../reports/workers-report/workers-report.component").then(
-        (m) => m.WorkersReportComponent
-      ),
-    data: {
-      actions: "/account-manager/reports/workers/view",
-      backTo: "/account-manager/reports/workers",
-    },
-  },
-  {
-    path: "reports/workers/view",
-    title: "Raporty Miesięczny",
-    loadComponent: () =>
-      import(
-        "../reports/workers-report-view/workers-report-view.component"
-      ).then((m) => m.WorkersReportViewComponent),
-  },
-  {
-    path: "reports/from-dates",
-    title: "Raporty z okresu",
-    loadComponent: () =>
-      import("../reports/from-dates-report/from-dates-report.component").then(
-        (m) => m.FromDatesReportComponent
-      ),
-    data: {
-      actions: "/account-manager/reports/from-dates/view",
-      backTo: "/account-manager/reports/from-dates",
-    },
-  },
-  {
-    path: "reports/from-dates/view",
-    title: "Raporty z okresu",
-    loadComponent: () =>
-      import(
-        "../reports/from-dates-report-view/from-dates-report-view.component"
-      ).then((m) => m.FromDatesReportViewComponent),
-  },
-  {
     path: "reports/plan-execution",
     title: "Raport Plan/Realizacja",
     loadComponent: () =>
