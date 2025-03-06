@@ -151,7 +151,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   handleZoom(zoomAction: string) {
     if (zoomAction === "in" && this.fontSize() < 2)
       this.fontSize.update((s) => s + 0.1);
-    else if (zoomAction === "out" && this.fontSize() > 0.9)
+    else if (zoomAction === "out" && this.fontSize() > 0.3)
       this.fontSize.update((s) => s - 0.1);
     else if (zoomAction === "reset") this.fontSize.set(1);
   }
