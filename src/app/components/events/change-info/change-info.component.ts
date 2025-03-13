@@ -32,7 +32,6 @@ export class ChangeInfoComponent {
     this.changeInfoForm = new FormGroup<ChangeInfoForm>({
       info: new FormControl(this.data.info, Validators.required),
     });
-    console.log(this.data.info);
   }
 }
 
