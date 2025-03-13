@@ -49,6 +49,7 @@ export class ShowEventComponent {
 
   loading = signal<boolean>(true);
   workersMails = signal<string[]>([]);
+  accountManagerMail = signal<string>("");
 
   eventId: number = Number(this.route.snapshot.paramMap.get("eventId"));
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
@@ -63,18 +64,21 @@ export class ShowEventComponent {
 
     this.service.getWorkersMails(this.eventId).subscribe((resp) => {
       if (resp.ok) {
-        this.workersMails.set(resp.data);
+        this.workersMails.set(resp.data.workers);
+        this.accountManagerMail.set(resp.data.accountManager);
       }
     });
   }
 
   get mailUrl() {
     return encodeURI(
-      `mailto:${this.workersMails().join(";")}?bcc=koordynacja@ves.pl&subject=${
+      `mailto:${this.workersMails().join(
+        ";"
+      )}?bcc=koordynacja@ves.pl;magazyn@ves.pl;${this.accountManagerMail()}&subject=${
         this.eventData().number
       } ${
         this.eventData().name
-      }&body=Cześć\nInformacje o imprezie są gotowe proszę o zapoznanie się z nimi.\n\nPozdrawiam.`
+      }&body=Cześć\nInformacje o imprezie są gotowe, proszę o zapoznanie się z nimi w aplikacji.\n\nPozdrawiam.`
     );
   }
 

@@ -52,8 +52,8 @@ export class EventsService extends CrudService<EventItem | EventItemDto> {
   }
 
   getWorkersMails(eventId: number) {
-    return this._get<RestResponse<string[]>>(
-      `${this.api}/worker-emails/${eventId}`
-    );
+    return this._get<
+      RestResponse<{ workers: string[]; accountManager: string }>
+    >(`${this.api}/worker-emails/${eventId}`);
   }
 }
