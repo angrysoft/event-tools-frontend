@@ -111,7 +111,7 @@ export class AdminEventDaysComponent {
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });
-    this.loadDays();
+    this.loadDays(true);
   }
 
   setTab() {
@@ -131,7 +131,7 @@ export class AdminEventDaysComponent {
     setTimeout(() => (this.tabIdx = tab), 100);
   }
 
-  private loadDays() {
+  private loadDays(setTab:boolean = false) {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
@@ -139,7 +139,8 @@ export class AdminEventDaysComponent {
 
         this.setStatus();
       }
-      this.setTab();
+      if (setTab)
+        this.setTab();
       this.loading.set(false);
     });
   }
@@ -166,8 +167,6 @@ export class AdminEventDaysComponent {
   }
 
   get isMultipleSelected() {
-    // always return true ?!?!
-    //this.selection().isMultipleSelection()
     return this.selection.selected.length !== 1;
   }
 
