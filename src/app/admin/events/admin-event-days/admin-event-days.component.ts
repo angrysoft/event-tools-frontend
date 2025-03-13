@@ -458,7 +458,7 @@ export class AdminEventDaysComponent {
     });
 
     changeInfoDialog.afterClosed().subscribe((result) => {
-      if (!result) return;
+      if (result === false) return;
       this.loading.set(true);
 
       this.service

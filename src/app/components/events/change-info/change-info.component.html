@@ -8,8 +8,14 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="false" type="button">
-    Anuluj
+  <button mat-button [mat-dialog-close]="false" type="button">Anuluj</button>
+  <button
+    mat-button
+    [mat-dialog-close]="{ info: null }"
+    type="button"
+    [disabled]="data.info === null || data.info?.length === 0"
+  >
+    Usuń
   </button>
   <button
     mat-button
