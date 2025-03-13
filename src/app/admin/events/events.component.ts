@@ -17,6 +17,8 @@ export class EventsComponent {
     { name: "Numer", def: "number" },
     { name: "Nazwa", def: "name" },
     { name: "Koordynator", def: "coordinatorName" },
+    { name: "Początek", def: "firstDay" },
+    { name: "Koniec", def: "lastDay" },
   ];
 
   constructor() {
