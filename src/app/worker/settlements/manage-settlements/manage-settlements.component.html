@@ -5,11 +5,80 @@
     <button mat-icon-button routerLink="{{ backTo }}">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h2>
-      {{ eventInfo().number }} - {{ eventInfo().name }} -
-      <span [class]="stateCls">{{ dayStatus() }}</span>
+    <h2 class="event-name">
+      <span>{{ eventInfo().number }} - </span>
+      <span class="name">{{ eventInfo().name }}</span>
+      <span [class]="stateCls"> - {{ dayStatus() }}</span>
     </h2>
+    @if (mobileQuery.matches) {
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="actionMenu"
+      aria-label="Menu icon"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #actionMenu="matMenu">
+      <button
+        mat-menu-item
+        (click)="changeStatus()"
+        [disabled]="eventDays().length === 0 || readOnly"
+      >
+        <mat-icon>content_copy</mat-icon>Zatwierdź
+      </button>
+      <mat-divider vertical="true" />
+      <button
+        mat-menu-item
+        (click)="addWorkers()"
+        [disabled]="eventDays().length === 0 || readOnly"
+      >
+        <mat-icon>person_add</mat-icon>Dodaj
+      </button>
+
+      <button
+        mat-menu-item
+        (click)="duplicateDay()"
+        [disabled]="selection.isEmpty() || readOnly"
+      >
+        <mat-icon>content_copy</mat-icon>Duplikuj
+      </button>
+
+      <button
+        mat-menu-item
+        [disabled]="selection.isEmpty() || readOnly"
+        (click)="editTime()"
+      >
+        <mat-icon>schedule</mat-icon>Godziny
+      </button>
+
+      <button
+        mat-menu-item
+        [disabled]="selection.isEmpty() || readOnly"
+        (click)="editRatesAndAddons()"
+      >
+        <mat-icon>money</mat-icon>Stawki/Dodatki
+      </button>
+
+      <button
+        mat-menu-item
+        [disabled]="isMultipleSelected || readOnly"
+        (click)="changeWorker()"
+      >
+        <mat-icon>change_circle</mat-icon>Zmień Pracownika
+      </button>
+
+      <button
+        mat-menu-item
+        [disabled]="selection.isEmpty() || readOnly"
+        (click)="removeWorkersDays()"
+        class="delete-button"
+      >
+        <mat-icon>person_remove</mat-icon>Usuń
+      </button>
+    </mat-menu>
+    }
   </header>
+  @if (!mobileQuery.matches) {
   <div class="actions">
     <div class="action-buttons">
       <button
@@ -73,7 +142,7 @@
       </button>
     </div>
   </div>
-  <mat-divider />
+  }
   <mat-tab-group
     [(selectedIndex)]="tabIdx"
     (selectedTabChange)="tabChange($event)"

@@ -1,6 +1,6 @@
 .main-section, .header {
     display: flex;
-    gap: 1rem;
+    gap: 0.1rem;
 }
 
 .main-section {
@@ -8,6 +8,10 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+}
+
+h2.event-name {
+    margin: 0;
 }
 
 mat-tab-group {
@@ -27,7 +31,7 @@ mat-tab-group {
 }
 
 .actions{
-    padding: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 .CHIEF {

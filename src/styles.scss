@@ -161,6 +161,7 @@ html {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--mat-sys-primary) var(--mat-sys-background) !important;
+    box-sizing: border-box;
 }
 
 html, body { height: 100%; }
@@ -311,10 +312,6 @@ mat-card-content.form-group-col, .form-group-col {
 .mdc-dialog__surface {
     overflow-y: hidden !important;
     }
-
-* {
-    box-sizing: border-box;
-}
 
 .CHIEF {
     color: red !important;

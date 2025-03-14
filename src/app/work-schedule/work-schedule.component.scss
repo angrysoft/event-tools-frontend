@@ -1,3 +1,9 @@
 :host {
-    padding: 1rem;
+    padding: 0.1rem 0.5rem;
+}
+
+@media srceen and (min-width: 600px) {
+    :host {
+        padding: 0.1rem;
+    }
 }

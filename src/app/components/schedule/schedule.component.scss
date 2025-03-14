@@ -79,10 +79,6 @@ app-event-day:nth-child(2n) {
 
 
 @media only screen and (min-width: 600px) {
-    // .schedule {
-    //     font-size: 0.8em;
-    // }
-
     .col-name {
         position: sticky;
         background-color: var(--mat-sys-background-color, var(--mat-sys-background));
@@ -90,10 +86,4 @@ app-event-day:nth-child(2n) {
         left: 0;
     }
 
-}
-
-@media only screen and (min-width: 1280px) {
-    // .schedule {
-    //     font-size: 1.0em;
-    // }
 }

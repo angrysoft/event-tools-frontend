@@ -5,7 +5,7 @@
     <button mat-icon-button routerLink="{{ backTo }}">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h2>
+    <h2 class="event-name">
       {{ eventInfo().number }} - {{ eventInfo().name }}
       @if (dayInfo().length > 0) {
       <span>[ {{ dayInfo() }} ]</span>
@@ -98,7 +98,6 @@
       </button>
     </div>
   </div>
-  <mat-divider />
   <mat-tab-group
     [(selectedIndex)]="tabIdx"
     (selectedTabChange)="tabChange($event)"

@@ -1,6 +1,6 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
-import { Component, inject, signal, viewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, inject, signal, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
@@ -32,6 +32,8 @@ import { WorkerBase } from "../../../models/worker";
 import { EventDaysService } from "../../../services/event-days.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateToString } from "../../../utils/date";
+import { MatMenuModule } from "@angular/material/menu";
+import { MediaMatcher } from "@angular/cdk/layout";
 
 @Component({
   selector: "app-manage-settlements",
@@ -44,6 +46,7 @@ import { dateToString } from "../../../utils/date";
     DatePipe,
     WorkerDayComponent,
     LoaderComponent,
+    MatMenuModule,
   ],
   templateUrl: "./manage-settlements.component.html",
   styleUrl: "./manage-settlements.component.scss",
@@ -54,6 +57,8 @@ export class ManageSettlementsComponent {
   router = inject(Router);
   service = inject(EventDaysService);
   workerDayService = inject(WorkerDaysService);
+  mobileQuery: MediaQueryList;
+  private readonly _mobileQueryListener: () => void;
 
   statuses = signal<{ [key: string]: string }>({});
   eventInfo = signal<EventItemDto>({
@@ -93,6 +98,13 @@ export class ManageSettlementsComponent {
   ];
 
   constructor() {
+    const changeDetectorRef = inject(ChangeDetectorRef);
+        const media = inject(MediaMatcher);
+    
+        this.mobileQuery = media.matchMedia("(max-width: 1080px)");
+    
+        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+        this.mobileQuery.addEventListener("change", this._mobileQueryListener);
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });
@@ -107,7 +119,7 @@ export class ManageSettlementsComponent {
 
         this.setStatus();
       }
-      this.setTab()
+      this.setTab();
       this.loading.set(false);
     });
   }

@@ -4,7 +4,6 @@
     gap: 0.5rem;
 }
 
-
 .action-buttons, .action-inputs {
     display: flex;
     position: relative;
@@ -31,10 +30,9 @@
     display: block;
     align-items: center;
     box-sizing: border-box;
-    padding: 0.4rem;
 }
 
-.example-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+.mat-mdc-form-field {
     margin-left: 8px;
 }
 

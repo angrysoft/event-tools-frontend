@@ -1,14 +1,24 @@
-.main-section,
-.header {
-    display: flex;
-    gap: 1rem;
-}
-
 .main-section {
-    padding: 1rem;
+    display: flex;
+    gap: 0.1rem;
+    padding: 0 1rem 1rem 1rem;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+}
+
+.name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+h2.event-name {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: left;
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 mat-tab-group {
@@ -17,6 +27,8 @@ mat-tab-group {
 }
 
 .header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     padding: 0.5rem;
 }
@@ -29,7 +41,7 @@ mat-tab-group {
 }
 
 .actions {
-    padding: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 :host {
@@ -37,4 +49,10 @@ mat-tab-group {
     box-sizing: border-box;
     height: 100%;
     overflow: hidden;
+}
+
+@media only screen and (min-width: 900px) {
+    h2.event-name {
+            font-size: 1.2rem;
+        }
 }
