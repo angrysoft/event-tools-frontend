@@ -1,16 +1,18 @@
 import { SelectionModel } from "@angular/cdk/collections";
+import { MediaMatcher } from "@angular/cdk/layout";
 import { DatePipe } from "@angular/common";
 import { ChangeDetectorRef, Component, inject, signal, viewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
 import {
   MatTabChangeEvent,
   MatTabGroup,
   MatTabsModule,
 } from "@angular/material/tabs";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AcceptDaysComponent } from "../../../components/events/accept-days/accept-days.component";
 import { ChangeTimeComponent } from "../../../components/events/change-time/change-time.component";
 import { ChangeWorkerComponent } from "../../../components/events/change-worker/change-worker.component";
@@ -32,8 +34,6 @@ import { WorkerBase } from "../../../models/worker";
 import { EventDaysService } from "../../../services/event-days.service";
 import { WorkerDaysService } from "../../../services/worker-days.service";
 import { dateToString } from "../../../utils/date";
-import { MatMenuModule } from "@angular/material/menu";
-import { MediaMatcher } from "@angular/cdk/layout";
 
 @Component({
   selector: "app-manage-settlements",
@@ -42,7 +42,6 @@ import { MediaMatcher } from "@angular/cdk/layout";
     MatButtonModule,
     MatIcon,
     MatDividerModule,
-    RouterLink,
     DatePipe,
     WorkerDayComponent,
     LoaderComponent,
