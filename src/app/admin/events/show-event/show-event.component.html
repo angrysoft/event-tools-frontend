@@ -1,7 +1,7 @@
 <app-loader [loading]="loading()" />
 
 <div class="side-content">
-  <app-action-toolbar title="Dane Imprezy" backTo="/admin/events">
+  <app-action-toolbar title="Dane Imprezy" [backTo]="backTo">
     <a
       mat-flat-button
       [href]="mailUrl"

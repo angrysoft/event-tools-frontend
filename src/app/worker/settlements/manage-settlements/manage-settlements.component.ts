@@ -109,6 +109,13 @@ export class ManageSettlementsComponent {
       if (resp.ok) this.statuses.set(resp.data);
     });
     this.loadDays();
+
+    const backTo = this.router.getCurrentNavigation()?.extras.state!["backTo"];
+    if (backTo) this.backTo = backTo;
+  }
+
+  goBack() {
+    this.router.navigateByUrl(this.backTo);
   }
 
   private loadDays() {

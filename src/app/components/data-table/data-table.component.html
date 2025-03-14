@@ -6,6 +6,7 @@
     (searchRequest)="searchQuery($event)"
     (resetSearch)="resetSearch()"
     [filters]="filters()"
+    [initValue]="initSearchValue()"
   />
   }
   <div class="table-wrapper">
@@ -27,7 +28,8 @@
     <mat-paginator
       #paginator
       [length]="dataSource.totalElements"
-      [pageIndex]="0"
+      (page)="onPageChange($event)"
+      pageIndex="0"
       [pageSizeOptions]="[15, 25, 30, 45]"
       pageSize="15"
       aria-label="Wybierz Stronę"
@@ -35,6 +37,6 @@
     </mat-paginator>
   </div>
   @if (showAddButton()) {
-      <app-add-button url="{{ actionsUrl() }}/add" />
+  <app-add-button url="{{ actionsUrl() }}/add" />
   }
 </div>

@@ -2,7 +2,7 @@
 
 <section class="main-section">
   <header class="header">
-    <button mat-icon-button routerLink="{{ backTo }}">
+    <button mat-icon-button (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h2 class="event-name">

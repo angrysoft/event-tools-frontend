@@ -1,20 +1,21 @@
 import {
-  AfterViewInit,
   Component,
   inject,
   Injectable,
   input,
   OnInit,
+  signal,
   viewChild,
 } from "@angular/core";
 import {
   MatPaginator,
   MatPaginatorIntl,
   MatPaginatorModule,
+  PageEvent,
 } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTable, MatTableModule } from "@angular/material/table";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { CrudService } from "../../services/crud.service";
 import { AddButtonComponent } from "../add-button/add-button.component";
@@ -57,9 +58,11 @@ export class DataTablePaginatorIntl implements MatPaginatorIntl {
   styleUrl: "./data-table.component.scss",
   providers: [{ provide: MatPaginatorIntl, useClass: DataTablePaginatorIntl }],
 })
-export class DataTableComponent<T> implements AfterViewInit, OnInit {
+export class DataTableComponent<T> implements OnInit {
   readonly service = inject(CrudService<T>);
   readonly router = inject(Router);
+  readonly route = inject(ActivatedRoute);
+
   itemIdName = input<string>("id");
   search = input<boolean>(false);
   filters = input<InputFilters>();
@@ -74,6 +77,11 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
   readonly paginator = viewChild.required(MatPaginator);
   readonly table = viewChild.required(MatTable);
   dataSource!: DataTableDataSource<T>;
+  pageSize = 15;
+  pageIndex = 0;
+  query = {};
+  initSearchValue = signal<{ [key:string]: string }>({ query: "" });
+  url = "";
 
   get columnNames() {
     return this.tableColumns().map((el) => el.def);
@@ -81,13 +89,39 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
 
   constructor() {
     this.dataSource = new DataTableDataSource<T>(this.service);
+    this.url = this.router.url.split("?")[0];
+    const query: { [key: string]: string } = {};
+    for (const [key, value] of Object.entries(
+      this.route.snapshot.queryParams
+    )) {
+      switch (key) {
+        case "page":
+          this.pageIndex = Number(value);
+          break;
+        case "items":
+          this.pageSize = Number(value);
+          break;
+        default:
+          query[key] = value;
+          break;
+      }
+    }
+    this.query = query;
+    this.initSearchValue.set(query);
+  }
+
+  onPageChange(e: PageEvent) {
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
   }
 
   ngOnInit(): void {
     this.service.api = this.api();
-  }
-
-  ngAfterViewInit(): void {
+    this.paginator().initialized.subscribe(() => {
+      this.paginator().pageIndex = this.pageIndex;
+      this.paginator().pageSize = this.pageSize;
+    });
+    this.dataSource.query = this.query;
     this.dataSource.paginator = this.paginator();
     this.table().dataSource = this.dataSource;
   }
@@ -100,19 +134,33 @@ export class DataTableComponent<T> implements AfterViewInit, OnInit {
         { state: this.actionsData() }
       );
     } else {
+      const qParams = new URLSearchParams({
+        ...this.query,
+        page: this.pageIndex.toString(),
+        items: this.pageSize.toString(),
+      });
+      const backTo = `${this.url}?${qParams.toString()}`;
+
       this.router.navigateByUrl(
-        `${this.actionsUrl()}/${row[this.itemIdName()]}`
+        `${this.actionsUrl()}/${row[this.itemIdName()]}`,
+        {
+          state: {
+            backTo: backTo,
+          },
+        }
       );
     }
   }
 
   searchQuery(q: SearchQuery) {
+    this.query = q;
     this.dataSource.query = q;
     this.paginator().firstPage();
     this.dataSource.loadData();
   }
 
   resetSearch() {
+    this.query = {};
     this.dataSource.query = {};
     this.paginator().firstPage();
     this.dataSource.loadData();

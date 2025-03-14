@@ -81,6 +81,7 @@ export class ShowWorkerComponent {
 
   workerId: number = Number(this.route.snapshot.paramMap.get("id"));
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
+  backTo = "/admin/workers";
 
   constructor() {
     this.workerService.get(this.workerId).subscribe((response) => {
@@ -98,6 +99,8 @@ export class ShowWorkerComponent {
       }
       this.loading.set(false);
     });
+    const backTo = this.router.getCurrentNavigation()?.extras.state!["backTo"];
+    if (backTo) this.backTo = backTo;
   }
 
   removeWorker() {

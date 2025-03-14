@@ -4,13 +4,13 @@ import {
   Component,
   computed,
   input,
-  output
+  output,
 } from "@angular/core";
 import {
   FormControl,
   FormRecord,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatOptionModule } from "@angular/material/core";
@@ -21,31 +21,35 @@ import { MatSelectModule } from "@angular/material/select";
 import { InputFilters, SearchQuery } from "./model";
 
 @Component({
-    selector: "app-search",
-    imports: [
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInput,
-        MatLabel,
-        MatIconModule,
-        MatButtonModule,
-        MatOptionModule,
-        MatSelectModule,
-        CommonModule,
-    ],
-    templateUrl: "./search.component.html",
-    styleUrl: "./search.component.scss"
+  selector: "app-search",
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInput,
+    MatLabel,
+    MatIconModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatSelectModule,
+    CommonModule,
+  ],
+  templateUrl: "./search.component.html",
+  styleUrl: "./search.component.scss",
 })
 export class SearchComponent implements AfterViewInit {
   searchRequest = output<SearchQuery>();
   resetSearch = output();
   filters = input<InputFilters>();
+  initValue = input<{ [key: string]: string }>({ query: "" });
   searchForm: FormRecord;
   inputFilters = computed(() => {
     const filters = this.filters();
     if (filters) {
       Object.keys(filters ?? {}).forEach((f) =>
-        this.searchForm.setControl(f, new FormControl(null)),
+        this.searchForm.setControl(
+          f,
+          new FormControl(this.initValue()[f] ?? null)
+        )
       );
       return filters;
     }
@@ -54,7 +58,7 @@ export class SearchComponent implements AfterViewInit {
 
   constructor() {
     this.searchForm = new FormRecord({
-      query: new FormControl("", {
+      query: new FormControl(this.initValue()["query"], {
         nonNullable: true,
         validators: [Validators.minLength(3)],
       }),
@@ -62,13 +66,8 @@ export class SearchComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const filters = this.filters();
-    Object.keys(filters ?? {}).forEach((f) =>
-      this.searchForm.setControl(
-        f,
-        new FormControl(null) as FormControl<string | null>,
-      ),
-    );
+    this.searchForm.controls["query"].setValue(this.initValue()["query"]);
+    if (Object.keys(this.initValue()).length > 0) this.searchForm.markAsDirty();
   }
 
   onSearch() {
