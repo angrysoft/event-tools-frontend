@@ -44,6 +44,13 @@ case "$1" in
         git add src/app/version.ts
         git commit -m "Bump version to $VERSION"
         ;;
+    merge)
+        echo "Marge main with dev"
+        git switch main
+        git merge dev
+        git push
+        git switch dev
+        ;;
     *)
         echo "Usage: $0 {prod|test|ver}"
         exit 1
