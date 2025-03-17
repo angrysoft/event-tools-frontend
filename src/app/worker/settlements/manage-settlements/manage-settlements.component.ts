@@ -76,7 +76,7 @@ export class ManageSettlementsComponent {
   firstTime = true;
   tabIdx = Number(this.route.snapshot.queryParamMap.get("tab") ?? 0);
   eventId = Number(this.route.snapshot.paramMap.get("eventId") ?? -1);
-  backTo = "/worker/settlements/chief";
+  backTo = "/worker/settlements/chief?back=1";
   selection = new SelectionModel<WorkerDay>(true, []);
   dayId = -1;
   tabLabel = signal<string>("");
@@ -109,8 +109,6 @@ export class ManageSettlementsComponent {
     });
     this.loadDays();
 
-    const backTo = this.router.getCurrentNavigation()?.extras.state!["backTo"];
-    if (backTo) this.backTo = backTo;
   }
 
   goBack() {

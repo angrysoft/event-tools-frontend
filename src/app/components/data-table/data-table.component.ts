@@ -103,7 +103,6 @@ export class DataTableComponent<T> implements OnInit {
       for (const [key, value] of Object.entries(
         JSON.parse(params) as { [key: string]: string }
       )) {
-        console.log(key, value);
         switch (key) {
           case "page":
             this.pageIndex = Number(value);
