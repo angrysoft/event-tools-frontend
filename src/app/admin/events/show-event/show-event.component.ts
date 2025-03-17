@@ -53,7 +53,7 @@ export class ShowEventComponent {
 
   eventId: number = Number(this.route.snapshot.paramMap.get("eventId"));
   tabIndex: number = Number(this.route.snapshot.queryParams["tab"] ?? 0);
-  backTo = "/admin/events";
+  backTo = "/admin/events?back=1";
 
   constructor() {
     this.service.getInfo(this.eventId).subscribe((resp) => {
@@ -69,9 +69,6 @@ export class ShowEventComponent {
         this.accountManagerMail.set(resp.data.accountManager);
       }
     });
-
-    const backTo = this.router.getCurrentNavigation()?.extras.state!["backTo"];
-    if (backTo) this.backTo = backTo;
   }
 
   get mailUrl() {

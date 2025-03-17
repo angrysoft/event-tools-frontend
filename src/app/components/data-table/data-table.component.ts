@@ -71,6 +71,7 @@ export class DataTableComponent<T> implements OnInit {
 
   actionsUrl = input.required<string>();
   actionsData = input<{ [key: string]: string } | undefined>();
+  name = input<string | null>(null);
 
   tableColumns = input.required<{ name: string; def: string }[]>();
 
@@ -80,7 +81,7 @@ export class DataTableComponent<T> implements OnInit {
   pageSize = 15;
   pageIndex = 0;
   query = {};
-  initSearchValue = signal<{ [key:string]: string }>({ query: "" });
+  initSearchValue = signal<{ [key: string]: string }>({ query: "" });
   url = "";
 
   get columnNames() {
@@ -90,24 +91,35 @@ export class DataTableComponent<T> implements OnInit {
   constructor() {
     this.dataSource = new DataTableDataSource<T>(this.service);
     this.url = this.router.url.split("?")[0];
-    const query: { [key: string]: string } = {};
-    for (const [key, value] of Object.entries(
-      this.route.snapshot.queryParams
-    )) {
-      switch (key) {
-        case "page":
-          this.pageIndex = Number(value);
-          break;
-        case "items":
-          this.pageSize = Number(value);
-          break;
-        default:
-          query[key] = value;
-          break;
+  }
+
+  checkStoredParams() {
+    if (!this.name()) return;
+
+    const params = localStorage.getItem(this.name() as string);
+    if (!params) return;
+    if (this.route.snapshot.queryParamMap.get("back")) {
+      const query: { [key: string]: string } = {};
+      for (const [key, value] of Object.entries(
+        JSON.parse(params) as { [key: string]: string }
+      )) {
+        console.log(key, value);
+        switch (key) {
+          case "page":
+            this.pageIndex = Number(value);
+            break;
+          case "items":
+            this.pageSize = Number(value);
+            break;
+          default:
+            query[key] = value;
+            break;
+        }
       }
+      this.query = query;
+      this.initSearchValue.set(query);
     }
-    this.query = query;
-    this.initSearchValue.set(query);
+    localStorage.removeItem(this.name() as string);
   }
 
   onPageChange(e: PageEvent) {
@@ -116,6 +128,7 @@ export class DataTableComponent<T> implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkStoredParams();
     this.service.api = this.api();
     this.paginator().initialized.subscribe(() => {
       this.paginator().pageIndex = this.pageIndex;
@@ -134,20 +147,19 @@ export class DataTableComponent<T> implements OnInit {
         { state: this.actionsData() }
       );
     } else {
-      const qParams = new URLSearchParams({
-        ...this.query,
-        page: this.pageIndex.toString(),
-        items: this.pageSize.toString(),
-      });
-      const backTo = `${this.url}?${qParams.toString()}`;
+      if (this.name()) {
+        localStorage.setItem(
+          this.name() as string,
+          JSON.stringify({
+            ...this.query,
+            page: this.pageIndex.toString(),
+            items: this.pageSize.toString(),
+          })
+        );
+      }
 
       this.router.navigateByUrl(
-        `${this.actionsUrl()}/${row[this.itemIdName()]}`,
-        {
-          state: {
-            backTo: backTo,
-          },
-        }
+        `${this.actionsUrl()}/${row[this.itemIdName()]}`
       );
     }
   }
