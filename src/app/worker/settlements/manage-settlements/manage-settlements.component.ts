@@ -98,24 +98,23 @@ export class ManageSettlementsComponent {
 
   constructor() {
     const changeDetectorRef = inject(ChangeDetectorRef);
-        const media = inject(MediaMatcher);
-    
-        this.mobileQuery = media.matchMedia("(max-width: 1080px)");
-    
-        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-        this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+    const media = inject(MediaMatcher);
+
+    this.mobileQuery = media.matchMedia("(max-width: 1080px)");
+
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener("change", this._mobileQueryListener);
     this.workerDayService.getStatuses().subscribe((resp) => {
       if (resp.ok) this.statuses.set(resp.data);
     });
-    this.loadDays();
-
+    this.loadDays(true);
   }
 
   goBack() {
     this.router.navigateByUrl(this.backTo);
   }
 
-  private loadDays() {
+  private loadDays(setTab: boolean = false) {
     this.service.getDaysChief(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
@@ -123,7 +122,7 @@ export class ManageSettlementsComponent {
 
         this.setStatus();
       }
-      this.setTab();
+      if (setTab) this.setTab();
       this.loading.set(false);
     });
   }

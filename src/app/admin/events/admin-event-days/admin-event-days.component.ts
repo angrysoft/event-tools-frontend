@@ -131,7 +131,7 @@ export class AdminEventDaysComponent {
     setTimeout(() => (this.tabIdx = tab), 100);
   }
 
-  private loadDays(setTab:boolean = false) {
+  private loadDays(setTab: boolean = false) {
     this.service.getDays(this.eventId).subscribe((resp) => {
       if (resp.ok) {
         this.eventInfo.set(resp.data.info);
@@ -139,8 +139,7 @@ export class AdminEventDaysComponent {
 
         this.setStatus();
       }
-      if (setTab)
-        this.setTab();
+      if (setTab) this.setTab();
       this.loading.set(false);
     });
   }
