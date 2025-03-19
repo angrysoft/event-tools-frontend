@@ -1,7 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
 import { SwPush, SwUpdate } from "@angular/service-worker";
-import { ConfirmDialogComponent } from "../components/confirm-dialog/confirm-dialog.component";
 
 @Injectable({
   providedIn: "root",
@@ -9,7 +7,6 @@ import { ConfirmDialogComponent } from "../components/confirm-dialog/confirm-dia
 export class NotificationService {
   private readonly push = inject(SwPush);
   private readonly swUpdate = inject(SwUpdate);
-  private readonly dialog = inject(MatDialog);
   constructor() {}
 
   registerNotification() {
@@ -27,19 +24,9 @@ export class NotificationService {
 
     if (this.swUpdate.isEnabled) {
       this.swUpdate.checkForUpdate().then((update) => {
-        if (!update) return;
-        const confirm = this.dialog.open(ConfirmDialogComponent, {
-          data: {
-            msg: "Nowa wersja jest dostępna do zainstalowania. Czy chcesz zaktualizować aplikację?",
-          },
-        });
-        confirm.afterClosed().subscribe((result) => {
-          if (result === true) {
-            this.swUpdate.activateUpdate().then(() => window.location.reload());
-          }
-        });
+        if (update)
+          this.swUpdate.activateUpdate().then(() => window.location.reload());
       });
     }
-    console.log("in notification");
   }
 }
