@@ -69,7 +69,7 @@ export class WorkerDayComponent {
   }
 
   getClass(row:WorkerDay) {
-    if (row["editedBy"] !== this.coordinatorId() && this.admin())
+    if (row["editedByChief"] && this.admin())
       return "CHIEF"
     return "";
   }
