@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { backendVersion, frontendVersion } from '../../version'; 
-
+import { frontendVersion } from '../../version'; 
+import { UtilsService } from '../../services/utils.service';
 @Component({
   selector: 'app-about',
   imports: [MatDialogModule, MatButtonModule],
@@ -10,6 +10,12 @@ import { backendVersion, frontendVersion } from '../../version';
   styleUrl: './about.component.scss'
 })
 export class AboutComponent {
-  backendVersion = backendVersion;
+  service = inject(UtilsService);
+  backendVersion = "";
   frontendVersion = frontendVersion;
+  constructor() {
+    this.service.getVersions().subscribe((response) => {
+      this.backendVersion = response.data;
+    });
+  }
 }
