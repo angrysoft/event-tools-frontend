@@ -1,2 +1,2 @@
 
-export const frontendVersion = "0.16.3";
+export const frontendVersion = "0.17.0";
