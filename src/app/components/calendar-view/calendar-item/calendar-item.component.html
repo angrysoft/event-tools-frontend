@@ -21,7 +21,7 @@
 <div
   class="event"
   [style.background]="data().color ?? '#106d20'"
-  [style.color]="data().state === 'TEMPLATE' ? 'white' : 'black'"
+  [style.color]="data().state === 'UNCONFIRMED' ? 'white' : 'black'"
   (click)="goToAction()"
   [style.cursor] = "'pointer'"
 >

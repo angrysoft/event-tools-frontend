@@ -329,6 +329,10 @@ mat-card-content.form-group-col, .form-group-col {
     color: inherit !important;
 }
 
+.UNCONFIRMED {
+    color: gray !important;
+}
+
 .tab-CHIEF {
     border-top: 1px solid red !important;
     border-left: 1px solid red !important;
@@ -353,6 +357,11 @@ mat-card-content.form-group-col, .form-group-col {
     border-right: 1px solid inherit !important;
 }
 
+.tab-UNCONFIRMED {
+    border-top: 1px solid gray !important;
+    border-left: 1px solid gray !important;
+    border-right: 1px solid gray !important;
+}
 
 
 .context-menu {
