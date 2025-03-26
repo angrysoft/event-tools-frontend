@@ -67,8 +67,8 @@ import { ZoomActionsComponent } from "../zoom-actions/zoom-actions.component";
     EventDayComponent,
     EmptyDayComponent,
     DateChangerRangeComponent,
-    ZoomActionsComponent
-],
+    ZoomActionsComponent,
+  ],
   templateUrl: "./schedule.component.html",
   styleUrl: "./schedule.component.scss",
 })
@@ -139,12 +139,6 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     setTimeout(() => {
       const headerEl = document.getElementById(date);
       if (headerEl) headerEl.scrollIntoView();
-      // } else {
-      //   const first = document.getElementById(this.currentDate);
-      //   console.log(first);
-      //   if (first)
-      //     first.scrollIntoView();
-      // }
     }, 1000);
   }
 
@@ -165,7 +159,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
     this.loadData(size, 0);
   }
 
-  loadData(size: number, offset: number) {
+  loadData(size: number, offset: number, scroll: boolean = false) {
     this.loading.set(true);
 
     this.workerDayService
@@ -177,7 +171,7 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
           this.loading.set(false);
           this.end().nativeElement.style.gridColumn = `1 / span ${this.cols}`;
           this.end().nativeElement.style.display = "block";
-          this.scrollToCurrentMonth();
+          if (scroll) this.scrollToCurrentMonth();
         }
       });
   }
@@ -220,14 +214,14 @@ export class ScheduleComponent implements OnDestroy, AfterViewInit {
   dateChange(date: string) {
     this.currentDate = date;
     this.offset = 0;
-    this.loadData(this.size, this.offset);
+    this.loadData(this.size, this.offset, true);
   }
 
   dateRangeChange(dateRange: { from: string; to: string }) {
     this.currentDate = dateRange.from;
     this.toDate = dateRange.to;
     this.offset = 0;
-    this.loadData(this.size, this.offset);
+    this.loadData(this.size, this.offset, true);
   }
 
   goToWorker(id: number) {
