@@ -72,7 +72,6 @@ export class CalendarViewComponent {
   loadData() {
     this.workerDayService.getCalendar(this.currentDate).subscribe((resp) => {
       if (resp.ok) {
-        console.log(resp.data);
         this.reloadCount.update((reload) => reload + 1);
         this.months.set(resp.data);
         this.loading.set(false);
