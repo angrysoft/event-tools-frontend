@@ -56,10 +56,12 @@ interface RateValue {
 }
 
 interface BasicPayForm {
+  workers: FormControl<number | null>;
   value: FormControl<number | null>;
 }
 
 interface BasicPayData {
+  workers: number | null;
   value: number | null;
 }
 

@@ -3,7 +3,7 @@
   [queryParams]="{ tab: '3' }"
   formIdName="basic-form"
   formTitle="Podstawa"
-  [canSend]="canSend()"
+  [canSend]="basicForm.valid && basicForm.dirty"
 >
   <form
     [formGroup]="basicForm"
