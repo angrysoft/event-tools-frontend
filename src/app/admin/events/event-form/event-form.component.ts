@@ -7,14 +7,14 @@ import {
   OnDestroy,
   signal,
   untracked,
-  viewChild
+  viewChild,
 } from "@angular/core";
 import {
   FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -59,7 +59,6 @@ export class EventFormComponent implements OnDestroy, AfterViewInit {
   readonly service = inject(EventsService);
   readonly workerService = inject(WorkersService);
   update = signal<boolean>(false);
-  canSend = signal<boolean>(false);
   eventId = signal<number>(-1);
   officeWorkers = signal<OfficeWorkers>({
     coordinators: [],
@@ -156,7 +155,6 @@ export class EventFormComponent implements OnDestroy, AfterViewInit {
   }
 
   handleSubmit() {
-    console.log(this.eventForm.value, this.eventForm.valid);
     if (this.eventForm.valid) {
       if (this.update()) this.updateEvent();
       else this.addEvent();

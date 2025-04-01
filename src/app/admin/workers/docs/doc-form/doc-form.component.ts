@@ -4,9 +4,7 @@ import {
   Component,
   effect,
   inject,
-  OnDestroy,
-  OnInit,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormControl,
@@ -22,7 +20,7 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
-import { map, Observable, shareReplay, Subject, takeUntil } from "rxjs";
+import { map, Observable, shareReplay } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { WorkerDocForm } from "../../../../models/worker-doc";
 import { DocsService } from "../../../services/docs.service";
@@ -46,7 +44,7 @@ import { DocsService } from "../../../services/docs.service";
   templateUrl: "./doc-form.component.html",
   styleUrl: "./doc-form.component.scss",
 })
-export class DocFormComponent implements OnInit, OnDestroy {
+export class DocFormComponent {
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
@@ -54,12 +52,10 @@ export class DocFormComponent implements OnInit, OnDestroy {
   docId = signal<number>(-1);
   workerId = signal<number>(-1);
   backTo = signal<string>("/admin/workers");
-  canSend = signal<boolean>(false);
   dropZoneClasses = signal<string[]>(["drop-zone"]);
   fileInfo = signal<string>("Dodaj plik albo upuść tutaj.");
   update = signal<boolean>(false);
   docForm: FormGroup<WorkerDocForm>;
-  private readonly destroy = new Subject();
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -106,19 +102,6 @@ export class DocFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.docForm.statusChanges
-      .pipe(takeUntil(this.destroy))
-      .subscribe((changeEvent) => {
-        this.canSend.set(changeEvent === "VALID" && this.docForm.dirty);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
-  }
-
   onDrop(ev: DragEvent) {
     ev.preventDefault();
     this.docForm.markAsDirty();
@@ -139,7 +122,6 @@ export class DocFormComponent implements OnInit, OnDestroy {
 
   onFileChange(ev: Event) {
     const file = ev.target as HTMLInputElement;
-    console.log(file.files?.item(0));
     if (file.files && file.files?.length > 0) {
       this.docForm.controls.file.setValue(file.files.item(0));
       this.fileInfo.set(file.files.item(0)!.name);

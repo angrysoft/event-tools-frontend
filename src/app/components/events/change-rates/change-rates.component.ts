@@ -1,5 +1,5 @@
 import { SelectionModel } from "@angular/cdk/collections";
-import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import {
   AbstractControl,
   FormArray,
@@ -20,13 +20,12 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { debounceTime, Subject, takeUntil } from "rxjs";
-import { Addon, AddonGroup } from "../../../models/addon";
-import { Rate } from "../../../models/rate";
 import { RatesService } from "../../../admin/services/rates.service";
-import { WorkerDaysService } from "../../../services/worker-days.service";
+import { Addon, AddonGroup } from "../../../models/addon";
 import { EventDay, WorkersRateDay } from "../../../models/events";
+import { Rate } from "../../../models/rate";
 import { WorkerRatesPipe } from "../../../pipes/worker-rates.pipe";
+import { WorkerDaysService } from "../../../services/worker-days.service";
 import { FormBaseComponent } from "../../form-base/form-base.component";
 import { WorkerDayAddonsComponent } from "../../worker-day-addons/worker-day-addons.component";
 
@@ -51,14 +50,13 @@ import { WorkerDayAddonsComponent } from "../../worker-day-addons/worker-day-add
   templateUrl: "./change-rates.component.html",
   styleUrl: "./change-rates.component.scss",
 })
-export class ChangeRatesComponent implements OnInit, OnDestroy {
+export class ChangeRatesComponent {
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
   router = inject(Router);
   service = inject(WorkerDaysService);
   rateSrv = inject(RatesService);
   showAmount = true;
-  canSend = signal<boolean>(false);
   rates = signal<Rate[]>([]);
   addons = signal<Addon[]>([]);
   eventDay = signal<EventDay>({
@@ -73,7 +71,6 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
 
   changeRateForm: FormGroup<ChangeRateForm>;
   addonGroup: FormGroup<AddonGroup>;
-  destroy = new Subject();
   formTitle = "Stawki / Dodatki";
   eventId = Number(this.route.snapshot.paramMap.get("eventId"));
   dayId = Number(this.route.snapshot.paramMap.get("dayId"));
@@ -110,19 +107,6 @@ export class ChangeRatesComponent implements OnInit, OnDestroy {
     const showAmount =
       this.router.getCurrentNavigation()?.extras.state!["showAmount"];
     if (showAmount !== undefined) this.showAmount = showAmount;
-  }
-
-  ngOnInit(): void {
-    this.changeRateForm.statusChanges
-      .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe((status) => {
-        this.canSend.set(status === "VALID" && this.changeRateForm.dirty);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   get workers() {

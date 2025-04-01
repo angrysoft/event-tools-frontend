@@ -2,7 +2,7 @@
   [backTo]="backTo"
   [formTitle]="formTitle"
   formIdName="team-form"
-  [canSend]="canSend()"
+  [canSend]="teamForm.valid && teamForm.dirty"
 >
   <form
     [formGroup]="teamForm"

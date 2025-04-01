@@ -1,10 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
-  signal,
-  OnInit,
-  OnDestroy,
+  inject
 } from "@angular/core";
 import {
   FormControl,
@@ -18,7 +15,6 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-add-day-off",
@@ -36,10 +32,8 @@ import { Subject, takeUntil } from "rxjs";
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddDayOffComponent implements OnInit, OnDestroy {
+export class AddDayOffComponent {
   daysOffForm: FormGroup<DaysOffForm>;
-  destroy = new Subject();
-  canSend = signal<boolean>(false);
   data = inject(MAT_DIALOG_DATA);
 
   constructor() {
@@ -50,21 +44,6 @@ export class AddDayOffComponent implements OnInit, OnDestroy {
       start: new FormControl(startDate, Validators.required),
       end: new FormControl(endDate, Validators.required),
     });
-  }
-
-  ngOnInit(): void {
-    this.canSend.set(this.daysOffForm.valid);
-
-    this.daysOffForm.statusChanges
-      .pipe(takeUntil(this.destroy))
-      .subscribe((status) => {
-        this.canSend.set(status === "VALID" && this.daysOffForm.dirty);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 }
 

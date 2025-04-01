@@ -120,8 +120,6 @@ export class FromDatesReportComponent {
   }
 
   onTypeChange(reportType: "team" | "workers") {
-    console.log(reportType);
-
     if (reportType == "team") {
       this.reportSettingsFrom.controls.teamId.enable();
       this.reportSettingsFrom.controls.workers.disable();

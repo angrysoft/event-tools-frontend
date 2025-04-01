@@ -43,7 +43,6 @@ export class CarDocFormComponent {
   docId = Number(this.route.snapshot.paramMap.get("doc") ?? "-1");
   carId = Number(this.route.snapshot.paramMap.get("car") ?? "-1");
   backTo = signal<string>("/admin/settings/cars");
-  canSend = signal<boolean>(false);
   dropZoneClasses = signal<string[]>(["drop-zone"]);
   fileInfo = signal<string>("Dodaj plik albo upuść tutaj.");
   update = signal<boolean>(false);
@@ -62,13 +61,11 @@ export class CarDocFormComponent {
 
     const media = inject(MediaMatcher);
     this.mobileQuery = media.matchMedia("(max-width: 600px)");
-    if (this.carId > 0)
-      this.backTo.set("/admin/settings/cars/" + this.carId);
-    
+    if (this.carId > 0) this.backTo.set("/admin/settings/cars/" + this.carId);
+
     if (this.docId > 0) {
       this.update.set(true);
       this.docsService.getDoc(this.carId, this.docId).subscribe((resp) => {
-        console.log(resp.data);
         if (resp.ok) {
           this.docForm.patchValue({
             ...resp.data,
@@ -99,7 +96,6 @@ export class CarDocFormComponent {
 
   onFileChange(ev: Event) {
     const file = ev.target as HTMLInputElement;
-    console.log(file.files?.item(0));
     if (file.files && file.files?.length > 0) {
       this.docForm.controls.file.setValue(file.files.item(0));
       this.fileInfo.set(file.files.item(0)!.name);

@@ -2,16 +2,13 @@ import {
   Component,
   effect,
   inject,
-  OnDestroy,
-  OnInit,
   signal
 } from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  StatusChangeEvent,
-  Validators,
+  Validators
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -22,7 +19,6 @@ import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { AutofocusDirective } from "../../../../directives/autofocus.directive";
@@ -48,18 +44,16 @@ import { RatesService } from "../../../services/rates.service";
   templateUrl: "./rate-form.component.html",
   styleUrl: "./rate-form.component.scss",
 })
-export class RateFormComponent implements OnInit, OnDestroy {
+export class RateFormComponent {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   readonly route = inject(ActivatedRoute);
   update = signal<boolean>(false);
-  canSend = signal<boolean>(false);
   rateId = signal<number>(-1);
   rateTypes = signal<RateType[]>([]);
   service: RatesService;
   rateForm: FormGroup<RateForm>;
   formTitle = "Stawka";
-  private readonly destroy = new Subject();
   readonly backTo = "/admin/settings/rates";
 
   constructor() {
@@ -97,23 +91,6 @@ export class RateFormComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.rateForm.events
-      .pipe(takeUntil(this.destroy))
-      .subscribe((formEvents) => {
-        if (formEvents instanceof StatusChangeEvent) {
-          this.canSend.set(
-            formEvents.status === "VALID" && this.rateForm.dirty
-          );
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   handleSubmit() {

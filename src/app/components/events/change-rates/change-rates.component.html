@@ -3,7 +3,7 @@
   [queryParams]="{ tab: tab }"
   [formTitle]="formTitle"
   formIdName="change-rate-form"
-  [canSend]="canSend()"
+  [canSend]="changeRateForm.valid && changeRateForm.dirty"
 >
   <form
     [formGroup]="changeRateForm"

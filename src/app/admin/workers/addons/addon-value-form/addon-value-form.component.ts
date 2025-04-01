@@ -1,5 +1,5 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -14,7 +14,6 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Addon, AddonValueForm } from "../../../../models/addon";
 import { AddonsService } from "../../../services/addons.service";
@@ -37,7 +36,7 @@ import { AddonsService } from "../../../services/addons.service";
   templateUrl: "./addon-value-form.component.html",
   styleUrl: "./addon-value-form.component.scss",
 })
-export class AddonValueFormComponent implements OnInit, OnDestroy {
+export class AddonValueFormComponent {
   readonly breakpointObserver = inject(BreakpointObserver);
   readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
@@ -45,10 +44,8 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
   addonValueId = signal<number>(-1);
   update = signal<boolean>(false);
   backTo = signal<string>("/admin/workers/");
-  canSend = signal<boolean>(false);
   addons = signal<Addon[]>([]);
   addonValueForm: FormGroup<AddonValueForm>;
-  private readonly destroy = new Subject();
 
   constructor() {
     this.addonValueForm = new FormGroup<AddonValueForm>({
@@ -81,20 +78,6 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
         );
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.addonValueForm.statusChanges
-      .pipe(takeUntil(this.destroy))
-      .subscribe((changeEvent) => {
-        console.log(this.addonValueForm.value);
-        this.canSend.set(changeEvent === "VALID" && this.addonValueForm.dirty);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   handleSubmit() {

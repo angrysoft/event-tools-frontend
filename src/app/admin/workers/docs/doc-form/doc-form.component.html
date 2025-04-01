@@ -2,7 +2,7 @@
   [backTo]="backTo()"
   formIdName="doc-form"
   formTitle="Dokument"
-  [canSend]="canSend()"
+  [canSend]="docForm.valid && docForm.dirty"
 >
   <form
     [formGroup]="docForm"

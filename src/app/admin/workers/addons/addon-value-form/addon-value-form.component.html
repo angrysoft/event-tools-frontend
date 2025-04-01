@@ -2,7 +2,7 @@
   [backTo]="backTo()"
   formIdName="addon-value-form"
   formTitle="Dokument"
-  [canSend]="canSend()"
+  [canSend]="addonValueForm.valid && addonValueForm.dirty"
 >
   <form
     [formGroup]="addonValueForm"

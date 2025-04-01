@@ -34,7 +34,7 @@
   <button
     mat-button
     [mat-dialog-close]="daysOffForm.value"
-    [disabled]="!canSend()"
+    [disabled]="daysOffForm.invalid || daysOffForm.pristine"
     type="button"
   >
     Ok

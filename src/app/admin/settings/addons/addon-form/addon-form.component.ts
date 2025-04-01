@@ -2,16 +2,13 @@ import {
   Component,
   effect,
   inject,
-  OnDestroy,
-  OnInit,
-  signal,
+  signal
 } from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  StatusChangeEvent,
-  Validators,
+  Validators
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -22,13 +19,12 @@ import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
+import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 import { AddonForm, AddonType } from "../../../../models/addon";
 import { Rate } from "../../../../models/rate";
 import { AddonsService } from "../../../services/addons.service";
-import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-addon-form",
@@ -49,18 +45,16 @@ import { AutofocusDirective } from "../../../../directives/autofocus.directive";
   templateUrl: "./addon-form.component.html",
   styleUrl: "./addon-form.component.scss",
 })
-export class AddonFormComponent implements OnInit, OnDestroy {
+export class AddonFormComponent {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   update = signal<boolean>(false);
-  canSend = signal<boolean>(false);
   service: AddonsService;
   addonForm: FormGroup<AddonForm>;
   addonId = signal<number>(-1);
   formTitle = "Dodatek";
   addonTypes = signal<AddonType[]>([]);
   readonly route = inject(ActivatedRoute);
-  private readonly destroy = new Subject();
 
   constructor() {
     this.service = new AddonsService();
@@ -92,23 +86,6 @@ export class AddonFormComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.addonForm.events
-      .pipe(takeUntil(this.destroy))
-      .subscribe((formEvents) => {
-        if (formEvents instanceof StatusChangeEvent) {
-          this.canSend.set(
-            formEvents.status === "VALID" && this.addonForm.dirty
-          );
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   handleSubmit() {

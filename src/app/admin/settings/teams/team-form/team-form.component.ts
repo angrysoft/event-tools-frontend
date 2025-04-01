@@ -1,16 +1,8 @@
-import {
-  Component,
-  effect,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal
-} from "@angular/core";
+import { Component, effect, inject, signal } from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  StatusChangeEvent,
   Validators,
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -20,7 +12,7 @@ import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIcon } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
+import { Subject } from "rxjs";
 import { ConfirmDialogComponent } from "../../../../components/confirm-dialog/confirm-dialog.component";
 import { FormBaseComponent } from "../../../../components/form-base/form-base.component";
 import { Team, TeamForm } from "../../../../models/teams";
@@ -42,12 +34,11 @@ import { CrudService } from "../../../../services/crud.service";
   templateUrl: "./team-form.component.html",
   styleUrl: "./team-form.component.scss",
 })
-export class TeamFormComponent implements OnInit, OnDestroy {
+export class TeamFormComponent {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
   readonly confirm = inject(MatDialog);
   update = signal<boolean>(false);
-  canSend = signal<boolean>(false);
   teamId = signal<number>(-1);
   service: CrudService<Team>;
   teamForm: FormGroup<TeamForm>;
@@ -80,23 +71,6 @@ export class TeamFormComponent implements OnInit, OnDestroy {
         });
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.teamForm.events
-      .pipe(takeUntil(this.destroy))
-      .subscribe((formEvents) => {
-        if (formEvents instanceof StatusChangeEvent) {
-          this.canSend.set(
-            formEvents.status === "VALID" && this.teamForm.dirty
-          );
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(null);
-    this.destroy.complete();
   }
 
   handleSubmit() {

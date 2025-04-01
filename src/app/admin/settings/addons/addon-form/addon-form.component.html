@@ -2,7 +2,7 @@
   backTo="/admin/settings/addons"
   [formTitle]="formTitle"
   formIdName="addon-form"
-  [canSend]="canSend()"
+  [canSend]="addonForm.valid && addonForm.dirty"
 >
   <form
     [formGroup]="addonForm"

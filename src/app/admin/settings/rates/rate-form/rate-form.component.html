@@ -2,7 +2,7 @@
   [backTo]="backTo"
   [formTitle]="formTitle"
   formIdName="rate-form"
-  [canSend]="canSend()"
+  [canSend]="rateForm.valid && rateForm.dirty"
 >
   <form
     [formGroup]="rateForm"
