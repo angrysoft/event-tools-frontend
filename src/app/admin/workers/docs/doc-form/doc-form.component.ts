@@ -78,7 +78,7 @@ export class DocFormComponent implements OnInit, OnDestroy {
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
       this.workerId.set(Number(paramWorkerId));
-      this.backTo.set("/admin/workers/" + paramWorkerId);
+      this.backTo.set(`/admin/workers/${paramWorkerId}?tab=1`);
     }
 
     this.docForm = new FormGroup({
@@ -165,14 +165,14 @@ export class DocFormComponent implements OnInit, OnDestroy {
     this.docsService
       .updateDoc(this.docId(), this.docForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=1");
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.docsService.showError(resp);
       });
   }
 
   createDoc() {
     this.docsService.createDoc(this.docForm.value).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=1");
+      if (resp.ok) this.router.navigateByUrl(this.backTo());
       else this.docsService.showError(resp);
     });
   }

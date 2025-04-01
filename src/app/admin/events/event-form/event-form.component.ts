@@ -5,18 +5,16 @@ import {
   ElementRef,
   inject,
   OnDestroy,
-  OnInit,
   signal,
   untracked,
-  viewChild,
+  viewChild
 } from "@angular/core";
 import {
   FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  StatusChangeEvent,
-  Validators,
+  Validators
 } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -30,11 +28,11 @@ import { debounceTime, fromEvent, Subject, takeUntil } from "rxjs";
 import { FormBaseComponent } from "../../../components/form-base/form-base.component";
 import { WorkerChooserConfig } from "../../../components/worker-chooser/worker-chooser-config";
 import { WorkerChooserComponent } from "../../../components/worker-chooser/worker-chooser.component";
-import { EventItem, EventItemForm } from "../../../models/events";
-import { EventsService } from "../../../services/events.service";
-import { OfficeWorkers, WorkerBase } from "../../../models/worker";
-import { WorkersService } from "../../../services/workers.service";
 import { AutofocusDirective } from "../../../directives/autofocus.directive";
+import { EventItem, EventItemForm } from "../../../models/events";
+import { OfficeWorkers, WorkerBase } from "../../../models/worker";
+import { EventsService } from "../../../services/events.service";
+import { WorkersService } from "../../../services/workers.service";
 
 @Component({
   selector: "app-event-form",
@@ -54,7 +52,7 @@ import { AutofocusDirective } from "../../../directives/autofocus.directive";
   templateUrl: "./event-form.component.html",
   styleUrl: "./event-form.component.scss",
 })
-export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
+export class EventFormComponent implements OnDestroy, AfterViewInit {
   readonly router = inject(Router);
   readonly confirm = inject(MatDialog);
   readonly route = inject(ActivatedRoute);
@@ -109,7 +107,6 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
           this.service.get(this.eventId()).subscribe((resp) => {
             if (resp.ok) {
               const data: EventItem = resp.data as EventItem;
-              console.log(data);
               this.eventForm.patchValue(data);
               this.editor().nativeElement.innerHTML = data.description;
 
@@ -133,18 +130,6 @@ export class EventFormComponent implements OnInit, OnDestroy, AfterViewInit {
             resp.data.filter((el) => data.eventChiefs.includes(el.id ?? -1))
           );
           this.chiefName.set(`${mainChief?.firstName} ${mainChief?.lastName}`);
-        }
-      });
-  }
-
-  ngOnInit(): void {
-    this.eventForm.events
-      .pipe(takeUntil(this.destroy))
-      .subscribe((formEvents) => {
-        if (formEvents instanceof StatusChangeEvent) {
-          this.canSend.set(
-            formEvents.status === "VALID" && this.eventForm.dirty
-          );
         }
       });
   }

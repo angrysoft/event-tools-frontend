@@ -78,7 +78,7 @@ export class CarFormComponent implements OnInit {
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
       this.carForm.patchValue({ workerId: Number(paramWorkerId) });
-      this.backTo.set(`/admin/workers/${paramWorkerId}`);
+      this.backTo.set(`/admin/workers/${paramWorkerId}?tab=2`);
     }
 
     effect(() => {
@@ -111,14 +111,14 @@ export class CarFormComponent implements OnInit {
     this.service
       .update(this.carId(), this.carForm.value as Car)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.service.showError(resp);
       });
   }
 
   addCar() {
     this.service.create(this.carForm.value as Car).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=2");
+      if (resp.ok) this.router.navigateByUrl(this.backTo());
       else this.service.showError(resp);
     });
   }

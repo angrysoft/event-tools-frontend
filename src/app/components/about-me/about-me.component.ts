@@ -35,44 +35,42 @@ export interface DialogData {
     WorkerDocsComponent,
     WorkerCarComponent,
     WorkerRatesComponent,
-    WorkerAddonsComponent
-],
+    WorkerAddonsComponent,
+  ],
   templateUrl: "./about-me.component.html",
   styleUrl: "./about-me.component.scss",
 })
 export class AboutMeComponent {
   readonly workerService: WorkersService = inject(WorkersService);
   worker = signal<Worker>({
-    firstName: "",
-    lastName: "",
-    id: 0,
-    phone: "",
-    email: "",
+    secondName: null,
+    phone: null,
+    phoneIce: null,
+    mother: null,
+    father: null,
+    email: null,
     nickname: null,
     color: null,
     username: null,
     teamId: null,
     groupId: null,
-    hasAccount: false,
-    secondName: null,
     pesel: null,
     docNumber: null,
-    phoneIce: null,
-    mother: null,
-    father: null,
-    workerDoc: [],
-    basicPay: {
-      value: 0,
-      worker: {
-        id: -1,
-      },
-    },
+    hasAccount: null,
     password: null,
     password2: null,
     authority: null,
+    workerDoc: [],
+    basicPay: {
+      value: 0,
+      workers: -1
+    },
+    desc: "",
+    id: null,
+    firstName: null,
+    lastName: null
   });
   loading = signal<boolean>(true);
-
 
   constructor() {
     this.workerService.getAboutMe().subscribe((response) => {
@@ -81,9 +79,7 @@ export class AboutMeComponent {
         if (!response.data.basicPay) {
           data.basicPay = {
             value: 0,
-            worker: {
-              id: -1,
-            },
+            workers: -1,
           };
         }
         this.worker.set(data);

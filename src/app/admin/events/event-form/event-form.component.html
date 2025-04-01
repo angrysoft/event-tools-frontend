@@ -2,7 +2,7 @@
   [backTo]="backTo"
   [formTitle]="formTitle"
   formIdName="event-form"
-  [canSend]="canSend()"
+  [canSend]="eventForm.valid && eventForm.dirty"
 >
   <form
     [formGroup]="eventForm"

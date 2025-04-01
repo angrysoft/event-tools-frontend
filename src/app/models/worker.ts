@@ -17,7 +17,7 @@ interface WorkerBase {
 
 interface BasicPay {
   value: number;
-  worker: WorkerId;
+  workers: number;
 }
 
 interface Worker extends WorkerBase {
@@ -43,6 +43,7 @@ interface Worker extends WorkerBase {
   cars?: Car[];
   rateValues?: RateValue[];
   addonValues?: AddonValue[];
+  desc: string | null;
 }
 
 interface WorkersItem {
@@ -80,11 +81,10 @@ interface WorkerForm {
   authority: FormControl<string | null>;
 }
 
-
 interface WorkerParam {
   pageNumber?: number;
   pageSize?: number;
-  query:string;
+  query: string;
 }
 export {
   BasicPay,
@@ -94,5 +94,5 @@ export {
   WorkerForm,
   WorkerId,
   WorkersItem,
-  WorkerParam
+  WorkerParam,
 };

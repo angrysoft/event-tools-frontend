@@ -80,7 +80,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
       this.rateValueForm.controls.workerId.setValue(Number(paramWorkerId));
-      this.backTo.update((back) => back + `${paramWorkerId}`);
+      this.backTo.set(`/admin/workers/${paramWorkerId}?tab=3`);
     }
     const paramRateValueId = this.route.snapshot.paramMap.get("rateValueId");
     if (paramRateValueId) {
@@ -129,7 +129,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
 
   createRateValue() {
     this.service.createRateValue(this.rateValueForm.value).subscribe((resp) => {
-      if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
+      if (resp.ok) this.router.navigateByUrl(this.backTo());
       else this.service.showError(resp);
     });
   }
@@ -142,7 +142,7 @@ export class RateValueFormComponent implements OnInit, OnDestroy {
     this.service
       .updateRateValue(this.rateValueId(), this.rateValueForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.service.showError(resp);
       });
   }

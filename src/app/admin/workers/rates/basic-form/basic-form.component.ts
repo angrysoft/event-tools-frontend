@@ -38,7 +38,7 @@ export class BasicFormComponent implements OnInit, OnDestroy {
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
       this.workerId = Number(paramWorkerId);
-      this.backTo.update((back) => back + `${paramWorkerId}`);
+      this.backTo.set(`/admin/workers/${paramWorkerId}?tab=3`);
     }
 
     const value = Number(this.route.snapshot.queryParamMap.get("value") ?? "0");
@@ -68,7 +68,7 @@ export class BasicFormComponent implements OnInit, OnDestroy {
     this.service
       .updateBasicPay(this.workerId, this.basicForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=3");
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.service.showError(resp);
       });
   }

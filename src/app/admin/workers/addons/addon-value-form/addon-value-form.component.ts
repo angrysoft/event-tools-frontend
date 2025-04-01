@@ -61,14 +61,13 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
     const paramWorkerId = this.route.snapshot.paramMap.get("workerId");
     if (paramWorkerId) {
       this.addonValueForm.controls.workerId.setValue(Number(paramWorkerId));
-      this.backTo.update((back) => back + `${paramWorkerId}`);
+      this.backTo.set(`/admin/workers/${paramWorkerId}?tab=4`);
     }
     const paramAddonValueId = this.route.snapshot.paramMap.get("addonValueId");
     if (paramAddonValueId) {
       this.addonValueId.set(Number(paramAddonValueId));
       this.service.getAddonValue(this.addonValueId()).subscribe((resp) => {
         if (resp.ok) {
-          console.log(resp.data);
           this.addonValueForm.patchValue(resp.data);
           this.update.set(true);
         }
@@ -110,7 +109,7 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
     this.service
       .createAddonValue(this.addonValueForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=4");
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.service.showError(resp);
       });
   }
@@ -123,7 +122,7 @@ export class AddonValueFormComponent implements OnInit, OnDestroy {
     this.service
       .updateAddonValue(this.addonValueId(), this.addonValueForm.value)
       .subscribe((resp) => {
-        if (resp.ok) this.router.navigateByUrl(this.backTo() + "?tab=4");
+        if (resp.ok) this.router.navigateByUrl(this.backTo());
         else this.service.showError(resp);
       });
   }
