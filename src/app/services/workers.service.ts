@@ -72,12 +72,11 @@ export class WorkersService extends CrudService<Worker> {
   }
 
   updateBasicPay(
-    workerId: number,
     basicPay: Partial<BasicPayData>
   ): Observable<RestResponse<void | string>> {
     return this.http
       .put<RestResponse<void | string>>(
-        `${this.api}/basic/${workerId}`,
+        `${this.api}/basic`,
         basicPay
       )
       .pipe(catchError(this.handleError));
