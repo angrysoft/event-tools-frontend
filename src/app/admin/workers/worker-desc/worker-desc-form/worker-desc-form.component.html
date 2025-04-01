@@ -1,0 +1,22 @@
+<app-form-base
+  [backTo]="backTo()"
+  formTitle="Edytuj Opis"
+  formIdName="desc-form"
+  [canSend]="descForm.valid && descForm.dirty"
+>
+  <form
+    [formGroup]="descForm"
+    class="form"
+    id="desc-form"
+    (submit)="handleSubmit()"
+  >
+    <mat-card appearance="outlined" class="card">
+      <mat-card-header>
+        <mat-card-title>Opis</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="editor-card">
+        <section contenteditable class="editor" #editor></section>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</app-form-base>

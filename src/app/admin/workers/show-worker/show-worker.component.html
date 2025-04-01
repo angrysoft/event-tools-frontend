@@ -137,5 +137,10 @@
       <app-addons [workerId]="workerId" />
       }
     </mat-tab>
+    <mat-tab label="Opis">
+      @defer () {
+      <app-worker-desc [desc]="worker().desc" [worker]="worker().id" (deleteDesc)="removeDesc()"/>
+      }
+    </mat-tab>
   </mat-tab-group>
 </section>

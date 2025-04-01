@@ -16,6 +16,7 @@ import { AddonsComponent } from "../addons/addons.component";
 import { CarsComponent } from "../cars/cars.component";
 import { DocsComponent } from "../docs/docs.component";
 import { RatesComponent } from "../rates/rates.component";
+import { WorkerDescComponent } from "../worker-desc/worker-desc.component";
 
 export interface DialogData {
   workerId: number;
@@ -39,7 +40,8 @@ export interface DialogData {
     AddonsComponent,
     CarsComponent,
     ActionToolbarComponent,
-  ],
+    WorkerDescComponent
+],
   templateUrl: "./show-worker.component.html",
   styleUrl: "./show-worker.component.scss",
 })
@@ -49,33 +51,32 @@ export class ShowWorkerComponent {
   readonly router = inject(Router);
   readonly route = inject(ActivatedRoute);
   worker = signal<Worker>({
-    firstName: "",
-    lastName: "",
-    id: 0,
-    phone: "",
-    email: "",
+    secondName: null,
+    phone: null,
+    phoneIce: null,
+    mother: null,
+    father: null,
+    email: null,
     nickname: null,
     color: null,
     username: null,
     teamId: null,
     groupId: null,
-    hasAccount: false,
-    secondName: null,
     pesel: null,
     docNumber: null,
-    phoneIce: null,
-    mother: null,
-    father: null,
-    workerDoc: [],
-    basicPay: {
-      value: 0,
-      worker: {
-        id: -1,
-      },
-    },
+    hasAccount: null,
     password: null,
     password2: null,
     authority: null,
+    workerDoc: [],
+    basicPay: {
+      value: 0,
+      workers: -1,
+    },
+    desc: "",
+    id: null,
+    firstName: null,
+    lastName: null,
   });
   loading = signal<boolean>(true);
 
@@ -90,16 +91,13 @@ export class ShowWorkerComponent {
         if (!response.data.basicPay) {
           data.basicPay = {
             value: 0,
-            worker: {
-              id: -1,
-            },
+            workers: -1,
           };
         }
         this.worker.set(data);
       }
       this.loading.set(false);
     });
-
   }
 
   removeWorker() {
@@ -114,6 +112,24 @@ export class ShowWorkerComponent {
           .subscribe((response) => {
             if (response.ok) {
               this.router.navigateByUrl("/admin/workers", { replaceUrl: true });
+            } else this.workerService.showError(response);
+          });
+      }
+    });
+  }
+
+  removeDesc() {
+    const dialogRef = this.confirm.open(ConfirmDialogComponent, {
+      data: { msg: "Usunąć opis ?" },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true && this.worker().id) {
+        this.workerService
+          .deleteDesc(this.worker().id ?? -1)
+          .subscribe((response) => {
+            if (response.ok) {
+              this.worker().desc = null;
             } else this.workerService.showError(response);
           });
       }

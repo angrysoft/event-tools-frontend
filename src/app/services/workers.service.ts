@@ -108,4 +108,21 @@ export class WorkersService extends CrudService<Worker> {
   ) {
     return this._put(`${this.userApi}/change-password`, payload);
   }
+
+  getDesc(workerId: number) {
+    return this._get<RestResponse<{ workers: number; desc: string }>>(
+      `${this.api}/desc/${workerId}`
+    );
+  }
+
+  deleteDesc(workerId: number) {
+    return this._delete(`${this.api}/desc/${workerId}`);
+  }
+
+  saveDesc(desc: { workers: number; desc: string }) {
+    return this._put<{ workers: number; desc: string }>(
+      `${this.api}/desc`,
+      desc
+    );
+  }
 }

@@ -56,6 +56,14 @@ export const workersRoutes: Routes = [
       ),
   },
   {
+    path: "workers/:workerId/desc/edit",
+    title: "Zmień Opis Pracownika",
+    loadComponent: () =>
+      import("./worker-desc/worker-desc-form/worker-desc-form.component").then(
+        (m) => m.WorkerDescFormComponent
+      ),
+  },
+  {
     path: "workers/:workerId/rates/add",
     title: "Przypisz Stawkę",
     loadComponent: () =>

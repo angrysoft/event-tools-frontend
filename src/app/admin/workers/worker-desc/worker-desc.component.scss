@@ -1,0 +1,17 @@
+.description {
+    padding: 1rem;
+    word-break: break-all;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+:host {
+    display: block;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 1rem;
+}

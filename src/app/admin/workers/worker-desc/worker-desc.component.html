@@ -1,0 +1,16 @@
+<div class="actions">
+  <a mat-fab routerLink="/admin/workers/{{ worker() }}/desc/edit">
+    <mat-icon>edit</mat-icon>
+  </a>
+  <button mat-fab [disabled]="desc() === null" (click)="deleteDesc.emit()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title class="title"> Opis </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="description">
+    <section [innerHTML]="desc() ?? '' | safeHtml"></section>
+  </mat-card-content>
+</mat-card>
