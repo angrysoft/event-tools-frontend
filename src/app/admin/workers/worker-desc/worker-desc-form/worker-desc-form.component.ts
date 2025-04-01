@@ -21,6 +21,7 @@ import { FormBaseComponent } from "../../../../components/form-base/form-base.co
 import { ActivatedRoute, Router } from "@angular/router";
 import { WorkersService } from "../../../../services/workers.service";
 import { debounceTime, fromEvent, Subject, takeUntil } from "rxjs";
+import { AutofocusDirective } from "../../../../directives/autofocus.directive";
 
 @Component({
   selector: "app-worker-desc-form",
@@ -31,6 +32,7 @@ import { debounceTime, fromEvent, Subject, takeUntil } from "rxjs";
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
+    AutofocusDirective,
   ],
   templateUrl: "./worker-desc-form.component.html",
   styleUrl: "./worker-desc-form.component.scss",
