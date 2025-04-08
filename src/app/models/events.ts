@@ -8,6 +8,8 @@ interface EventItem {
   coordinatorId: number;
   accountManagerId: number;
   chiefId: number;
+  location: string | null;
+  locationUrl: string | null;
   eventChiefs: number[];
 }
 
@@ -17,10 +19,13 @@ interface EventItemForm {
   shortName: FormControl<string | null>;
   number: FormControl<string | null>;
   description: FormControl<string | null>;
+  location: FormControl<string | null>;
+  locationUrl: FormControl<string | null>;
   coordinatorId: FormControl<number | null>;
   accountManagerId: FormControl<number | null>;
   chiefId: FormControl<number | null>;
   eventChiefs: FormArray;
+
 }
 
 interface EventItemDto {
@@ -34,6 +39,8 @@ interface EventItemDto {
   chief: string;
   editors: string[];
   edited: string;
+  location: string | null;
+  locationUrl: string | null;
 }
 
 interface EventFile {

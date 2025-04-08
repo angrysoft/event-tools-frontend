@@ -1,15 +1,24 @@
-import { Component, input } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule } from '@angular/material/tabs';
-import { EventItemDto } from '../../../models/events';
+import { Component, input } from "@angular/core";
+import { MatCardModule } from "@angular/material/card";
+import { MatTabsModule } from "@angular/material/tabs";
+import { EventItemDto } from "../../../models/events";
 import { SafeHtmlPipe } from "../../../pipes/safe-html.pipe";
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
-  selector: 'app-event-info',
-  imports: [MatCardModule, MatTabsModule, SafeHtmlPipe, DatePipe],
-  templateUrl: './event-info.component.html',
-  styleUrl: './event-info.component.scss'
+  selector: "app-event-info",
+  imports: [
+    MatCardModule,
+    MatTabsModule,
+    SafeHtmlPipe,
+    DatePipe,
+    MatButtonModule,
+    MatIconModule,
+  ],
+  templateUrl: "./event-info.component.html",
+  styleUrl: "./event-info.component.scss",
 })
 export class EventInfoComponent {
   eventData = input.required<EventItemDto>();

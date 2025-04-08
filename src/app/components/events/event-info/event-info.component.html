@@ -28,6 +28,15 @@
             <span>{{ eventData().chief }} </span>
           </p>
           <p>
+            <span class="label">Lokalizacja:</span>
+            <span>{{ eventData().location }} </span>
+            @if (eventData().locationUrl) {
+            <a [href]="eventData().locationUrl" target="_blank" mat-mini-fab>
+              <mat-icon>location_on</mat-icon>
+            </a>
+            }
+          </p>
+          <p>
             <span class="label">Edytowane:</span>
             <span>{{ eventData().edited | date : "medium" }} </span>
           </p>

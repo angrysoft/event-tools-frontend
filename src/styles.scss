@@ -263,11 +263,21 @@ app-schedule {
     height: 100%;
 }
 
-mat-card-content.form-group, .form-group {
+mat-card-content.form-group, .form-group,
+mat-card-content.form-inline,
+.form-inline {
     display: grid;
     gap: 1rem;
     padding: 1rem;
+}
+
+mat-card-content.form-group,
+.form-group {
     grid-template-columns: 1fr 1fr;
+}
+
+mat-card-content.form-inline, .form-inline {
+    grid-template-columns: 1fr;
 }
 
 mat-card-content.form-group-row, .form-group-row {

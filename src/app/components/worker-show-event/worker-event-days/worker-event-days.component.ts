@@ -26,6 +26,8 @@ export class WorkerEventDaysComponent implements OnInit {
     chief: "",
     editors: [],
     edited: "",
+    location: null,
+    locationUrl: null,
   });
   loading = signal<boolean>(true);
 

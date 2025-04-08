@@ -89,6 +89,8 @@ export class EventFormComponent implements OnDestroy, AfterViewInit {
       accountManagerId: new FormControl(null, Validators.required),
       chiefId: new FormControl(null, Validators.required),
       description: new FormControl(""),
+      location: new FormControl(null),
+      locationUrl: new FormControl(null),
       eventChiefs: new FormArray<FormControl<WorkerBase>>([]),
     });
 

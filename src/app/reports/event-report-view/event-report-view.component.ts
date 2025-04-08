@@ -59,6 +59,8 @@ export class EventReportViewComponent {
     chief: "",
     editors: [],
     edited: "",
+    location: null,
+    locationUrl: null,
   });
   totals = signal<Totals>({
     totalHours: 0,

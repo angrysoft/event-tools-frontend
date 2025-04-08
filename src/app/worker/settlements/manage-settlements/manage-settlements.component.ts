@@ -70,6 +70,8 @@ export class ManageSettlementsComponent {
     chief: "",
     editors: [],
     edited: "",
+    location: null,
+    locationUrl: null,
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);

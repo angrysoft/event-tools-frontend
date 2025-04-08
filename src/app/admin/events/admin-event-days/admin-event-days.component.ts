@@ -79,6 +79,8 @@ export class AdminEventDaysComponent {
     editors: [],
     coordinatorId: 0,
     edited: "",
+    location: null,
+    locationUrl: null,
   });
   eventDays = signal<EventDay[]>([]);
   loading = signal<boolean>(true);

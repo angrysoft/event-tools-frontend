@@ -45,6 +45,8 @@ export class ShowEventComponent {
     editors: [],
     coordinatorId: 0,
     edited: "",
+    location: null,
+    locationUrl: null,
   });
 
   loading = signal<boolean>(true);
