@@ -192,7 +192,7 @@ export class ChangeRatesComponent {
         .changeRates(this.eventId, this.dayId, payload)
         .subscribe((resp) => {
           if (resp.ok)
-            this.router.navigateByUrl(`${this.backTo}?tab=${this.tab}`);
+            this.router.navigateByUrl(this.backTo);
           else {
             this.service.showError(resp);
           }
